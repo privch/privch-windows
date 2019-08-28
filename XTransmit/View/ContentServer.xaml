@@ -1,0 +1,93 @@
+﻿<!-- Updated 2019-08-06 -->
+<UserControl x:Class="XTransmit.View.ContentServer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button" BasedOn="{StaticResource ButtonToolbar}"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <ToolBarTray Grid.Row="0" IsLocked="True">
+            <ToolBar IsOverflowOpen="False">
+
+                <Button ToolTip="{StaticResource server_scan_qrcode}"
+                        Content="{md:PackIcon Kind=QrcodeScan}"
+                        Command="{Binding Path=CommandAddServerQRCode}"/>
+
+                <Button ToolTip="{StaticResource server_import_clipboard}" 
+                        Content="{md:PackIcon Kind=ClipboardTextOutline}" 
+                        Command="{Binding Path=CommandAddServerClipboard}"/>
+
+                <Button ToolTip="{StaticResource server_import_file}" 
+                        Content="{md:PackIcon Kind=FileDocumentBox}"
+                        Command="{Binding Path=CommandAddServerFile}"/>
+
+                <Button ToolTip="{StaticResource server_manual_setting}" 
+                        Content="{md:PackIcon Kind=AddCircle}" 
+                        Command="{Binding Path=CommandAddServerNew}"/>
+
+                <Separator/>
+
+                <Button ToolTip="{StaticResource server_fetch_info}"
+                        Content="{md:PackIcon Kind=AddLocation,Size=24}"
+                        Command="{Binding Path=CommandFetchInfo}"/>
+
+                <Button ToolTip="{StaticResource server_ping_check}"
+                        Content="{md:PackIcon Kind=ChartAreaspline,Size=24}"
+                        Command="{Binding Path=CommandPingInfo}"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <!-- Server -->
+        <DataGrid Grid.Row="1" x:Name="xDataGrid"
+                  GridLinesVisibility="Horizontal"
+                  SelectionMode="Extended"
+                  IsReadOnly="True"
+                  CanUserDeleteRows="True"
+                  CanUserSortColumns="True"
+                  ItemsSource="{Binding Path=ObServerInfoList}">
+            <DataGrid.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" 
+                              Command="{Binding Path=CommandSelectServer}"
+                              CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}" />
+                <KeyBinding Key="E"
+                            Command="{Binding Path=CommandEditServer}"
+                            CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}"/>
+                <KeyBinding Key="Delete"
+                            Command="{Binding Path=CommandDeleteServers}"
+                            CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItems}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.ContextMenu>
+                <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
+                    <MenuItem Icon="{md:PackIcon Kind=Check}" Header="{StaticResource server_menu_select}"
+                              Command="{Binding Path=CommandSelectServer}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
+
+                    <MenuItem Icon="{md:PackIcon Kind=Edit}" Header="{StaticResource server_menu_edit}"
+                              Command="{Binding Path=CommandEditServer}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
+
+                    <MenuItem Icon="{md:PackIcon Kind=Delete}" Header="{StaticResource server_menu_delete}"
+                              Command="{Binding Path=CommandDeleteServers}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _server}" Binding="{Binding Path=FriendlyName}"/>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _ping}" Binding="{Binding Path=Ping}"/>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _host}" Binding="{Binding Path=HostIP}"/>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _port}" Binding="{Binding Path=Port}"/>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _remarks}" Binding="{Binding Path=Remarks}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

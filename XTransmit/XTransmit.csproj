@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5FE65239-CDB0-4EDA-A57E-CBF1E19EF24B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>XTransmit</RootNamespace>
+    <AssemblyName>XTransmit</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Target\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Target\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>XTransmit.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.2.0.325, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.2.0\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.6.0.325, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.6.0\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="zxing, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.presentation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Utility\CurlManager.cs" />
+    <Compile Include="Utility\FileUtil.cs" />
+    <Compile Include="Utility\NativeMethods.cs" />
+    <Compile Include="Utility\NetworkUtil.cs" />
+    <Compile Include="Utility\PrivoxyManager.cs" />
+    <Compile Include="Utility\RegexHelper.cs" />
+    <Compile Include="Utility\SSManager.cs" />
+    <Compile Include="Utility\TextUtil.cs" />
+    <Compile Include="ViewModel\AboutVModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\ContentCurlVModel.cs" />
+    <Compile Include="ViewModel\ContentNetworkVModel.cs" />
+    <Compile Include="ViewModel\ContentServerVModel.cs" />
+    <Compile Include="ViewModel\Control\ContentTable.cs" />
+    <Compile Include="ViewModel\Control\Placement.cs" />
+    <Compile Include="ViewModel\Control\ProgressInfo.cs" />
+    <Compile Include="ViewModel\Control\ServerInfo.cs" />
+    <Compile Include="ViewModel\CurlPlayVModel.cs" />
+    <Compile Include="ViewModel\DialogButtonVModel.cs" />
+    <Compile Include="ViewModel\DialogEditVModel.cs" />
+    <Compile Include="ViewModel\HomeVModel.cs" />
+    <Compile Include="ViewModel\IPAddressVModel.cs" />
+    <Compile Include="ViewModel\Control\ItemInfo.cs" />
+    <Compile Include="ViewModel\RelayCommand.cs" />
+    <Compile Include="ViewModel\ServerConfigVModel.cs" />
+    <Compile Include="ViewModel\SettingVModel.cs" />
+    <Compile Include="ViewModel\UserAgentVModel.cs" />
+    <Compile Include="View\ContentCurl.xaml.cs">
+      <DependentUpon>ContentCurl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentNetwork.xaml.cs">
+      <DependentUpon>ContentNetwork.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentServer.xaml.cs">
+      <DependentUpon>ContentServer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogAbout.xaml.cs">
+      <DependentUpon>DialogAbout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogButton.xaml.cs">
+      <DependentUpon>DialogButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogEdit.xaml.cs">
+      <DependentUpon>DialogEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogPrompt.xaml.cs">
+      <DependentUpon>DialogPrompt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogServerConfig.xaml.cs">
+      <DependentUpon>DialogServerConfig.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogSetting.xaml.cs">
+      <DependentUpon>DialogSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TrayNotify\SystemTray.cs" />
+    <Compile Include="View\WindowCurlPlay.xaml.cs">
+      <DependentUpon>WindowCurlPlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WindowHome.xaml.cs">
+      <DependentUpon>WindowHome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WindowIPAddress.xaml.cs">
+      <DependentUpon>WindowIPAddress.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WindowUserAgent.xaml.cs">
+      <DependentUpon>WindowUserAgent.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model\Config.cs" />
+    <Compile Include="Model\Curl\CurlArgument.cs" />
+    <Compile Include="Model\Curl\CurlResponse.cs" />
+    <Compile Include="Model\Curl\SiteManager.cs" />
+    <Compile Include="Model\Curl\SiteProfile.cs" />
+    <Compile Include="Model\Curl\SiteWorker.cs" />
+    <Compile Include="Model\Network\BandwidthInfo.cs" />
+    <Compile Include="Model\Network\BandwidthMeter.cs" />
+    <Compile Include="Model\Network\IPAddressManager.cs" />
+    <Compile Include="Model\Network\IPInfo.cs" />
+    <Compile Include="Model\Network\UserAgentManager.cs" />
+    <Compile Include="Model\Preference.cs" />
+    <Compile Include="Model\Server\ServerManager.cs" />
+    <Compile Include="Model\Server\ServerProfile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\[File]\curl\curl-ca-bundle.crt.gz" />
+    <None Include="Resources\[File]\curl\curl.exe.gz" />
+    <None Include="Resources\[File]\curl\libcurl-x64.dll.gz" />
+    <None Include="Resources\[File]\privoxy\privoxy.exe.gz" />
+    <None Include="Resources\[File]\shadowsocks\cygev-4.dll.gz" />
+    <None Include="Resources\[File]\shadowsocks\cyggcc_s-seh-1.dll.gz" />
+    <None Include="Resources\[File]\shadowsocks\cygmbedcrypto-3.dll.gz" />
+    <None Include="Resources\[File]\shadowsocks\cygpcre-1.dll.gz" />
+    <None Include="Resources\[File]\shadowsocks\cygsodium-23.dll.gz" />
+    <None Include="Resources\[File]\shadowsocks\cygwin1.dll.gz" />
+    <None Include="Resources\[File]\shadowsocks\ss-local.exe.gz" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\StringResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ContentCurl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ContentNetwork.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ContentServer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\DialogAbout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\DialogButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DialogEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DialogPrompt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DialogServerConfig.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\DialogSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WindowCurlPlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WindowHome.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WindowIPAddress.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WindowUserAgent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\[File]\privoxy\privoxy-config.txt" />
+    <Resource Include="XTransmit.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

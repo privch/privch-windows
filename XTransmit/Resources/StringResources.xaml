@@ -1,0 +1,117 @@
+﻿<!-- language strings -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="_index">Index</system:String>
+    <system:String x:Key="_table">Table</system:String>
+    <system:String x:Key="_value">Value</system:String>
+    <system:String x:Key="_count">Count</system:String>
+    <system:String x:Key="_items">item(s)</system:String>
+    
+    <system:String x:Key="_server">Server</system:String>
+    <system:String x:Key="_host">Host</system:String>
+    <system:String x:Key="_port">Port</system:String>
+    <system:String x:Key="_ping">Ping</system:String>
+    <system:String x:Key="_response">Response</system:String>
+    <system:String x:Key="_remarks">Remarks</system:String>
+    <system:String x:Key="_updated">Updated</system:String>
+    
+    <system:String x:Key="_setting">Setting</system:String>
+    <system:String x:Key="_about">About</system:String>
+    <system:String x:Key="_download">Download</system:String>
+    <system:String x:Key="_upload">Upload</system:String>
+
+    <system:String x:Key="_yes">Yes</system:String>
+    <system:String x:Key="_no">No</system:String>
+    <system:String x:Key="_ok">OK</system:String>
+    <system:String x:Key="_cancel">Cancel</system:String>
+    
+    <system:String x:Key="_open">Open</system:String>
+    <system:String x:Key="_save">Save</system:String>
+    <system:String x:Key="_delete">Delete</system:String>
+    <system:String x:Key="_exit">Exit</system:String>
+    
+    <system:String x:Key="_start">Start</system:String>
+    <system:String x:Key="_stop">Stop</system:String>
+    <system:String x:Key="_fetch">Fetch</system:String>
+
+    <system:String x:Key="invalid_ip">Invalid IP Address</system:String>
+    <system:String x:Key="invalid_port">Invalid Port Number</system:String>
+    <system:String x:Key="server_not_set">Server Not Set</system:String>
+    <system:String x:Key="not_availabe">Not Availabe</system:String>
+    <system:String x:Key="clear_all">Clear All</system:String>
+    <system:String x:Key="confirm_by_enter">Enter to confirm</system:String>
+
+    <system:String x:Key="app_name">XTransmit</system:String>
+    <system:String x:Key="app_author">XinLake</system:String>
+    <system:String x:Key="app_email">xinlake@outlook.com</system:String>
+    <system:String x:Key="app_error_binary">Could not initialize the program files.</system:String>
+
+    <!-- table server -->
+    <system:String x:Key="server_scan_qrcode">Scan QRCode</system:String>
+    <system:String x:Key="server_import_clipboard">Import From Clipboard</system:String>
+    <system:String x:Key="server_import_file">Import From File ...</system:String>
+    <system:String x:Key="server_manual_setting">Manual Setting</system:String>
+    <system:String x:Key="server_fetch_info">Fetch Info ...</system:String>
+    <system:String x:Key="server_ping_check">Ping Server</system:String>
+    <system:String x:Key="server_menu_select">Select (Double Click)</system:String>
+    <system:String x:Key="server_menu_edit">Edit (E)</system:String>
+    <system:String x:Key="server_menu_delete">Delete Selection (Del)</system:String>
+    <system:String x:Key="server_config_0_found">No configuration(s) found.</system:String>
+    <system:String x:Key="server_config_x_imported">configuration(s) imported.</system:String>
+    <system:String x:Key="server_config_0_imported">No configuration(s) imported.</system:String>
+    <system:String x:Key="server_config_x_added">configuration(s) added.</system:String>
+    <system:String x:Key="server_ask_keep_info_title">Fetch server info</system:String>
+    <system:String x:Key="server_ask_keep_info_message">Keep the existing datas?</system:String>
+
+    <!-- table curl -->
+    <system:String x:Key="curl_profile_title">Profile Title</system:String>
+    <system:String x:Key="curl_play_times">Play Times</system:String>
+    <system:String x:Key="curl_read_response">Read Response</system:String>
+    <system:String x:Key="curl_delay_format">Delay. Fixed, Random (Min, Max)</system:String>
+    <system:String x:Key="curl_site_information">Site Information</system:String>
+    <system:String x:Key="curl_website_url">Website URL</system:String>
+    <system:String x:Key="curl_copy_argument_to_clipboard">Copy Argument to clipboard</system:String>
+    <system:String x:Key="curl_copy_response_to_clipboard">Copy Response to clipboard</system:String>
+
+    <!-- table network -->
+    <system:String x:Key="network_interface">Network Interface</system:String>
+
+    <!-- dialog setting -->
+    <system:String x:Key="dialog_setting_title">Settings</system:String>
+    <system:String x:Key="dialog_setting_default_connection_timeout">Default connection timeout</system:String>
+    <system:String x:Key="dialog_setting_ping_timeout">Ping timeout</system:String>
+
+    <!-- dialog about -->
+    <system:String x:Key="dialog_about_title">About XTransmit</system:String>
+    
+    <!-- dialog server config -->
+    <system:String x:Key="dialog_server_title">Server Config</system:String>
+    <system:String x:Key="dialog_server_friendly_name">Friendly Name</system:String>
+    <system:String x:Key="dialog_server_timeout">Timeout (Seconds)</system:String>
+    <system:String x:Key="dialog_server_host">Host name or IP address</system:String>
+    <system:String x:Key="dialog_server_password">Password</system:String>
+    <system:String x:Key="dialog_server_encrypt">Encrypt Method</system:String>
+    <system:String x:Key="dialog_server_enable_sip003">Enable SIP003 Plugin (Experimental)</system:String>
+    <system:String x:Key="dialog_server_plugin_name">Plugin Name</system:String>
+    <system:String x:Key="dialog_server_plugin_option">Plugin Option / Parameter</system:String>
+
+    <!-- window user-agent -->
+    <system:String x:Key="ua_title">UserAgent</system:String>
+    <system:String x:Key="ua_user_agent">User-Agent</system:String>
+    <system:String x:Key="ua_copy_to_clipboard">Copy UserAgent to clipboard</system:String>
+    <system:String x:Key="ua_ask_save_changes">User-Agent datas has changes, Save?</system:String>
+
+    <!-- window ip address -->
+    <system:String x:Key="ip_title">IP Address</system:String>
+    <system:String x:Key="ip_new_table_form_file">New table from file ...</system:String>
+    <system:String x:Key="ip_import_data_form_file">Import data from file ...</system:String>
+    <system:String x:Key="ip_copy_table_name">Copy TableName to clipboard</system:String>
+    <system:String x:Key="ip_delete_selected_table">Delete selected table</system:String>
+    <system:String x:Key="ip_ask_save_data">IP datas has changes, Save?</system:String>
+
+    <!-- system tray -->
+    <system:String x:Key="tray_enable_transmit">Enable transmit</system:String>
+    <system:String x:Key="tray_add_server_scan_qrcode">Add server by scan QRCode</system:String>
+</ResourceDictionary>

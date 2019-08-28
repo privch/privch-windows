@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="XTransmit.View.ContentCurl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button" BasedOn="{StaticResource ButtonToolbar}"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <ToolBarTray Grid.Row="0" IsLocked="True">
+            <ToolBar IsOverflowOpen="False">
+                <Button Content="{md:PackIcon Kind=AddBox}"
+                        Command="{Binding Path=CommandNewProfile}"/>
+
+                <Separator/>
+
+                <Button Content="{md:PackIcon Kind=Ip}" 
+                        Command="{Binding Path=CommandViewIPAddress}"/>
+                <Button Content="{md:PackIcon Kind=TicketUser}"
+                        Command="{Binding Path=CommandViewUserAgent}"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <!-- Site Profile -->
+        <DataGrid x:Name="xListView" Grid.Row="1"
+                  GridLinesVisibility="Horizontal"
+                  SelectionMode="Single"
+                  CanUserSortColumns="True"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Path=ObSiteList}">
+            <DataGrid.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" 
+                              Command="{Binding Path=CommandLaunchProfile}"
+                              CommandParameter="{Binding ElementName=xListView, Path=SelectedItem}" />
+            </DataGrid.InputBindings>
+
+            <DataGrid.ContextMenu>
+                <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
+                    <MenuItem Header="{StaticResource _open}"
+                              Icon="{md:PackIcon Kind=Launch}"
+                              Command="{Binding Path=CommandLaunchProfile}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
+
+                    <MenuItem Header="{StaticResource _delete}"
+                              Icon="{md:PackIcon Kind=Delete}"
+                              Command="{Binding Path=CommandDeleteProfile}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource curl_profile_title}" Binding="{Binding Title}" />
+                <DataGridTextColumn Width="Auto" Header="{StaticResource curl_play_times}" Binding="{Binding PlayTimes}" />
+                <DataGridTextColumn Width="Auto" Header="{StaticResource curl_read_response}" Binding="{Binding IsReadResponse}" />
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _updated}" Binding="{Binding TimeUpdated}" />
+            </DataGrid.Columns>
+
+            <DataGrid.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Expander HorizontalAlignment="Stretch">
+                                            <Expander.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock VerticalAlignment="Bottom"
+                                                               Text="{Binding Name}"/>
+
+                                                    <TextBlock Margin="10, 0, 10, 0"
+                                                               VerticalAlignment="Bottom"
+                                                               FontStyle="Italic" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                               Text="{Binding ItemCount}"/>
+
+                                                    <TextBlock VerticalAlignment="Bottom"
+                                                               FontStyle="Italic"
+                                                               Text="{StaticResource _items}"/>
+                                                </StackPanel>
+                                            </Expander.Header>
+                                            <ItemsPresenter />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
+        </DataGrid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,7 @@
+listen-address 127.0.0.1:PORT_PRIVOXY
+toggle 0
+forward-socks5 / 127.0.0.1:PORT_SSLOCAL .
+max-client-connections 2048
+activity-animation 0
+show-on-task-bar 0
+hide-console

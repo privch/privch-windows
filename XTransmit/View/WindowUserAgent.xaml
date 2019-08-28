@@ -1,0 +1,63 @@
+﻿<Window x:Class="XTransmit.View.WindowUserAgent"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        Title="{StaticResource ua_title}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button" BasedOn="{StaticResource ButtonToolbar}"/>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- toolbar buttons -->
+        <ToolBarTray Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" IsLocked="True">
+            <ToolBar IsOverflowOpen="False">
+                <Button ToolTip="{StaticResource _save}" 
+                        Content="{md:PackIcon Kind=ContentSave, Size=24}"
+                        Command="{Binding Path=CommandSaveData}"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <!-- useragent table -->
+        <DataGrid Grid.Row="1" Margin="10" 
+                  GridLinesVisibility="Horizontal"
+                  SelectionMode="Extended"
+                  CanUserSortColumns="True"
+                  CanUserAddRows="True"
+                  CanUserDeleteRows="True"
+                  ItemsSource="{Binding Path=UserAgentDataTable}">
+            <DataGrid.ContextMenu>
+                <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
+                    <MenuItem Header="{StaticResource ua_copy_to_clipboard}" 
+                              Icon="{md:PackIcon Kind=ClipboardTextOutline}"
+                              Command="ApplicationCommands.Copy"/>
+
+                    <MenuItem Header="{StaticResource _delete}"
+                              Icon="{md:PackIcon Kind=Delete}"
+                              Command="ApplicationCommands.Delete"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="Auto" 
+                                    Header="{StaticResource ua_user_agent}" 
+                                    Binding="{Binding Path=Source}"/>
+
+                <DataGridTextColumn Width="Auto" 
+                                    Header="{StaticResource _value}" 
+                                    Binding="{Binding Path=UserAgent}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

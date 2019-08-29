@@ -46,6 +46,7 @@
     <system:String x:Key="app_name">XTransmit</system:String>
     <system:String x:Key="app_author">XinLake</system:String>
     <system:String x:Key="app_email">xinlake@outlook.com</system:String>
+    <system:String x:Key="app_opensource_software">Open source software</system:String>
     <system:String x:Key="app_error_binary">Could not initialize the program files.</system:String>
 
     <!-- table server -->

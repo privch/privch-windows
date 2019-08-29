@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
+using XTransmit.ViewModel.Control;
 
 /**
- * TODO - License info stuff
  * NOTE - Check for update.
- * Updated: 2019-08-06
+ * Updated: 2019-08-28
  */
-
 namespace XTransmit.ViewModel
 {
     class AboutVModel : BaseViewModel
@@ -15,6 +14,18 @@ namespace XTransmit.ViewModel
         public string Name { get; private set; }
         public string Version { get; private set; }
 
+        public ItemInfo[] OpensourceSoftware => new ItemInfo[]
+        {
+            new ItemInfo {
+                Label = "MaterialDesignInXamlToolkit", Text = "MIT",
+                Uri = "https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/blob/master/LICENSE"},
+            new ItemInfo {
+                Label = "ZXing.Net", Text = "Apache-2.0",
+                Uri = "http://www.apache.org/licenses/LICENSE-2.0"},
+            new ItemInfo {
+                Label = "LiveCharts", Text = "MIT",
+                Uri = "https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT"},
+        };
 
         public AboutVModel()
         {
@@ -38,6 +49,13 @@ namespace XTransmit.ViewModel
         {
             string app_email = (string)Application.Current.FindResource("app_email");
             Process.Start($@"mailto://{app_email}");
+        }
+
+        public RelayCommand CommandViewLicense => new RelayCommand(viewLicense);
+        private void viewLicense(object parameter)
+        {
+            string uri = (string)parameter;
+            Process.Start(uri);
         }
     }
 }

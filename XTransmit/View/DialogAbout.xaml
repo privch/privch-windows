@@ -11,35 +11,84 @@
         ResizeMode="NoResize"
         Title="{StaticResource dialog_about_title}">
 
-    <Grid Margin="20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <Image Grid.Column="0"
+        <Grid Grid.Row="0" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Image Grid.Column="0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Width="128"
+                   Height="128"
+                   Stretch="Fill"
+                   Source="/XTransmit.ico"/>
+
+            <StackPanel Grid.Column="1"
+                        Orientation="Vertical">
+                <TextBlock Margin="20"
+                           HorizontalAlignment="Center"
+                           Style="{StaticResource MaterialDesignTitleTextBlock}"
+                           Text="{Binding Path=Name}"/>
+
+                <TextBlock Margin="5"
+                           HorizontalAlignment="Center"
+                           Text="{Binding Path=Version}"/>
+
+                <Button Margin="5"
+                        HorizontalAlignment="Center"
+                        Content="{StaticResource app_email}"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Command="{Binding Path=CommandSendEmail}"/>
+            </StackPanel>
+        </Grid>
+
+        <Label Grid.Row="1" Margin="10, 20, 10, 0"
+               Opacity=".7"
                HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               Width="128"
-               Height="128"
-               Stretch="Fill"
-               Source="/XTransmit.ico"/>
+               Content="{StaticResource app_opensource_software}"/>
 
-        <StackPanel Grid.Column="1">
-            <TextBlock Margin="20"
-                       HorizontalAlignment="Center"
-                       Style="{StaticResource MaterialDesignTitleTextBlock}"
-                       Text="{Binding Path=Name}"/>
+        <!-- opensource license ===================================================================== -->
+        <ItemsControl x:Name="xItemsControl" 
+                      Grid.Row="2" Margin="20"
+                      ItemsSource="{Binding OpensourceSoftware}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="x_license_c1"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="x_license_c2"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Margin="2"
+                                   Opacity=".7"
+                                   HorizontalAlignment="Right"
+                                   Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                   Text="{Binding Path=Label}"/>
 
-            <TextBlock Margin="5"
-                       HorizontalAlignment="Center"
-                       Text="{Binding Path=Version}"/>
-
-            <Button Margin="5"
-                    HorizontalAlignment="Center"
-                    Content="{StaticResource app_email}"
-                    Style="{StaticResource MaterialDesignFlatButton}"
-                    Command="{Binding Path=CommandSendEmail}"/>
-        </StackPanel>
+                        <TextBlock Grid.Column="1" Margin="5, 2">
+                            <Hyperlink Command="{Binding ElementName=xItemsControl, Path=DataContext.CommandViewLicense}"
+                                       CommandParameter="{Binding Path=Uri}">
+                                <TextBlock Text="{Binding Path=Text}"/>
+                            </Hyperlink>
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"
+                                Grid.IsSharedSizeScope="True"
+                                HorizontalAlignment="Stretch" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
     </Grid>
 </Window>

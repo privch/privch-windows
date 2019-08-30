@@ -10,6 +10,10 @@ using System.Xml.Serialization;
 namespace XTransmit.Model.Server
 {
     /**TODO Next - Move ServerProfile data to ServerManager
+     * 
+     * Reference code: 
+     * https://github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
+     * 
      * Updated: 2019-08-04
      */
     public static class ServerManager

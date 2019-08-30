@@ -1,6 +1,6 @@
 # XTransmit
 
-XTransmit is a Windows .NET WPF desktop application, with shadowsocks client, simple curl executer and network bandwidth meter integrated. **XTransmit does not provide shadowsocks services**
+XTransmit is a Windows .NET WPF desktop application, with shadowsocks client, simple curl GUI tool and network speed display panel integrated. **XTransmit does not provide shadowsocks services**. Details here: [English](https://xinlake.github.io/2019/08-created-a-small-program-en/#more), [简体中文](https://xinlake.github.io/2019/08-created-a-small-program/#more).
 
 ![](https://github.com/xinlake/xtransmit-windows/raw/master/Assets/screen-1.jpg)
 ![](https://github.com/xinlake/xtransmit-windows/raw/master/Assets/screen-2.jpg)

@@ -25,6 +25,9 @@ namespace XTransmit.ViewModel
             new ItemInfo {
                 Label = "LiveCharts", Text = "MIT",
                 Uri = "https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT"},
+            new ItemInfo {
+                Label = "proxyctrl", Text = "Apache-2.0",
+                Uri = "https://www.apache.org/licenses/LICENSE-2.0"},
         };
 
         public AboutVModel()

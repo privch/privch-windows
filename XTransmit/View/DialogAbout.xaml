@@ -10,10 +10,13 @@
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
         Title="{StaticResource dialog_about_title}">
+    <Window.Resources>
+        <ResourceDictionary>
+        </ResourceDictionary>
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -23,7 +26,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            
+
             <Image Grid.Column="0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
@@ -33,6 +36,7 @@
                    Source="/XTransmit.ico"/>
 
             <StackPanel Grid.Column="1"
+                        VerticalAlignment="Center"
                         Orientation="Vertical">
                 <TextBlock Margin="20"
                            HorizontalAlignment="Center"
@@ -51,44 +55,28 @@
             </StackPanel>
         </Grid>
 
-        <Label Grid.Row="1" Margin="10, 20, 10, 0"
-               Opacity=".7"
-               HorizontalAlignment="Center"
-               Content="{StaticResource app_opensource_software}"/>
-
-        <!-- opensource license ===================================================================== -->
-        <ItemsControl x:Name="xItemsControl" 
-                      Grid.Row="2" Margin="20"
-                      ItemsSource="{Binding OpensourceSoftware}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="x_license_c1"/>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="x_license_c2"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Margin="2"
-                                   Opacity=".7"
-                                   HorizontalAlignment="Right"
-                                   Style="{StaticResource MaterialDesignCaptionTextBlock}"
-                                   Text="{Binding Path=Label}"/>
-
-                        <TextBlock Grid.Column="1" Margin="5, 2">
-                            <Hyperlink Command="{Binding ElementName=xItemsControl, Path=DataContext.CommandViewLicense}"
-                                       CommandParameter="{Binding Path=Uri}">
-                                <TextBlock Text="{Binding Path=Text}"/>
-                            </Hyperlink>
-                        </TextBlock>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical"
-                                Grid.IsSharedSizeScope="True"
-                                HorizontalAlignment="Stretch" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
+        <!-- opensource license ===================================================================== -->        
+        <ListView x:Name="xListView" 
+                  Grid.Row="1" Margin="10" 
+                  ItemsSource="{Binding OpensourceSoftware}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="{StaticResource app_opensource_software}" DisplayMemberBinding="{Binding Label}"/>
+                    <GridViewColumn Header="{StaticResource _license}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                <Hyperlink Command="{Binding ElementName=xListView, Path=DataContext.CommandViewLicense}"
+                                           CommandParameter="{Binding Path=Uri}"
+                                           Style="{StaticResource MaterialDesignCaptionHyperlink}">
+                                    <TextBlock Text="{Binding Path=Text}"/>
+                                </Hyperlink>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

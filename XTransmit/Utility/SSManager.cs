@@ -4,80 +4,40 @@ using System.Linq;
 using XTransmit.Model.Server;
 
 /**
- * shadowsocks-libev-win-release-x86_64, 2019-07-23
+ * shadowsocks-libev-win-x86_64, 2019-09-22
+ * shadowsocks-libev 3.3.1
  * 
- * Updated: 2019-08-02
+ * Updated: 2019-09-22
  */
 
 namespace XTransmit.Utility
 {
-    /** NOTE 
-        -s <server_host>           Host name or IP address of your remote server.
-        -p <server_port>           Port number of your remote server.
-        -l <local_port>            Port number of your local server.
-        -k <password>              Password of your remote server.
-        -m <encrypt_method>        Encrypt method: rc4-md5,
-                                   aes-128-gcm, aes-192-gcm, aes-256-gcm,
-                                   aes-128-cfb, aes-192-cfb, aes-256-cfb,
-                                   aes-128-ctr, aes-192-ctr, aes-256-ctr,
-                                   camellia-128-cfb, camellia-192-cfb,
-                                   camellia-256-cfb, bf-cfb,
-                                   chacha20-ietf-poly1305,
-                                   xchacha20-ietf-poly1305,
-                                   salsa20, chacha20 and chacha20-ietf.
-                                   The default cipher is chacha20-ietf-poly1305.
-
-        [-a <user>]                Run as another user.
-        [-f <pid_file>]            The file path to store pid.
-        [-t <timeout>]             Socket timeout in seconds.
-        [-c <config_file>]         The path to config file.
-        [-n <number>]              Max number of open files.
-        [-i <interface>]           Network interface to bind.
-        [-b <local_address>]       Local address to bind.
-
-        [-u]                       Enable UDP relay.
-        [-U]                       Enable UDP relay and disable TCP relay.
-
-        [--reuse-port]             Enable port reuse.
-        [--fast-open]              Enable TCP fast open.
-                                   with Linux kernel > 3.7.0.
-        [--acl <acl_file>]         Path to ACL (Access Control List).
-        [--mtu <MTU>]              MTU of your network interface.
-        [--no-delay]               Enable TCP_NODELAY.
-        [--key <key_in_base64>]    Key of your remote server.
-        [--plugin <name>]          Enable SIP003 plugin. (Experimental)
-        [--plugin-opts <options>]  Set SIP003 plugin options. (Experimental)
-
-        [-v]                       Verbose mode.
-        [-h, --help]               Print this message.
-    */
-
     public static class SSManager
     {
         public static readonly string PathSSLocalExe = $@"{App.PathShadowsocks}\{ss_local_exe_name}";
         private static Process process_ss_local = null;
 
         private const string cygev_4_dll_name = "cygev-4.dll";
-        private const string cygev_4_dll_md5 = "8778ace544923bfc2f57e9c14477de47";
+        private const string cygev_4_dll_md5 = "1d4ab5325fe69fd662ab1b9af8c03145";
 
         private const string cyggcc_s_seh_1_dll_name = "cyggcc_s-seh-1.dll";
-        private const string cyggcc_s_seh_1_dll_md5 = "07124e6ff3cf0f67d3850fd9d764c64b";
+        private const string cyggcc_s_seh_1_dll_md5 = "b84b92d9ddb884a0af4b2e11e4224f45";
 
         private const string cygmbedcrypto_3_dll_name = "cygmbedcrypto-3.dll";
-        private const string cygmbedcrypto_3_dll_md5 = "fda3c9fc0b1e38fa9fae1651a94022ad";
+        private const string cygmbedcrypto_3_dll_md5 = "c9d2f4a389f86d30fcbd94de90849546";
 
         private const string cygpcre_1_dll_name = "cygpcre-1.dll";
-        private const string cygpcre_1_dll_md5 = "255790aa072c536fc8cd46c97b133542";
+        private const string cygpcre_1_dll_md5 = "ef24e5503e42d0f7b7ef7c8dfe298769";
 
         private const string cygsodium_23_dll_name = "cygsodium-23.dll";
-        private const string cygsodium_23_dll_md5 = "6db350a38250dc74ba7ec1247d8402db";
+        private const string cygsodium_23_dll_md5 = "1ecdffa32acffaf104e45c6c4de5a430";
 
         private const string cygwin1_dll_name = "cygwin1.dll";
         private const string cygwin1_dll_md5 = "42c5eb56ae8be10f34b53bef76caa24e";
 
         private const string ss_local_exe_name = "ss-local-x.exe"; // name ss-local-x.exe is for process control
         private const string ss_local_exe_process = "ss-local-x";
-        private const string ss_local_exe_md5 = "a08004d58b653e23fa3bfde8e79e1c93";
+        private const string ss_local_exe_md5 = "cd5a05ed703aaa8b17a463ca23a4d828";
 
         public static bool Prepare()
         {

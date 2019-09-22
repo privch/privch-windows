@@ -87,6 +87,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utility\CurlManager.cs" />
     <Compile Include="Utility\FileUtil.cs" />
     <Compile Include="Utility\NativeMethods.cs" />
@@ -173,11 +178,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -185,6 +185,7 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -192,17 +193,17 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\[File]\curl\curl-ca-bundle.crt.gz" />
-    <None Include="Resources\[File]\curl\curl.exe.gz" />
-    <None Include="Resources\[File]\curl\libcurl-x64.dll.gz" />
-    <None Include="Resources\[File]\privoxy\privoxy.exe.gz" />
-    <None Include="Resources\[File]\shadowsocks\cygev-4.dll.gz" />
-    <None Include="Resources\[File]\shadowsocks\cyggcc_s-seh-1.dll.gz" />
-    <None Include="Resources\[File]\shadowsocks\cygmbedcrypto-3.dll.gz" />
-    <None Include="Resources\[File]\shadowsocks\cygpcre-1.dll.gz" />
-    <None Include="Resources\[File]\shadowsocks\cygsodium-23.dll.gz" />
-    <None Include="Resources\[File]\shadowsocks\cygwin1.dll.gz" />
-    <None Include="Resources\[File]\shadowsocks\ss-local.exe.gz" />
+    <None Include="Resources\Binary\curl\curl-ca-bundle.crt.gz" />
+    <None Include="Resources\Binary\curl\curl.exe.gz" />
+    <None Include="Resources\Binary\curl\libcurl-x64.dll.gz" />
+    <None Include="Resources\Binary\privoxy\privoxy.exe.gz" />
+    <None Include="Resources\Binary\shadowsocks\cygev-4.dll.gz" />
+    <None Include="Resources\Binary\shadowsocks\cyggcc_s-seh-1.dll.gz" />
+    <None Include="Resources\Binary\shadowsocks\cygmbedcrypto-3.dll.gz" />
+    <None Include="Resources\Binary\shadowsocks\cygpcre-1.dll.gz" />
+    <None Include="Resources\Binary\shadowsocks\cygsodium-23.dll.gz" />
+    <None Include="Resources\Binary\shadowsocks\cygwin1.dll.gz" />
+    <None Include="Resources\Binary\shadowsocks\ss-local.exe.gz" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -266,7 +267,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\[File]\privoxy\privoxy-config.txt" />
+    <Resource Include="Resources\Binary\privoxy\privoxy-config.txt" />
     <Resource Include="XTransmit.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

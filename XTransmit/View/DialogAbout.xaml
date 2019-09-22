@@ -66,9 +66,9 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock>
-                                <Hyperlink Command="{Binding ElementName=xListView, Path=DataContext.CommandViewLicense}"
-                                           CommandParameter="{Binding Path=Uri}"
-                                           Style="{StaticResource MaterialDesignCaptionHyperlink}">
+                                <Hyperlink Style="{StaticResource MaterialDesignCaptionHyperlink}"
+                                           Command="{Binding ElementName=xListView, Path=DataContext.CommandViewLicense}"
+                                           CommandParameter="{Binding Path=Uri}">
                                     <TextBlock Text="{Binding Path=Text}"/>
                                 </Hyperlink>
                                 </TextBlock>

@@ -46,7 +46,10 @@ namespace XTransmit.View.TrayNotify
          */
         private void NotifyIcon_Click(object sender, EventArgs e)
         {
-            App.ShowMainWindow();
+            if (e is System.Windows.Forms.MouseEventArgs mouseEventArgs && mouseEventArgs.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                App.ShowMainWindow();
+            }
         }
 
         private void ContextMenu_Popup(object sender, EventArgs e)

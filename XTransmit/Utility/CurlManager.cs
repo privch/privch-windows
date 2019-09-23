@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 
-/**curl-7.65.3-win64-mingw 7.66.0
+/**curl-win64-mingw 7.66.0
  * Updated: 2019-09-22
  */
 

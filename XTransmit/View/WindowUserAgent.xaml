@@ -26,17 +26,27 @@
                 <Button ToolTip="{StaticResource _save}" 
                         Content="{md:PackIcon Kind=ContentSave, Size=24}"
                         Command="{Binding Path=CommandSaveData}"/>
+
+                <Button ToolTip="{StaticResource _reload}" 
+                        Content="{md:PackIcon Kind=Reload, Size=24}"
+                        Command="{Binding Path=CommandReload}"/>
+
+                <Separator/>
+
+                <TextBox md:HintAssist.Hint="{StaticResource _search}"
+                         Text="{Binding Path=Search, UpdateSourceTrigger=PropertyChanged}"/>
             </ToolBar>
         </ToolBarTray>
 
         <!-- useragent table -->
-        <DataGrid Grid.Row="1" Margin="10" 
+        <DataGrid x:Name="xDataGrid"
+                  Grid.Row="2" Margin="10" 
                   GridLinesVisibility="Horizontal"
                   SelectionMode="Extended"
                   CanUserSortColumns="True"
                   CanUserAddRows="True"
                   CanUserDeleteRows="True"
-                  ItemsSource="{Binding Path=UserAgentDataTable}">
+                  ItemsSource="{Binding Path=UserAgentList}">
             <DataGrid.ContextMenu>
                 <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
                     <MenuItem Header="{StaticResource ua_copy_to_clipboard}" 
@@ -51,12 +61,16 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto" 
-                                    Header="{StaticResource ua_user_agent}" 
-                                    Binding="{Binding Path=Source}"/>
+                                    Header="{StaticResource _os}" 
+                                    Binding="{Binding Path=os}"/>
 
                 <DataGridTextColumn Width="Auto" 
-                                    Header="{StaticResource _value}" 
-                                    Binding="{Binding Path=UserAgent}"/>
+                                    Header="{StaticResource _client}" 
+                                    Binding="{Binding Path=client}"/>
+
+                <DataGridTextColumn Width="Auto" 
+                                    Header="{StaticResource ua_user_agent}" 
+                                    Binding="{Binding Path=value}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

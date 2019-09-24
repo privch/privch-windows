@@ -46,31 +46,29 @@ namespace XTransmit.Utility
             return true;
         }
 
-        public static bool KillRunning()
+        public static void KillRunning()
         {
             // this list contain only this app's "curl" process
             Process[] list = Process.GetProcessesByName(curl_exe_process);
-            if (list == null || list.Length == 0)
-                return false;
-
-            // kill app's curl-x process
-            try
+            if (list != null && list.Length > 0)
             {
-                Process running = list.First(process => process.MainModule.FileName == PathCurlExe);
-                if (running == null)
-                    return false;
+                // kill app's curl-x process
+                try
+                {
+                    Process running = list.First(process => process.MainModule.FileName == PathCurlExe);
+                    if (running != null)
+                    {
+                        running.CloseMainWindow();
+                        running.Kill();
+                        running.WaitForExit();
+                    }
+                }
+                catch(Exception) { }
 
-                running.CloseMainWindow();
-                running.Kill();
-                running.WaitForExit();
-
-                running.Dispose();
-                running = null;
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
+                foreach(Process proc in list)
+                {
+                    proc.Dispose();
+                }
             }
         }
     }

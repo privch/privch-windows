@@ -307,7 +307,10 @@ namespace XTransmit.ViewModel
                         PingReply reply = await ping.SendPingAsync(serverInfo.HostIP, 5000);
                         serverInfo.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                     }
-                    catch (Exception) { }
+                    catch (Exception)
+                    {
+                        serverInfo.Ping = -1;
+                    }
                 }
             }
 

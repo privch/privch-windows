@@ -100,7 +100,7 @@ namespace XTransmit
             FilePreferenceXml = $@"{PathCurrent}\preference.xml";
             FileConfigXml = $@"{PathCurrent}\config.xml";
             FileIPAddressXml = $@"{PathCurrent}\datas\DataSet-IP.xml";
-            FileUserAgentXml = $@"{PathCurrent}\datas\DataSet-UserAgent.xml";
+            FileUserAgentXml = $@"{PathCurrent}\datas\UserAgent.xml";
 
             FileServerXml = $@"{PathCurrent}\datas\Servers.xml";
             FileCurlXml = $@"{PathCurrent}\datas\Curl.xml";

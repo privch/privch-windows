@@ -6,7 +6,7 @@ using System.Text;
 
 /**
  * TODO - Memory leak test
- * Updated: 2019-08-02
+ * Updated: 2019-09-24
  */
 
 namespace XTransmit.Utility
@@ -16,16 +16,17 @@ namespace XTransmit.Utility
         public static bool CheckMD5(string filePath, string md5Code)
         {
             byte[] md5Data;
-
-            try
+            using (MD5 md5 = MD5.Create())
             {
-                FileStream fileStream = File.OpenRead(filePath);
-                md5Data = MD5.Create().ComputeHash(fileStream);
-                fileStream.Close();
-            }
-            catch (Exception)
-            {
-                return false;
+                try
+                {
+                    FileStream fileStream = File.OpenRead(filePath);
+                    md5Data = md5.ComputeHash(fileStream);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
 
             // Create a new Stringbuilder to collect the bytes and create a string.
@@ -40,10 +41,11 @@ namespace XTransmit.Utility
 
         public static bool WriteUTF8(string filePath, string utf8Content)
         {
+            FileStream fileStream = null;
             try
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(utf8Content);
-                FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+                fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
                 fileStream.Write(buffer, 0, buffer.Length);
                 fileStream.Close();
             }
@@ -51,16 +53,23 @@ namespace XTransmit.Utility
             {
                 return false;
             }
+            finally
+            {
+                fileStream?.Dispose();
+            }
 
             return true;
         }
 
         public static bool UncompressGZ(string filePath, byte[] content)
         {
+            FileStream fileStream = null;
+            GZipStream gzStream = null;
+
             try
             {
-                FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-                GZipStream gzStream = new GZipStream(new MemoryStream(content), CompressionMode.Decompress, false);
+                fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+                gzStream = new GZipStream(new MemoryStream(content), CompressionMode.Decompress, false);
 
                 // Because the uncompressed size of the file is unknown, we are using an arbitrary buffer size.
                 byte[] buffer = new byte[4096];
@@ -76,6 +85,11 @@ namespace XTransmit.Utility
             catch (Exception)
             {
                 return false;
+            }
+            finally
+            {
+                gzStream?.Dispose();
+                fileStream?.Dispose();
             }
 
             return true;

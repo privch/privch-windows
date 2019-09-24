@@ -29,6 +29,7 @@
     
     <system:String x:Key="_open">Open</system:String>
     <system:String x:Key="_save">Save</system:String>
+    <system:String x:Key="_reload">Reload</system:String>
     <system:String x:Key="_delete">Delete</system:String>
     <system:String x:Key="_exit">Exit</system:String>
     
@@ -36,9 +37,12 @@
     <system:String x:Key="_stop">Stop</system:String>
     <system:String x:Key="_fetch">Fetch</system:String>
 
+    <system:String x:Key="_os">System</system:String>
+    <system:String x:Key="_client">Client</system:String>
     <system:String x:Key="_software">Software</system:String>
     <system:String x:Key="_license">License</system:String>
-    
+    <system:String x:Key="_search">Search</system:String>
+
     <system:String x:Key="invalid_ip">Invalid IP Address</system:String>
     <system:String x:Key="invalid_port">Invalid Port Number</system:String>
     <system:String x:Key="server_not_set">Server Not Set</system:String>

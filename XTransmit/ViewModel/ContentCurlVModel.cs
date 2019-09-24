@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Data;
 using XTransmit.Model.Curl;
 using XTransmit.Model.Network;
+using XTransmit.Model.UserAgent;
 using XTransmit.View;
 
 namespace XTransmit.ViewModel

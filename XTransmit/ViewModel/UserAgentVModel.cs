@@ -1,26 +1,48 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
 using System.Windows;
-using XTransmit.Model.Network;
+using XTransmit.Model.UserAgent;
 
 namespace XTransmit.ViewModel
 {
     /** 
-     * TODO - UA search, UA filter display
-     * Updated: 2019-08-06
+     * Updated: 2019-09-24
      */
-    class UserAgentVModel
+    class UserAgentVModel : BaseViewModel
     {
-        public DataTable UserAgentDataTable { get; private set; }
+        public List<UserAgentProfile> UserAgentList { get; private set; }
+
+        private string vSearch;
+        public string Search
+        {
+            get { return vSearch; }
+            set
+            {
+                vSearch = value;
+                if (string.IsNullOrWhiteSpace(vSearch))
+                {
+                    UserAgentList = UserAgentManager.ListUserAgent;
+                }
+                else
+                {
+                    UserAgentList = UserAgentManager.ListUserAgent.FindAll(ua =>
+                    {
+                        return ua.value.ToLower().Contains(value.ToLower());
+                    });
+                }
+                OnPropertyChanged("UserAgentList");
+            }
+        }
 
         public UserAgentVModel()
         {
-            UserAgentDataTable = UserAgentManager.DataSetUA.Tables[0];
+            UserAgentList = UserAgentManager.ListUserAgent;
         }
 
+        // TODO - HasChanges
         public void OnWindowClosing()
         {
             // save user-agent data if it has changes, when this window is closing
-            if (UserAgentManager.DataSetUA.HasChanges())
+            if (UserAgentManager.HasChanges())
             {
                 string title = (string)Application.Current.FindResource("ua_title");
                 string ask_save = (string)Application.Current.FindResource("ua_ask_save_changes");
@@ -30,23 +52,31 @@ namespace XTransmit.ViewModel
 
                 if (dialog.CancelableResult == true)
                 {
-                    UserAgentManager.Save(App.FileUserAgentXml);
+                    UserAgentManager.Save();
                 }
                 else
                 {
-                    UserAgentManager.DataSetUA.RejectChanges();
+                    UserAgentManager.Reload();
                 }
             }
         }
 
-
         /** Commands --------------------------------------------------------------------------
          */
-        public RelayCommand CommandSaveData => new RelayCommand(saveData, canSaveData);// save data
-        private bool canSaveData(object obj) => UserAgentManager.DataSetUA.HasChanges();
+        // save data
+        public RelayCommand CommandSaveData => new RelayCommand(saveData);
         private void saveData(object parameter)
         {
-            UserAgentManager.Save(App.FileUserAgentXml);
+            UserAgentManager.Save();
+        }
+
+        // reload data from file
+        public RelayCommand CommandReload => new RelayCommand(reloadData);
+        private void reloadData(object parameter)
+        {
+            UserAgentManager.Reload();
+            UserAgentList = UserAgentManager.ListUserAgent;
+            OnPropertyChanged("UserAgentList");
         }
     }
 }

@@ -7,7 +7,7 @@ namespace XTransmit.View
     public partial class WindowUserAgent : Window
     {
         /**
-         * Updated: 2019-08-02
+         * Updated: 2019-09-24
          */
         public WindowUserAgent()
         {
@@ -25,6 +25,8 @@ namespace XTransmit.View
 
         private void WindowUserAgent_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            xDataGrid.CommitEdit();
+            xDataGrid.CancelEdit();
             ((UserAgentVModel)DataContext).OnWindowClosing();
 
             // Save window placement

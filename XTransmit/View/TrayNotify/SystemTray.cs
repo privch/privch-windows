@@ -4,7 +4,7 @@ using System.Windows;
 namespace XTransmit.View.TrayNotify
 {
     /**
-     * Updated: 2019-08-06
+     * Updated: 2019-09-24
      */
     public class SystemTray
     {
@@ -72,7 +72,6 @@ namespace XTransmit.View.TrayNotify
         {
             App.CloseMainWindow();
             notifyIcon.Dispose();
-            notifyIcon = null;
         }
     }
 }

@@ -55,7 +55,7 @@ namespace XTransmit.Model.Network
             StreamWriter streamWriter = null;
             try
             {
-                streamWriter = new StreamWriter(fileIpXml, false, new System.Text.UTF8Encoding(false));
+                streamWriter = new StreamWriter(fileIpXml, false, new UTF8Encoding(false));
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<string>));
                 xmlSerializer.Serialize(streamWriter, IPList);
                 streamWriter.Close();

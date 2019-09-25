@@ -21,38 +21,23 @@
         </Grid.RowDefinitions>
 
         <!-- toolbar buttons -->
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <ToolBarTray Grid.Row="0" IsLocked="True">
+            <ToolBar IsOverflowOpen="False">
+                <Button ToolTip="{StaticResource _save}" 
+                        Content="{md:PackIcon Kind=ContentSave, Size=24}"
+                        Command="{Binding Path=CommandSaveData}"/>
 
-            <ToolBarTray Grid.Column="0" IsLocked="True">
-                <ToolBar IsOverflowOpen="False">
-                    <Button ToolTip="{StaticResource _save}" 
-                            Content="{md:PackIcon Kind=ContentSave, Size=24}"
-                            Command="{Binding Path=CommandSaveData}"/>
+                <Button ToolTip="{StaticResource ip_import_data_form_file}"
+                        Content="{md:PackIcon Kind=TableColumnPlusAfter, Size=24}"
+                        Command="{Binding Path=CommandAddData}"/>
 
-                    <Button ToolTip="{StaticResource ip_import_data_form_file}"
-                            Content="{md:PackIcon Kind=TableColumnPlusAfter, Size=24}"
-                            Command="{Binding Path=CommandAddData}"/>
-                    
-                    <Separator />
+                <Separator />
 
-                    <TextBlock Margin="8, 0" VerticalAlignment="Center"
-                               Style="{StaticResource MaterialDesignSubheadingTextBlock}"
-                               Text="{Binding IPList.Count}"/>
-                </ToolBar>
-            </ToolBarTray>
-
-            <!-- running progress -->
-            <Grid Grid.Column="1" Background="{DynamicResource MaterialDesignToolBarBackground}">
-                <ProgressBar Margin="10"
-                             Style="{StaticResource MaterialDesignCircularProgressBar}"
-                             IsIndeterminate="{Binding Path=Progress.IsIndeterminate}"
-                             Value="{Binding Path=Progress.Value}"/>
-            </Grid>
-        </Grid>
+                <TextBlock Margin="8, 0" VerticalAlignment="Center"
+                            Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                            Text="{Binding IPList.Count}"/>
+            </ToolBar>
+        </ToolBarTray>
 
         <!-- ip table -->
         <DataGrid Grid.Row="1" Margin="10" 

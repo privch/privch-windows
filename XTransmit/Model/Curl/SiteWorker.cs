@@ -14,7 +14,7 @@ namespace XTransmit.Model.Curl
         public Action<CurlResponse> OnResponse = null;
 
         private BackgroundWorker bgWork = null;
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
 
         public SiteWorker(Action<bool> OnStateUpdated, Action<CurlResponse> OnResponse)
         {

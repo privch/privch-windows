@@ -100,7 +100,7 @@ namespace XTransmit
 
             FilePreferenceXml = $@"{PathCurrent}\preference.xml";
             FileConfigXml = $@"{PathCurrent}\config.xml";
-            FileIPAddressXml = $@"{PathCurrent}\datas\DataSet-IP.xml";
+            FileIPAddressXml = $@"{PathCurrent}\datas\IP.xml"; //china ip optimized
             FileUserAgentXml = $@"{PathCurrent}\datas\UserAgent.xml";
 
             FileServerXml = $@"{PathCurrent}\datas\Servers.xml";

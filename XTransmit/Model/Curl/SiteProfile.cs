@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace XTransmit.Model.Curl
 {
     /**
-     * Updated: 2019-08-02
+     * Updated: 2019-09-26
      */
     [Serializable]
     public class SiteProfile
@@ -59,41 +58,24 @@ namespace XTransmit.Model.Curl
                 {
                     string argument = curlArgument.Argument;
                     if (argument.StartsWith("-"))
+                    {
                         sb.Append(' ').Append(argument);
+                    }
                 }
-                catch {; }
+                catch { }
 
                 try
                 {
                     string value = curlArgument.Value;
                     if (value.Length > 2)
+                    {
                         sb.Append(' ').Append(value);
+                    }
                 }
-                catch {; }
+                catch { }
             }
 
             return sb.ToString();
         }
-
-        /**
-         * <summary>
-         * returns: 0, ip-variable. 1, ip-tablename.
-         * </summary>
-         */
-        public static string[] GetFakeIPInfo(string argument)
-        {
-            string ipVariable = null;
-            string ipTableName = null;
-
-            Match match = Regex.Match(argument, @"\[ip/\S+\]");
-            if (match.Success)
-            {
-                ipTableName = match.Value.Substring(4, match.Value.Length - 5);
-                ipVariable = match.Value;
-            }
-
-            return new string[] { ipVariable, ipTableName, };
-        }
-
     }
 }

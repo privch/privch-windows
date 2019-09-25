@@ -19,13 +19,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
         <!-- toolbar buttons -->
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -37,19 +33,15 @@
                             Content="{md:PackIcon Kind=ContentSave, Size=24}"
                             Command="{Binding Path=CommandSaveData}"/>
 
-                    <Button ToolTip="{StaticResource _ping}"
-                            Content="{md:PackIcon Kind=ChartAreaspline, Size=24}"
-                            Command="{Binding Path=CommandPingCheck}"/>
-
-                    <Separator />
-
-                    <Button ToolTip="{StaticResource ip_new_table_form_file}" 
-                            Content="{md:PackIcon Kind=TablePlus, Size=24}"
-                            Command="{Binding Path=CommandNewTable}"/>
-
                     <Button ToolTip="{StaticResource ip_import_data_form_file}"
                             Content="{md:PackIcon Kind=TableColumnPlusAfter, Size=24}"
                             Command="{Binding Path=CommandAddData}"/>
+                    
+                    <Separator />
+
+                    <TextBlock Margin="8, 0" VerticalAlignment="Center"
+                               Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                               Text="{Binding IPList.Count}"/>
                 </ToolBar>
             </ToolBarTray>
 
@@ -62,48 +54,15 @@
             </Grid>
         </Grid>
 
-        <!-- list of ip tables -->
-        <Border Grid.Row="1" Grid.Column="0" BorderThickness="0, 0, 2, 0"
-                BorderBrush="{DynamicResource MaterialDesignDivider}">
-            <ListView x:Name="xListView" Margin="10"
-                      SelectionMode="Single"
-                      SelectedIndex="0"
-                      ItemsSource="{Binding Path=IPTables, Mode=OneWay, IsAsync=True}"
-                      SelectionChanged="ListView_SelectionChanged">
-                <ListView.ContextMenu>
-                    <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
-                        <MenuItem Header="{StaticResource ip_copy_table_name}" 
-                                  Icon="{md:PackIcon Kind=ClipboardTextOutline}"
-                                  Command="{Binding Path=CommandCopyTableName}"/>
-                        <MenuItem Header="{StaticResource ip_delete_selected_table}"
-                                  Icon="{md:PackIcon Kind=TableRemove}"
-                                  Command="{Binding Path=CommandDeleteTable}"/>
-                    </ContextMenu>
-                </ListView.ContextMenu>
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Width="Auto" 
-                                        Header="{StaticResource _table}"
-                                        DisplayMemberBinding="{Binding Path=TableName}"/>
-                        
-                        <GridViewColumn Width="Auto" 
-                                        Header="{StaticResource _count}" 
-                                        DisplayMemberBinding="{Binding Path=Rows.Count}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </Border>
-
         <!-- ip table -->
-        <DataGrid Grid.Row="1" Grid.Column="1" Margin="10" 
+        <DataGrid Grid.Row="1" Margin="10" 
                   GridLinesVisibility="Horizontal"
                   SelectionMode="Extended"
                   CanUserDeleteRows="True"
                   CanUserSortColumns="True"
-                  ItemsSource="{Binding Path=IPDataTable}">
+                  ItemsSource="{Binding Path=IPList}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="IP Address" Width="Auto" Binding="{Binding Path=IP}"/>
-                <DataGridTextColumn Header="Ping" Width="Auto" Binding="{Binding Path=Ping}"/>
+                <DataGridTextColumn Header="IP Address" Width="Auto" Binding="{Binding}"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu Background="{DynamicResource MaterialDesignBackground}">

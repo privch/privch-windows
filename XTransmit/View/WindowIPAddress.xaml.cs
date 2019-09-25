@@ -1,12 +1,11 @@
-﻿using System.Data;
-using System.Windows;
+﻿using System.Windows;
 using XTransmit.Model;
 using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
     /**
-     * Updated: 2019-08-02
+     * Updated: 2019-09-26
      */
     public partial class WindowIPAddress : Window
     {
@@ -34,14 +33,6 @@ namespace XTransmit.View
             preference.WindowIPAddress.Y = Top;
             preference.WindowIPAddress.W = Width;
             preference.WindowIPAddress.H = Height;
-        }
-
-        private void ListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count > 0 && e.AddedItems[0] is DataTable table)
-            {
-                ((IPAddressVModel)DataContext).OnTableSelectionChanged(table.TableName);
-            }
         }
     }
 }

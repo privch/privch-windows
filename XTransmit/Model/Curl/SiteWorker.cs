@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
+using XTransmit.Model.Network;
 
 namespace XTransmit.Model.Curl
 {
-    /**TODO - Generate fake IP
-     * Updated: 2019-08-04
+    /**
+     * Updated: 2019-09-26
      */
     public class SiteWorker
     {
@@ -41,7 +41,7 @@ namespace XTransmit.Model.Curl
         {
             if (bgWork == null)
                 return;
-            
+
             if (bgWork.IsBusy)
                 bgWork.CancelAsync();
 
@@ -55,15 +55,9 @@ namespace XTransmit.Model.Curl
         private void BWDoWork(object sender, DoWorkEventArgs e)
         {
             SiteProfile profile = (SiteProfile)e.Argument;
-            string profile_arguments = profile.GetArguments();
-            double progressFullness = 0;
 
-            // fake ip
-            string[] ipChange = SiteProfile.GetFakeIPInfo(profile_arguments);
-            string ipVariable = ipChange[0];
-            DataTable ipDataTable = ipChange[1] != null ?
-                Network.IPAddressManager.DataSetIP.Tables[ipChange[1]] : null;
-            // TODO - Report datatable unavailabe if the ipDataTable is null
+            string profile_arguments = profile.GetArguments();
+            FakeIP fakeip = FakeIP.From(profile_arguments); // fake ip
 
             // report begin state
             bgWork.ReportProgress(-1, null);
@@ -71,13 +65,11 @@ namespace XTransmit.Model.Curl
             for (int i = 1; i <= profile.PlayTimes; i++)
             {
                 string arguments = profile_arguments;
-                if (ipDataTable != null)
+                if (fakeip != null)
                 {
-                    DataRow row = ipDataTable.Rows[random.Next(0, ipDataTable.Rows.Count)];
-                    if (row["IP"] is string ipAddress)
-                    {
-                        arguments = arguments.Replace(ipVariable, ipAddress);
-                    }
+                    string ipAddress = fakeip.FakeMethod == FakeIP.Method.Pick ?
+                        IPAddressManager.GetRandom() : IPAddressManager.GetGenerate();
+                    arguments = arguments.Replace(fakeip.Replace, ipAddress);
                 }
 
                 // curl process
@@ -105,7 +97,7 @@ namespace XTransmit.Model.Curl
                  * report progress, states. 
                  * progress is indicated in e.UserState (value: progressFullness)
                  */
-                progressFullness = (double)i / profile.PlayTimes;
+                double progressFullness = (double)i / profile.PlayTimes;
                 bgWork.ReportProgress(100, new object[] { progressFullness, i, response });
 
                 /** 

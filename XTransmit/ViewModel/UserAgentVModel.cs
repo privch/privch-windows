@@ -38,7 +38,6 @@ namespace XTransmit.ViewModel
             UserAgentList = UserAgentManager.ListUserAgent;
         }
 
-        // TODO - HasChanges
         public void OnWindowClosing()
         {
             // save user-agent data if it has changes, when this window is closing

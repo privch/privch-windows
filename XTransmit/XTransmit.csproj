@@ -86,12 +86,51 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>    
+    <Compile Include="GlobalSuppressions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model\Config.cs" />
+    <Compile Include="Model\Curl\CurlArgument.cs" />
+    <Compile Include="Model\Curl\CurlResponse.cs" />
+    <Compile Include="Model\Curl\SiteManager.cs" />
+    <Compile Include="Model\Curl\SiteProfile.cs" />
+    <Compile Include="Model\Curl\SiteWorker.cs" />
+    <Compile Include="Model\Curl\FakeIP.cs" />
+    <Compile Include="Model\Network\BandwidthInfo.cs" />
+    <Compile Include="Model\Network\BandwidthMeter.cs" />
+    <Compile Include="Model\Network\IPAddressManager.cs" />
+    <Compile Include="Model\Network\IPInfo.cs" />
+    <Compile Include="Model\UserAgent\UserAgentProfile.cs" />
+    <Compile Include="Model\UserAgent\UserAgentManager.cs" />
+    <Compile Include="Model\Preference.cs" />
+    <Compile Include="Model\Server\ServerManager.cs" />
+    <Compile Include="Model\Server\ServerProfile.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Utility\CurlManager.cs" />
     <Compile Include="Utility\FileUtil.cs" />
     <Compile Include="Utility\NativeMethods.cs" />
@@ -159,44 +198,6 @@
     <Compile Include="View\WindowUserAgent.xaml.cs">
       <DependentUpon>WindowUserAgent.xaml</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Model\Config.cs" />
-    <Compile Include="Model\Curl\CurlArgument.cs" />
-    <Compile Include="Model\Curl\CurlResponse.cs" />
-    <Compile Include="Model\Curl\SiteManager.cs" />
-    <Compile Include="Model\Curl\SiteProfile.cs" />
-    <Compile Include="Model\Curl\SiteWorker.cs" />
-    <Compile Include="Model\Network\BandwidthInfo.cs" />
-    <Compile Include="Model\Network\BandwidthMeter.cs" />
-    <Compile Include="Model\Network\IPAddressManager.cs" />
-    <Compile Include="Model\Network\IPInfo.cs" />
-    <Compile Include="Model\UserAgent\UserAgentProfile.cs" />
-    <Compile Include="Model\UserAgent\UserAgentManager.cs" />
-    <Compile Include="Model\Preference.cs" />
-    <Compile Include="Model\Server\ServerManager.cs" />
-    <Compile Include="Model\Server\ServerProfile.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Resources\StringResources.xaml">

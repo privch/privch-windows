@@ -1,33 +1,110 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace XTransmit.Model.Network
 {
     /**
-     * Updated: 2019-08-02
+     * Updated: 2019-09-26
      */
     public static class IPAddressManager
     {
-        public static DataSet DataSetIP { get; private set; }
+        public static List<string> IPList { get; private set; }
+        private static string IPPath;
+        private static readonly Random RandGen = new Random();
 
         public static void Load(string fileIpXml)
         {
-            DataSetIP = new DataSet("DataSet-IP");
-            try { DataSetIP.ReadXml(fileIpXml); }
-            catch (Exception) { }
+            List<string> ipList = null;
+            FileStream fileStream = null;
 
-            DataSetIP.AcceptChanges();
+            try
+            {
+                fileStream = new FileStream(fileIpXml, FileMode.Open);
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<string>));
+                ipList = (List<string>)xmlSerializer.Deserialize(fileStream);
+                fileStream.Close();
+            }
+            catch (Exception) { ipList = new List<string>(); }
+            finally
+            {
+                fileStream?.Dispose();
+            }
+
+            IPList = ipList;
+            IPPath = fileIpXml;
+        }
+        public static void Reload()
+        {
+            if (!string.IsNullOrWhiteSpace(IPPath))
+            {
+                Load(IPPath);
+            }
         }
 
-        public static void Save(string fileIpXml)
+        public static void Save(string fileIpXml = null)
         {
-            DataSetIP.AcceptChanges();
-            try { DataSetIP.WriteXml(fileIpXml); }
+            if (fileIpXml == null)
+                fileIpXml = IPPath;
+
+            StreamWriter streamWriter = null;
+            try
+            {
+                streamWriter = new StreamWriter(fileIpXml, false, new System.Text.UTF8Encoding(false));
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<string>));
+                xmlSerializer.Serialize(streamWriter, IPList);
+                streamWriter.Close();
+            }
             catch (Exception) { }
+            finally
+            {
+                streamWriter?.Dispose();
+            }
+        }
+
+        public static bool HasChanges()
+        {
+            // current data
+            byte[] md5Current;
+            using (MemoryStream memStream = new MemoryStream())
+            using (StreamWriter streamWriter = new StreamWriter(memStream, new System.Text.UTF8Encoding(false)))
+            using (MD5 md5 = MD5.Create())
+            {
+                new XmlSerializer(typeof(List<string>)).Serialize(streamWriter, IPList);
+                streamWriter.Flush();
+                memStream.Flush();
+
+                memStream.Position = 0;
+                md5Current = md5.ComputeHash(memStream);
+            }
+
+            // original data
+            byte[] md5Original;
+            using (MD5 md5 = MD5.Create())
+            {
+                FileStream fileStream = null;
+                try
+                {
+                    fileStream = new FileStream(IPPath, FileMode.Open);
+                    md5Original = md5.ComputeHash(fileStream);
+                    fileStream.Close();
+                }
+                catch (Exception)
+                {
+                    return true;
+                }
+                finally
+                {
+                    fileStream?.Dispose();
+                }
+            }
+
+            return !md5Original.SequenceEqual(md5Current);
         }
 
         /**<summary>
@@ -99,6 +176,24 @@ namespace XTransmit.Model.Network
             }
 
             return ipList;
+        }
+
+        public static string GetRandom()
+        {
+            if (IPList != null)
+            {
+                int i = RandGen.Next(0, IPList.Count - 1);
+                return IPList[i];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static string GetGenerate()
+        {
+            return $"{RandGen.Next(1, 255)}.{RandGen.Next(0, 255)}.{RandGen.Next(0, 255)}.{RandGen.Next(0, 255)}";
         }
     }
 }

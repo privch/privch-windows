@@ -77,13 +77,11 @@ namespace XTransmit.Model.UserAgent
             using (MD5 md5 = MD5.Create())
             {
                 new XmlSerializer(typeof(List<UserAgentProfile>)).Serialize(streamWriter, ListUserAgent);
-                streamWriter.Close();
-
+                streamWriter.Flush();
                 memStream.Flush();
-                memStream.Position = 0;
 
-                md5Current = md5.ComputeHash(memStream);                
-                memStream.Close();
+                memStream.Position = 0;
+                md5Current = md5.ComputeHash(memStream);
             }
 
             // original data

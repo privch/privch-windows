@@ -77,24 +77,33 @@ namespace XTransmit.Model.UserAgent
             using (MD5 md5 = MD5.Create())
             {
                 new XmlSerializer(typeof(List<UserAgentProfile>)).Serialize(streamWriter, ListUserAgent);
-                streamWriter.Flush();
+                streamWriter.Close();
+
                 memStream.Flush();
                 memStream.Position = 0;
-                md5Current = md5.ComputeHash(memStream);
+
+                md5Current = md5.ComputeHash(memStream);                
+                memStream.Close();
             }
 
             // original data
             byte[] md5Original;
             using (MD5 md5 = MD5.Create())
             {
+                FileStream fileStream = null;
                 try
                 {
-                    FileStream fileStream = new FileStream(PathUserAgent, FileMode.Open);
+                    fileStream = new FileStream(PathUserAgent, FileMode.Open);
                     md5Original = md5.ComputeHash(fileStream);
+                    fileStream.Close();
                 }
                 catch (Exception)
                 {
                     return true;
+                }
+                finally
+                {
+                    fileStream?.Dispose();
                 }
             }
 

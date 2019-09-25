@@ -8,6 +8,7 @@ namespace XTransmit
     /**TODO - Check preference and reset it, Save only when preference has changes
      * TODO - English, Chinese language
      * TODO - App Analyze
+     * TODO - Process Exception
      * 
      * NOTE
      * EventHandler name "_"

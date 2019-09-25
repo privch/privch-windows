@@ -18,14 +18,20 @@ namespace XTransmit.Utility
             byte[] md5Data;
             using (MD5 md5 = MD5.Create())
             {
+                FileStream fileStream = null;
                 try
                 {
-                    FileStream fileStream = File.OpenRead(filePath);
+                    fileStream = File.OpenRead(filePath);
                     md5Data = md5.ComputeHash(fileStream);
+                    fileStream.Close();
                 }
                 catch (Exception)
                 {
                     return false;
+                }
+                finally
+                {
+                    fileStream?.Dispose();
                 }
             }
 

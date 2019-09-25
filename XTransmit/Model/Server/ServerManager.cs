@@ -14,7 +14,7 @@ namespace XTransmit.Model.Server
      * Reference code: 
      * https://github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
      * 
-     * Updated: 2019-08-04
+     * Updated: 2019-09-24
      */
     public static class ServerManager
     {
@@ -22,10 +22,11 @@ namespace XTransmit.Model.Server
         public static List<ServerProfile> LoadServer(string fileServerXml)
         {
             List<ServerProfile> serverList;
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ServerProfile>));
+            FileStream fileStream = null;
             try
             {
-                FileStream fileStream = new FileStream(fileServerXml, FileMode.Open);
+                fileStream = new FileStream(fileServerXml, FileMode.Open);
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ServerProfile>));
                 serverList = (List<ServerProfile>)xmlSerializer.Deserialize(fileStream);
                 fileStream.Close();
             }
@@ -33,20 +34,28 @@ namespace XTransmit.Model.Server
             {
                 serverList = null;
             }
+            finally
+            {
+                fileStream?.Dispose();
+            }
 
             return serverList;
         }
 
         public static void SaveServer(string fileServerXml, List<ServerProfile> listServerProfile)
         {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ServerProfile>));
+            StreamWriter streamWriter = null;
             try
             {
-                StreamWriter writer = new StreamWriter(fileServerXml);
-                xmlSerializer.Serialize(writer, listServerProfile);
-                writer.Close();
+                streamWriter = new StreamWriter(fileServerXml);
+                new XmlSerializer(typeof(List<ServerProfile>)).Serialize(streamWriter, listServerProfile);
+                streamWriter.Close();
             }
             catch (Exception) { }
+            finally
+            {
+                streamWriter?.Dispose();
+            }
         }
 
         // start with "ss://"

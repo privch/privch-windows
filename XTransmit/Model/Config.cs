@@ -7,7 +7,7 @@ namespace XTransmit.Model
 {
     /**<summary>
      * Feature options. Such as SystemProxy, Privoxy, Shadowsocks.
-     * Updated: 2019-08-02
+     * Updated: 2019-09-24
      * </summary> 
      */
     [Serializable]
@@ -45,10 +45,12 @@ namespace XTransmit.Model
         public static Config LoadFileOrDefault(string fileOptionXml)
         {
             Config config;
+            FileStream fileStream = null;
+
             try
             {
+                fileStream = new FileStream(fileOptionXml, FileMode.Open);
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(Config));
-                FileStream fileStream = new FileStream(fileOptionXml, FileMode.Open);
                 config = (Config)xmlSerializer.Deserialize(fileStream);
                 fileStream.Close();
             }
@@ -56,20 +58,28 @@ namespace XTransmit.Model
             {
                 config = new Config();
             }
+            finally
+            {
+                fileStream?.Dispose();
+            }
 
             return config;
         }
 
         public static void WriteFile(string fileOptionXml, Config config)
         {
+            StreamWriter streamWriter = null;
             try
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Config));
-                StreamWriter writer = new StreamWriter(fileOptionXml);
-                xmlSerializer.Serialize(writer, config);
-                writer.Close();
+                streamWriter = new StreamWriter(fileOptionXml);
+                new XmlSerializer(typeof(Config)).Serialize(streamWriter, config);
+                streamWriter.Close();
             }
             catch (Exception) { }
+            finally
+            {
+                streamWriter?.Dispose();
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace XTransmit.Utility
 {
     /**
-     * Updated: 2019-08-02
+     * Updated: 2019-09-24
      */
     public static class TextUtil
     {
@@ -78,10 +78,11 @@ namespace XTransmit.Utility
             MemoryStream memoryStream = new MemoryStream();
 
             xmlSerializer.Serialize(memoryStream, objectFrom);
-            memoryStream.Seek(0, SeekOrigin.Begin);
+            memoryStream.Position = 0;
 
             object objectTo = xmlSerializer.Deserialize(memoryStream);
             memoryStream.Close();
+            memoryStream.Dispose();
 
             return objectTo;
         }

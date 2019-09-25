@@ -6,7 +6,7 @@ using System.Text;
 namespace XTransmit.Model.Network
 {
     /**
-     * Updated: 2019-08-04
+     * Updated: 2019-09-24
      */
     public class IPInfo
     {
@@ -55,11 +55,12 @@ namespace XTransmit.Model.Network
             if (string.IsNullOrWhiteSpace(json))
                 return null;
 
-            MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(json));
+            MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(json));
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(IPInfo));
 
-            IPInfo ipinfo = serializer.ReadObject(ms) as IPInfo;
-            ms.Close();
+            IPInfo ipinfo = serializer.ReadObject(memStream) as IPInfo;
+            memStream.Close();
+            memStream.Dispose();
 
             return ipinfo;
         }

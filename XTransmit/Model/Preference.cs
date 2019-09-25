@@ -8,7 +8,7 @@ namespace XTransmit.Model
 {
     /**<summary>
      * UI Preference, Such as window position and size.
-     * Updated: 2019-08-02
+     * Updated: 2019-09-24
      * </summary>
      */
     [Serializable]
@@ -100,10 +100,11 @@ namespace XTransmit.Model
         public static Preference LoadFileOrDefault(string fileConfigXml)
         {
             Preference preference;
+            FileStream fileStream = null;
             try
             {
+                fileStream = new FileStream(fileConfigXml, FileMode.Open);
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(Preference));
-                FileStream fileStream = new FileStream(fileConfigXml, FileMode.Open);
                 preference = (Preference)xmlSerializer.Deserialize(fileStream);
                 fileStream.Close();
             }
@@ -111,20 +112,28 @@ namespace XTransmit.Model
             {
                 preference = new Preference();
             }
+            finally
+            {
+                fileStream?.Dispose();
+            }
 
             return preference;
         }
 
         public static void WriteFile(string filePreferenceXml, Preference preference)
         {
+            StreamWriter streamWriter = null;
             try
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Preference));
-                StreamWriter writer = new StreamWriter(filePreferenceXml);
-                xmlSerializer.Serialize(writer, preference);
-                writer.Close();
+                streamWriter = new StreamWriter(filePreferenceXml);
+                new XmlSerializer(typeof(Preference)).Serialize(streamWriter, preference);
+                streamWriter.Close();
             }
             catch (Exception) { }
+            finally
+            {
+                streamWriter?.Dispose();
+            }
         }
     }
 }

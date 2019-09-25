@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace XTransmit.Model.Curl
 {
     /**
-     * Updated: 2019-08-02
+     * Updated: 2019-09-24
      */
     public class SiteManager
     {
@@ -14,10 +14,11 @@ namespace XTransmit.Model.Curl
         public static List<SiteProfile> LoadFileOrDefault(string fileXhttpXml)
         {
             List<SiteProfile> siteList;
+            FileStream fileStream = null;
             try
             {
+                fileStream = new FileStream(fileXhttpXml, FileMode.Open);
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<SiteProfile>));
-                FileStream fileStream = new FileStream(fileXhttpXml, FileMode.Open);
                 siteList = (List<SiteProfile>)xmlSerializer.Deserialize(fileStream);
                 fileStream.Close();
             }
@@ -25,20 +26,28 @@ namespace XTransmit.Model.Curl
             {
                 siteList = new List<SiteProfile>();
             }
+            finally
+            {
+                fileStream?.Dispose();
+            }
 
             return siteList;
         }
 
         public static void WriteFile(string fileXhttpXml, List<SiteProfile> siteList)
         {
+            StreamWriter streamWriter = null;
             try
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<SiteProfile>));
-                StreamWriter writer = new StreamWriter(fileXhttpXml);
-                xmlSerializer.Serialize(writer, siteList);
-                writer.Close();
+                streamWriter = new StreamWriter(fileXhttpXml);
+                new XmlSerializer(typeof(List<SiteProfile>)).Serialize(streamWriter, siteList);
+                streamWriter.Close();
             }
             catch (Exception) { }
+            finally
+            {
+                streamWriter?.Dispose();
+            }
         }
     }
 }

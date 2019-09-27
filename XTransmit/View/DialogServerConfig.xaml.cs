@@ -3,7 +3,7 @@ using System.Windows;
 using XTransmit.Model;
 using XTransmit.Model.Server;
 using XTransmit.ViewModel;
-using XTransmit.ViewModel.Control;
+using XTransmit.ViewModel.Model;
 
 namespace XTransmit.View
 {
@@ -21,7 +21,7 @@ namespace XTransmit.View
             Top = preference.WindowServerConfig.Y;
 
             // set viewmodel
-            DataContext = new ServerConfigVModel(new ServerInfo(serverProfile));
+            DataContext = new ServerConfigVModel(new ServerProfileView(serverProfile));
             Closing += Window_Closing;
         }
 

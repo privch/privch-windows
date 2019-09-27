@@ -5,7 +5,7 @@ using XTransmit.ViewModel;
 namespace XTransmit.View
 {
     /**
-     * Updated: 2019-09-26
+     * Updated: 2019-09-28
      */
     public partial class WindowIPAddress : Window
     {
@@ -25,6 +25,8 @@ namespace XTransmit.View
 
         private void WindowIPSet_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            xDataGrid.CommitEdit();
+            xDataGrid.CancelEdit();
             ((IPAddressVModel)DataContext).OnWindowClosing();
 
             // Save window placement

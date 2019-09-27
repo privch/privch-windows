@@ -1,71 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Xml.Serialization;
+using XTransmit.Utility;
 
 namespace XTransmit.Model.Server
 {
-    /**TODO Next - Move ServerProfile data to ServerManager
-     * 
-     * Reference code: 
-     * https://github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
-     * 
+    /**
      * Updated: 2019-09-24
      */
     public static class ServerManager
     {
+        public static List<ServerProfile> ServerList;
+        private static string ServerXmlPath;
+
         // Init server list by deserialize xml file
-        public static List<ServerProfile> LoadServer(string fileServerXml)
+        public static void Load(string pathServerXml)
         {
-            List<ServerProfile> serverList;
-            FileStream fileStream = null;
-            try
+            if (FileUtil.XmlDeserialize(pathServerXml, typeof(List<ServerProfile>)) is List<ServerProfile> listServer)
             {
-                fileStream = new FileStream(fileServerXml, FileMode.Open);
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<ServerProfile>));
-                serverList = (List<ServerProfile>)xmlSerializer.Deserialize(fileStream);
-                fileStream.Close();
+                ServerList = listServer;
             }
-            catch (Exception)
+            else
             {
-                serverList = null;
-            }
-            finally
-            {
-                fileStream?.Dispose();
+                ServerList = new List<ServerProfile>();
             }
 
-            return serverList;
+            ServerXmlPath = pathServerXml;
         }
 
-        public static void SaveServer(string fileServerXml, List<ServerProfile> listServerProfile)
+        public static void Save(List<ServerProfile> listServerProfile)
         {
-            StreamWriter streamWriter = null;
-            try
-            {
-                streamWriter = new StreamWriter(fileServerXml);
-                new XmlSerializer(typeof(List<ServerProfile>)).Serialize(streamWriter, listServerProfile);
-                streamWriter.Close();
-            }
-            catch (Exception) { }
-            finally
-            {
-                streamWriter?.Dispose();
-            }
+            FileUtil.XmlSerialize(ServerXmlPath, listServerProfile);
         }
 
-        // start with "ss://"
+        /**
+         * start with "ss://". 
+         * Reference code: 
+         * https://github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
+         */
         public static ServerProfile ParseLegacyServer(string ssUrl)
         {
             var match = UrlFinder.Match(ssUrl);
             if (!match.Success)
                 return null;
 
-            ServerProfile serverProfile = ServerProfile.Default();
+            ServerProfile serverProfile = new ServerProfile();
             var base64 = match.Groups["base64"].Value.TrimEnd('/');
             var tag = match.Groups["tag"].Value;
             if (!string.IsNullOrEmpty(tag))
@@ -129,10 +111,12 @@ namespace XTransmit.Model.Server
                         continue;
                     }
 
-                    serverProfile = ServerProfile.Default();
-                    serverProfile.vHostIP = parsedUrl.IdnHost;
-                    serverProfile.vPort = parsedUrl.Port;
-                    serverProfile.vRemarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+                    serverProfile = new ServerProfile
+                    {
+                        vHostIP = parsedUrl.IdnHost,
+                        vPort = parsedUrl.Port,
+                        vRemarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped)
+                    };
 
                     // parse base64 UserInfo
                     string rawUserInfo = parsedUrl.GetComponents(UriComponents.UserInfo, UriFormat.Unescaped);

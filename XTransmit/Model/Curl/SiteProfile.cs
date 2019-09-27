@@ -5,7 +5,7 @@ using System.Text;
 namespace XTransmit.Model.Curl
 {
     /**
-     * Updated: 2019-09-26
+     * Updated: 2019-09-28
      */
     [Serializable]
     public class SiteProfile
@@ -22,7 +22,7 @@ namespace XTransmit.Model.Curl
 
         // curl. 
         public bool IsReadResponse { get; set; }
-        public List<CurlArgument> ArgumentList { get; set; } // List is hard to copy
+        public List<CurlArgument> ArgumentList { get; set; }
         // TODO - Proxy auto config
         public string Socks5Proxy; // not used
 
@@ -32,19 +32,19 @@ namespace XTransmit.Model.Curl
          * The object properties value will be overwritten from the XML file.
          * </summary>
          */
-        public static SiteProfile Default() => new SiteProfile
+        public SiteProfile()
         {
-            Title = "Title",
-            Website = "Website",
-            TimeUpdated = DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss"),
+            Title = "Title";
+            Website = "Website";
+            TimeUpdated = DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss");
 
-            PlayTimes = 1,
-            DelayMin = 0,
-            DelayMax = 0,
+            PlayTimes = 1;
+            DelayMin = 0; //no delay
+            DelayMax = 0; 
 
-            IsReadResponse = true,
-            ArgumentList = new List<CurlArgument>(),
-        };
+            IsReadResponse = true;
+            ArgumentList = new List<CurlArgument>();
+        }
 
         // copy object, use serializer
         public SiteProfile Copy() => (SiteProfile)Utility.TextUtil.CopyBySerializer(this);

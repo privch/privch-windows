@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using XTransmit.Utility;
 using XTransmit.ViewModel.Control;
+using XTransmit.ViewModel.Model;
 
 namespace XTransmit.ViewModel
 {
@@ -12,7 +13,7 @@ namespace XTransmit.ViewModel
      */
     public class ServerConfigVModel : BaseViewModel
     {
-        public ServerInfo ServerInfoData { get; private set; }
+        public ServerProfileView ServerInfoData { get; private set; }
         public ItemInfo[] ServerIPData { get; private set; }
 
         private bool vIsFetching = false;
@@ -32,7 +33,7 @@ namespace XTransmit.ViewModel
         private static readonly string sr_invalid_ip = (string)Application.Current.FindResource("invalid_ip");
         private static readonly string sr_invalid_port = (string)Application.Current.FindResource("invalid_port");
 
-        public ServerConfigVModel(ServerInfo serverInfo)
+        public ServerConfigVModel(ServerProfileView serverInfo)
         {
             ServerInfoData = serverInfo;
 

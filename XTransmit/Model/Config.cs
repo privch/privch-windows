@@ -1,7 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Xml.Serialization;
 using XTransmit.Model.Server;
+using XTransmit.Utility;
 
 namespace XTransmit.Model
 {
@@ -42,44 +41,21 @@ namespace XTransmit.Model
          * property (which also specified in the XML) value will be overwritten from the XML
          * </summary>
          */
-        public static Config LoadFileOrDefault(string fileOptionXml)
+        public static Config LoadFileOrDefault(string pathConfigXml)
         {
-            Config config;
-            FileStream fileStream = null;
-
-            try
+            if (FileUtil.XmlDeserialize(pathConfigXml, typeof(Config)) is Config config)
             {
-                fileStream = new FileStream(fileOptionXml, FileMode.Open);
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Config));
-                config = (Config)xmlSerializer.Deserialize(fileStream);
-                fileStream.Close();
+                return config;
             }
-            catch (Exception)
+            else
             {
-                config = new Config();
+                return new Config();
             }
-            finally
-            {
-                fileStream?.Dispose();
-            }
-
-            return config;
         }
 
-        public static void WriteFile(string fileOptionXml, Config config)
+        public static void WriteFile(string pathConfigXml, Config config)
         {
-            StreamWriter streamWriter = null;
-            try
-            {
-                streamWriter = new StreamWriter(fileOptionXml);
-                new XmlSerializer(typeof(Config)).Serialize(streamWriter, config);
-                streamWriter.Close();
-            }
-            catch (Exception) { }
-            finally
-            {
-                streamWriter?.Dispose();
-            }
+            FileUtil.XmlSerialize(pathConfigXml, config);
         }
     }
 }

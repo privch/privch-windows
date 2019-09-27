@@ -114,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Config.cs" />
+    <Compile Include="Model\Curl\FakeUA.cs" />
     <Compile Include="Model\Curl\CurlArgument.cs" />
     <Compile Include="Model\Curl\CurlResponse.cs" />
     <Compile Include="Model\Curl\SiteManager.cs" />
@@ -122,10 +123,11 @@
     <Compile Include="Model\Curl\FakeIP.cs" />
     <Compile Include="Model\Network\BandwidthInfo.cs" />
     <Compile Include="Model\Network\BandwidthMeter.cs" />
-    <Compile Include="Model\Network\IPAddressManager.cs" />
-    <Compile Include="Model\Network\IPInfo.cs" />
-    <Compile Include="Model\UserAgent\UserAgentProfile.cs" />
-    <Compile Include="Model\UserAgent\UserAgentManager.cs" />
+    <Compile Include="Model\IPAddress\IPProfile.cs" />
+    <Compile Include="Model\IPAddress\IPManager.cs" />
+    <Compile Include="Model\IPAddress\IPInfo.cs" />
+    <Compile Include="Model\UserAgent\UAProfile.cs" />
+    <Compile Include="Model\UserAgent\UAManager.cs" />
     <Compile Include="Model\Preference.cs" />
     <Compile Include="Model\Server\ServerManager.cs" />
     <Compile Include="Model\Server\ServerProfile.cs" />
@@ -147,7 +149,7 @@
     <Compile Include="ViewModel\Control\ContentTable.cs" />
     <Compile Include="ViewModel\Control\Placement.cs" />
     <Compile Include="ViewModel\Control\ProgressInfo.cs" />
-    <Compile Include="ViewModel\Control\ServerInfo.cs" />
+    <Compile Include="ViewModel\Model\ServerProfileView.cs" />
     <Compile Include="ViewModel\CurlPlayVModel.cs" />
     <Compile Include="ViewModel\DialogButtonVModel.cs" />
     <Compile Include="ViewModel\DialogEditVModel.cs" />
@@ -272,5 +274,6 @@
     <Resource Include="Resources\Binary\privoxy\privoxy-config.txt" />
     <Resource Include="XTransmit.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

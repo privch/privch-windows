@@ -30,16 +30,17 @@
         </ToolBarTray>
 
         <!-- Site Profile -->
-        <DataGrid x:Name="xListView" Grid.Row="1"
+        <DataGrid x:Name="xDataGrid" 
+                  Grid.Row="1"
                   GridLinesVisibility="Horizontal"
                   SelectionMode="Single"
                   CanUserSortColumns="True"
                   IsReadOnly="True"
-                  ItemsSource="{Binding Path=ObSiteList}">
+                  ItemsSource="{Binding Path=SiteListOC}">
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" 
                               Command="{Binding Path=CommandLaunchProfile}"
-                              CommandParameter="{Binding ElementName=xListView, Path=SelectedItem}" />
+                              CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}" />
             </DataGrid.InputBindings>
 
             <DataGrid.ContextMenu>

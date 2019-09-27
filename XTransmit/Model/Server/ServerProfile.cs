@@ -1,7 +1,7 @@
 using System;
 using System.Net.NetworkInformation;
 using System.Text;
-using XTransmit.Model.Network;
+using XTransmit.Model.IPAddress;
 
 namespace XTransmit.Model.Server
 {
@@ -9,7 +9,7 @@ namespace XTransmit.Model.Server
     public class ServerProfile
     {
         // constants
-        public static string[] Ciphers { get; } =
+        public static readonly string[] Ciphers =
         {
             "rc4-md5",
             "aes-128-gcm", "aes-192-gcm", "aes-256-gcm",
@@ -66,25 +66,25 @@ namespace XTransmit.Model.Server
          * Must be called after the App.GlobalConfig has been loaded
          * </summary> 
          */
-        public static ServerProfile Default() => new ServerProfile()
+        public ServerProfile()
         {
-            vHostIP = "",
-            vPort = 0,
-            vEncrypt = "chacha20-ietf-poly1305",
-            vPassword = "",
-            vRemarks = "",
+            vHostIP = "";
+            vPort = 0;
+            vEncrypt = "chacha20-ietf-poly1305";
+            vPassword = "";
+            vRemarks = "";
 
-            vPluginEnabled = false,
-            vPluginName = "",
-            vPluginOption = "",
+            vPluginEnabled = false;
+            vPluginName = "";
+            vPluginOption = "";
 
-            vFriendlyName = "",
-            vTimeout = App.GlobalConfig != null ? App.GlobalConfig.ConnectionTimeouts : 3,
+            vFriendlyName = "";
+            vTimeout = App.GlobalConfig != null ? App.GlobalConfig.ConnectionTimeouts : 3;
 
-            vTimeCreated = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),
-            vPing = 0,
-            vIPData = null,
-        };
+            vTimeCreated = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            vPing = 0;
+            vIPData = null;
+        }
 
         public void SetFriendlyNameDefault()
         {

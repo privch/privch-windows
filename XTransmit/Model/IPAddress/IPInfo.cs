@@ -3,10 +3,10 @@ using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace XTransmit.Model.Network
+namespace XTransmit.Model.IPAddress
 {
     /**
-     * Updated: 2019-09-24
+     * Updated: 2019-09-28
      */
     public class IPInfo
     {
@@ -17,6 +17,8 @@ namespace XTransmit.Model.Network
         public string country;
         public string loc;
         public string org;
+        public string postal;
+        public string timezone;
 
         // Copy by serializer
         public IPInfo Copy() => (IPInfo)Utility.TextUtil.CopyBySerializer(this);
@@ -34,18 +36,26 @@ namespace XTransmit.Model.Network
                 StartInfo =
                 {
                     FileName = Utility.CurlManager.PathCurlExe,
-                    Arguments = $"--data \"ip={ip}\" https://ipinfo.io",
+                    Arguments = $"--header \"Accept: application/json\" ipinfo.io/{ip}",
                     WorkingDirectory = App.PathCurl,
                     CreateNoWindow = true,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                 },
             };
-            process.Start();
 
-            string response = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-            process.Close();
+            string response = null;
+            try
+            {
+                process.Start();
+                response = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+            }
+            catch { }
+            finally
+            {
+                process.Close();
+            }
 
             return ReadToObject(response);
         }
@@ -53,14 +63,14 @@ namespace XTransmit.Model.Network
         private static IPInfo ReadToObject(string json)
         {
             if (string.IsNullOrWhiteSpace(json))
+            {
                 return null;
+            }
 
-            MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(json));
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(IPInfo));
-
-            IPInfo ipinfo = serializer.ReadObject(memStream) as IPInfo;
-            memStream.Close();
-            memStream.Dispose();
+            MemoryStream msJson = new MemoryStream(Encoding.UTF8.GetBytes(json));
+            IPInfo ipinfo = new DataContractJsonSerializer(typeof(IPInfo)).ReadObject(msJson) as IPInfo;
+            msJson.Close();
+            msJson.Dispose();
 
             return ipinfo;
         }

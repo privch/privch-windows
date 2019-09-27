@@ -2,6 +2,9 @@
 
 namespace XTransmit.Model.Curl
 {
+    /** Affect http head only
+     * Updated: 2019-09-28
+     */
     class FakeIP
     {
         public const string Pattern = @"\[IP/\S+\]";
@@ -10,6 +13,11 @@ namespace XTransmit.Model.Curl
         public string Replace;
         public Method FakeMethod;
 
+        /**
+         * <summary>
+         * [IP/Pick], [IP/Gen]
+         * </summary>
+         */
         public static FakeIP From(string input)
         {
             Match fakeMatch = Regex.Match(input, Pattern);
@@ -29,7 +37,7 @@ namespace XTransmit.Model.Curl
             {
                 method = Method.Pick;
             }
-            else if (fakeMethod == "Generate")
+            else if (fakeMethod == "Gen")
             {
                 method = Method.Generate;
             }

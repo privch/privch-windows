@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml.Serialization;
 
 /**
  * TODO - Memory leak test
@@ -13,21 +14,40 @@ namespace XTransmit.Utility
 {
     public static class FileUtil
     {
-        public static bool CheckMD5(string filePath, string md5Code)
+        public static bool CheckMD5(string filePath, string md5Hex)
         {
-            byte[] md5Data;
+            byte[] md5File = GetMD5(filePath);
+            if (md5File == null)
+            {
+                return false;
+            }
+
+            // Create a new Stringbuilder to collect the bytes and create a string.
+            StringBuilder sBuilder = new StringBuilder();
+            for (int i = 0; i < md5File.Length; i++)
+            {
+                sBuilder.Append(md5File[i].ToString("x2"));
+            }
+
+            return sBuilder.ToString().Equals(md5Hex);
+        }
+
+        public static byte[] GetMD5(string filePath)
+        {
+            // original data
+            byte[] md5Value;
             using (MD5 md5 = MD5.Create())
             {
                 FileStream fileStream = null;
                 try
                 {
                     fileStream = File.OpenRead(filePath);
-                    md5Data = md5.ComputeHash(fileStream);
+                    md5Value = md5.ComputeHash(fileStream);
                     fileStream.Close();
                 }
                 catch (Exception)
                 {
-                    return false;
+                    return null;
                 }
                 finally
                 {
@@ -35,14 +55,7 @@ namespace XTransmit.Utility
                 }
             }
 
-            // Create a new Stringbuilder to collect the bytes and create a string.
-            StringBuilder sBuilder = new StringBuilder();
-            for (int i = 0; i < md5Data.Length; i++)
-            {
-                sBuilder.Append(md5Data[i].ToString("x2"));
-            }
-
-            return sBuilder.ToString().Equals(md5Code);
+            return md5Value;
         }
 
         public static bool WriteUTF8(string filePath, string utf8Content)
@@ -66,6 +79,46 @@ namespace XTransmit.Utility
 
             return true;
         }
+
+
+        /** XML ------------------------------------------------------------------------
+         */
+        public static void XmlSerialize(string pathXml, object objInput)
+        {
+            StreamWriter swXml = null;
+            try
+            {
+                swXml = new StreamWriter(pathXml, false, new UTF8Encoding(false));
+                new XmlSerializer(objInput.GetType()).Serialize(swXml, objInput);
+                swXml.Close();
+            }
+            catch (Exception) { }
+            finally
+            {
+                swXml?.Dispose();
+            }
+        }
+
+        public static object XmlDeserialize(string pathXml, Type type)
+        {
+            object result = null;
+            FileStream fsXml = null;
+
+            try
+            {
+                fsXml = new FileStream(pathXml, FileMode.Open);
+                result = new XmlSerializer(type).Deserialize(fsXml);
+                fsXml.Close();
+            }
+            catch (Exception) { }
+            finally
+            {
+                fsXml?.Dispose();
+            }
+
+            return result;
+        }
+
 
         public static bool UncompressGZ(string filePath, byte[] content)
         {

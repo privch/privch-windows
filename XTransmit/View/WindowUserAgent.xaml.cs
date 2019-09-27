@@ -4,11 +4,11 @@ using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
+    /**
+     * Updated: 2019-09-28
+     */
     public partial class WindowUserAgent : Window
     {
-        /**
-         * Updated: 2019-09-24
-         */
         public WindowUserAgent()
         {
             InitializeComponent();

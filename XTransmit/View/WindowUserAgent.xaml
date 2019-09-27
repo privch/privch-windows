@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
 
         <!-- toolbar buttons -->
-        <ToolBarTray Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" IsLocked="True">
+        <ToolBarTray Grid.Row="0" IsLocked="True">
             <ToolBar IsOverflowOpen="False">
                 <Button ToolTip="{StaticResource _save}" 
                         Content="{md:PackIcon Kind=ContentSave, Size=24}"
@@ -33,14 +33,19 @@
 
                 <Separator/>
 
-                <TextBox md:HintAssist.Hint="{StaticResource _search}"
+                <TextBox Margin="8, 0" VerticalAlignment="Center"
+                         md:HintAssist.Hint="{StaticResource _search}"
                          Text="{Binding Path=Search, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Margin="8, 0" VerticalAlignment="Center"
+                           Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                           Text="{Binding UserAgentList.Count}"/>
             </ToolBar>
         </ToolBarTray>
 
         <!-- useragent table -->
         <DataGrid x:Name="xDataGrid"
-                  Grid.Row="2" Margin="10" 
+                  Grid.Row="1" Margin="10" 
                   GridLinesVisibility="Horizontal"
                   SelectionMode="Extended"
                   CanUserSortColumns="True"
@@ -62,15 +67,15 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto" 
                                     Header="{StaticResource _os}" 
-                                    Binding="{Binding Path=os}"/>
+                                    Binding="{Binding Path=OS}"/>
 
                 <DataGridTextColumn Width="Auto" 
                                     Header="{StaticResource _client}" 
-                                    Binding="{Binding Path=client}"/>
+                                    Binding="{Binding Path=Client}"/>
 
                 <DataGridTextColumn Width="Auto" 
                                     Header="{StaticResource ua_user_agent}" 
-                                    Binding="{Binding Path=value}"/>
+                                    Binding="{Binding Path=Value}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

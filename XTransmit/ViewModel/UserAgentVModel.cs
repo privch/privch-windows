@@ -5,28 +5,28 @@ using XTransmit.Model.UserAgent;
 namespace XTransmit.ViewModel
 {
     /** 
-     * Updated: 2019-09-24
+     * Updated: 2019-09-28
      */
     class UserAgentVModel : BaseViewModel
     {
-        public List<UserAgentProfile> UserAgentList { get; private set; }
+        public List<UAProfile> UserAgentList { get; private set; }
 
-        private string vSearch;
+        private string v_search;
         public string Search
         {
-            get { return vSearch; }
+            get { return v_search; }
             set
             {
-                vSearch = value;
-                if (string.IsNullOrWhiteSpace(vSearch))
+                v_search = value;
+                if (string.IsNullOrWhiteSpace(v_search))
                 {
-                    UserAgentList = UserAgentManager.ListUserAgent;
+                    UserAgentList = UAManager.UAList;
                 }
                 else
                 {
-                    UserAgentList = UserAgentManager.ListUserAgent.FindAll(ua =>
+                    UserAgentList = UAManager.UAList.FindAll(ua =>
                     {
-                        return ua.value.ToLower().Contains(value.ToLower());
+                        return ua.Value.ToLower().Contains(value.ToLower());
                     });
                 }
                 OnPropertyChanged("UserAgentList");
@@ -35,13 +35,13 @@ namespace XTransmit.ViewModel
 
         public UserAgentVModel()
         {
-            UserAgentList = UserAgentManager.ListUserAgent;
+            UserAgentList = UAManager.UAList;
         }
 
         public void OnWindowClosing()
         {
             // save user-agent data if it has changes, when this window is closing
-            if (UserAgentManager.HasChanges())
+            if (UAManager.HasChangesToFile())
             {
                 string title = (string)Application.Current.FindResource("ua_title");
                 string ask_save = (string)Application.Current.FindResource("ua_ask_save_changes");
@@ -51,11 +51,11 @@ namespace XTransmit.ViewModel
 
                 if (dialog.CancelableResult == true)
                 {
-                    UserAgentManager.Save();
+                    UAManager.Save();
                 }
                 else
                 {
-                    UserAgentManager.Reload();
+                    UAManager.Reload();
                 }
             }
         }
@@ -66,15 +66,15 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandSaveData => new RelayCommand(saveData);
         private void saveData(object parameter)
         {
-            UserAgentManager.Save();
+            UAManager.Save();
         }
 
         // reload data from file
         public RelayCommand CommandReload => new RelayCommand(reloadData);
         private void reloadData(object parameter)
         {
-            UserAgentManager.Reload();
-            UserAgentList = UserAgentManager.ListUserAgent;
+            UAManager.Reload();
+            UserAgentList = UAManager.UAList;
             OnPropertyChanged("UserAgentList");
         }
     }

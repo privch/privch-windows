@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace XTransmit.Utility
@@ -79,12 +81,31 @@ namespace XTransmit.Utility
 
             xmlSerializer.Serialize(memoryStream, objectFrom);
             memoryStream.Position = 0;
-
             object objectTo = xmlSerializer.Deserialize(memoryStream);
+
             memoryStream.Close();
             memoryStream.Dispose();
-
             return objectTo;
+        }
+
+        public static byte[] GetXmlMD5(object objectUtf8)
+        {
+            byte[] md5Value = null;
+            using (MemoryStream memObj = new MemoryStream())
+            using (StreamWriter swMem = new StreamWriter(memObj, new UTF8Encoding(false)))
+            using (MD5 md5 = MD5.Create())
+            {
+                new XmlSerializer(objectUtf8.GetType()).Serialize(swMem, objectUtf8);
+                swMem.Flush(); 
+                
+                /**Any data written to a MemoryStream object is written into RAM, 
+                 * MemoryStream.Flush() method is redundant.
+                 */
+                memObj.Position = 0;
+                md5Value = md5.ComputeHash(memObj);
+            }
+
+            return md5Value;
         }
     }
 }

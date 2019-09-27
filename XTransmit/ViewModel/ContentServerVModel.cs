@@ -11,7 +11,7 @@ using System.Windows.Input;
 using XTransmit.Model;
 using XTransmit.Model.Server;
 using XTransmit.View;
-using XTransmit.ViewModel.Control;
+using XTransmit.ViewModel.Model;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
@@ -23,7 +23,7 @@ namespace XTransmit.ViewModel
      */
     class ContentServerVModel : BaseViewModel
     {
-        public ObservableCollection<ServerInfo> ObServerInfoList { get; private set; }
+        public ObservableCollection<ServerProfileView> ObServerInfoList { get; private set; }
         private readonly Config config;
 
         // languages
@@ -37,16 +37,13 @@ namespace XTransmit.ViewModel
         public ContentServerVModel()
         {
             config = App.GlobalConfig;
+            ServerManager.Load(App.FileServerXml);
 
             // load servers and convert to ObservableCollection
-            ObServerInfoList = new ObservableCollection<ServerInfo>();
-            List<ServerProfile> servers = ServerManager.LoadServer(App.FileServerXml);
-            if (servers != null)
+            ObServerInfoList = new ObservableCollection<ServerProfileView>();
+            foreach (ServerProfile server in ServerManager.ServerList)
             {
-                foreach (ServerProfile server in servers)
-                {
-                    ObServerInfoList.Add(new ServerInfo(server));
-                }
+                ObServerInfoList.Add(new ServerProfileView(server));
             }
 
             // save data on closing
@@ -57,20 +54,22 @@ namespace XTransmit.ViewModel
         {
             // case "hide" 
             if (Application.Current.MainWindow.IsVisible)
+            {
                 return;
+            }
 
             isFetchInProcess = false; // isPingInProcess is also use to cancel task
             isPingInProcess = false;  // isPingInProcess is also use to cancel task
 
             // convert to list and save
-            List<ServerInfo> infos = new List<ServerInfo>(ObServerInfoList);
+            List<ServerProfileView> infos = new List<ServerProfileView>(ObServerInfoList);
             List<ServerProfile> profiles = new List<ServerProfile>();
-            foreach (ServerInfo info in infos)
+            foreach (ServerProfileView info in infos)
             {
                 profiles.Add(info.vServerProfile);
             }
 
-            ServerManager.SaveServer(App.FileServerXml, profiles);
+            ServerManager.Save(profiles);
         }
 
 
@@ -87,7 +86,7 @@ namespace XTransmit.ViewModel
                 // no duplicates
                 if (ObServerInfoList.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server)) == null)
                 {
-                    ObServerInfoList.Add(new ServerInfo(server));
+                    ObServerInfoList.Add(new ServerProfileView(server));
                     ++added;
                 }
             }
@@ -100,7 +99,7 @@ namespace XTransmit.ViewModel
             int added = 0;
             if (ObServerInfoList.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server)) == null)
             {
-                ObServerInfoList.Add(new ServerInfo(server));
+                ObServerInfoList.Add(new ServerProfileView(server));
                 ++added;
             }
 
@@ -109,7 +108,7 @@ namespace XTransmit.ViewModel
 
         private bool isServerNotInUse(object serverNew)
         {
-            if (serverNew is ServerInfo serverInfo)
+            if (serverNew is ServerProfileView serverInfo)
             {
                 if (!serverInfo.vServerProfile.Equals(config.RemoteServer))
                 {
@@ -200,7 +199,7 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandAddServerNew => new RelayCommand(addServerNew);
         private void addServerNew(object parameter)
         {
-            ServerProfile server = ServerProfile.Default();
+            ServerProfile server = new ServerProfile();
             if (new DialogServerConfig(server).ShowDialog() is bool update && update == true)
             {
                 int added = addServer(server);
@@ -212,7 +211,7 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandSelectServer => new RelayCommand(selectServer, isServerNotInUse);
         private void selectServer(object serverNew)
         {
-            ServerInfo serverInfo = (ServerInfo)serverNew;
+            ServerProfileView serverInfo = (ServerProfileView)serverNew;
 
             // Set ServerProfile
             App.UpdateTransmitServer(serverInfo.vServerProfile);
@@ -222,7 +221,7 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandEditServer => new RelayCommand(editServer, isServerNotInUse);
         private void editServer(object serverSelected)
         {
-            ServerInfo serverInfo = (ServerInfo)serverSelected;
+            ServerProfileView serverInfo = (ServerProfileView)serverSelected;
             ServerProfile serverProfile = serverInfo.vServerProfile.Copy();
 
             if (new DialogServerConfig(serverProfile).ShowDialog() is bool update && update == true)
@@ -230,7 +229,7 @@ namespace XTransmit.ViewModel
                 int index = ObServerInfoList.IndexOf(serverInfo);
                 if (index >= 0)
                 {
-                    ObServerInfoList[index] = new ServerInfo(serverProfile);
+                    ObServerInfoList[index] = new ServerProfileView(serverProfile);
                 }
             }
         }
@@ -242,9 +241,9 @@ namespace XTransmit.ViewModel
             /** https://stackoverflow.com/a/14852516
              */
             System.Collections.IList selected = serversSelected as System.Collections.IList;
-            List<ServerInfo> serverInfoList = selected.Cast<ServerInfo>().ToList();
+            List<ServerProfileView> serverInfoList = selected.Cast<ServerProfileView>().ToList();
 
-            foreach (ServerInfo serverInfo in serverInfoList)
+            foreach (ServerProfileView serverInfo in serverInfoList)
             {
                 ObServerInfoList.Remove(serverInfo);
             }
@@ -265,7 +264,7 @@ namespace XTransmit.ViewModel
 
             await Task.Run(() =>
             {
-                foreach (ServerInfo serverInfo in ObServerInfoList)
+                foreach (ServerProfileView serverInfo in ObServerInfoList)
                 {
                     // isFetchInProcess is also use to cancel task
                     if (isFetchInProcess == false) return;
@@ -277,7 +276,7 @@ namespace XTransmit.ViewModel
             try
             {
                 // it will update the server info only if the server is not changed
-                ServerInfo serverInfo = ObServerInfoList.First(x => x.HostIP == config.RemoteServer.vHostIP && x.Port == config.RemoteServer.vPort);
+                ServerProfileView serverInfo = ObServerInfoList.First(x => x.HostIP == config.RemoteServer.vHostIP && x.Port == config.RemoteServer.vPort);
                 App.UpdateTransmitServer(serverInfo.vServerProfile);
             }
             catch (Exception) { }
@@ -297,14 +296,14 @@ namespace XTransmit.ViewModel
 
             using (Ping ping = new Ping())
             {
-                foreach (ServerInfo serverInfo in ObServerInfoList)
+                foreach (ServerProfileView serverInfo in ObServerInfoList)
                 {
                     // isPingInProcess is also use to cancel task
                     if (isPingInProcess == false) return;
 
                     try
                     {
-                        PingReply reply = await ping.SendPingAsync(serverInfo.HostIP, 5000);
+                        PingReply reply = await ping.SendPingAsync(serverInfo.HostIP, 2000);
                         serverInfo.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                     }
                     catch (Exception)

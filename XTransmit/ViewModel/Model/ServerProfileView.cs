@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel;
-using XTransmit.Model.Network;
 using XTransmit.Model.Server;
 
-namespace XTransmit.ViewModel.Control
+namespace XTransmit.ViewModel.Model
 {
-    public class ServerInfo : INotifyPropertyChanged
+    public class ServerProfileView : INotifyPropertyChanged
     {
         /** Property SS Info --------------------------------
          */
@@ -137,7 +136,7 @@ namespace XTransmit.ViewModel.Control
 
         public readonly ServerProfile vServerProfile;
 
-        public ServerInfo(ServerProfile serverProfile) => vServerProfile = serverProfile;
+        public ServerProfileView(ServerProfile serverProfile) => vServerProfile = serverProfile;
         
 
         /** INotifyPropertyChanged =================================================================================

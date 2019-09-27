@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using XTransmit.Model.Network;
+using System.Windows;
+using XTransmit.Model.IPAddress;
+using XTransmit.Model.UserAgent;
 
 namespace XTransmit.Model.Curl
 {
     /**
-     * Updated: 2019-09-26
+     * Updated: 2019-09-28
      */
     public class SiteWorker
     {
@@ -15,6 +17,11 @@ namespace XTransmit.Model.Curl
 
         private BackgroundWorker bgWork = null;
         private static readonly Random random = new Random();
+
+        private static readonly string sr_fake_ip_error = (string)Application.Current.FindResource("curl_fake_ip_error");
+        private static readonly string sr_fake_ua_error = (string)Application.Current.FindResource("curl_fake_ua_error");
+        private static readonly string sr_complete = (string)Application.Current.FindResource("_complete");
+        private static readonly string sr_failed = (string)Application.Current.FindResource("_failed");
 
         public SiteWorker(Action<bool> OnStateUpdated, Action<CurlResponse> OnResponse)
         {
@@ -52,61 +59,127 @@ namespace XTransmit.Model.Curl
             bgWork.Dispose();
         }
 
-        private void BWDoWork(object sender, DoWorkEventArgs e)
+        private string PlaySite(string arguments, FakeIP fakeip, FakeUA fakeua, bool readReponse)
         {
-            SiteProfile profile = (SiteProfile)e.Argument;
+            // fake ip
+            if (fakeip != null)
+            {
+                string ip;
+                if (fakeip.FakeMethod == FakeIP.Method.Pick)
+                {
+                    ip = IPManager.GetRandom()?.IP;
+                }
+                else
+                {
+                    ip = IPManager.GetGenerate();
+                }
 
-            string profile_arguments = profile.GetArguments();
-            FakeIP fakeip = FakeIP.From(profile_arguments); // fake ip
+                if (string.IsNullOrWhiteSpace(ip))
+                {
+                    throw new Exception(sr_fake_ip_error);
+                }
+                else
+                {
+                    arguments = arguments.Replace(fakeip.Replace, ip);
+                }
+            }
+
+            // fake ua
+            if (fakeua != null)
+            {
+                string ua = UAManager.GetRandom()?.Value;
+                if (string.IsNullOrWhiteSpace(ua))
+                {
+                    throw new Exception(sr_fake_ua_error);
+                }
+                else
+                {
+                    arguments = arguments.Replace(fakeua.Replace, ua);
+                }
+            }
+
+            // curl process
+            Process process = new Process()
+            {
+                StartInfo =
+                {
+                    FileName = Utility.CurlManager.PathCurlExe,
+                    Arguments = arguments,
+                    WorkingDirectory = App.PathCurl,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = readReponse,
+                },
+            };
+
+            string response;
+            try
+            {
+                process.Start();
+
+                response = process.StartInfo.RedirectStandardOutput ?
+                    process.StandardOutput.ReadToEnd() :
+                    $"{sr_complete} {DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss")}";
+                process.WaitForExit();
+                process.Close();
+            }
+            catch
+            {
+                response = $"{sr_failed} {DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss")}";
+            }
+            finally
+            {
+                process.Dispose();
+            }
+
+            return response;
+        }
+
+        private void BWDoWork(object sender, DoWorkEventArgs ex)
+        {
+            SiteProfile profile = (SiteProfile)ex.Argument;
+
+            string arguments = profile.GetArguments();
+            FakeIP fakeip = FakeIP.From(arguments); // fake ip
+            FakeUA fakeua = FakeUA.From(arguments); // fake ua
 
             // report begin state
             bgWork.ReportProgress(-1, null);
 
             for (int i = 1; i <= profile.PlayTimes; i++)
             {
-                string arguments = profile_arguments;
-                if (fakeip != null)
-                {
-                    string ipAddress = fakeip.FakeMethod == FakeIP.Method.Pick ?
-                        IPAddressManager.GetRandom() : IPAddressManager.GetGenerate();
-                    arguments = arguments.Replace(fakeip.Replace, ipAddress);
-                }
-
-                // curl process
-                Process process = new Process()
-                {
-                    StartInfo =
-                    {
-                        FileName = Utility.CurlManager.PathCurlExe,
-                        Arguments = arguments,
-                        WorkingDirectory = App.PathCurl,
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        RedirectStandardOutput = profile.IsReadResponse,
-                    },
-                };
-                process.Start();
-
-                string response = process.StartInfo.RedirectStandardOutput ?
-                    process.StandardOutput.ReadToEnd() :
-                    DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss");
-                process.WaitForExit();
-                process.Close();
-
-                /** 
-                 * report progress, states. 
+                /** Report progress, states. 
                  * progress is indicated in e.UserState (value: progressFullness)
                  */
                 double progressFullness = (double)i / profile.PlayTimes;
-                bgWork.ReportProgress(100, new object[] { progressFullness, i, response });
 
-                /** 
-                 * sleep. 
-                 * check CancellationPending every 100ms 
+                try
+                {
+                    string response = PlaySite(arguments, fakeip, fakeua, profile.IsReadResponse);
+                    bgWork.ReportProgress(100, new object[] { progressFullness, i, response });
+                }
+                catch (Exception err)
+                {
+                    bgWork.ReportProgress(100, new object[] { progressFullness, i, err.Message });
+                    return;
+                }
+
+                /** No Sleep. Check CancellationPending and continue
                  */
                 if (profile.DelayMin <= 0)
-                    continue;
+                {
+                    if (bgWork.CancellationPending)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
 
+                /** Sleep. Check CancellationPending every 100ms 
+                 */
                 int sleep_count_100ms = profile.DelayMax > profile.DelayMin ?
                     random.Next(profile.DelayMin, profile.DelayMax) * 10
                     : profile.DelayMin * 10;
@@ -116,7 +189,9 @@ namespace XTransmit.Model.Curl
                     System.Threading.Thread.Sleep(100);
 
                     if (bgWork.CancellationPending)
+                    {
                         return;
+                    }
                 }
             }
         }

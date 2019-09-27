@@ -5,10 +5,11 @@ using XTransmit.Utility;
 
 namespace XTransmit
 {
-    /**TODO - Check preference and reset it, Save only when preference has changes
-     * TODO - English, Chinese language
+    /**TODO - English, Chinese language
      * TODO - App Analyze
-     * TODO - Process Exception
+     * TODO - Reset preference if environment has changed
+     * TODO - Catch process exception
+     * TODO - Check memory leak, stream close, object dispose.
      * 
      * NOTE
      * EventHandler name "_"
@@ -98,9 +99,9 @@ namespace XTransmit
             PathShadowsocks = $@"{PathCurrent}\binary\shadowsocks";
             PathCurl = $@"{PathCurrent}\binary\curl";
 
-            FilePreferenceXml = $@"{PathCurrent}\preference.xml";
-            FileConfigXml = $@"{PathCurrent}\config.xml";
-            FileIPAddressXml = $@"{PathCurrent}\datas\IP.xml"; //china ip optimized
+            FilePreferenceXml = $@"{PathCurrent}\datas\Preference.xml";
+            FileConfigXml = $@"{PathCurrent}\datas\Config.xml";
+            FileIPAddressXml = $@"{PathCurrent}\datas\IPAddress.xml"; //china ip optimized
             FileUserAgentXml = $@"{PathCurrent}\datas\UserAgent.xml";
 
             FileServerXml = $@"{PathCurrent}\datas\Servers.xml";

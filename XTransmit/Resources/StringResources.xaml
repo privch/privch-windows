@@ -36,6 +36,8 @@
     <system:String x:Key="_start">Start</system:String>
     <system:String x:Key="_stop">Stop</system:String>
     <system:String x:Key="_fetch">Fetch</system:String>
+    <system:String x:Key="_complete">Complete</system:String>
+    <system:String x:Key="_failed">Failed</system:String>
 
     <system:String x:Key="_os">System</system:String>
     <system:String x:Key="_client">Client</system:String>
@@ -80,6 +82,8 @@
     <system:String x:Key="curl_delay_format">Delay. Fixed, Random (Min, Max)</system:String>
     <system:String x:Key="curl_site_information">Site Information</system:String>
     <system:String x:Key="curl_website_url">Website URL</system:String>
+    <system:String x:Key="curl_fake_ip_error">Unable to fake IP</system:String>
+    <system:String x:Key="curl_fake_ua_error">Unable to fake UA</system:String>
     <system:String x:Key="curl_copy_argument_to_clipboard">Copy Argument to clipboard</system:String>
     <system:String x:Key="curl_copy_response_to_clipboard">Copy Response to clipboard</system:String>
 

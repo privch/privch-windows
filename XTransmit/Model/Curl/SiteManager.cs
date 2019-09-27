@@ -1,53 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Linq;
+using XTransmit.Utility;
 
 namespace XTransmit.Model.Curl
 {
     /**
-     * Updated: 2019-09-24
+     * Updated: 2019-09-28
      */
     public class SiteManager
     {
+        public static List<SiteProfile> SiteList;
+        private static string CurlXmlPath;
+
         // see also Preference.LoadFileOrDefault()
-        public static List<SiteProfile> LoadFileOrDefault(string fileXhttpXml)
+        public static void Load(string pathCurlXml)
         {
-            List<SiteProfile> siteList;
-            FileStream fileStream = null;
-            try
+            if (FileUtil.XmlDeserialize(pathCurlXml, typeof(List<SiteProfile>)) is List<SiteProfile> listSite)
             {
-                fileStream = new FileStream(fileXhttpXml, FileMode.Open);
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<SiteProfile>));
-                siteList = (List<SiteProfile>)xmlSerializer.Deserialize(fileStream);
-                fileStream.Close();
+                SiteList = listSite;
             }
-            catch (Exception)
+            else
             {
-                siteList = new List<SiteProfile>();
-            }
-            finally
-            {
-                fileStream?.Dispose();
+                SiteList = new List<SiteProfile>();
             }
 
-            return siteList;
+            CurlXmlPath = pathCurlXml;
+        }
+        public static void Reload()
+        {
+            if (!string.IsNullOrWhiteSpace(CurlXmlPath))
+            {
+                Load(CurlXmlPath);
+            }
         }
 
-        public static void WriteFile(string fileXhttpXml, List<SiteProfile> siteList)
+        public static void SaveNew(List<SiteProfile> listSite)
         {
-            StreamWriter streamWriter = null;
-            try
-            {
-                streamWriter = new StreamWriter(fileXhttpXml);
-                new XmlSerializer(typeof(List<SiteProfile>)).Serialize(streamWriter, siteList);
-                streamWriter.Close();
-            }
-            catch (Exception) { }
-            finally
-            {
-                streamWriter?.Dispose();
-            }
+            FileUtil.XmlSerialize(CurlXmlPath, listSite);
+        }
+
+        // determin wether the ip list has been changed
+        public static bool HasChangesToFile()
+        {
+            byte[] md5Data = TextUtil.GetXmlMD5(SiteList);
+            byte[] md5File = FileUtil.GetMD5(CurlXmlPath);
+
+            return (md5Data != null && md5File != null) ? !md5File.SequenceEqual(md5Data) : true;
         }
     }
 }

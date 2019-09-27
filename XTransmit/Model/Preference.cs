@@ -1,7 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Windows;
-using System.Xml.Serialization;
+using XTransmit.Utility;
 using XTransmit.ViewModel.Control;
 
 namespace XTransmit.Model
@@ -97,43 +96,21 @@ namespace XTransmit.Model
          * property (which also specified in the XML) value will be overwritten from the XML
          * </summary>
          */
-        public static Preference LoadFileOrDefault(string fileConfigXml)
+        public static Preference LoadFileOrDefault(string pathPrefXml)
         {
-            Preference preference;
-            FileStream fileStream = null;
-            try
+            if (FileUtil.XmlDeserialize(pathPrefXml, typeof(Preference)) is Preference preference)
             {
-                fileStream = new FileStream(fileConfigXml, FileMode.Open);
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Preference));
-                preference = (Preference)xmlSerializer.Deserialize(fileStream);
-                fileStream.Close();
+                return preference;
             }
-            catch (Exception)
+            else
             {
-                preference = new Preference();
+                return new Preference();
             }
-            finally
-            {
-                fileStream?.Dispose();
-            }
-
-            return preference;
         }
 
-        public static void WriteFile(string filePreferenceXml, Preference preference)
+        public static void WriteFile(string pathPrefXml, Preference preference)
         {
-            StreamWriter streamWriter = null;
-            try
-            {
-                streamWriter = new StreamWriter(filePreferenceXml);
-                new XmlSerializer(typeof(Preference)).Serialize(streamWriter, preference);
-                streamWriter.Close();
-            }
-            catch (Exception) { }
-            finally
-            {
-                streamWriter?.Dispose();
-            }
+            FileUtil.XmlSerialize(pathPrefXml, preference);
         }
     }
 }

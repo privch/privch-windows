@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using XTransmit.Model;
 using XTransmit.Model.Server;
 using XTransmit.Utility;
 using XTransmit.ViewModel.Control;
@@ -79,7 +79,7 @@ namespace XTransmit.ViewModel
 
         private void TransmitEnable()
         {
-            Model.Config config = App.GlobalConfig;
+            Config config = App.GlobalConfig;
             if (config.RemoteServer == null)
                 return;
 

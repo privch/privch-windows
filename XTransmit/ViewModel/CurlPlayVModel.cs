@@ -96,7 +96,7 @@ namespace XTransmit.ViewModel
         private void OnSiteResponse(CurlResponse curlResponse)
         {
             WindowProgress = (double)curlResponse.Index / Profile.PlayTimes;
-            ResponseList.Add(curlResponse);
+            ResponseList.Insert(0, curlResponse);
 
             OnPropertyChanged("WindowProgress");
         }

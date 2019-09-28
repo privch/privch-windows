@@ -106,10 +106,9 @@ namespace XTransmit.Utility
                 process_privoxy.Kill();
                 process_privoxy.WaitForExit();
             }
-            catch (Exception)
-            {
-            }
+            catch (Exception) { }
 
+            //The Dispose method calls Close
             process_privoxy.Dispose();
         }
     }

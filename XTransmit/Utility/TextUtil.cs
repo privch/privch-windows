@@ -70,8 +70,8 @@ namespace XTransmit.Utility
         }
 
         /**<summary>
-         * Serialize the objectFrom to xml then deserialize the xml to objectTo and return it
-         * TODO - Function time-consuming test
+         * Serialize the objectFrom to xml then deserialize the xml to objectTo and return it.
+         * Time-consuming 21ms, 19ms, 20ms
          * </summary>
          */
         public static object CopyBySerializer(object objectFrom)

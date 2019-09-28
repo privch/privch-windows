@@ -125,10 +125,11 @@ namespace XTransmit.Utility
                 process_ss_local.Kill();
                 process_ss_local.WaitForExit();
             }
-            catch (Exception)
-            {
-            }
+            catch (Exception) { }
 
+            /**The Dispose method calls Close
+             * https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.close
+             */
             process_ss_local.Dispose();
         }
     }

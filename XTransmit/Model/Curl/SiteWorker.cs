@@ -121,7 +121,6 @@ namespace XTransmit.Model.Curl
                     process.StandardOutput.ReadToEnd() :
                     $"{sr_complete} {DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss")}";
                 process.WaitForExit();
-                process.Close();
             }
             catch
             {

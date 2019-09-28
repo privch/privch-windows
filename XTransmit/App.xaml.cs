@@ -7,7 +7,7 @@ namespace XTransmit
 {
     /**TODO - English, Chinese language
      * TODO - App Analyze
-     * TODO - Reset preference if environment has changed
+     * TODO - Reset preference if environment has been changed
      * TODO - Catch process exception
      * TODO - Check memory leak, stream close, object dispose.
      * 

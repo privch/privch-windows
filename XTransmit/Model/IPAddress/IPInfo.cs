@@ -54,7 +54,7 @@ namespace XTransmit.Model.IPAddress
             catch { }
             finally
             {
-                process.Close();
+                process.Dispose();
             }
 
             return ReadToObject(response);

@@ -51,7 +51,7 @@ namespace XTransmit.ViewModel
         private void sendEmail(object parameter)
         {
             string app_email = (string)Application.Current.FindResource("app_email");
-            Process.Start($@"mailto://{app_email}");
+            Process.Start($@"mailto://{app_email}"); // return null
         }
 
         public RelayCommand CommandViewLicense => new RelayCommand(viewLicense);

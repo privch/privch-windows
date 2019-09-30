@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 /**
  * TODO - Memory leak test
- * Updated: 2019-09-24
+ * Updated: 2019-09-29
  */
 
 namespace XTransmit.Utility
@@ -122,13 +122,15 @@ namespace XTransmit.Utility
 
         public static bool UncompressGZ(string filePath, byte[] content)
         {
-            FileStream fileStream = null;
+            MemoryStream memContent = null;
             GZipStream gzStream = null;
+            FileStream fileStream = null;
 
             try
             {
+                memContent = new MemoryStream(content);
+                gzStream = new GZipStream(memContent, CompressionMode.Decompress, false);
                 fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-                gzStream = new GZipStream(new MemoryStream(content), CompressionMode.Decompress, false);
 
                 // Because the uncompressed size of the file is unknown, we are using an arbitrary buffer size.
                 byte[] buffer = new byte[4096];
@@ -138,6 +140,7 @@ namespace XTransmit.Utility
                     fileStream.Write(buffer, 0, count);
                 }
 
+                memContent.Close();
                 gzStream.Close();
                 fileStream.Close();
             }
@@ -147,6 +150,7 @@ namespace XTransmit.Utility
             }
             finally
             {
+                memContent?.Dispose();
                 gzStream?.Dispose();
                 fileStream?.Dispose();
             }

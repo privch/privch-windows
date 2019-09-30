@@ -13,7 +13,7 @@ namespace XTransmit.ViewModel
      */
     public class ServerConfigVModel : BaseViewModel
     {
-        public ServerProfileView ServerInfoData { get; private set; }
+        public ServerView ServerInfoData { get; private set; }
         public ItemInfo[] ServerIPData { get; private set; }
 
         private bool vIsFetching = false;
@@ -33,7 +33,7 @@ namespace XTransmit.ViewModel
         private static readonly string sr_invalid_ip = (string)Application.Current.FindResource("invalid_ip");
         private static readonly string sr_invalid_port = (string)Application.Current.FindResource("invalid_port");
 
-        public ServerConfigVModel(ServerProfileView serverInfo)
+        public ServerConfigVModel(ServerView serverInfo)
         {
             ServerInfoData = serverInfo;
 
@@ -47,12 +47,12 @@ namespace XTransmit.ViewModel
                 new ItemInfo{Label = "Created", Text = ServerInfoData.TimeCreated ?? sr_not_availabe},
                 new ItemInfo{Label = "Last Ping (ms)", Text = ServerInfoData.Ping.ToString()},
 
-                new ItemInfo{Label = "Country", Text = ServerInfoData.vServerProfile.vIPData?.country ?? sr_not_availabe},
-                new ItemInfo{Label = "Region", Text = ServerInfoData.vServerProfile.vIPData?.region ?? sr_not_availabe},
-                new ItemInfo{Label = "City", Text = ServerInfoData.vServerProfile.vIPData?.city ?? sr_not_availabe},
-                new ItemInfo{Label = "Location", Text = ServerInfoData.vServerProfile.vIPData?.loc ?? sr_not_availabe},
-                new ItemInfo{Label = "Org", Text = ServerInfoData.vServerProfile.vIPData?.org ?? sr_not_availabe},
-                new ItemInfo{Label = "Host Name", Text = ServerInfoData.vServerProfile.vIPData?.hostname ?? sr_not_availabe},
+                new ItemInfo{Label = "Country", Text = ServerInfoData.vServerProfile.IPData?.country ?? sr_not_availabe},
+                new ItemInfo{Label = "Region", Text = ServerInfoData.vServerProfile.IPData?.region ?? sr_not_availabe},
+                new ItemInfo{Label = "City", Text = ServerInfoData.vServerProfile.IPData?.city ?? sr_not_availabe},
+                new ItemInfo{Label = "Location", Text = ServerInfoData.vServerProfile.IPData?.loc ?? sr_not_availabe},
+                new ItemInfo{Label = "Org", Text = ServerInfoData.vServerProfile.IPData?.org ?? sr_not_availabe},
+                new ItemInfo{Label = "Host Name", Text = ServerInfoData.vServerProfile.IPData?.hostname ?? sr_not_availabe},
             };
         }
 
@@ -89,7 +89,7 @@ namespace XTransmit.ViewModel
                 new View.DialogPrompt(sr_title, sr_invalid_ip).ShowDialog();
                 return;
             }
-            if (ServerInfoData.Port < 100 || ServerInfoData.Port > 65535)
+            if (ServerInfoData.HostPort < 100 || ServerInfoData.HostPort > 65535)
             {
                 new View.DialogPrompt(sr_title, sr_invalid_port).ShowDialog();
                 return;

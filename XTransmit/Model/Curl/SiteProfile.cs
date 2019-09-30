@@ -5,7 +5,7 @@ using System.Text;
 namespace XTransmit.Model.Curl
 {
     /**
-     * Updated: 2019-09-28
+     * Updated: 2019-09-30
      */
     [Serializable]
     public class SiteProfile
@@ -23,8 +23,6 @@ namespace XTransmit.Model.Curl
         // curl. 
         public bool IsReadResponse { get; set; }
         public List<CurlArgument> ArgumentList { get; set; }
-        // TODO - Proxy auto config
-        public string Socks5Proxy; // not used
 
         /**<summary>
          * Return a new object with all properties to default value.

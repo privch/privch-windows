@@ -36,7 +36,9 @@ namespace XTransmit.Utility
 
             // Check binary files
             if (!FileUtil.CheckMD5(PathPrivoxyExe, privoxy_exe_md5))
+            {
                 FileUtil.UncompressGZ(PathPrivoxyExe, Properties.Resources.privoxy_exe_gz);
+            }
 
             return true;
         }
@@ -60,9 +62,9 @@ namespace XTransmit.Utility
                 }
                 catch (Exception) { }
 
-                foreach (Process proc in list)
+                foreach (Process process in list)
                 {
-                    proc.Dispose();
+                    process.Dispose();
                 }
             }
         }
@@ -74,7 +76,9 @@ namespace XTransmit.Utility
             config = config.Replace("PORT_SSLOCAL", portShadowsocks.ToString());
 
             if (!FileUtil.WriteUTF8($@"{App.PathPrivoxy}\{privoxy_config_txt_name}", config))
+            {
                 return false;
+            }
 
             // process privoxy
             process_privoxy = new Process()
@@ -95,10 +99,12 @@ namespace XTransmit.Utility
             return true;
         }
 
-        public static void Exit()
+        public static void Stop()
         {
             if (process_privoxy == null)
+            {
                 return;
+            }
 
             try
             {

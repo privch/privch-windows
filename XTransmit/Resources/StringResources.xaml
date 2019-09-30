@@ -82,6 +82,7 @@
     <system:String x:Key="curl_delay_format">Delay. Fixed, Random (Min, Max)</system:String>
     <system:String x:Key="curl_site_information">Site Information</system:String>
     <system:String x:Key="curl_website_url">Website URL</system:String>
+    <system:String x:Key="curl_fake_client_error">Unable to fack Client</system:String>
     <system:String x:Key="curl_fake_ip_error">Unable to fake IP</system:String>
     <system:String x:Key="curl_fake_ua_error">Unable to fake UA</system:String>
     <system:String x:Key="curl_copy_argument_to_clipboard">Copy Argument to clipboard</system:String>

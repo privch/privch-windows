@@ -54,7 +54,7 @@ namespace XTransmit.ViewModel
 
             // convert to list and save
             List<SiteProfile> siteProfiles = new List<SiteProfile>(SiteListOC);
-            SiteManager.SaveNew(siteProfiles);
+            SiteManager.Save(siteProfiles);
         }
 
         /** Commands ==============================================================================
@@ -81,7 +81,7 @@ namespace XTransmit.ViewModel
 
                     // convert to list and save
                     List<SiteProfile> siteProfiles = new List<SiteProfile>(SiteListOC);
-                    SiteManager.SaveNew(siteProfiles);
+                    SiteManager.Save(siteProfiles);
                 }
             }
         }

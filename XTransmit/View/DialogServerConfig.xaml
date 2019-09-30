@@ -90,7 +90,7 @@
                              Kind="Passport"/>
                 <TextBox DockPanel.Dock="Right"
                          md:HintAssist.Hint="{StaticResource _port}"
-                         Text="{Binding Path=ServerInfoData.Port}"/>
+                         Text="{Binding Path=ServerInfoData.HostPort}"/>
             </DockPanel>
 
             <!-- password -->

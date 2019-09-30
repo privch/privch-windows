@@ -30,15 +30,15 @@ namespace XTransmit.View
             if (IsVisible)
             {
                 e.Cancel = true;
-                Hide();
+                Hide(); // set visiblily?
                 return;
             }
 
             /** if there were other proxy servers running they should set system proxy again
              */
             NativeMethods.DisableProxy();
-            PrivoxyManager.Exit();
-            SSManager.Exit();
+            PrivoxyManager.Stop();
+            SSManager.KillRunning(); // server pool
 
             // Save window placement
             Preference preference = App.GlobalPreference;

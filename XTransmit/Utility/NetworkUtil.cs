@@ -7,7 +7,7 @@ using System.Net.NetworkInformation;
 namespace XTransmit.Utility
 {
     /**
-     * Updated: 2019-08-02
+     * Updated: 2019-09-30
      */
     public static class NetworkUtil
     {
@@ -28,20 +28,55 @@ namespace XTransmit.Utility
             }
 
             if (networkInterfaces == null || networkInterfaces.Length < 1)
+            {
                 return adapterList;
+            }
 
             foreach (NetworkInterface adapter in networkInterfaces)
             {
                 if (adapter.NetworkInterfaceType == NetworkInterfaceType.Loopback)
+                {
                     continue;
+                }
 
                 if (adapter.OperationalStatus != OperationalStatus.Up)
+                {
                     continue;
+                }
 
                 adapterList.Add(adapter);
             }
 
             return adapterList;
+        }
+
+        public static List<int> GetPortInUse(int startingPort)
+        {
+            IPEndPoint[] endPoints;
+            List<int> portList = new List<int>();
+
+            IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
+
+            // getting active connections
+            TcpConnectionInformation[] connections = properties.GetActiveTcpConnections();
+            portList.AddRange(from n in connections
+                              where n.LocalEndPoint.Port >= startingPort
+                              select n.LocalEndPoint.Port);
+
+            // getting active tcp listners - WCF service listening in tcp
+            endPoints = properties.GetActiveTcpListeners();
+            portList.AddRange(from n in endPoints
+                              where n.Port >= startingPort
+                              select n.Port);
+
+            // getting active udp listeners
+            endPoints = properties.GetActiveUdpListeners();
+            portList.AddRange(from n in endPoints
+                              where n.Port >= startingPort
+                              select n.Port);
+
+            portList.Sort();
+            return portList;
         }
 
         /** 
@@ -50,39 +85,21 @@ namespace XTransmit.Utility
          * </summary>
          * <returns>The free port or 0 if it did not find a free port</returns>
          */
-        public static int GetAvailablePort(int startingPort)
+        public static int GetAvailablePort(int startingPort, List<int> exceptPort = null)
         {
-            IPEndPoint[] endPoints;
-            List<int> portArray = new List<int>();
-
-            IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
-
-            // getting active connections
-            TcpConnectionInformation[] connections = properties.GetActiveTcpConnections();
-            portArray.AddRange(from n in connections
-                               where n.LocalEndPoint.Port >= startingPort
-                               select n.LocalEndPoint.Port);
-
-            // getting active tcp listners - WCF service listening in tcp
-            endPoints = properties.GetActiveTcpListeners();
-            portArray.AddRange(from n in endPoints
-                               where n.Port >= startingPort
-                               select n.Port);
-
-            // getting active udp listeners
-            endPoints = properties.GetActiveUdpListeners();
-            portArray.AddRange(from n in endPoints
-                               where n.Port >= startingPort
-                               select n.Port);
-
-            portArray.Sort();
+            if (exceptPort == null)
+            {
+                exceptPort = GetPortInUse(startingPort);
+            }
 
             Random random = new Random();
-            for (int i = startingPort; i < UInt16.MaxValue; i++) // random enough times
+            for (int i = startingPort; i < ushort.MaxValue; i++) // random enough times
             {
-                int port = random.Next(startingPort, UInt16.MaxValue);
-                if (!portArray.Contains(port))
+                int port = random.Next(startingPort, ushort.MaxValue);
+                if (!exceptPort.Contains(port))
+                {
                     return port;
+                }
             }
 
             return 0;

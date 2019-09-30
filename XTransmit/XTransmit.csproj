@@ -86,9 +86,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <None Include="App.config" />
+    <None Include="packages.config" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -104,22 +111,17 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="GlobalSuppressions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Config.cs" />
-    <Compile Include="Model\Curl\FakeUA.cs" />
+    <Compile Include="Model\Preference.cs" />
     <Compile Include="Model\Curl\CurlArgument.cs" />
     <Compile Include="Model\Curl\CurlResponse.cs" />
     <Compile Include="Model\Curl\SiteManager.cs" />
     <Compile Include="Model\Curl\SiteProfile.cs" />
     <Compile Include="Model\Curl\SiteWorker.cs" />
+    <Compile Include="Model\Curl\FakeClient.cs" />
+    <Compile Include="Model\Curl\FakeUA.cs" />
     <Compile Include="Model\Curl\FakeIP.cs" />
     <Compile Include="Model\Network\BandwidthInfo.cs" />
     <Compile Include="Model\Network\BandwidthMeter.cs" />
@@ -128,11 +130,8 @@
     <Compile Include="Model\IPAddress\IPInfo.cs" />
     <Compile Include="Model\UserAgent\UAProfile.cs" />
     <Compile Include="Model\UserAgent\UAManager.cs" />
-    <Compile Include="Model\Preference.cs" />
     <Compile Include="Model\Server\ServerManager.cs" />
     <Compile Include="Model\Server\ServerProfile.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Utility\CurlManager.cs" />
     <Compile Include="Utility\FileUtil.cs" />
     <Compile Include="Utility\NativeMethods.cs" />
@@ -149,7 +148,7 @@
     <Compile Include="ViewModel\Control\ContentTable.cs" />
     <Compile Include="ViewModel\Control\Placement.cs" />
     <Compile Include="ViewModel\Control\ProgressInfo.cs" />
-    <Compile Include="ViewModel\Model\ServerProfileView.cs" />
+    <Compile Include="ViewModel\Model\ServerView.cs" />
     <Compile Include="ViewModel\CurlPlayVModel.cs" />
     <Compile Include="ViewModel\DialogButtonVModel.cs" />
     <Compile Include="ViewModel\DialogEditVModel.cs" />
@@ -160,6 +159,8 @@
     <Compile Include="ViewModel\ServerConfigVModel.cs" />
     <Compile Include="ViewModel\SettingVModel.cs" />
     <Compile Include="ViewModel\UserAgentVModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="View\ContentCurl.xaml.cs">
       <DependentUpon>ContentCurl.xaml</DependentUpon>
     </Compile>

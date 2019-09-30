@@ -8,7 +8,6 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using XTransmit.Model;
 using XTransmit.Model.Server;
 using XTransmit.View;
 using XTransmit.ViewModel.Model;
@@ -23,8 +22,7 @@ namespace XTransmit.ViewModel
      */
     class ContentServerVModel : BaseViewModel
     {
-        public ObservableCollection<ServerProfileView> ObServerInfoList { get; private set; }
-        private readonly Config config;
+        public ObservableCollection<ServerView> ServerViewListOC { get; private set; }
 
         // languages
         private static readonly string sr_config_0_found = (string)Application.Current.FindResource("server_config_0_found");
@@ -36,14 +34,13 @@ namespace XTransmit.ViewModel
 
         public ContentServerVModel()
         {
-            config = App.GlobalConfig;
             ServerManager.Load(App.FileServerXml);
 
             // load servers and convert to ObservableCollection
-            ObServerInfoList = new ObservableCollection<ServerProfileView>();
+            ServerViewListOC = new ObservableCollection<ServerView>();
             foreach (ServerProfile server in ServerManager.ServerList)
             {
-                ObServerInfoList.Add(new ServerProfileView(server));
+                ServerViewListOC.Add(new ServerView(server));
             }
 
             // save data on closing
@@ -58,35 +55,28 @@ namespace XTransmit.ViewModel
                 return;
             }
 
-            isFetchInProcess = false; // isPingInProcess is also use to cancel task
-            isPingInProcess = false;  // isPingInProcess is also use to cancel task
+            is_fetch_in_process = false; // cancel task
+            is_ping_in_process = false;  // cancel task
 
-            // convert to list and save
-            List<ServerProfileView> infos = new List<ServerProfileView>(ObServerInfoList);
-            List<ServerProfile> profiles = new List<ServerProfile>();
-            foreach (ServerProfileView info in infos)
-            {
-                profiles.Add(info.vServerProfile);
-            }
-
-            ServerManager.Save(profiles);
+            // data changed ?
+            SaveServer(null);
         }
 
 
         /** Commands =========================================================================================================
          */
-        private volatile bool isFetchInProcess = false; // isPingInProcess is also use to cancel task
-        private volatile bool isPingInProcess = false;  // isPingInProcess is also use to cancel task
+        private volatile bool is_fetch_in_process = false; // also use to cancel task
+        private volatile bool is_ping_in_process = false;  // also use to cancel task
 
-        private int addServer(List<ServerProfile> serverList)
+        private int AddServer(List<ServerProfile> serverList)
         {
             int added = 0;
             foreach (ServerProfile server in serverList)
             {
                 // no duplicates
-                if (ObServerInfoList.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server)) == null)
+                if (ServerViewListOC.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server)) == null)
                 {
-                    ObServerInfoList.Add(new ServerProfileView(server));
+                    ServerViewListOC.Add(new ServerView(server));
                     ++added;
                 }
             }
@@ -94,23 +84,23 @@ namespace XTransmit.ViewModel
             return added;
         }
 
-        private int addServer(ServerProfile server)
+        private int AddServer(ServerProfile server)
         {
             int added = 0;
-            if (ObServerInfoList.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server)) == null)
+            if (ServerViewListOC.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server)) == null)
             {
-                ObServerInfoList.Add(new ServerProfileView(server));
+                ServerViewListOC.Add(new ServerView(server));
                 ++added;
             }
 
             return added;
         }
 
-        private bool isServerNotInUse(object serverNew)
+        private bool IsServerNotInUse(object serverNew)
         {
-            if (serverNew is ServerProfileView serverInfo)
+            if (serverNew is ServerView serverInfo)
             {
-                if (!serverInfo.vServerProfile.Equals(config.RemoteServer))
+                if (!serverInfo.vServerProfile.Equals(App.GlobalConfig.RemoteServer))
                 {
                     return true;
                 }
@@ -118,22 +108,110 @@ namespace XTransmit.ViewModel
             return false;
         }
 
+        // save data
+        public RelayCommand CommandSave => new RelayCommand(SaveServer);
+        private void SaveServer(object parameter)
+        {
+            // convert to list and save
+            List<ServerProfile> profiles = new List<ServerProfile>();
+            foreach (ServerView serverView in ServerViewListOC)
+            {
+                profiles.Add(serverView.vServerProfile);
+            }
+
+            ServerManager.Save(profiles);
+        }
+
+        // ipinfo
+        public RelayCommand CommandFetchInfo => new RelayCommand(FetchServerInfo, FetchNotInProgress);
+        private bool FetchNotInProgress(object parameter) => !is_fetch_in_process;
+        private async void FetchServerInfo(object parameter)
+        {
+            DialogButton dialog = new DialogButton(sr_ask_keep_info_title, sr_ask_keep_info_message);
+            dialog.ShowDialog();
+            if (!(dialog.CancelableResult is bool keep))
+            {
+                return;
+            }
+
+            is_fetch_in_process = true;
+            App.UpdateProgress(40);
+
+            await Task.Run(() =>
+            {
+                foreach (ServerView serverView in ServerViewListOC)
+                {
+                    // isFetchInProcess is also use to cancel task
+                    if (is_fetch_in_process == false)
+                    {
+                        break;
+                    }
+
+                    serverView.UpdateIPInfo(!keep);
+                }
+            });
+
+            // it will update the server info only if the server is not changed
+            ServerView serverSelected = ServerViewListOC.FirstOrDefault(x => x.vServerProfile.Equals(App.GlobalConfig.RemoteServer));
+            if (serverSelected != null)
+            {
+                App.UpdateTransmitServer(serverSelected.vServerProfile);
+            }
+
+            is_fetch_in_process = false;
+            App.UpdateProgress(-40);
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        // ping 
+        public RelayCommand CommandPingInfo => new RelayCommand(FetchServerPing, PingNotInProgress);
+        private bool PingNotInProgress(object parameter) => !is_ping_in_process;
+        private async void FetchServerPing(object parameter)
+        {
+            is_ping_in_process = true;
+            App.UpdateProgress(40);
+
+            using (Ping ping = new Ping())
+            {
+                foreach (ServerView serverView in ServerViewListOC)
+                {
+                    // isPingInProcess is also use to cancel task
+                    if (is_ping_in_process == false) return;
+
+                    try
+                    {
+                        PingReply reply = await ping.SendPingAsync(serverView.HostIP, App.GlobalConfig.PingTimeouts);
+                        serverView.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
+                    }
+                    catch (Exception)
+                    {
+                        serverView.Ping = -1;
+                    }
+                }
+            }
+
+            is_ping_in_process = false;
+            App.UpdateProgress(-40);
+            CommandManager.InvalidateRequerySuggested();
+        }
+
         // add server by scan qrcode
         // TODO Fix - Some QRCode can not be recognized
-        public RelayCommand CommandAddServerQRCode => new RelayCommand(addServerQRCode);
-        private void addServerQRCode(object parameter)
+        public RelayCommand CommandAddServerQRCode => new RelayCommand(AddServerQRCode);
+        private void AddServerQRCode(object parameter)
         {
+            // copy screen
             Bitmap bitmapScreen = new Bitmap((int)SystemParameters.PrimaryScreenWidth, (int)SystemParameters.PrimaryScreenHeight, PixelFormat.Format32bppArgb);
             using (Graphics graphics = Graphics.FromImage(bitmapScreen))
             {
                 graphics.CopyFromScreen(0, 0, 0, 0, bitmapScreen.Size, CopyPixelOperation.SourceCopy);
             }
 
-            var sourceScreen = new BitmapLuminanceSource(bitmapScreen);
-            var bitmap = new BinaryBitmap(new HybridBinarizer(sourceScreen));
+            BitmapLuminanceSource sourceScreen = new BitmapLuminanceSource(bitmapScreen);
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(sourceScreen));
 
             QRCodeReader reader = new QRCodeReader();
-            var result = reader.decode(bitmap);
+            Result result = reader.decode(bitmap);
             if (result == null || string.IsNullOrWhiteSpace(result.Text))
             {
                 App.ShowNotify(sr_config_0_found);
@@ -143,7 +221,7 @@ namespace XTransmit.ViewModel
             List<ServerProfile> serverList = ServerManager.ImportServers(result.Text);
             if (serverList.Count > 0)
             {
-                int added = addServer(serverList);
+                int added = AddServer(serverList);
                 App.ShowNotify($"{added} {sr_config_x_imported}");
             }
             else
@@ -153,13 +231,13 @@ namespace XTransmit.ViewModel
         }
 
         // add server by clipboard import
-        public RelayCommand CommandAddServerClipboard => new RelayCommand(addServerClipboard);
-        private void addServerClipboard(object parameter)
+        public RelayCommand CommandAddServerClipboard => new RelayCommand(AddServerClipboard);
+        private void AddServerClipboard(object parameter)
         {
             List<ServerProfile> serverList = ServerManager.ImportServers(Clipboard.GetText(TextDataFormat.Text));
             if (serverList.Count > 0)
             {
-                int added = addServer(serverList);
+                int added = AddServer(serverList);
                 App.ShowNotify($"{added} {sr_config_x_imported}");
             }
             else
@@ -169,8 +247,8 @@ namespace XTransmit.ViewModel
         }
 
         // add server by file import
-        public RelayCommand CommandAddServerFile => new RelayCommand(addServerFile);
-        private void addServerFile(object parameter)
+        public RelayCommand CommandAddServerFile => new RelayCommand(AddServerFile);
+        private void AddServerFile(object parameter)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -186,7 +264,7 @@ namespace XTransmit.ViewModel
             List<ServerProfile> serverList = ServerManager.ImportServers(openFileDialog.FileName);
             if (serverList.Count > 0)
             {
-                int added = addServer(serverList);
+                int added = AddServer(serverList);
                 App.ShowNotify($"{added} {sr_config_x_imported}");
             }
             else
@@ -196,126 +274,57 @@ namespace XTransmit.ViewModel
         }
 
         // add server by manual create
-        public RelayCommand CommandAddServerNew => new RelayCommand(addServerNew);
-        private void addServerNew(object parameter)
+        public RelayCommand CommandAddServerNew => new RelayCommand(AddServerNew);
+        private void AddServerNew(object parameter)
         {
             ServerProfile server = new ServerProfile();
             if (new DialogServerConfig(server).ShowDialog() is bool update && update == true)
             {
-                int added = addServer(server);
+                int added = AddServer(server);
                 App.ShowNotify($"{added} {sr_config_x_added}");
             }
         }
 
         // select server, not in use
-        public RelayCommand CommandSelectServer => new RelayCommand(selectServer, isServerNotInUse);
-        private void selectServer(object serverNew)
+        public RelayCommand CommandSelectServer => new RelayCommand(SelectServer, IsServerNotInUse);
+        private void SelectServer(object serverNew)
         {
-            ServerProfileView serverInfo = (ServerProfileView)serverNew;
+            ServerView serverView = (ServerView)serverNew;
 
             // Set ServerProfile
-            App.UpdateTransmitServer(serverInfo.vServerProfile);
+            App.UpdateTransmitServer(serverView.vServerProfile);
         }
 
         // edit server, not in use
-        public RelayCommand CommandEditServer => new RelayCommand(editServer, isServerNotInUse);
-        private void editServer(object serverSelected)
+        public RelayCommand CommandEditServer => new RelayCommand(EditServer, IsServerNotInUse);
+        private void EditServer(object serverSelected)
         {
-            ServerProfileView serverInfo = (ServerProfileView)serverSelected;
-            ServerProfile serverProfile = serverInfo.vServerProfile.Copy();
+            ServerView serverView = (ServerView)serverSelected;
+            ServerProfile serverProfile = serverView.vServerProfile.Copy();
 
             if (new DialogServerConfig(serverProfile).ShowDialog() is bool update && update == true)
             {
-                int index = ObServerInfoList.IndexOf(serverInfo);
+                int index = ServerViewListOC.IndexOf(serverView);
                 if (index >= 0)
                 {
-                    ObServerInfoList[index] = new ServerProfileView(serverProfile);
+                    ServerViewListOC[index] = new ServerView(serverProfile);
                 }
             }
         }
 
         // delete selected server(s), not in use
-        public RelayCommand CommandDeleteServers => new RelayCommand(deleteServers);
-        private void deleteServers(object serversSelected)
+        public RelayCommand CommandDeleteServers => new RelayCommand(DeleteServers);
+        private void DeleteServers(object serversSelected)
         {
             /** https://stackoverflow.com/a/14852516
              */
             System.Collections.IList selected = serversSelected as System.Collections.IList;
-            List<ServerProfileView> serverInfoList = selected.Cast<ServerProfileView>().ToList();
+            List<ServerView> serverViewList = selected.Cast<ServerView>().ToList();
 
-            foreach (ServerProfileView serverInfo in serverInfoList)
+            foreach (ServerView serverView in serverViewList)
             {
-                ObServerInfoList.Remove(serverInfo);
+                ServerViewListOC.Remove(serverView);
             }
-        }
-
-        // ipinfo
-        public RelayCommand CommandFetchInfo => new RelayCommand(fetchServerInfo, fetchNotInProgress);
-        private bool fetchNotInProgress(object parameter) => !isFetchInProcess;
-        private async void fetchServerInfo(object parameter)
-        {
-            DialogButton dialog = new DialogButton(sr_ask_keep_info_title, sr_ask_keep_info_message);
-            dialog.ShowDialog();
-            if (!(dialog.CancelableResult is bool keep))
-                return;
-
-            isFetchInProcess = true;
-            App.UpdateProgress(40);
-
-            await Task.Run(() =>
-            {
-                foreach (ServerProfileView serverInfo in ObServerInfoList)
-                {
-                    // isFetchInProcess is also use to cancel task
-                    if (isFetchInProcess == false) return;
-
-                    serverInfo.UpdateIPInfo(!keep);
-                }
-            });
-
-            try
-            {
-                // it will update the server info only if the server is not changed
-                ServerProfileView serverInfo = ObServerInfoList.First(x => x.HostIP == config.RemoteServer.vHostIP && x.Port == config.RemoteServer.vPort);
-                App.UpdateTransmitServer(serverInfo.vServerProfile);
-            }
-            catch (Exception) { }
-
-            isFetchInProcess = false;
-            App.UpdateProgress(-40);
-            CommandManager.InvalidateRequerySuggested();
-        }
-
-        // ping 
-        public RelayCommand CommandPingInfo => new RelayCommand(fetchServerPing, pingNotInProgress);
-        private bool pingNotInProgress(object parameter) => !isPingInProcess;
-        private async void fetchServerPing(object parameter)
-        {
-            isPingInProcess = true;
-            App.UpdateProgress(40);
-
-            using (Ping ping = new Ping())
-            {
-                foreach (ServerProfileView serverInfo in ObServerInfoList)
-                {
-                    // isPingInProcess is also use to cancel task
-                    if (isPingInProcess == false) return;
-
-                    try
-                    {
-                        PingReply reply = await ping.SendPingAsync(serverInfo.HostIP, 2000);
-                        serverInfo.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
-                    }
-                    catch (Exception)
-                    {
-                        serverInfo.Ping = -1;
-                    }
-                }
-            }
-
-            isPingInProcess = false;
-            App.UpdateProgress(-40);
-            CommandManager.InvalidateRequerySuggested();
         }
     }
 }

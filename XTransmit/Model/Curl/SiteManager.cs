@@ -34,7 +34,7 @@ namespace XTransmit.Model.Curl
             }
         }
 
-        public static void SaveNew(List<SiteProfile> listSite)
+        public static void Save(List<SiteProfile> listSite)
         {
             FileUtil.XmlSerialize(CurlXmlPath, listSite);
         }

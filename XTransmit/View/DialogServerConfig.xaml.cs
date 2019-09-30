@@ -21,7 +21,7 @@ namespace XTransmit.View
             Top = preference.WindowServerConfig.Y;
 
             // set viewmodel
-            DataContext = new ServerConfigVModel(new ServerProfileView(serverProfile));
+            DataContext = new ServerConfigVModel(new ServerView(serverProfile));
             Closing += Window_Closing;
         }
 

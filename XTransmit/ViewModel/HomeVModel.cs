@@ -10,7 +10,7 @@ using XTransmit.ViewModel.Control;
 namespace XTransmit.ViewModel
 {
     /**
-     * Updated: 2019-08-06
+     * Updated: 2019-09-30
      */
     public class HomeVModel : BaseViewModel
     {
@@ -19,16 +19,48 @@ namespace XTransmit.ViewModel
             get => App.GlobalConfig.IsTransmitEnabled;
             set
             {
-                if (value) TransmitEnable();
-                else TransmitDisable();
-
-                App.GlobalConfig.IsTransmitEnabled = value;
-                OnPropertyChanged("IsTransmitEnabled");
+                if (value)
+                {
+                    TransmitEnable();
+                }
+                else
+                {
+                    TransmitDisable();
+                }
             }
         }
 
-        public string RemoteServerName => App.GlobalConfig.RemoteServer != null ?
-            App.GlobalConfig.RemoteServer.vFriendlyName : sr_server_not_set;
+        public bool IsServerPoolEnabled
+        {
+            get => App.GlobalConfig.IsServerPoolEnabled;
+            set
+            {
+                if (value)
+                {
+                    StartServerPool();
+                }
+                else
+                {
+                    StopServerPool();
+                }
+            }
+        }
+        
+        public string TransmitStatus
+        {
+            get
+            {
+                if (App.GlobalConfig.IsServerPoolEnabled)
+                {
+                    return $"{SSManager.SSProcessMap.Count}";
+                }
+                else
+                {
+                    return App.GlobalConfig.RemoteServer != null ?
+                        App.GlobalConfig.RemoteServer.FriendlyName : sr_server_not_set;
+                }
+            }
+        }
 
         // progress
         public ProgressInfo Progress { get; private set; }
@@ -52,15 +84,19 @@ namespace XTransmit.ViewModel
                 new ContentTable("Netwrok", new View.ContentNetwork()),
             };
 
+            // TODO - DragDrop table
             ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.Title == App.GlobalPreference.ContentDisplay);
             if (contentTable == null)
+            {
                 contentTable = ContentList[0];
+            }
 
             contentTable.IsChecked = true;
             ContentDisplay = contentTable.Content;
 
-            // transmit control
+            // transmit control. Trigge the set
             IsTransmitEnabled = App.GlobalConfig.IsTransmitEnabled;
+            App.GlobalConfig.IsServerPoolEnabled = false;
 
             // save data on closing
             Application.Current.MainWindow.Closing += MainWindow_Closing;
@@ -70,7 +106,9 @@ namespace XTransmit.ViewModel
         {
             // case "hide" 
             if (Application.Current.MainWindow.IsVisible)
+            {
                 return;
+            }
 
             // save preference
             ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.IsChecked);
@@ -81,7 +119,9 @@ namespace XTransmit.ViewModel
         {
             Config config = App.GlobalConfig;
             if (config.RemoteServer == null)
+            {
                 return;
+            }
 
             if (config.SystemProxyPort == 0)
             {
@@ -89,39 +129,94 @@ namespace XTransmit.ViewModel
             }
             else
             {
-                var uri = NativeMethods.GetCurrentConfig("https://www.google.com");
-                if (uri.Host == "127.0.0.1" && uri.Port == config.SystemProxyPort)
+                List<int> portInUse = NetworkUtil.GetPortInUse(2000);
+                if (portInUse.Contains(config.SystemProxyPort))
                 {
-                    config.SystemProxyPort = NetworkUtil.GetAvailablePort(2000);
+                    config.SystemProxyPort = NetworkUtil.GetAvailablePort(2000, portInUse);
                 }
             }
             NativeMethods.EnableProxy($"127.0.0.1:{config.SystemProxyPort}", NativeMethods.Bypass);
 
             if (config.GlobalSocks5Port == 0)
             {
-                config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(3000);
+                config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(2000);
+            }
+            else
+            {
+                List<int> portInUse = NetworkUtil.GetPortInUse(2000);
+                if (portInUse.Contains(config.GlobalSocks5Port))
+                {
+                    config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(2000, portInUse);
+                }
             }
 
-            PrivoxyManager.Exit();
             PrivoxyManager.Start(config.SystemProxyPort, config.GlobalSocks5Port);
 
             if (config.RemoteServer != null)
             {
-                SSManager.Exit();
                 SSManager.Start(config.RemoteServer, config.GlobalSocks5Port);
             }
+
+            App.GlobalConfig.IsTransmitEnabled = true;
+            OnPropertyChanged("IsTransmitEnabled"); //from notifyicon
         }
         private void TransmitDisable()
         {
             NativeMethods.DisableProxy();
-            PrivoxyManager.Exit();
-            SSManager.Exit();
+            PrivoxyManager.Stop();
+            SSManager.Stop(App.GlobalConfig.RemoteServer); // server pool
+
+            App.GlobalConfig.IsTransmitEnabled = false;
+            OnPropertyChanged("IsTransmitEnabled"); //from notifyicon
         }
 
-        // actoins ======================================================================================================
+        /** Server Pool 
+         */
+        private void StartServerPool()
+        {
+            foreach (ServerProfile server in ServerManager.ServerList)
+            {
+                int listen = NetworkUtil.GetAvailablePort(2000);
+                if (listen > 0)
+                {
+                    SSManager.Start(server, listen);
+                }
+            }
+
+            // ToggleButton auto update "Checked"(server_pool_enabled) properity
+            App.GlobalConfig.IsServerPoolEnabled = true;
+            OnPropertyChanged("TransmitStatus");
+        }
+
+        private void StopServerPool()
+        {
+            // "push" transmit status
+            if (App.GlobalConfig.IsTransmitEnabled)
+            {
+                ServerManager.ServerList.Remove(App.GlobalConfig.RemoteServer);
+            }
+
+            foreach (ServerProfile server in ServerManager.ServerList)
+            {
+                SSManager.Stop(server);
+            }
+
+            // "pop" transmit status
+            if (App.GlobalConfig.IsTransmitEnabled)
+            {
+                ServerManager.ServerList.Add(App.GlobalConfig.RemoteServer);
+            }
+
+            App.GlobalConfig.IsServerPoolEnabled = false;
+            OnPropertyChanged("TransmitStatus");
+        }
+
+        /** actoins ====================================================================================================== 
+         */
         // a functional interface
         public void AddServerByScanQRCode()
         {
+            // TODO - take care of the ContentTables order
             ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
             serverViewModel.CommandAddServerQRCode.Execute(null);
         }
@@ -145,7 +240,7 @@ namespace XTransmit.ViewModel
             {
                 if (App.GlobalConfig.IsTransmitEnabled)
                 {
-                    SSManager.Exit();
+                    SSManager.Stop(App.GlobalConfig.RemoteServer);
                     SSManager.Start(serverProfile, App.GlobalConfig.GlobalSocks5Port);
                 }
             }
@@ -157,8 +252,8 @@ namespace XTransmit.ViewModel
 
         /** Commands ======================================================================================================
          */
-        public RelayCommand CommandSwitchContent => new RelayCommand(switchContent);
-        private void switchContent(object newTitle)
+        public RelayCommand CommandSwitchContent => new RelayCommand(SwitchContent);
+        private void SwitchContent(object newTitle)
         {
             if (newTitle is string title)
             {
@@ -172,22 +267,22 @@ namespace XTransmit.ViewModel
         }
 
         // show setting
-        public RelayCommand CommandShowSetting => new RelayCommand(showSetting);
-        private void showSetting(object parameter)
+        public RelayCommand CommandShowSetting => new RelayCommand(ShowSetting);
+        private void ShowSetting(object parameter)
         {
             new View.DialogSetting().ShowDialog();
         }
 
         // show about
-        public RelayCommand CommandShowAbout => new RelayCommand(showAbout);
-        private void showAbout(object parameter)
+        public RelayCommand CommandShowAbout => new RelayCommand(ShowAbout);
+        private void ShowAbout(object parameter)
         {
             new View.DialogAbout().ShowDialog();
         }
 
         // exit
-        public RelayCommand CommandExit => new RelayCommand(exitApp);
-        private void exitApp(object parameter)
+        public RelayCommand CommandExit => new RelayCommand(ExitApp);
+        private void ExitApp(object parameter)
         {
             App.CloseMainWindow();
         }

@@ -3,56 +3,56 @@ using XTransmit.Model.Server;
 
 namespace XTransmit.ViewModel.Model
 {
-    public class ServerProfileView : INotifyPropertyChanged
+    public class ServerView : INotifyPropertyChanged
     {
         /** Property SS Info --------------------------------
          */
         public string HostIP
         {
-            get => vServerProfile.vHostIP;
+            get => vServerProfile.HostIP;
             set
             {
-                vServerProfile.vHostIP = value;
+                vServerProfile.HostIP = value;
                 OnPropertyChanged("HostIP");
             }
         }
 
-        public int Port
+        public int HostPort
         {
-            get => vServerProfile.vPort;
+            get => vServerProfile.HostPort;
             set
             {
-                vServerProfile.vPort = value;
-                OnPropertyChanged("Port");
+                vServerProfile.HostPort = value;
+                OnPropertyChanged("HostPort");
             }
         }
 
         public string Password
         {
-            get => vServerProfile.vPassword;
+            get => vServerProfile.Password;
             set
             {
-                vServerProfile.vPassword = value;
+                vServerProfile.Password = value;
                 OnPropertyChanged("Password");
             }
         }
 
         public string Encrypt
         {
-            get => vServerProfile.vEncrypt;
+            get => vServerProfile.Encrypt;
             set
             {
-                vServerProfile.vEncrypt = value;
+                vServerProfile.Encrypt = value;
                 OnPropertyChanged("Encrypt");
             }
         }
 
         public string Remarks
         {
-            get => vServerProfile.vRemarks;
+            get => vServerProfile.Remarks;
             set
             {
-                vServerProfile.vRemarks = value;
+                vServerProfile.Remarks = value;
                 OnPropertyChanged("Remarks");
             }
         }
@@ -63,30 +63,30 @@ namespace XTransmit.ViewModel.Model
          */
         public bool PluginEnabled
         {
-            get => vServerProfile.vPluginEnabled;
+            get => vServerProfile.PluginEnabled;
             set
             {
-                vServerProfile.vPluginEnabled = value;
+                vServerProfile.PluginEnabled = value;
                 OnPropertyChanged("PluginEnabled");
             }
         }
 
         public string PluginName
         {
-            get => vServerProfile.vPluginName;
+            get => vServerProfile.PluginName;
             set
             {
-                vServerProfile.vPluginName = value;
+                vServerProfile.PluginName = value;
                 OnPropertyChanged("PluginName");
             }
         }
 
         public string PluginOption
         {
-            get => vServerProfile.vPluginOption;
+            get => vServerProfile.PluginOption;
             set
             {
-                vServerProfile.vPluginOption = value;
+                vServerProfile.PluginOption = value;
                 OnPropertyChanged("PluginOption");
             }
         }
@@ -95,36 +95,36 @@ namespace XTransmit.ViewModel.Model
          */
         public string FriendlyName
         {
-            get => vServerProfile.vFriendlyName;
+            get => vServerProfile.FriendlyName;
             set
             {
-                vServerProfile.vFriendlyName = value;
+                vServerProfile.FriendlyName = value;
                 OnPropertyChanged("FriendlyName");
             }
         }
 
         public int Timeout
         {
-            get => vServerProfile.vTimeout;
+            get => vServerProfile.Timeout;
             set
             {
-                vServerProfile.vTimeout = value;
+                vServerProfile.Timeout = value;
                 OnPropertyChanged("Timeout");
             }
         }
 
-        public string TimeCreated => vServerProfile.vTimeCreated;
-
         public long Ping
         {
-            get => vServerProfile.vPing;
+            get => vServerProfile.Ping;
             set
             {
-                vServerProfile.vPing = value;
+                vServerProfile.Ping = value;
                 OnPropertyChanged("Ping");
             }
         }
-        
+
+        public string TimeCreated => vServerProfile.TimeCreated;
+
         public void UpdateIPInfo(bool focus)
         {
             vServerProfile.FetchIPData(focus);
@@ -132,12 +132,12 @@ namespace XTransmit.ViewModel.Model
 
             OnPropertyChanged("FriendlyName");
         }
-        
+
 
         public readonly ServerProfile vServerProfile;
 
-        public ServerProfileView(ServerProfile serverProfile) => vServerProfile = serverProfile;
-        
+        public ServerView(ServerProfile serverProfile) => vServerProfile = serverProfile;
+
 
         /** INotifyPropertyChanged =================================================================================
          */

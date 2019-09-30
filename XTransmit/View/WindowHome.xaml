@@ -54,13 +54,25 @@
 
             <!-- transmit control and status -->
             <StackPanel Grid.Column="1" Margin="20, 0, 0, 0" Orientation="Horizontal">
-                <ToggleButton Margin="10" 
-                              VerticalAlignment="Center"
+                <ToggleButton Margin="10, 0" VerticalAlignment="Center"
+                              IsChecked="{Binding IsTransmitEnabled, Mode=TwoWay}">
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignSwitchToggleButton}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=xToggleButtonServerPool, Path=IsChecked}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+
+                <ToggleButton x:Name="xToggleButtonServerPool" Margin="10, 0" VerticalAlignment="Center"
                               Style="{StaticResource MaterialDesignSwitchToggleButton}"
-                              IsChecked="{Binding IsTransmitEnabled, Mode=TwoWay}"/>
-                <TextBlock Margin="10"
-                           VerticalAlignment="Center"
-                           Text="{Binding RemoteServerName, Mode=OneWay}" />
+                              IsChecked="{Binding IsServerPoolEnabled, Mode=TwoWay}"/>
+                
+                <TextBlock Margin="10, 0" VerticalAlignment="Center"
+                           Text="{Binding TransmitStatus, Mode=OneWay}" />
             </StackPanel>
 
             <!-- running progress -->

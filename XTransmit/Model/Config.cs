@@ -14,6 +14,7 @@ namespace XTransmit.Model
     {
         // transmit
         public bool IsTransmitEnabled;
+        public bool IsServerPoolEnabled; // save status will not restore
         public int SystemProxyPort;
         public int GlobalSocks5Port;
         public ServerProfile RemoteServer;
@@ -26,13 +27,14 @@ namespace XTransmit.Model
         public Config()
         {
             IsTransmitEnabled = false;
+            IsServerPoolEnabled = false;
 
             SystemProxyPort = 0;
             GlobalSocks5Port = 0;
             RemoteServer = null;
 
             ConnectionTimeouts = 3;
-            PingTimeouts = 1;
+            PingTimeouts = 1200;
         }
 
 

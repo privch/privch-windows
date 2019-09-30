@@ -2,23 +2,23 @@
 
 namespace XTransmit.Model.Curl
 {
-    /** Affect http head only
-     * Updated: 2019-09-28
+    /** Proxy traffic
+     * Updated: 2019-09-29
      */
-    class FakeIP
+    class FakeClient
     {
-        public const string Pattern = @"\[IP/\S+\]";
-        public enum Method { Pick, Gen };
+        public const string Pattern = @"\[Proxy/\S+\]";
+        public enum Method { Socks5 };
 
         public string Replace;
         public Method FakeMethod;
 
         /**
          * <summary>
-         * [IP/Pick], [IP/Gen]
+         * [Proxy/Socks5]
          * </summary>
          */
-        public static FakeIP From(string input)
+        public static FakeClient From(string input)
         {
             Match fakeMatch = Regex.Match(input, Pattern);
             if (!fakeMatch.Success)
@@ -26,30 +26,26 @@ namespace XTransmit.Model.Curl
                 return null;
             }
 
-            string fakeMethod = fakeMatch.Value.Substring(4, fakeMatch.Value.Length - 5);
+            string fakeMethod = fakeMatch.Value.Substring(7, fakeMatch.Value.Length - 8);
             if (string.IsNullOrWhiteSpace(fakeMethod))
             {
                 return null;
             }
 
             Method method;
-            if (fakeMethod == "Pick")
+            if (fakeMethod == "Socks5")
             {
-                method = Method.Pick;
-            }
-            else if (fakeMethod == "Gen")
-            {
-                method = Method.Gen;
+                method = Method.Socks5;
             }
             else
             {
                 return null;
             }
-            
-            return new FakeIP()
+
+            return new FakeClient()
             {
                 Replace = fakeMatch.Value,
-                FakeMethod = method
+                FakeMethod = method,
             };
         }
     }

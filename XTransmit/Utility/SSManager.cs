@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using XTransmit.Model.Server;
@@ -9,13 +10,13 @@ using XTransmit.Model.Server;
  * 
  * Updated: 2019-09-22
  */
-
 namespace XTransmit.Utility
 {
     public static class SSManager
     {
-        public static readonly string PathSSLocalExe = $@"{App.PathShadowsocks}\{ss_local_exe_name}";
-        private static Process process_ss_local = null;
+        public static readonly Dictionary<ServerProfile, Process> SSProcessMap = new Dictionary<ServerProfile, Process>();
+        private static string SSExePath => $@"{App.PathShadowsocks}\{ss_local_exe_name}";
+        private static readonly Random RandGen = new Random();
 
         private const string cygev_4_dll_name = "cygev-4.dll";
         private const string cygev_4_dll_md5 = "1d4ab5325fe69fd662ab1b9af8c03145";
@@ -39,11 +40,37 @@ namespace XTransmit.Utility
         private const string ss_local_exe_process = "ss-local-x";
         private const string ss_local_exe_md5 = "cd5a05ed703aaa8b17a463ca23a4d828";
 
+        public static void KillRunning()
+        {
+            // this list contain only this app's "ss" process
+            Process[] list = Process.GetProcessesByName(ss_local_exe_process);
+            if (list != null && list.Length > 0)
+            {
+                // kill app's ss-local-x process
+                try
+                {
+                    Process running = list.First(process => process.MainModule.FileName == SSExePath);
+                    if (running != null)
+                    {
+                        running.CloseMainWindow();
+                        running.Kill();
+                        running.WaitForExit();
+                    }
+                }
+                catch (Exception) { }
+
+                foreach (Process process in list)
+                {
+                    process.Dispose();
+                }
+            }
+        }
+
         public static bool Prepare()
         {
             // Creates all directories and subdirectories
             try { System.IO.Directory.CreateDirectory(App.PathShadowsocks); }
-            catch (Exception) { return false; }
+            catch { return false; }
 
             // Check binary files
             object[,] checks =
@@ -54,83 +81,95 @@ namespace XTransmit.Utility
                 { $@"{App.PathShadowsocks}\{cygpcre_1_dll_name}", cygpcre_1_dll_md5 , Properties.Resources.cygpcre_1_dll_gz },
                 { $@"{App.PathShadowsocks}\{cygsodium_23_dll_name}", cygsodium_23_dll_md5 , Properties.Resources.cygsodium_23_dll_gz },
                 { $@"{App.PathShadowsocks}\{cygwin1_dll_name}", cygwin1_dll_md5 , Properties.Resources.cygwin1_dll_gz },
-                { PathSSLocalExe, ss_local_exe_md5, Properties.Resources.ss_local_exe_gz },
+                { SSExePath, ss_local_exe_md5, Properties.Resources.ss_local_exe_gz },
             };
 
             int length = checks.GetLength(0);
             for (int i = 0; i < length; i++)
             {
                 if (!FileUtil.CheckMD5((string)checks[i, 0], (string)checks[i, 1]))
-                    FileUtil.UncompressGZ((string)checks[i, 0], (byte[])checks[i, 2]);
-            }
-
-            return true;
-        }
-
-        public static void KillRunning()
-        {
-            // this list contain only this app's "ss" process
-            Process[] list = Process.GetProcessesByName(ss_local_exe_process);
-            if (list != null && list.Length > 0)
-            {
-                // kill app's ss-local-x process
-                try
                 {
-                    Process running = list.First(process => process.MainModule.FileName == PathSSLocalExe);
-                    if (running != null)
+                    if (!FileUtil.UncompressGZ((string)checks[i, 0], (byte[])checks[i, 2]))
                     {
-                        running.CloseMainWindow();
-                        running.Kill();
-                        running.WaitForExit();
+                        return false;
                     }
                 }
-                catch (Exception) { }
-
-                foreach (Process proc in list)
-                {
-                    proc.Dispose();
-                }
             }
-        }
 
-        public static bool Start(ServerProfile server, int portListen)
-        {
-            string arguments = $"-s {server.vHostIP} -p {server.vPort} -l {portListen} -k {server.vPassword} -m {server.vEncrypt} -t {server.vTimeout}";
-
-            process_ss_local = new Process()
-            {
-                StartInfo =
-                {
-                    FileName = PathSSLocalExe,
-                    Arguments = arguments,
-                    WorkingDirectory = App.PathShadowsocks,
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    LoadUserProfile = false,
-                },
-            };
-
-            process_ss_local.Start();
             return true;
         }
 
-        public static void Exit()
+        public static bool Start(ServerProfile server, int listen)
         {
-            if (process_ss_local == null)
-                return;
+            if (SSProcessMap.ContainsKey(server))
+            {
+                return true;
+            }
+
+            string arguments = $"-s {server.HostIP} -p {server.HostPort} -l {listen} -k {server.Password} -m {server.Encrypt} -t {server.Timeout}";
 
             try
             {
-                process_ss_local.CloseMainWindow();
-                process_ss_local.Kill();
-                process_ss_local.WaitForExit();
-            }
-            catch (Exception) { }
+                Process process = Process.Start(
+                    new ProcessStartInfo
+                    {
+                        FileName = SSExePath,
+                        Arguments = arguments,
+                        WorkingDirectory = App.PathShadowsocks,
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        LoadUserProfile = false,
+                    });
 
-            /**The Dispose method calls Close
-             * https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.close
-             */
-            process_ss_local.Dispose();
+                server.ListenPort = listen;
+                SSProcessMap.Add(server, process);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static void Stop(ServerProfile server)
+        {
+            if (SSProcessMap.ContainsKey(server))
+            {
+                Process process = SSProcessMap[server];
+
+                try
+                {
+                    process.CloseMainWindow();
+                    process.Kill();
+                    process.WaitForExit();
+                }
+                catch (Exception) { }
+                finally
+                {
+                    /**The dispose method calls Close
+                    * https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.close
+                    */
+                    process.Dispose();
+                }
+
+                server.ListenPort = -1;
+                SSProcessMap.Remove(server);
+            }
+        }
+
+        // Server Pool 
+        public static ServerProfile GerRendom()
+        {
+            if (SSProcessMap.Count > 0)
+            {
+                int index = RandGen.Next(0, SSProcessMap.Count - 1);
+                return SSProcessMap.Keys.ElementAt(index);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -3,7 +3,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using XTransmit.Model.IPAddress;
+using XTransmit.Model.Server;
 using XTransmit.Model.UserAgent;
+using XTransmit.Utility;
 
 namespace XTransmit.Model.Curl
 {
@@ -18,6 +20,7 @@ namespace XTransmit.Model.Curl
         private BackgroundWorker bgWork = null;
         private static readonly Random random = new Random();
 
+        private static readonly string sr_fake_client_error = (string)Application.Current.FindResource("curl_fake_client_error");
         private static readonly string sr_fake_ip_error = (string)Application.Current.FindResource("curl_fake_ip_error");
         private static readonly string sr_fake_ua_error = (string)Application.Current.FindResource("curl_fake_ua_error");
         private static readonly string sr_complete = (string)Application.Current.FindResource("_complete");
@@ -59,8 +62,22 @@ namespace XTransmit.Model.Curl
             bgWork.Dispose();
         }
 
-        private string PlaySite(string arguments, FakeIP fakeip, FakeUA fakeua, bool readReponse)
+        private string PlaySite(string arguments, FakeClient fakeClient, FakeIP fakeip, FakeUA fakeua, bool readReponse)
         {
+            // fake client
+            if (fakeClient != null)
+            {
+                ServerProfile server = SSManager.GerRendom();
+                if (server != null)
+                {
+                    arguments = arguments.Replace(fakeClient.Replace, $"socks5://127.0.0.1:{server.ListenPort}");
+                }
+                else
+                {
+                    throw new Exception(sr_fake_client_error);
+                }
+            }
+
             // fake ip
             if (fakeip != null)
             {
@@ -74,13 +91,13 @@ namespace XTransmit.Model.Curl
                     ip = IPManager.GetGenerate();
                 }
 
-                if (string.IsNullOrWhiteSpace(ip))
+                if (!string.IsNullOrWhiteSpace(ip))
                 {
-                    throw new Exception(sr_fake_ip_error);
+                    arguments = arguments.Replace(fakeip.Replace, ip);
                 }
                 else
                 {
-                    arguments = arguments.Replace(fakeip.Replace, ip);
+                    throw new Exception(sr_fake_ip_error);
                 }
             }
 
@@ -88,13 +105,13 @@ namespace XTransmit.Model.Curl
             if (fakeua != null)
             {
                 string ua = UAManager.GetRandom()?.Value;
-                if (string.IsNullOrWhiteSpace(ua))
+                if (!string.IsNullOrWhiteSpace(ua))
                 {
-                    throw new Exception(sr_fake_ua_error);
+                    arguments = arguments.Replace(fakeua.Replace, ua);
                 }
                 else
                 {
-                    arguments = arguments.Replace(fakeua.Replace, ua);
+                    throw new Exception(sr_fake_ua_error);
                 }
             }
 
@@ -103,7 +120,7 @@ namespace XTransmit.Model.Curl
             {
                 StartInfo =
                 {
-                    FileName = Utility.CurlManager.PathCurlExe,
+                    FileName = CurlManager.PathCurlExe,
                     Arguments = arguments,
                     WorkingDirectory = App.PathCurl,
                     CreateNoWindow = true,
@@ -137,8 +154,9 @@ namespace XTransmit.Model.Curl
         private void BWDoWork(object sender, DoWorkEventArgs ex)
         {
             SiteProfile profile = (SiteProfile)ex.Argument;
-
             string arguments = profile.GetArguments();
+
+            FakeClient fakeClient = FakeClient.From(arguments); // fake client
             FakeIP fakeip = FakeIP.From(arguments); // fake ip
             FakeUA fakeua = FakeUA.From(arguments); // fake ua
 
@@ -154,7 +172,7 @@ namespace XTransmit.Model.Curl
 
                 try
                 {
-                    string response = PlaySite(arguments, fakeip, fakeua, profile.IsReadResponse);
+                    string response = PlaySite(arguments, fakeClient, fakeip, fakeua, profile.IsReadResponse);
                     bgWork.ReportProgress(100, new object[] { progressFullness, i, response });
                 }
                 catch (Exception err)

@@ -55,6 +55,7 @@ namespace XTransmit.View.TrayNotify
         private void ContextMenu_Popup(object sender, EventArgs e)
         {
             menuitemEnableTransmit.Checked = App.GlobalConfig.IsTransmitEnabled;
+            menuitemEnableTransmit.Enabled = !App.GlobalConfig.IsServerPoolEnabled;
         }
 
         private void MenuItem_EnableTransmit(object sender, EventArgs e)

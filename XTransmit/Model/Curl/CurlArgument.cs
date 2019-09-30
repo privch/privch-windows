@@ -3,24 +3,24 @@
 namespace XTransmit.Model.Curl
 {
     /**
-     * Updated: 2019-08-02
+     * Updated: 2019-09-30
      */
     [Serializable]
     public class CurlArgument
     {
         public string Argument
         {
-            get { return vArgument; }
-            set { vArgument = value.Trim(); }
+            get { return argument_option; }
+            set { argument_option = value.Trim(); }
         }
 
         public string Value
         {
-            get { return vValue; }
-            set { vValue = value.Trim(); }
+            get { return argument_value; }
+            set { argument_value = value.Trim(); }
         }
 
-        private string vArgument;
-        private string vValue;
+        private string argument_option;
+        private string argument_value;
     }
 }

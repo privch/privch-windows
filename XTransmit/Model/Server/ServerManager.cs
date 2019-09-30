@@ -36,23 +36,25 @@ namespace XTransmit.Model.Server
             FileUtil.XmlSerialize(ServerXmlPath, listServerProfile);
         }
 
-        /**
+
+        /** Import ---------------------------------------------------------------------------------------
          * start with "ss://". 
-         * Reference code: 
-         * https://github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
+         * Reference code: github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
          */
         public static ServerProfile ParseLegacyServer(string ssUrl)
         {
             var match = UrlFinder.Match(ssUrl);
             if (!match.Success)
+            {
                 return null;
+            }
 
             ServerProfile serverProfile = new ServerProfile();
             var base64 = match.Groups["base64"].Value.TrimEnd('/');
             var tag = match.Groups["tag"].Value;
             if (!string.IsNullOrEmpty(tag))
             {
-                serverProfile.vRemarks = HttpUtility.UrlDecode(tag, Encoding.UTF8);
+                serverProfile.Remarks = HttpUtility.UrlDecode(tag, Encoding.UTF8);
             }
 
             Match details = null;
@@ -67,12 +69,14 @@ namespace XTransmit.Model.Server
             }
 
             if (!details.Success)
+            {
                 return null;
+            }
 
-            serverProfile.vEncrypt = details.Groups["method"].Value;
-            serverProfile.vPassword = details.Groups["password"].Value;
-            serverProfile.vHostIP = details.Groups["hostname"].Value;
-            serverProfile.vPort = int.Parse(details.Groups["port"].Value);
+            serverProfile.Encrypt = details.Groups["method"].Value;
+            serverProfile.Password = details.Groups["password"].Value;
+            serverProfile.HostIP = details.Groups["hostname"].Value;
+            serverProfile.HostPort = int.Parse(details.Groups["port"].Value);
 
             serverProfile.SetFriendlyNameDefault();
             return serverProfile;
@@ -92,7 +96,9 @@ namespace XTransmit.Model.Server
             {
                 string serverUrl = serverInfo.Trim();
                 if (!serverUrl.StartsWith("ss://", StringComparison.InvariantCultureIgnoreCase))
+                {
                     continue;
+                }
 
                 ServerProfile serverProfile = ParseLegacyServer(serverUrl);
                 if (serverProfile != null)   //legacy
@@ -113,9 +119,9 @@ namespace XTransmit.Model.Server
 
                     serverProfile = new ServerProfile
                     {
-                        vHostIP = parsedUrl.IdnHost,
-                        vPort = parsedUrl.Port,
-                        vRemarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped)
+                        HostIP = parsedUrl.IdnHost,
+                        HostPort = parsedUrl.Port,
+                        Remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped)
                     };
 
                     // parse base64 UserInfo
@@ -138,19 +144,19 @@ namespace XTransmit.Model.Server
                         continue;
                     }
 
-                    serverProfile.vEncrypt = userInfoParts[0];
-                    serverProfile.vPassword = userInfoParts[1];
+                    serverProfile.Encrypt = userInfoParts[0];
+                    serverProfile.Password = userInfoParts[1];
 
                     // plugin
                     NameValueCollection queryParameters = HttpUtility.ParseQueryString(parsedUrl.Query);
                     string[] pluginParts = HttpUtility.UrlDecode(queryParameters["plugin"] ?? "").Split(new[] { ';' }, 2);
                     if (pluginParts.Length > 0)
                     {
-                        serverProfile.vPluginName = pluginParts[0] ?? "";
+                        serverProfile.PluginName = pluginParts[0] ?? "";
                     }
                     if (pluginParts.Length > 1)
                     {
-                        serverProfile.vPluginOption = pluginParts[1] ?? "";
+                        serverProfile.PluginOption = pluginParts[1] ?? "";
                     }
 
                     serverProfile.SetFriendlyNameDefault();

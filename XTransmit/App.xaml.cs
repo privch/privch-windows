@@ -8,13 +8,12 @@ namespace XTransmit
     /**TODO - English, Chinese language
      * TODO - App Analyze
      * TODO - Reset preference if environment has been changed
-     * TODO - Catch process exception
      * TODO - Check memory leak, stream close, object dispose.
      * 
      * NOTE
      * EventHandler name "_"
      * 
-     * Updated: 2019-08-06
+     * Updated: 2019-09-30
      */
     public partial class App : Application
     {
@@ -139,9 +138,9 @@ namespace XTransmit
         // Something wrong happen, Unexpercted, Abnormally
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            string app_name = (string)FindResource("app_name");
-            new View.DialogPrompt(app_name, e.Exception.Message).ShowDialog();
-
+            // TODO - Handle exception safety
+            //string app_name = (string)FindResource("app_name");
+            //new View.DialogPrompt(app_name, e.Exception.Message).ShowDialog();
             Shutdown();
         }
     }

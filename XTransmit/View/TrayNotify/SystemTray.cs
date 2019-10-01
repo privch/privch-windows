@@ -4,7 +4,7 @@ using System.Windows;
 namespace XTransmit.View.TrayNotify
 {
     /**
-     * Updated: 2019-09-24
+     * Updated: 2019-09-30
      */
     public class SystemTray
     {

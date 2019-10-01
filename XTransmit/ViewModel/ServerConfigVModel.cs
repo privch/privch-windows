@@ -52,6 +52,7 @@ namespace XTransmit.ViewModel
                 new ItemInfo{Label = "City", Text = ServerInfoData.vServerProfile.IPData?.city ?? sr_not_availabe},
                 new ItemInfo{Label = "Location", Text = ServerInfoData.vServerProfile.IPData?.loc ?? sr_not_availabe},
                 new ItemInfo{Label = "Org", Text = ServerInfoData.vServerProfile.IPData?.org ?? sr_not_availabe},
+                new ItemInfo{Label = "Postal", Text = ServerInfoData.vServerProfile.IPData?.postal ?? sr_not_availabe},
                 new ItemInfo{Label = "Host Name", Text = ServerInfoData.vServerProfile.IPData?.hostname ?? sr_not_availabe},
             };
         }
@@ -78,8 +79,8 @@ namespace XTransmit.ViewModel
             CommandManager.InvalidateRequerySuggested();
         }
 
-        public RelayCommand CommandCloseOK => new RelayCommand(closeOK, IsNotFetching);
-        private void closeOK(object parameter)
+        public RelayCommand CommandCloseOK => new RelayCommand(CloseOK, IsNotFetching);
+        private void CloseOK(object parameter)
         {
             Window window = (Window)parameter;
 
@@ -99,8 +100,8 @@ namespace XTransmit.ViewModel
             window.Close();
         }
 
-        public RelayCommand CommandCloseCancel => new RelayCommand(closeCancel);
-        private void closeCancel(object parameter)
+        public RelayCommand CommandCloseCancel => new RelayCommand(CloseCancel);
+        private void CloseCancel(object parameter)
         {
             if (parameter is Window window)
             {

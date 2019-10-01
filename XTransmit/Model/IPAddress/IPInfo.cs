@@ -6,7 +6,7 @@ using System.Text;
 namespace XTransmit.Model.IPAddress
 {
     /**
-     * Updated: 2019-09-28
+     * Updated: 2019-09-30
      */
     public class IPInfo
     {
@@ -31,30 +31,28 @@ namespace XTransmit.Model.IPAddress
         {
             // TODO - UA, Proxy Parameter
             // curl process
-            Process process = new Process()
-            {
-                StartInfo =
-                {
-                    FileName = Utility.CurlManager.PathCurlExe,
-                    Arguments = $"--header \"Accept: application/json\" ipinfo.io/{ip}",
-                    WorkingDirectory = App.PathCurl,
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                },
-            };
-
+            Process process = null;
             string response = null;
             try
             {
-                process.Start();
+                process = Process.Start(
+                    new ProcessStartInfo
+                    {
+                        FileName = Utility.CurlManager.CurlExePath,
+                        Arguments = $"--header \"Accept: application/json\" ipinfo.io/{ip}",
+                        WorkingDirectory = App.PathCurl,
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                    });
+
                 response = process.StandardOutput.ReadToEnd();
                 process.WaitForExit();
             }
             catch { }
             finally
             {
-                process.Dispose();
+                process?.Dispose();
             }
 
             return ReadToObject(response);

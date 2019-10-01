@@ -151,7 +151,6 @@ namespace XTransmit.ViewModel
             }
 
             PrivoxyManager.Start(config.SystemProxyPort, config.GlobalSocks5Port);
-
             if (config.RemoteServer != null)
             {
                 SSManager.Start(config.RemoteServer, config.GlobalSocks5Port);
@@ -236,7 +235,7 @@ namespace XTransmit.ViewModel
 
         public void UpdateTransmitServer(ServerProfile serverProfile)
         {
-            if (!App.GlobalConfig.RemoteServer.Equals(serverProfile))
+            if (App.GlobalConfig.RemoteServer == null || !App.GlobalConfig.RemoteServer.Equals(serverProfile))
             {
                 if (App.GlobalConfig.IsTransmitEnabled)
                 {
@@ -246,7 +245,7 @@ namespace XTransmit.ViewModel
             }
 
             App.GlobalConfig.RemoteServer = serverProfile;
-            OnPropertyChanged("RemoteServerName");
+            OnPropertyChanged("TransmitStatus");
         }
 
 

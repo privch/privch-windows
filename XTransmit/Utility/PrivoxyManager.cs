@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 
 /**
- * Updated: 2019-08-02
+ * Updated: 2019-09-30
  */
-
 namespace XTransmit.Utility
 {
     /** Notes:
@@ -28,6 +26,31 @@ namespace XTransmit.Utility
 
         private const string privoxy_config_txt_name = "privoxy-config.txt";
 
+        public static void KillRunning()
+        {
+            // list contains all "privoxy" process
+            Process[] list = Process.GetProcessesByName(privoxy_exe_process);
+            if (list != null && list.Length > 0)
+            {
+                foreach (Process process in list)
+                {
+                    // kill app's privoxy process
+                    try
+                    {
+                        if (process.MainModule.FileName == PathPrivoxyExe)
+                        {
+                            process.CloseMainWindow();
+                            process.Kill();
+                            process.WaitForExit();
+                        }
+                    }
+                    catch (Exception) { }
+
+                    process.Dispose();
+                }
+            }
+        }
+
         public static bool Prepare()
         {
             // Creates all directories and subdirectories
@@ -37,36 +60,13 @@ namespace XTransmit.Utility
             // Check binary files
             if (!FileUtil.CheckMD5(PathPrivoxyExe, privoxy_exe_md5))
             {
-                FileUtil.UncompressGZ(PathPrivoxyExe, Properties.Resources.privoxy_exe_gz);
+                if (!FileUtil.UncompressGZ(PathPrivoxyExe, Properties.Resources.privoxy_exe_gz))
+                {
+                    return false;
+                }
             }
 
             return true;
-        }
-
-        public static void KillRunning()
-        {
-            // list contains all "privoxy" process
-            Process[] list = Process.GetProcessesByName(privoxy_exe_process);
-            if (list != null && list.Length > 0)
-            {
-                // kill app's privoxy process
-                try
-                {
-                    Process running = list.First(process => process.MainModule.FileName == PathPrivoxyExe);
-                    if (running != null)
-                    {
-                        running.CloseMainWindow();
-                        running.Kill();
-                        running.WaitForExit();
-                    }
-                }
-                catch (Exception) { }
-
-                foreach (Process process in list)
-                {
-                    process.Dispose();
-                }
-            }
         }
 
         public static bool Start(int portPrivoxy, int portShadowsocks)
@@ -81,21 +81,25 @@ namespace XTransmit.Utility
             }
 
             // process privoxy
-            process_privoxy = new Process()
+            try
             {
-                StartInfo =
-                {
-                    FileName = PathPrivoxyExe,
-                    Arguments = $@"{App.PathPrivoxy}\{privoxy_config_txt_name}",
-                    WorkingDirectory = App.PathPrivoxy,
-                    UseShellExecute = true,
-                    CreateNoWindow = true,
-                    LoadUserProfile = false,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                }
-            };
+                process_privoxy = Process.Start(
+                    new ProcessStartInfo
+                    {
+                        FileName = PathPrivoxyExe,
+                        Arguments = $@"{App.PathPrivoxy}\{privoxy_config_txt_name}",
+                        WorkingDirectory = App.PathPrivoxy,
+                        UseShellExecute = true,
+                        CreateNoWindow = true,
+                        LoadUserProfile = false,
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                    });
+            }
+            catch
+            {
+                return false;
+            }
 
-            process_privoxy.Start();
             return true;
         }
 

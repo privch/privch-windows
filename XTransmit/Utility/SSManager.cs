@@ -8,7 +8,7 @@ using XTransmit.Model.Server;
  * shadowsocks-libev-win-x86_64, 2019-09-22
  * shadowsocks-libev 3.3.1
  * 
- * Updated: 2019-09-22
+ * Updated: 2019-09-30
  */
 namespace XTransmit.Utility
 {
@@ -46,21 +46,20 @@ namespace XTransmit.Utility
             Process[] list = Process.GetProcessesByName(ss_local_exe_process);
             if (list != null && list.Length > 0)
             {
-                // kill app's ss-local-x process
-                try
-                {
-                    Process running = list.First(process => process.MainModule.FileName == SSExePath);
-                    if (running != null)
-                    {
-                        running.CloseMainWindow();
-                        running.Kill();
-                        running.WaitForExit();
-                    }
-                }
-                catch (Exception) { }
-
                 foreach (Process process in list)
                 {
+                    // kill app's ss-local-x process
+                    try
+                    {
+                        if (process.MainModule.FileName == SSExePath)
+                        {
+                            process.CloseMainWindow();
+                            process.Kill();
+                            process.WaitForExit();
+                        }
+                    }
+                    catch (Exception) { }
+
                     process.Dispose();
                 }
             }
@@ -108,9 +107,10 @@ namespace XTransmit.Utility
 
             string arguments = $"-s {server.HostIP} -p {server.HostPort} -l {listen} -k {server.Password} -m {server.Encrypt} -t {server.Timeout}";
 
+            Process process = null;
             try
             {
-                Process process = Process.Start(
+                process = Process.Start(
                     new ProcessStartInfo
                     {
                         FileName = SSExePath,
@@ -127,6 +127,10 @@ namespace XTransmit.Utility
             catch
             {
                 return false;
+            }
+            finally
+            {
+                process?.Dispose();
             }
 
             return true;

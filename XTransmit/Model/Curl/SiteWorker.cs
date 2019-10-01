@@ -10,7 +10,7 @@ using XTransmit.Utility;
 namespace XTransmit.Model.Curl
 {
     /**
-     * Updated: 2019-09-28
+     * Updated: 2019-09-30
      */
     public class SiteWorker
     {
@@ -116,23 +116,20 @@ namespace XTransmit.Model.Curl
             }
 
             // curl process
-            Process process = new Process()
-            {
-                StartInfo =
-                {
-                    FileName = CurlManager.PathCurlExe,
-                    Arguments = arguments,
-                    WorkingDirectory = App.PathCurl,
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = readReponse,
-                },
-            };
-
+            Process process = null;
             string response;
             try
             {
-                process.Start();
+                process = Process.Start(
+                    new ProcessStartInfo
+                    {
+                        FileName = CurlManager.CurlExePath,
+                        Arguments = arguments,
+                        WorkingDirectory = App.PathCurl,
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = readReponse,
+                    });
 
                 response = process.StartInfo.RedirectStandardOutput ?
                     process.StandardOutput.ReadToEnd() :
@@ -145,7 +142,7 @@ namespace XTransmit.Model.Curl
             }
             finally
             {
-                process.Dispose();
+                process?.Dispose();
             }
 
             return response;

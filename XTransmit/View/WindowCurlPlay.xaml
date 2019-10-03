@@ -201,6 +201,10 @@
                                         Header="{StaticResource _index}" 
                                         Binding="{Binding Path=Index}"/>
 
+                    <DataGridTextColumn Width="Auto" 
+                                        Header="{StaticResource _time}" 
+                                        Binding="{Binding Path=Time}"/>
+                    
                     <DataGridTextColumn Width="*" 
                                         Header="{StaticResource _response}" 
                                         Binding="{Binding Path=Response}"/>

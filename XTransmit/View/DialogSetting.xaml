@@ -48,22 +48,40 @@
                     Orientation="Vertical"
                     HorizontalAlignment="Stretch" >
 
-            <!-- Default server timeout -->
+            <!-- ss timeout -->
             <DockPanel>
                 <md:PackIcon DockPanel.Dock="Left"
                              Kind="Clock"/>
                 <TextBox DockPanel.Dock="Right"
-                         md:HintAssist.Hint="{StaticResource dialog_setting_default_connection_timeout}"
-                         Text="{Binding ConectionTimeouts}"/>
+                         md:HintAssist.Hint="{StaticResource dialog_setting_ss_timeout}"
+                         Text="{Binding SSTimeouts}"/>
             </DockPanel>
 
+            <!-- ipinfo timeout -->
+            <DockPanel>
+                <md:PackIcon DockPanel.Dock="Left"
+                             Kind="Clock"/>
+                <TextBox DockPanel.Dock="Right"
+                         md:HintAssist.Hint="{StaticResource dialog_setting_ipinfo_timeout}"
+                         Text="{Binding IPInfoConnTimeout}"/>
+            </DockPanel>
+            
+            <!-- ping timeout -->
+            <DockPanel>
+                <md:PackIcon DockPanel.Dock="Left"
+                             Kind="Clock"/>
+                <TextBox DockPanel.Dock="Right"
+                         md:HintAssist.Hint="{StaticResource dialog_setting_response_timeout}"
+                         Text="{Binding ResponseConnTimeout}"/>
+            </DockPanel>
+            
             <!-- ping timeout -->
             <DockPanel>
                 <md:PackIcon DockPanel.Dock="Left"
                              Kind="Clock"/>
                 <TextBox DockPanel.Dock="Right"
                          md:HintAssist.Hint="{StaticResource dialog_setting_ping_timeout}"
-                         Text="{Binding PingTimeouts}"/>
+                         Text="{Binding PingTimeout}"/>
             </DockPanel>
         </StackPanel>
     </Grid>

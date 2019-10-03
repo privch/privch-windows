@@ -3,13 +3,13 @@
 namespace XTransmit.View
 {
     /**
-     * Updated: 2019-08-06
+     * Updated: 2019-10-02
      */
-    public partial class DialogButton : Window
+    public partial class DialogAction : Window
     {
         public bool? CancelableResult = null;
 
-        public DialogButton(string title, string message)
+        public DialogAction(string title, string message)
         {
             InitializeComponent();
             DataContext = new ViewModel.DialogButtonVModel(title, message);

@@ -131,14 +131,12 @@ namespace XTransmit.Model.Curl
                         RedirectStandardOutput = readReponse,
                     });
 
-                response = process.StartInfo.RedirectStandardOutput ?
-                    process.StandardOutput.ReadToEnd() :
-                    $"{sr_complete} {DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss")}";
+                response = process.StartInfo.RedirectStandardOutput ? process.StandardOutput.ReadToEnd() : sr_complete;
                 process.WaitForExit();
             }
             catch
             {
-                response = $"{sr_failed} {DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss")}";
+                response = sr_failed;
             }
             finally
             {
@@ -163,18 +161,17 @@ namespace XTransmit.Model.Curl
             for (int i = 1; i <= profile.PlayTimes; i++)
             {
                 /** Report progress, states. 
-                 * progress is indicated in e.UserState (value: progressFullness)
+                 * progress is indicated in e.UserState
                  */
-                double progressFullness = (double)i / profile.PlayTimes;
-
+                string time = DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss");
                 try
                 {
                     string response = PlaySite(arguments, fakeClient, fakeip, fakeua, profile.IsReadResponse);
-                    bgWork.ReportProgress(100, new object[] { progressFullness, i, response });
+                    bgWork.ReportProgress(100, new object[] { i, time, response });
                 }
-                catch (Exception err)
+                catch (Exception error)
                 {
-                    bgWork.ReportProgress(100, new object[] { progressFullness, i, err.Message });
+                    bgWork.ReportProgress(100, new object[] { i, time, error.Message });
                     return;
                 }
 
@@ -216,10 +213,11 @@ namespace XTransmit.Model.Curl
             {
                 // progress update
                 object[] state = (object[])e.UserState;
-                int index = (int)state[1];
+                int index = (int)state[0];
+                string time = (string)state[1];
                 string response = (string)state[2];
 
-                OnResponse?.Invoke(new CurlResponse(index, response));
+                OnResponse?.Invoke(new CurlResponse(index, time, response));
             }
             else
             {

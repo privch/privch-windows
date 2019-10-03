@@ -6,7 +6,7 @@ namespace XTransmit.Model
 {
     /**<summary>
      * Feature options. Such as SystemProxy, Privoxy, Shadowsocks.
-     * Updated: 2019-09-24
+     * Updated: 2019-10-02
      * </summary> 
      */
     [Serializable]
@@ -14,14 +14,17 @@ namespace XTransmit.Model
     {
         // transmit
         public bool IsTransmitEnabled;
-        public bool IsServerPoolEnabled; // save status will not restore
+        public bool IsServerPoolEnabled;
         public int SystemProxyPort;
         public int GlobalSocks5Port;
         public ServerProfile RemoteServer;
 
-        // defaults 
-        public int ConnectionTimeouts;
-        public int PingTimeouts;
+        // timeouts 
+        public int SSTimeout;
+        public int IPInfoConnTimeout;
+        public int ResponseConnTimeout;
+        public int PingTimeout; //ms
+
         public string NetworkAdapter;
 
         public Config()
@@ -33,8 +36,10 @@ namespace XTransmit.Model
             GlobalSocks5Port = 0;
             RemoteServer = null;
 
-            ConnectionTimeouts = 3;
-            PingTimeouts = 1200;
+            SSTimeout = 3;
+            IPInfoConnTimeout = 6;
+            ResponseConnTimeout = 6;
+            PingTimeout = 1200;
         }
 
 

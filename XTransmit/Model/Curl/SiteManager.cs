@@ -42,7 +42,7 @@ namespace XTransmit.Model.Curl
         // determin wether the ip list has been changed
         public static bool HasChangesToFile()
         {
-            byte[] md5Data = TextUtil.GetXmlMD5(SiteList);
+            byte[] md5Data = TextUtil.GetMD5(SiteList);
             byte[] md5File = FileUtil.GetMD5(CurlXmlPath);
 
             return (md5Data != null && md5File != null) ? !md5File.SequenceEqual(md5Data) : true;

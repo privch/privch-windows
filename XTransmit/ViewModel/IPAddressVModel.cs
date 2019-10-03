@@ -22,7 +22,7 @@ namespace XTransmit.ViewModel
             Progress = new ProgressInfo(0, false);
             IPListOC = new ObservableCollection<IPProfile>(IPManager.IPList);
 
-            //http://msdn.microsoft.com/en-us/library/hh198861.aspx
+            //msdn.microsoft.com/en-us/library/hh198861.aspx
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(IPListOC, lock_sync);
         }
 
@@ -38,7 +38,7 @@ namespace XTransmit.ViewModel
                 string title = (string)Application.Current.FindResource("ip_title");
                 string ask_save = (string)Application.Current.FindResource("ip_ask_save_data");
 
-                View.DialogButton dialog = new View.DialogButton(title, ask_save);
+                View.DialogAction dialog = new View.DialogAction(title, ask_save);
                 dialog.ShowDialog();
 
                 if (dialog.CancelableResult == true)
@@ -48,7 +48,7 @@ namespace XTransmit.ViewModel
                 }
                 else
                 {
-                    // TODO - Is ObservableCollection write data to list item?
+                    // NOTE - Is ObservableCollection write data into the list item?
                     IPManager.Reload();
                 }
             }
@@ -60,8 +60,8 @@ namespace XTransmit.ViewModel
         private volatile bool isPingInProcess = false;
 
         // save data
-        public RelayCommand CommandSaveData => new RelayCommand(saveData);
-        private void saveData(object parameter)
+        public RelayCommand CommandSaveData => new RelayCommand(SaveData);
+        private void SaveData(object parameter)
         {
             List<IPProfile> iplist = new List<IPProfile>(IPListOC);
             if (IPManager.HasChangesToFile(iplist))
@@ -72,8 +72,8 @@ namespace XTransmit.ViewModel
         }
 
         // reload data from file
-        public RelayCommand CommandReload => new RelayCommand(reloadData);
-        private void reloadData(object parameter)
+        public RelayCommand CommandReload => new RelayCommand(ReloadData);
+        private void ReloadData(object parameter)
         {
             IPManager.Reload();
             IPListOC = new ObservableCollection<IPProfile>(IPManager.IPList);
@@ -81,8 +81,8 @@ namespace XTransmit.ViewModel
         }
 
         // add new data to datatable
-        public RelayCommand CommandAddData => new RelayCommand(addData);
-        private void addData(object parameter)
+        public RelayCommand CommandAddData => new RelayCommand(AddData);
+        private void AddData(object parameter)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -108,9 +108,9 @@ namespace XTransmit.ViewModel
         }
 
         // ping
-        public RelayCommand CommandPingCheck => new RelayCommand(pingCheckAsync, canPingCheck);
-        private bool canPingCheck(object parameter) => !isPingInProcess;
-        private async void pingCheckAsync(object parameter)
+        public RelayCommand CommandPingCheck => new RelayCommand(PingCheckAsync, CanPingCheck);
+        private bool CanPingCheck(object parameter) => !isPingInProcess;
+        private async void PingCheckAsync(object parameter)
         {
             isPingInProcess = true;
             System.Windows.Input.CommandManager.InvalidateRequerySuggested();
@@ -119,6 +119,7 @@ namespace XTransmit.ViewModel
             Progress.Value = 50;
             OnPropertyChanged("Progress");
 
+            int timeout = App.GlobalConfig.PingTimeout;
             using (Ping ping = new Ping())
             {
                 foreach (IPProfile ipProfile in IPListOC)
@@ -129,8 +130,7 @@ namespace XTransmit.ViewModel
                         return;
                     }
 
-                    // TODO - Config timeout?
-                    PingReply reply = await ping.SendPingAsync(ipProfile.IP, 999);
+                    PingReply reply = await ping.SendPingAsync(ipProfile.IP, timeout);
                     ipProfile.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                 }
             }

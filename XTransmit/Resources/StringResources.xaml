@@ -8,49 +8,51 @@
     <system:String x:Key="_value">Value</system:String>
     <system:String x:Key="_count">Count</system:String>
     <system:String x:Key="_items">item(s)</system:String>
-    
+    <system:String x:Key="_time">Time</system:String>
+
     <system:String x:Key="_server">Server</system:String>
     <system:String x:Key="_host">Host</system:String>
     <system:String x:Key="_port">Port</system:String>
     <system:String x:Key="_ping">Ping</system:String>
+    <system:String x:Key="_delay">Delay</system:String>
     <system:String x:Key="_response">Response</system:String>
     <system:String x:Key="_remarks">Remarks</system:String>
     <system:String x:Key="_updated">Updated</system:String>
-    
-    <system:String x:Key="_setting">Setting</system:String>
-    <system:String x:Key="_about">About</system:String>
-    <system:String x:Key="_download">Download</system:String>
-    <system:String x:Key="_upload">Upload</system:String>
 
     <system:String x:Key="_yes">Yes</system:String>
     <system:String x:Key="_no">No</system:String>
     <system:String x:Key="_ok">OK</system:String>
     <system:String x:Key="_cancel">Cancel</system:String>
-    
-    <system:String x:Key="_open">Open</system:String>
-    <system:String x:Key="_save">Save</system:String>
-    <system:String x:Key="_reload">Reload</system:String>
-    <system:String x:Key="_delete">Delete</system:String>
-    <system:String x:Key="_exit">Exit</system:String>
-    
-    <system:String x:Key="_start">Start</system:String>
-    <system:String x:Key="_stop">Stop</system:String>
-    <system:String x:Key="_fetch">Fetch</system:String>
     <system:String x:Key="_complete">Complete</system:String>
     <system:String x:Key="_failed">Failed</system:String>
 
+    <system:String x:Key="_start">Start</system:String>
+    <system:String x:Key="_stop">Stop</system:String>
+    <system:String x:Key="_open">Open</system:String>
+    <system:String x:Key="_save">Save</system:String>
+    <system:String x:Key="_delete">Delete</system:String>
+    <system:String x:Key="_reload">Reload</system:String>
+    <system:String x:Key="_exit">Exit</system:String>
+
+    <system:String x:Key="_download">Download</system:String>
+    <system:String x:Key="_upload">Upload</system:String>
+    <system:String x:Key="_fetch">Fetch</system:String>
+    <system:String x:Key="_search">Search</system:String>
+
+    <system:String x:Key="_setting">Setting</system:String>
+    <system:String x:Key="_about">About</system:String>
     <system:String x:Key="_os">System</system:String>
     <system:String x:Key="_client">Client</system:String>
     <system:String x:Key="_software">Software</system:String>
     <system:String x:Key="_license">License</system:String>
-    <system:String x:Key="_search">Search</system:String>
 
     <system:String x:Key="invalid_ip">Invalid IP Address</system:String>
     <system:String x:Key="invalid_port">Invalid Port Number</system:String>
-    <system:String x:Key="server_not_set">Server Not Set</system:String>
+    <system:String x:Key="respond_time">Respond Time</system:String>
     <system:String x:Key="not_availabe">Not Availabe</system:String>
     <system:String x:Key="clear_all">Clear All</system:String>
     <system:String x:Key="confirm_by_enter">Enter to confirm</system:String>
+    <system:String x:Key="server_not_set">Server Not Set</system:String>
 
     <system:String x:Key="app_name">XTransmit</system:String>
     <system:String x:Key="app_author">XinLake</system:String>
@@ -64,6 +66,7 @@
     <system:String x:Key="server_import_file">Import From File ...</system:String>
     <system:String x:Key="server_manual_setting">Manual Setting</system:String>
     <system:String x:Key="server_fetch_info">Fetch Info ...</system:String>
+    <system:String x:Key="server_response_time">Response Time</system:String>
     <system:String x:Key="server_ping_check">Ping Server</system:String>
     <system:String x:Key="server_menu_select">Select (Double Click)</system:String>
     <system:String x:Key="server_menu_edit">Edit (E)</system:String>
@@ -76,6 +79,7 @@
     <system:String x:Key="server_ask_keep_info_message">Keep the existing datas?</system:String>
 
     <!-- table curl -->
+    <system:String x:Key="curl_title">X-CURL</system:String>
     <system:String x:Key="curl_profile_title">Profile Title</system:String>
     <system:String x:Key="curl_play_times">Play Times</system:String>
     <system:String x:Key="curl_read_response">Read Response</system:String>
@@ -93,12 +97,14 @@
 
     <!-- dialog setting -->
     <system:String x:Key="dialog_setting_title">Settings</system:String>
-    <system:String x:Key="dialog_setting_default_connection_timeout">Default connection timeout</system:String>
+    <system:String x:Key="dialog_setting_ss_timeout">Default ss connection timeout</system:String>
+    <system:String x:Key="dialog_setting_ipinfo_timeout">Fetch info timeout</system:String>
+    <system:String x:Key="dialog_setting_response_timeout">Fetch response timeout</system:String>
     <system:String x:Key="dialog_setting_ping_timeout">Ping timeout</system:String>
 
     <!-- dialog about -->
     <system:String x:Key="dialog_about_title">About XTransmit</system:String>
-    
+
     <!-- dialog server config -->
     <system:String x:Key="dialog_server_title">Server Config</system:String>
     <system:String x:Key="dialog_server_friendly_name">Friendly Name</system:String>

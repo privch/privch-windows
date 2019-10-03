@@ -7,7 +7,7 @@ namespace XTransmit.Model
 {
     /**<summary>
      * UI Preference, Such as window position and size.
-     * Updated: 2019-09-24
+     * Updated: 2019-10-02
      * </summary>
      */
     [Serializable]
@@ -20,6 +20,7 @@ namespace XTransmit.Model
         public Placement WindowAbout;
         public Placement WindowServerConfig;
 
+        public Placement WindowCurl;
         public Placement WindowCurlRunner;
         public Placement WindowIPAddress;
         public Placement WindowUserAgent;
@@ -61,6 +62,14 @@ namespace XTransmit.Model
                 Y = sh * 0.2,
                 W = 0, // SiteToContent
                 H = 0,
+            };
+
+            WindowCurl = new Placement
+            {
+                X = sw * 0.2,
+                Y = sh * 0.2,
+                W = sw * 0.6,
+                H = sh * 0.6,
             };
 
             WindowCurlRunner = new Placement

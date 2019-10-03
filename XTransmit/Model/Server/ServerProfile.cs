@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Text;
 using XTransmit.Model.IPAddress;
@@ -7,7 +8,7 @@ using XTransmit.Utility;
 namespace XTransmit.Model.Server
 {
     /**
-     * Updated: 2019-09-29
+     * Updated: 2019-10-02
      */
     [Serializable]
     public class ServerProfile
@@ -37,15 +38,16 @@ namespace XTransmit.Model.Server
         public string PluginName;
         public string PluginOption;
 
-        // preference and data
+        // preference and info
         public string FriendlyName;
-        public int ListenPort;
-        public int Timeout;
-        public long Ping; // less then 0 means timeout or unreachable
-
-        // info
         public string TimeCreated;
+        public int Timeout;
         public IPInfo IPData;
+
+        // status
+        public string ResponseTime;
+        public long Ping; // less then 0 means timeout or unreachable
+        public int ListenPort;
 
         public ServerProfile Copy()
         {
@@ -69,12 +71,14 @@ namespace XTransmit.Model.Server
             PluginOption = "";
 
             FriendlyName = "";
-            ListenPort = -1;
-            Timeout = App.GlobalConfig != null ? App.GlobalConfig.ConnectionTimeouts : 3;
-            Ping = 0;
-
             TimeCreated = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            // App.GlobalConfig is null when deserialize the RemoteServer object in the Config
+            Timeout = App.GlobalConfig?.SSTimeout ?? 3; 
             IPData = null;
+
+            ResponseTime = "";
+            Ping = 0;
+            ListenPort = -1;
         }
 
         public void SetFriendlyNameDefault()
@@ -115,6 +119,44 @@ namespace XTransmit.Model.Server
             if (IPData == null || focus)
             {
                 IPData = IPInfo.Fetch(HostIP);
+            }
+        }
+
+        // TODO - UA.
+        // return seconds
+        public void FetchResponseTime()
+        {
+            if (ListenPort <= 0)
+            {
+                return;
+            }
+
+            // curl process
+            int timeout = App.GlobalConfig.ResponseConnTimeout;
+            Process process = null;
+            try
+            {
+                process = Process.Start(
+                    new ProcessStartInfo
+                    {
+                        FileName = CurlManager.CurlExePath,
+                        Arguments = $"--silent --connect-timeout {timeout} --proxy \"socks5://127.0.0.1:{ListenPort}\" " + "-w \"%{time_total}\" -o NUL -s \"https://google.com\"",
+                        WorkingDirectory = App.PathCurl,
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                    });
+
+                ResponseTime = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+            }
+            catch
+            {
+                ResponseTime = "N.A";
+            }
+            finally
+            {
+                process?.Dispose();
             }
         }
 

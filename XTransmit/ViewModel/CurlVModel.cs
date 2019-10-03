@@ -4,7 +4,9 @@ using System.Linq;
 using System.Windows.Data;
 using XTransmit.Model.Curl;
 using XTransmit.Model.IPAddress;
+using XTransmit.Model.Server;
 using XTransmit.Model.UserAgent;
+using XTransmit.Utility;
 using XTransmit.View;
 
 namespace XTransmit.ViewModel
@@ -13,18 +15,43 @@ namespace XTransmit.ViewModel
      * NOTE
      * Optimize the save action
      * 
-     * Updated: 2019-09-28
+     * Updated: 2019-10-02
      */
-    public class ContentCurlVModel : BaseViewModel
+    public class CurlVModel : BaseViewModel
     {
+        public bool IsServerPoolEnabled
+        {
+            get => App.GlobalConfig.IsServerPoolEnabled;
+            set
+            {
+                if (value)
+                {
+                    StartServerPool();
+                }
+                else
+                {
+                    StopServerPool();
+                }
+
+                OnPropertyChanged("ServerPoolStatus");
+
+                App.LockTransmit(value);
+            }
+        }
+
+        public string ServerPoolStatus => App.GlobalConfig.IsServerPoolEnabled ? $"{SSManager.SSProcessMap.Count}" : null;
+
         public ObservableCollection<SiteProfile> SiteListOC { get; private set; }
 
-        public ContentCurlVModel()
+        public CurlVModel()
         {
             // load IPAddress and UserAgent data
             IPManager.Load(App.FileIPAddressXml);
             UAManager.Load(App.FileUserAgentXml);
             SiteManager.Load(App.FileCurlXml);
+
+            // don't restore pool status
+            App.GlobalConfig.IsServerPoolEnabled = false;
 
             // load curl data
             SiteListOC = new ObservableCollection<SiteProfile>(SiteManager.SiteList);
@@ -33,6 +60,50 @@ namespace XTransmit.ViewModel
             CollectionView collectionView = (CollectionView)CollectionViewSource.GetDefaultView(SiteListOC);
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("Website");
             collectionView.GroupDescriptions.Add(groupDescription);
+        }
+
+        /** Server Pool 
+         */
+        private void StartServerPool()
+        {
+            if (ServerManager.ServerList.Count == 0)
+            {
+                return;
+            }
+
+            foreach (ServerProfile server in ServerManager.ServerList)
+            {
+                int listen = NetworkUtil.GetAvailablePort(2000);
+                if (listen > 0)
+                {
+                    SSManager.Start(server, listen);
+                }
+            }
+
+            // ToggleButton auto update "Checked"(server_pool_enabled) properity
+            App.GlobalConfig.IsServerPoolEnabled = true;
+        }
+
+        private void StopServerPool()
+        {
+            // "push" transmit status
+            if (App.GlobalConfig.IsTransmitEnabled)
+            {
+                ServerManager.ServerList.Remove(App.GlobalConfig.RemoteServer);
+            }
+
+            foreach (ServerProfile server in ServerManager.ServerList)
+            {
+                SSManager.Stop(server);
+            }
+
+            // "pop" transmit status
+            if (App.GlobalConfig.IsTransmitEnabled)
+            {
+                ServerManager.ServerList.Add(App.GlobalConfig.RemoteServer);
+            }
+
+            App.GlobalConfig.IsServerPoolEnabled = false;
         }
 
         /** Actions ===============================================================================

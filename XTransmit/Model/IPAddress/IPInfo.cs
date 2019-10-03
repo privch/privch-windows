@@ -6,7 +6,7 @@ using System.Text;
 namespace XTransmit.Model.IPAddress
 {
     /**
-     * Updated: 2019-09-30
+     * Updated: 2019-10-02
      */
     public class IPInfo
     {
@@ -25,11 +25,13 @@ namespace XTransmit.Model.IPAddress
 
         /**<summary>
          * Fetch data from https://ipinfo.io and read to a IPInfo object.
+         * TODO - UA, Proxy Parameter.
          * </summary>
          */
         public static IPInfo Fetch(string ip)
         {
-            // TODO - UA, Proxy Parameter
+            int timeout = App.GlobalConfig.IPInfoConnTimeout;
+
             // curl process
             Process process = null;
             string response = null;
@@ -39,7 +41,7 @@ namespace XTransmit.Model.IPAddress
                     new ProcessStartInfo
                     {
                         FileName = Utility.CurlManager.CurlExePath,
-                        Arguments = $"--header \"Accept: application/json\" ipinfo.io/{ip}",
+                        Arguments = $"--silent --connect-timeout {timeout} --header \"Accept: application/json\" ipinfo.io/{ip}",
                         WorkingDirectory = App.PathCurl,
                         CreateNoWindow = true,
                         UseShellExecute = false,

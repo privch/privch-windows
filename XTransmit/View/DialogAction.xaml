@@ -1,4 +1,4 @@
-﻿<Window x:Class="XTransmit.View.DialogButton"
+﻿<Window x:Class="XTransmit.View.DialogAction"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"

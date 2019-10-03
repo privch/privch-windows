@@ -4,11 +4,11 @@ using System.Windows;
 namespace XTransmit.View.TrayNotify
 {
     /**
-     * Updated: 2019-09-30
+     * Updated: 2019-10-02
      */
     public class SystemTray
     {
-        private System.Windows.Forms.NotifyIcon notifyIcon;
+        private readonly System.Windows.Forms.NotifyIcon notifyIcon;
         private readonly System.Windows.Forms.MenuItem menuitemEnableTransmit;
 
         private static readonly string sr_tray_enable_transmit = (string)Application.Current.FindResource("tray_enable_transmit");
@@ -42,6 +42,11 @@ namespace XTransmit.View.TrayNotify
             notifyIcon.ContextMenu = contextMenu;
         }
 
+        public void Dispose()
+        {
+            notifyIcon.Dispose();
+        }
+
         /** NotifyIcon Handlers ==================================================================================
          */
         private void NotifyIcon_Click(object sender, EventArgs e)
@@ -72,7 +77,6 @@ namespace XTransmit.View.TrayNotify
         private void MenuItem_Exit(object sender, EventArgs e)
         {
             App.CloseMainWindow();
-            notifyIcon.Dispose();
         }
     }
 }

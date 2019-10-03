@@ -22,8 +22,8 @@ namespace XTransmit.ViewModel
         public string DelaySetting { get; set; } // textbox delay 
         public ObservableCollection<CurlResponse> ResponseList { get; private set; }
 
-        private SiteWorker siteWorker;
-        private Action<SiteProfile> actionSaveProfile; // callback action 
+        private readonly SiteWorker siteWorker;
+        private readonly Action<SiteProfile> actionSaveProfile; // callback action 
 
         public CurlPlayVModel(SiteProfile siteProfile, Action<SiteProfile> actionSaveProfile)
         {
@@ -41,9 +41,9 @@ namespace XTransmit.ViewModel
             this.actionSaveProfile = actionSaveProfile;
         }
 
-        private bool parseDelay(string delay)
+        private bool ParseDelay(string delay)
         {
-            int delay_minimum = 0;
+            int delay_minimum;
             int delay_maximum = 0;
 
             // parse loop setting
@@ -103,10 +103,10 @@ namespace XTransmit.ViewModel
 
         /** Commands ==================================================================================
          */
-        public RelayCommand CommandSetDalay => new RelayCommand(enterDelay);
-        private void enterDelay(object parameter)
+        public RelayCommand CommandSetDalay => new RelayCommand(UpdateDelay);
+        private void UpdateDelay(object parameter)
         {
-            parseDelay(DelaySetting);
+            ParseDelay(DelaySetting);
 
             IsRandomDelay = Profile.DelayMax > Profile.DelayMin;
             DelaySetting = IsRandomDelay ? $"{Profile.DelayMin} - {Profile.DelayMax}" : Profile.DelayMin.ToString();
@@ -115,15 +115,15 @@ namespace XTransmit.ViewModel
             OnPropertyChanged("IsRandomDelay");
         }
 
-        public RelayCommand CommandSaveProfile => new RelayCommand(saveProfile, canSaveProfile);
-        private bool canSaveProfile(object parameter) => actionSaveProfile != null;
-        private void saveProfile(object parameter)
+        public RelayCommand CommandSaveProfile => new RelayCommand(SaveProfile, CanSaveProfile);
+        private bool CanSaveProfile(object parameter) => actionSaveProfile != null;
+        private void SaveProfile(object parameter)
         {
             actionSaveProfile(Profile);
         }
 
-        public RelayCommand CommandTogglePlay => new RelayCommand(togglePlayAsync);
-        private void togglePlayAsync(object parameter)
+        public RelayCommand CommandTogglePlay => new RelayCommand(TogglePlayAsync);
+        private void TogglePlayAsync(object parameter)
         {
             IsNotRunning = !IsNotRunning;
             if (IsNotRunning)
@@ -144,10 +144,10 @@ namespace XTransmit.ViewModel
         }
 
         // response ------------------------------------------------------------
-        private bool isValidResponse(object parameter) => ResponseList.Count > 0;
+        private bool IsValidResponse(object parameter) => ResponseList.Count > 0;
 
-        public RelayCommand CommandClearResponse => new RelayCommand(clearResponse, isValidResponse);
-        private void clearResponse(object parameter)
+        public RelayCommand CommandClearResponse => new RelayCommand(ClearResponse, IsValidResponse);
+        private void ClearResponse(object parameter)
         {
             ResponseList.Clear();
         }

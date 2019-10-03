@@ -138,7 +138,8 @@ namespace XTransmit.Utility
 
         public static void Stop(ServerProfile server)
         {
-            if (SSProcessMap.ContainsKey(server))
+            // server is null at the first time running
+            if (server != null && SSProcessMap.ContainsKey(server))
             {
                 Process process = SSProcessMap[server];
 

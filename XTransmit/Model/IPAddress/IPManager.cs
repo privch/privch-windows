@@ -56,7 +56,7 @@ namespace XTransmit.Model.IPAddress
                 ipList = IPList;
             }
 
-            byte[] md5Data = TextUtil.GetXmlMD5(ipList);
+            byte[] md5Data = TextUtil.GetMD5(ipList);
             byte[] md5File = FileUtil.GetMD5(IPXmlPath);
 
             return (md5Data != null && md5File != null) ? !md5File.SequenceEqual(md5Data) : true;

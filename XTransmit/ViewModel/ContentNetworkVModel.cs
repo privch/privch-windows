@@ -138,8 +138,8 @@ namespace XTransmit.ViewModel
 
         /** Commands ==================================================================
          */
-        public RelayCommand CommandToggleActivate => new RelayCommand(toggleActivate);
-        private void toggleActivate(object obj)
+        public RelayCommand CommandToggleActivate => new RelayCommand(ToggleActivate);
+        private void ToggleActivate(object obj)
         {
             IsActivated = !IsActivated;
             OnPropertyChanged("IsActivated");

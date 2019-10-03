@@ -19,7 +19,7 @@
         public RelayCommand CommandCloseYes => new RelayCommand(CloseYes);
         private void CloseYes(object parameter)
         {
-            if (parameter is View.DialogButton dialog)
+            if (parameter is View.DialogAction dialog)
             {
                 dialog.CancelableResult = true;
                 dialog.Close();
@@ -29,7 +29,7 @@
         public RelayCommand CommandCloseNo => new RelayCommand(CloseNo);
         private void CloseNo(object parameter)
         {
-            if (parameter is View.DialogButton dialog)
+            if (parameter is View.DialogAction dialog)
             {
                 dialog.CancelableResult = false;
                 dialog.Close();

@@ -46,7 +46,7 @@ namespace XTransmit.ViewModel
                 string title = (string)Application.Current.FindResource("ua_title");
                 string ask_save = (string)Application.Current.FindResource("ua_ask_save_changes");
 
-                View.DialogButton dialog = new View.DialogButton(title, ask_save);
+                View.DialogAction dialog = new View.DialogAction(title, ask_save);
                 dialog.ShowDialog();
 
                 if (dialog.CancelableResult == true)
@@ -63,15 +63,15 @@ namespace XTransmit.ViewModel
         /** Commands --------------------------------------------------------------------------
          */
         // save data
-        public RelayCommand CommandSaveData => new RelayCommand(saveData);
-        private void saveData(object parameter)
+        public RelayCommand CommandSaveData => new RelayCommand(SaveData);
+        private void SaveData(object parameter)
         {
             UAManager.Save();
         }
 
         // reload data from file
-        public RelayCommand CommandReload => new RelayCommand(reloadData);
-        private void reloadData(object parameter)
+        public RelayCommand CommandReload => new RelayCommand(ReloadData);
+        private void ReloadData(object parameter)
         {
             UAManager.Reload();
             UserAgentList = UAManager.UAList;

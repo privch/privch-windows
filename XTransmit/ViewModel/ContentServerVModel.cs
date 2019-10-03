@@ -55,8 +55,10 @@ namespace XTransmit.ViewModel
                 return;
             }
 
-            is_fetch_in_process = false; // cancel task
-            is_ping_in_process = false;  // cancel task
+            // cancel task
+            processig_fetch_info = false;
+            processing_fetch_response_time = false;
+            processing_check_ping = false;
 
             // data changed ?
             SaveServer(null);
@@ -65,8 +67,9 @@ namespace XTransmit.ViewModel
 
         /** Commands =========================================================================================================
          */
-        private volatile bool is_fetch_in_process = false; // also use to cancel task
-        private volatile bool is_ping_in_process = false;  // also use to cancel task
+        private volatile bool processig_fetch_info = false; // also use to cancel task
+        private volatile bool processing_fetch_response_time = false; // also use to cancel task
+        private volatile bool processing_check_ping = false;  // also use to cancel task
 
         private int AddServer(List<ServerProfile> serverList)
         {
@@ -109,7 +112,7 @@ namespace XTransmit.ViewModel
         }
 
         // save data
-        public RelayCommand CommandSave => new RelayCommand(SaveServer);
+        public RelayCommand CommandSaveServer => new RelayCommand(SaveServer);
         private void SaveServer(object parameter)
         {
             // convert to list and save
@@ -123,18 +126,18 @@ namespace XTransmit.ViewModel
         }
 
         // ipinfo
-        public RelayCommand CommandFetchInfo => new RelayCommand(FetchServerInfo, FetchNotInProgress);
-        private bool FetchNotInProgress(object parameter) => !is_fetch_in_process;
+        public RelayCommand CommandFetchInfo => new RelayCommand(FetchServerInfo, CanFetchInfo);
+        private bool CanFetchInfo(object parameter) => !processig_fetch_info;
         private async void FetchServerInfo(object parameter)
         {
-            DialogButton dialog = new DialogButton(sr_ask_keep_info_title, sr_ask_keep_info_message);
+            DialogAction dialog = new DialogAction(sr_ask_keep_info_title, sr_ask_keep_info_message);
             dialog.ShowDialog();
             if (!(dialog.CancelableResult is bool keep))
             {
                 return;
             }
 
-            is_fetch_in_process = true;
+            processig_fetch_info = true;
             App.UpdateProgress(40);
 
             await Task.Run(() =>
@@ -142,7 +145,7 @@ namespace XTransmit.ViewModel
                 foreach (ServerView serverView in ServerViewListOC)
                 {
                     // isFetchInProcess is also use to cancel task
-                    if (is_fetch_in_process == false)
+                    if (processig_fetch_info == false)
                     {
                         break;
                     }
@@ -158,29 +161,64 @@ namespace XTransmit.ViewModel
                 App.UpdateTransmitServer(serverSelected.vServerProfile);
             }
 
-            is_fetch_in_process = false;
+            processig_fetch_info = false;
+            App.UpdateProgress(-40);
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        // response time
+        public RelayCommand CommandFetchResponseTime => new RelayCommand(FetchResponseTime, CanFetchResponseTime);
+        private bool CanFetchResponseTime(object parameter) => !processing_fetch_response_time;
+        private async void FetchResponseTime(object parameter)
+        {
+            processing_fetch_response_time = true;
+            App.UpdateProgress(40);
+
+            await Task.Run(() =>
+            {
+                foreach (ServerView serverView in ServerViewListOC)
+                {
+                    // isFetchInProcess is also use to cancel task
+                    if (processing_fetch_response_time == false)
+                    {
+                        // TODO - Break
+                        return;
+                    }
+
+                    if (serverView.vServerProfile.ListenPort > 0)
+                    {
+                        serverView.UpdateResponseTime();
+                    }
+                }
+            });
+
+            processing_fetch_response_time = false;
             App.UpdateProgress(-40);
             CommandManager.InvalidateRequerySuggested();
         }
 
         // ping 
-        public RelayCommand CommandPingInfo => new RelayCommand(FetchServerPing, PingNotInProgress);
-        private bool PingNotInProgress(object parameter) => !is_ping_in_process;
-        private async void FetchServerPing(object parameter)
+        public RelayCommand CommandCheckPing => new RelayCommand(CheckPing, CanCheckPing);
+        private bool CanCheckPing(object parameter) => !processing_check_ping;
+        private async void CheckPing(object parameter)
         {
-            is_ping_in_process = true;
+            processing_check_ping = true;
             App.UpdateProgress(40);
 
+            int timeout = App.GlobalConfig.PingTimeout;
             using (Ping ping = new Ping())
             {
                 foreach (ServerView serverView in ServerViewListOC)
                 {
                     // isPingInProcess is also use to cancel task
-                    if (is_ping_in_process == false) return;
+                    if (processing_check_ping == false)
+                    {
+                        return;
+                    }
 
                     try
                     {
-                        PingReply reply = await ping.SendPingAsync(serverView.HostIP, App.GlobalConfig.PingTimeouts);
+                        PingReply reply = await ping.SendPingAsync(serverView.HostIP, timeout);
                         serverView.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                     }
                     catch (Exception)
@@ -190,7 +228,7 @@ namespace XTransmit.ViewModel
                 }
             }
 
-            is_ping_in_process = false;
+            processing_check_ping = false;
             App.UpdateProgress(-40);
             CommandManager.InvalidateRequerySuggested();
         }
@@ -287,12 +325,14 @@ namespace XTransmit.ViewModel
 
         // select server, not in use
         public RelayCommand CommandSelectServer => new RelayCommand(SelectServer, IsServerNotInUse);
-        private void SelectServer(object serverNew)
+        private async void SelectServer(object serverNew)
         {
-            ServerView serverView = (ServerView)serverNew;
-
-            // Set ServerProfile
-            App.UpdateTransmitServer(serverView.vServerProfile);
+            if (serverNew is ServerView serverView)
+            {
+                // Set ServerProfile
+                App.UpdateTransmitServer(serverView.vServerProfile);
+                await Task.Run(() => serverView.UpdateResponseTime());
+            }
         }
 
         // edit server, not in use

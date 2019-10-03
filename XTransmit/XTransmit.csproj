@@ -40,6 +40,9 @@
     <ApplicationIcon>XTransmit.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
+    </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
@@ -70,11 +73,11 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="zxing, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.dll</HintPath>
+    <Reference Include="zxing, Version=0.16.5.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.5\lib\net45\zxing.dll</HintPath>
     </Reference>
-    <Reference Include="zxing.presentation, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.presentation.dll</HintPath>
+    <Reference Include="zxing.presentation, Version=0.16.5.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.5\lib\net45\zxing.presentation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -142,7 +145,7 @@
     <Compile Include="Utility\TextUtil.cs" />
     <Compile Include="ViewModel\AboutVModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="ViewModel\ContentCurlVModel.cs" />
+    <Compile Include="ViewModel\CurlVModel.cs" />
     <Compile Include="ViewModel\ContentNetworkVModel.cs" />
     <Compile Include="ViewModel\ContentServerVModel.cs" />
     <Compile Include="ViewModel\Control\ContentTable.cs" />
@@ -161,8 +164,8 @@
     <Compile Include="ViewModel\UserAgentVModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="View\ContentCurl.xaml.cs">
-      <DependentUpon>ContentCurl.xaml</DependentUpon>
+    <Compile Include="View\WindowCurl.xaml.cs">
+      <DependentUpon>WindowCurl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ContentNetwork.xaml.cs">
       <DependentUpon>ContentNetwork.xaml</DependentUpon>
@@ -173,8 +176,8 @@
     <Compile Include="View\DialogAbout.xaml.cs">
       <DependentUpon>DialogAbout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DialogButton.xaml.cs">
-      <DependentUpon>DialogButton.xaml</DependentUpon>
+    <Compile Include="View\DialogAction.xaml.cs">
+      <DependentUpon>DialogAction.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DialogEdit.xaml.cs">
       <DependentUpon>DialogEdit.xaml</DependentUpon>
@@ -207,7 +210,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\ContentCurl.xaml">
+    <Page Include="View\WindowCurl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -223,7 +226,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\DialogButton.xaml">
+    <Page Include="View\DialogAction.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

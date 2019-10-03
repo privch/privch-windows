@@ -3,9 +3,14 @@ using XTransmit.Model.Server;
 
 namespace XTransmit.ViewModel.Model
 {
+    /**
+     * Updated: 2019-10-02
+     */
     public class ServerView : INotifyPropertyChanged
     {
-        /** Property SS Info --------------------------------
+        public string[] Ciphers => ServerProfile.Ciphers;
+
+        /** SS Server Info --------------------------------
          */
         public string HostIP
         {
@@ -57,9 +62,7 @@ namespace XTransmit.ViewModel.Model
             }
         }
 
-        public string[] Ciphers { get => ServerProfile.Ciphers; }
-
-        /** Property SS Plugin Info ----------------------------
+        /** SS Plugin Info ----------------------------
          */
         public bool PluginEnabled
         {
@@ -113,6 +116,10 @@ namespace XTransmit.ViewModel.Model
             }
         }
 
+        public string TimeCreated => vServerProfile.TimeCreated;
+
+        public string ResponseTime => vServerProfile.ResponseTime;
+
         public long Ping
         {
             get => vServerProfile.Ping;
@@ -123,14 +130,18 @@ namespace XTransmit.ViewModel.Model
             }
         }
 
-        public string TimeCreated => vServerProfile.TimeCreated;
-
         public void UpdateIPInfo(bool focus)
         {
             vServerProfile.FetchIPData(focus);
             vServerProfile.SetFriendNameByIPData();
 
             OnPropertyChanged("FriendlyName");
+        }
+
+        public void UpdateResponseTime()
+        {
+            vServerProfile.FetchResponseTime();
+            OnPropertyChanged("ResponseTime");
         }
 
 

@@ -5,13 +5,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Serialization;
 
-/**
- * TODO - Memory leak test
- * Updated: 2019-09-29
- */
-
 namespace XTransmit.Utility
 {
+    /**
+     * Updated: 2019-09-29
+     */
     public static class FileUtil
     {
         public static bool CheckMD5(string filePath, string md5Hex)
@@ -90,6 +88,7 @@ namespace XTransmit.Utility
             {
                 swXml = new StreamWriter(pathXml, false, new UTF8Encoding(false));
                 new XmlSerializer(objInput.GetType()).Serialize(swXml, objInput);
+
                 swXml.Close();
             }
             catch (Exception) { }

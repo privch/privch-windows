@@ -11,7 +11,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
-                <Setter Property="Margin" Value="0" />
+                <Setter Property="Margin" Value="0"/>
                 <Setter Property="VerticalAlignment" Value="Bottom"/>
                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                 <Setter Property="GroupName" Value="xGroupContentSwitch"/>
@@ -55,22 +55,9 @@
             <!-- transmit control and status -->
             <StackPanel Grid.Column="1" Margin="20, 0, 0, 0" Orientation="Horizontal">
                 <ToggleButton Margin="10, 0" VerticalAlignment="Center"
-                              IsChecked="{Binding IsTransmitEnabled, Mode=TwoWay}">
-                    <ToggleButton.Style>
-                        <Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignSwitchToggleButton}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=xToggleButtonServerPool, Path=IsChecked}" Value="True">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ToggleButton.Style>
-                </ToggleButton>
+                              IsEnabled="{Binding IsTransmitControllable}"
+                              IsChecked="{Binding IsTransmitEnabled, Mode=TwoWay}"/>
 
-                <ToggleButton x:Name="xToggleButtonServerPool" Margin="10, 0" VerticalAlignment="Center"
-                              Style="{StaticResource MaterialDesignSwitchToggleButton}"
-                              IsChecked="{Binding IsServerPoolEnabled, Mode=TwoWay}"/>
-                
                 <TextBlock Margin="10, 0" VerticalAlignment="Center"
                            Text="{Binding TransmitStatus, Mode=OneWay}" />
             </StackPanel>
@@ -85,6 +72,8 @@
             <md:PopupBox Grid.Column="3" Margin="5, 0" 
                          PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
                 <StackPanel>
+                    <Button Content="{StaticResource curl_title}" Command="{Binding Path=CommandShowCurl}"/>
+                    <Separator/>
                     <Button Content="{StaticResource _setting}" Command="{Binding Path=CommandShowSetting}"/>
                     <Button Content="{StaticResource _about}" Command="{Binding Path=CommandShowAbout}"/>
                     <Separator/>

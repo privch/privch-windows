@@ -7,8 +7,12 @@ namespace XTransmit
 {
     /**TODO - English, Chinese language
      * TODO - App Analyze
-     * TODO - Reset preference if environment has been changed
+     * TODO - Reset preference if environment has changed
      * TODO - Check memory leak, stream close, object dispose.
+     * TODO - Display no data available
+     * TODO - Add support for Remote Http Proxy, SSR, V2Ray ...
+     * TODO - Auto search and add servers
+     * TODO - Auto detect and remove invalid servers
      * 
      * NOTE
      * EventHandler name "_"
@@ -32,6 +36,8 @@ namespace XTransmit
 
         public static Preference GlobalPreference { get; private set; }
         public static Config GlobalConfig { get; private set; }
+
+        private View.TrayNotify.SystemTray NotifyIcon;
 
         public static void CloseMainWindow()
         {
@@ -67,6 +73,13 @@ namespace XTransmit
             homeViewModel.UpdateProgress(progress);
         }
 
+        public static void LockTransmit(bool enable)
+        {
+            View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
+            ViewModel.HomeVModel homeViewModel = (ViewModel.HomeVModel)windowHome.DataContext;
+            homeViewModel.LockTransmitControl(enable);
+        }
+
         public static void EnableTransmit(bool enable)
         {
             View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
@@ -94,6 +107,9 @@ namespace XTransmit
         {
             // init directory
             PathCurrent = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            try { Directory.CreateDirectory($@"{PathCurrent}\datas"); }
+            catch { return; }
+
             PathPrivoxy = $@"{PathCurrent}\binary\privoxy";
             PathShadowsocks = $@"{PathCurrent}\binary\shadowsocks";
             PathCurl = $@"{PathCurrent}\binary\curl";
@@ -125,12 +141,20 @@ namespace XTransmit
             GlobalConfig = Config.LoadFileOrDefault(FileConfigXml);
 
             // notifyicon
-            new View.TrayNotify.SystemTray();
+            NotifyIcon = new View.TrayNotify.SystemTray();
             Exit += Application_Exit;
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
+            NotifyIcon.Dispose();
+
+            /** if there were other proxy servers running they should set system proxy again
+             */
+            NativeMethods.DisableProxy();
+            PrivoxyManager.Stop();
+            SSManager.KillRunning(); // server pool
+
             Preference.WriteFile(FilePreferenceXml, GlobalPreference);
             Config.WriteFile(FileConfigXml, GlobalConfig);
         }

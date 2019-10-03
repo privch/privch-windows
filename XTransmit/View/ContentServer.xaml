@@ -20,15 +20,21 @@
             <ToolBar IsOverflowOpen="False" VerticalAlignment="Center">
                 <Button ToolTip="{StaticResource _save}"
                         Content="{md:PackIcon Kind=ContentSave}"
-                        Command="{Binding Path=CommandSave}"/>
+                        Command="{Binding Path=CommandSaveServer}"/>
+
+                <Separator/>
 
                 <Button ToolTip="{StaticResource server_fetch_info}"
                         Content="{md:PackIcon Kind=AddLocation,Size=24}"
                         Command="{Binding Path=CommandFetchInfo}"/>
 
+                <Button ToolTip="{StaticResource server_response_time}"
+                        Content="{md:PackIcon Kind=ServerNetwork,Size=24}"
+                        Command="{Binding Path=CommandFetchResponseTime}"/>
+
                 <Button ToolTip="{StaticResource server_ping_check}"
                         Content="{md:PackIcon Kind=ChartAreaspline,Size=24}"
-                        Command="{Binding Path=CommandPingInfo}"/>
+                        Command="{Binding Path=CommandCheckPing}"/>
 
                 <Separator/>
 
@@ -47,7 +53,6 @@
                 <Button ToolTip="{StaticResource server_manual_setting}" 
                         Content="{md:PackIcon Kind=AddCircle}" 
                         Command="{Binding Path=CommandAddServerNew}"/>
-
             </ToolBar>
         </ToolBarTray>
 
@@ -62,7 +67,7 @@
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" 
                               Command="{Binding Path=CommandSelectServer}"
-                              CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}" />
+                              CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}"/>
                 <KeyBinding Key="E"
                             Command="{Binding Path=CommandEditServer}"
                             CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}"/>
@@ -70,6 +75,7 @@
                             Command="{Binding Path=CommandDeleteServers}"
                             CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItems}"/>
             </DataGrid.InputBindings>
+            
             <DataGrid.ContextMenu>
                 <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
                     <MenuItem Icon="{md:PackIcon Kind=Check}" Header="{StaticResource server_menu_select}"
@@ -85,8 +91,10 @@
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
+            
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _server}" Binding="{Binding Path=FriendlyName}"/>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _delay}" Binding="{Binding Path=ResponseTime}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _ping}" Binding="{Binding Path=Ping}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _host}" Binding="{Binding Path=HostIP}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _port}" Binding="{Binding Path=HostPort}"/>

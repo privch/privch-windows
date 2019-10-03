@@ -6,23 +6,43 @@
      */
     class SettingVModel : BaseViewModel
     {
-        public int ConectionTimeouts
+        public int SSTimeouts
         {
-            get { return App.GlobalConfig.ConnectionTimeouts; }
+            get => App.GlobalConfig.SSTimeout;
             set
             {
-                App.GlobalConfig.ConnectionTimeouts = value;
+                App.GlobalConfig.SSTimeout = value;
                 OnPropertyChanged("ConectionTimeouts");
             }
         }
 
-        public int PingTimeouts
+        public int IPInfoConnTimeout
         {
-            get { return App.GlobalConfig.PingTimeouts; }
+            get => App.GlobalConfig.IPInfoConnTimeout;
             set
             {
-                App.GlobalConfig.PingTimeouts = value;
-                OnPropertyChanged("PingTimeouts");
+                App.GlobalConfig.IPInfoConnTimeout = value;
+                OnPropertyChanged("IPInfoConnTimeout");
+            }
+        }
+
+        public int ResponseConnTimeout
+        {
+            get { return App.GlobalConfig.ResponseConnTimeout; }
+            set
+            {
+                App.GlobalConfig.ResponseConnTimeout = value;
+                OnPropertyChanged("ResponseConnTimeout");
+            }
+        }
+
+        public int PingTimeout
+        {
+            get { return App.GlobalConfig.PingTimeout; }
+            set
+            {
+                App.GlobalConfig.PingTimeout = value;
+                OnPropertyChanged("PingTimeout");
             }
         }
 

@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace XTransmit.Utility
 {
     /**
-     * Updated: 2019-09-24
+     * Updated: 2019-10-02
      */
     public static class TextUtil
     {
@@ -88,14 +88,14 @@ namespace XTransmit.Utility
             return objectTo;
         }
 
-        public static byte[] GetXmlMD5(object objectUtf8)
+        public static byte[] GetMD5(object objectXmlUtf8)
         {
             byte[] md5Value = null;
             using (MemoryStream memObj = new MemoryStream())
             using (StreamWriter swMem = new StreamWriter(memObj, new UTF8Encoding(false)))
             using (MD5 md5 = MD5.Create())
             {
-                new XmlSerializer(objectUtf8.GetType()).Serialize(swMem, objectUtf8);
+                new XmlSerializer(objectXmlUtf8.GetType()).Serialize(swMem, objectXmlUtf8);
                 swMem.Flush(); 
                 
                 /**Any data written to a MemoryStream object is written into RAM, 

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
 using XTransmit.Model;
-using XTransmit.Utility;
 using XTransmit.ViewModel;
 
 namespace XTransmit.View
@@ -30,15 +29,9 @@ namespace XTransmit.View
             if (IsVisible)
             {
                 e.Cancel = true;
-                Hide(); // set visiblily?
+                Hide(); // NOTE - Set visiblily property?
                 return;
             }
-
-            /** if there were other proxy servers running they should set system proxy again
-             */
-            NativeMethods.DisableProxy();
-            PrivoxyManager.Stop();
-            SSManager.KillRunning(); // server pool
 
             // Save window placement
             Preference preference = App.GlobalPreference;

@@ -21,46 +21,28 @@ namespace XTransmit.ViewModel
             {
                 if (value)
                 {
-                    TransmitEnable();
+                    EnableTransmit();
                 }
                 else
                 {
-                    TransmitDisable();
+                    DisableTransmit();
                 }
+
+                //from notifyicon
+                OnPropertyChanged("IsTransmitEnabled"); 
             }
         }
 
-        public bool IsServerPoolEnabled
-        {
-            get => App.GlobalConfig.IsServerPoolEnabled;
-            set
-            {
-                if (value)
-                {
-                    StartServerPool();
-                }
-                else
-                {
-                    StopServerPool();
-                }
-            }
-        }
-        
         public string TransmitStatus
         {
             get
             {
-                if (App.GlobalConfig.IsServerPoolEnabled)
-                {
-                    return $"{SSManager.SSProcessMap.Count}";
-                }
-                else
-                {
-                    return App.GlobalConfig.RemoteServer != null ?
-                        App.GlobalConfig.RemoteServer.FriendlyName : sr_server_not_set;
-                }
+                return App.GlobalConfig.RemoteServer != null ?
+                    App.GlobalConfig.RemoteServer.FriendlyName : sr_server_not_set;
             }
         }
+
+        public bool IsTransmitControllable { get; private set; }
 
         // progress
         public ProgressInfo Progress { get; private set; }
@@ -80,11 +62,10 @@ namespace XTransmit.ViewModel
             ContentList = new List<ContentTable>
             {
                 new ContentTable("Server", new View.ContentServer()),
-                new ContentTable("X-CURL", new View.ContentCurl()),
                 new ContentTable("Netwrok", new View.ContentNetwork()),
             };
 
-            // TODO - DragDrop table
+            // TODO - Dragable table
             ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.Title == App.GlobalPreference.ContentDisplay);
             if (contentTable == null)
             {
@@ -96,7 +77,7 @@ namespace XTransmit.ViewModel
 
             // transmit control. Trigge the set
             IsTransmitEnabled = App.GlobalConfig.IsTransmitEnabled;
-            App.GlobalConfig.IsServerPoolEnabled = false;
+            IsTransmitControllable = true;
 
             // save data on closing
             Application.Current.MainWindow.Closing += MainWindow_Closing;
@@ -115,7 +96,7 @@ namespace XTransmit.ViewModel
             App.GlobalPreference.ContentDisplay = contentTable.Title;
         }
 
-        private void TransmitEnable()
+        private void EnableTransmit()
         {
             Config config = App.GlobalConfig;
             if (config.RemoteServer == null)
@@ -139,14 +120,14 @@ namespace XTransmit.ViewModel
 
             if (config.GlobalSocks5Port == 0)
             {
-                config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(2000);
+                config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(3000);
             }
             else
             {
-                List<int> portInUse = NetworkUtil.GetPortInUse(2000);
+                List<int> portInUse = NetworkUtil.GetPortInUse(3000);
                 if (portInUse.Contains(config.GlobalSocks5Port))
                 {
-                    config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(2000, portInUse);
+                    config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(3000, portInUse);
                 }
             }
 
@@ -157,65 +138,28 @@ namespace XTransmit.ViewModel
             }
 
             App.GlobalConfig.IsTransmitEnabled = true;
-            OnPropertyChanged("IsTransmitEnabled"); //from notifyicon
         }
-        private void TransmitDisable()
+        private void DisableTransmit()
         {
             NativeMethods.DisableProxy();
             PrivoxyManager.Stop();
-            SSManager.Stop(App.GlobalConfig.RemoteServer); // server pool
+            SSManager.Stop(App.GlobalConfig.RemoteServer);
 
             App.GlobalConfig.IsTransmitEnabled = false;
-            OnPropertyChanged("IsTransmitEnabled"); //from notifyicon
-        }
-
-        /** Server Pool 
-         */
-        private void StartServerPool()
-        {
-            foreach (ServerProfile server in ServerManager.ServerList)
-            {
-                int listen = NetworkUtil.GetAvailablePort(2000);
-                if (listen > 0)
-                {
-                    SSManager.Start(server, listen);
-                }
-            }
-
-            // ToggleButton auto update "Checked"(server_pool_enabled) properity
-            App.GlobalConfig.IsServerPoolEnabled = true;
-            OnPropertyChanged("TransmitStatus");
-        }
-
-        private void StopServerPool()
-        {
-            // "push" transmit status
-            if (App.GlobalConfig.IsTransmitEnabled)
-            {
-                ServerManager.ServerList.Remove(App.GlobalConfig.RemoteServer);
-            }
-
-            foreach (ServerProfile server in ServerManager.ServerList)
-            {
-                SSManager.Stop(server);
-            }
-
-            // "pop" transmit status
-            if (App.GlobalConfig.IsTransmitEnabled)
-            {
-                ServerManager.ServerList.Add(App.GlobalConfig.RemoteServer);
-            }
-
-            App.GlobalConfig.IsServerPoolEnabled = false;
-            OnPropertyChanged("TransmitStatus");
         }
 
         /** actoins ====================================================================================================== 
          */
+        public void LockTransmitControl(bool enable)
+        {
+            IsTransmitControllable = !enable;
+            OnPropertyChanged("IsTransmitControllable");
+        }
+
         // a functional interface
         public void AddServerByScanQRCode()
         {
-            // TODO - take care of the ContentTables order
+            // TODO - Take care of the ContentTables list order
             ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
             serverViewModel.CommandAddServerQRCode.Execute(null);
         }
@@ -263,6 +207,13 @@ namespace XTransmit.ViewModel
                     OnPropertyChanged("ContentDisplay");
                 }
             }
+        }
+
+        // open curl
+        public RelayCommand CommandShowCurl => new RelayCommand(ShowCurl);
+        private void ShowCurl(object parameter)
+        {
+            new View.WindowCurl().Show();
         }
 
         // show setting

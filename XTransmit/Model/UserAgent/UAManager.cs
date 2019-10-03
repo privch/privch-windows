@@ -54,7 +54,7 @@ namespace XTransmit.Model.UserAgent
                 uaList = UAList;
             }
 
-            byte[] md5Data = TextUtil.GetXmlMD5(uaList);
+            byte[] md5Data = TextUtil.GetMD5(uaList);
             byte[] md5File = FileUtil.GetMD5(UAXmlPath);
 
             return (md5Data != null && md5File != null) ? !md5File.SequenceEqual(md5Data) : true;

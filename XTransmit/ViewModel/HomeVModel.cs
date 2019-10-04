@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using XTransmit.Model.Server;
-using XTransmit.Utility;
 using XTransmit.ViewModel.Control;
 
 namespace XTransmit.ViewModel
@@ -87,6 +85,12 @@ namespace XTransmit.ViewModel
 
         /** actoins ====================================================================================================== 
          */
+        public void UpdateTransmitStatus()
+        {
+            OnPropertyChanged("IsTransmitEnabled");
+            OnPropertyChanged("TransmitStatus");
+        }
+
         public void LockTransmitControl(bool enable)
         {
             IsTransmitControllable = !enable;
@@ -100,12 +104,6 @@ namespace XTransmit.ViewModel
             serverViewModel.CommandAddServerQRCode.Execute(null);
         }
 
-        // Crap
-        public void UpdateTransmitStatus()
-        {
-            OnPropertyChanged("IsTransmitEnabled");
-        }
-
         // Progress is indeterminated, This mothod increase/decrease the progress value.
         // TODO Next - Progress list
         public void UpdateProgress(int progress)
@@ -117,21 +115,6 @@ namespace XTransmit.ViewModel
             else Progress.IsIndeterminate = true;
 
             OnPropertyChanged("Progress");
-        }
-
-        public void UpdateTransmitServer(ServerProfile serverProfile)
-        {
-            if (App.GlobalConfig.RemoteServer == null || !App.GlobalConfig.RemoteServer.Equals(serverProfile))
-            {
-                if (App.GlobalConfig.IsTransmitEnabled)
-                {
-                    SSManager.Stop(App.GlobalConfig.RemoteServer);
-                    SSManager.Start(serverProfile, App.GlobalConfig.GlobalSocks5Port);
-                }
-            }
-
-            App.GlobalConfig.RemoteServer = serverProfile;
-            OnPropertyChanged("TransmitStatus");
         }
 
 

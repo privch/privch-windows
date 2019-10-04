@@ -126,11 +126,8 @@ namespace XTransmit.Utility
             }
             catch
             {
-                return false;
-            }
-            finally
-            {
                 process?.Dispose();
+                return false;
             }
 
             return true;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using XTransmit.Model;
+using XTransmit.Model.Server;
 
 namespace XTransmit.Utility
 {
@@ -56,6 +57,20 @@ namespace XTransmit.Utility
             SSManager.Stop(App.GlobalConfig.RemoteServer);
 
             App.GlobalConfig.IsTransmitEnabled = false;
+        }
+
+        public static void ChangeTransmitServer(ServerProfile serverProfile)
+        {
+            if (App.GlobalConfig.RemoteServer == null || !App.GlobalConfig.RemoteServer.Equals(serverProfile))
+            {
+                if (App.GlobalConfig.IsTransmitEnabled)
+                {
+                    SSManager.Stop(App.GlobalConfig.RemoteServer);
+                    SSManager.Start(serverProfile, App.GlobalConfig.GlobalSocks5Port);
+                }
+
+                App.GlobalConfig.RemoteServer = serverProfile;
+            }
         }
     }
 }

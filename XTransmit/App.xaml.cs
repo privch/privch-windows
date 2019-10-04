@@ -103,9 +103,13 @@ namespace XTransmit
 
         public static void ChangeTransmitServer(Model.Server.ServerProfile serverProfile)
         {
+            TransmitControl.ChangeTransmitServer(serverProfile);
+
             View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
             ViewModel.HomeVModel homeViewModel = (ViewModel.HomeVModel)windowHome.DataContext;
-            homeViewModel.UpdateTransmitServer(serverProfile);
+            homeViewModel.UpdateTransmitStatus();
+
+            // TODO - Update NotifyIcon status
         }
 
         public static void AddServerByScanQRCode()

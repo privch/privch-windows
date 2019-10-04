@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using XTransmit.Model;
 using XTransmit.Model.Server;
 using XTransmit.Utility;
 using XTransmit.ViewModel.Control;
@@ -10,7 +9,7 @@ using XTransmit.ViewModel.Control;
 namespace XTransmit.ViewModel
 {
     /**
-     * Updated: 2019-09-30
+     * Updated: 2019-10-04
      */
     public class HomeVModel : BaseViewModel
     {
@@ -19,17 +18,7 @@ namespace XTransmit.ViewModel
             get => App.GlobalConfig.IsTransmitEnabled;
             set
             {
-                if (value)
-                {
-                    EnableTransmit();
-                }
-                else
-                {
-                    DisableTransmit();
-                }
-
-                //from notifyicon
-                OnPropertyChanged("IsTransmitEnabled"); 
+                App.EnableTransmit(value);
             }
         }
 
@@ -96,58 +85,6 @@ namespace XTransmit.ViewModel
             App.GlobalPreference.ContentDisplay = contentTable.Title;
         }
 
-        private void EnableTransmit()
-        {
-            Config config = App.GlobalConfig;
-            if (config.RemoteServer == null)
-            {
-                return;
-            }
-
-            if (config.SystemProxyPort == 0)
-            {
-                config.SystemProxyPort = NetworkUtil.GetAvailablePort(2000);
-            }
-            else
-            {
-                List<int> portInUse = NetworkUtil.GetPortInUse(2000);
-                if (portInUse.Contains(config.SystemProxyPort))
-                {
-                    config.SystemProxyPort = NetworkUtil.GetAvailablePort(2000, portInUse);
-                }
-            }
-            NativeMethods.EnableProxy($"127.0.0.1:{config.SystemProxyPort}", NativeMethods.Bypass);
-
-            if (config.GlobalSocks5Port == 0)
-            {
-                config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(3000);
-            }
-            else
-            {
-                List<int> portInUse = NetworkUtil.GetPortInUse(3000);
-                if (portInUse.Contains(config.GlobalSocks5Port))
-                {
-                    config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(3000, portInUse);
-                }
-            }
-
-            PrivoxyManager.Start(config.SystemProxyPort, config.GlobalSocks5Port);
-            if (config.RemoteServer != null)
-            {
-                SSManager.Start(config.RemoteServer, config.GlobalSocks5Port);
-            }
-
-            App.GlobalConfig.IsTransmitEnabled = true;
-        }
-        private void DisableTransmit()
-        {
-            NativeMethods.DisableProxy();
-            PrivoxyManager.Stop();
-            SSManager.Stop(App.GlobalConfig.RemoteServer);
-
-            App.GlobalConfig.IsTransmitEnabled = false;
-        }
-
         /** actoins ====================================================================================================== 
          */
         public void LockTransmitControl(bool enable)
@@ -156,12 +93,17 @@ namespace XTransmit.ViewModel
             OnPropertyChanged("IsTransmitControllable");
         }
 
-        // a functional interface
         public void AddServerByScanQRCode()
         {
             // TODO - Take care of the ContentTables list order
             ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
             serverViewModel.CommandAddServerQRCode.Execute(null);
+        }
+
+        // Crap
+        public void UpdateTransmitStatus()
+        {
+            OnPropertyChanged("IsTransmitEnabled");
         }
 
         // Progress is indeterminated, This mothod increase/decrease the progress value.

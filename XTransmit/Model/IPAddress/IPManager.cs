@@ -8,27 +8,32 @@ using XTransmit.Utility;
 namespace XTransmit.Model.IPAddress
 {
     /**
-     * Updated: 2019-09-28
+     * Updated: 2019-10-04
      */
     public static class IPManager
     {
-        public static List<IPProfile> IPList;
+        /**NOTE
+         * If use List<IPProfile> there will an exception occurs at the App exit 
+         * when the number of IPProfile item is big (such as 60029 or more).
+         */
+        public static IPProfile[] IPArray;
         private static string IPXmlPath;
         private static readonly Random RandGen = new Random();
 
         public static void Load(string pathIpXml)
         {
-            if (FileUtil.XmlDeserialize(pathIpXml, typeof(List<IPProfile>)) is List<IPProfile> listIp)
+            if (FileUtil.XmlDeserialize(pathIpXml, typeof(IPProfile[])) is IPProfile[] ipArray)
             {
-                IPList = listIp;
+                IPArray = ipArray;
             }
             else
             {
-                IPList = new List<IPProfile>();
+                IPArray = new IPProfile[] { };
             }
-            
+
             IPXmlPath = pathIpXml;
         }
+
         public static void Reload()
         {
             if (!string.IsNullOrWhiteSpace(IPXmlPath))
@@ -45,18 +50,18 @@ namespace XTransmit.Model.IPAddress
                 pathIpXml = IPXmlPath;
             }
 
-            FileUtil.XmlSerialize(pathIpXml, IPList);
+            FileUtil.XmlSerialize(pathIpXml, IPArray);
         }
 
         // determin wether the ip list has been changed
-        public static bool HasChangesToFile(List<IPProfile> ipList = null)
+        public static bool HasChangesToFile(IPProfile[] ipArray = null)
         {
-            if (ipList == null)
+            if (ipArray == null)
             {
-                ipList = IPList;
+                ipArray = IPArray;
             }
 
-            byte[] md5Data = TextUtil.GetMD5(ipList);
+            byte[] md5Data = TextUtil.GetMD5(ipArray);
             byte[] md5File = FileUtil.GetMD5(IPXmlPath);
 
             return (md5Data != null && md5File != null) ? !md5File.SequenceEqual(md5Data) : true;
@@ -139,10 +144,10 @@ namespace XTransmit.Model.IPAddress
 
         public static IPProfile GetRandom()
         {
-            if (IPList != null && IPList.Count > 0)
+            if (IPArray != null && IPArray.Length > 0)
             {
-                int i = RandGen.Next(0, IPList.Count - 1);
-                return IPList[i];
+                int i = RandGen.Next(0, IPArray.Length - 1);
+                return IPArray[i];
             }
             else
             {

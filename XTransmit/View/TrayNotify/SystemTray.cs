@@ -47,6 +47,13 @@ namespace XTransmit.View.TrayNotify
             notifyIcon.Dispose();
         }
 
+        public void SwitchIcon(bool active)
+        {
+            notifyIcon.Icon = active ? 
+                Properties.Resources.XTransmit : 
+                Properties.Resources.XTransmit_Off;
+        }
+
         /** NotifyIcon Handlers ==================================================================================
          */
         private void NotifyIcon_Click(object sender, EventArgs e)

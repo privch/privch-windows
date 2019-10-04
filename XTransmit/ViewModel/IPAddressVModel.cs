@@ -8,7 +8,9 @@ using XTransmit.ViewModel.Control;
 namespace XTransmit.ViewModel
 {
     /**TODO - Cancelable Ping
-     * Updated: 2019-09-28
+     * TODO - Confirm that ObservableCollection write data directly to the original list/array items,
+     *        and not the items copied form original list/array
+     * Updated: 2019-10-04
      */
     class IPAddressVModel : BaseViewModel
     {
@@ -20,7 +22,7 @@ namespace XTransmit.ViewModel
         public IPAddressVModel()
         {
             Progress = new ProgressInfo(0, false);
-            IPListOC = new ObservableCollection<IPProfile>(IPManager.IPList);
+            IPListOC = new ObservableCollection<IPProfile>(IPManager.IPArray);
 
             //msdn.microsoft.com/en-us/library/hh198861.aspx
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(IPListOC, lock_sync);
@@ -32,8 +34,7 @@ namespace XTransmit.ViewModel
             isPingInProcess = false;
 
             // save ip address data if there are changes
-            List<IPProfile> iplist = new List<IPProfile>(IPListOC);
-            if (IPManager.HasChangesToFile(iplist))
+            if (IPManager.HasChangesToFile())
             {
                 string title = (string)Application.Current.FindResource("ip_title");
                 string ask_save = (string)Application.Current.FindResource("ip_ask_save_data");
@@ -43,12 +44,10 @@ namespace XTransmit.ViewModel
 
                 if (dialog.CancelableResult == true)
                 {
-                    IPManager.IPList = iplist;
                     IPManager.Save();
                 }
                 else
                 {
-                    // NOTE - Is ObservableCollection write data into the list item?
                     IPManager.Reload();
                 }
             }
@@ -63,10 +62,8 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandSaveData => new RelayCommand(SaveData);
         private void SaveData(object parameter)
         {
-            List<IPProfile> iplist = new List<IPProfile>(IPListOC);
-            if (IPManager.HasChangesToFile(iplist))
+            if (IPManager.HasChangesToFile())
             {
-                IPManager.IPList = iplist;
                 IPManager.Save();
             }
         }
@@ -76,7 +73,7 @@ namespace XTransmit.ViewModel
         private void ReloadData(object parameter)
         {
             IPManager.Reload();
-            IPListOC = new ObservableCollection<IPProfile>(IPManager.IPList);
+            IPListOC = new ObservableCollection<IPProfile>(IPManager.IPArray);
             OnPropertyChanged("IPListOC");
         }
 

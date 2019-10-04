@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using XTransmit.Model;
 using XTransmit.Utility;
@@ -13,11 +14,12 @@ namespace XTransmit
      * TODO - Add support for Remote Http Proxy, SSR, V2Ray ...
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
+     * TODO - Icon for the status of server pool mode
      * 
      * NOTE
      * EventHandler name "_"
      * 
-     * Updated: 2019-09-30
+     * Updated: 2019-10-04
      */
     public partial class App : Application
     {
@@ -37,8 +39,9 @@ namespace XTransmit
         public static Preference GlobalPreference { get; private set; }
         public static Config GlobalConfig { get; private set; }
 
-        private View.TrayNotify.SystemTray NotifyIcon;
+        private static View.TrayNotify.SystemTray NotifyIcon;
 
+        // controller ==================================================
         public static void CloseMainWindow()
         {
             Current.MainWindow.Hide();
@@ -82,12 +85,23 @@ namespace XTransmit
 
         public static void EnableTransmit(bool enable)
         {
+            if (enable)
+            {
+                TransmitControl.EnableTransmit();
+            }
+            else
+            {
+                TransmitControl.DisableTransmit();
+            }
+
             View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
             ViewModel.HomeVModel homeViewModel = (ViewModel.HomeVModel)windowHome.DataContext;
-            homeViewModel.IsTransmitEnabled = enable;
+            homeViewModel?.UpdateTransmitStatus();
+
+            NotifyIcon.SwitchIcon(GlobalConfig.IsTransmitEnabled);
         }
 
-        public static void UpdateTransmitServer(Model.Server.ServerProfile serverProfile)
+        public static void ChangeTransmitServer(Model.Server.ServerProfile serverProfile)
         {
             View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
             ViewModel.HomeVModel homeViewModel = (ViewModel.HomeVModel)windowHome.DataContext;
@@ -103,12 +117,45 @@ namespace XTransmit
 
         /** Application ===============================================================================
          */
+        private bool IsProcessExist()
+        {
+            Process[] list = Process.GetProcessesByName("XTransmit");
+            if (list != null && list.Length > 1)
+            {
+                foreach (Process process in list)
+                {
+                    process.Dispose();
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            // for avoid loading WindowHome on startup exceptions
+            StartupUri = new System.Uri("View/WindowShutdown.xaml", System.UriKind.Relative);
+
+            // single instance
+            if (IsProcessExist())
+            {
+                Shutdown();
+                return;
+            }
+
             // init directory
             PathCurrent = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             try { Directory.CreateDirectory($@"{PathCurrent}\datas"); }
-            catch { return; }
+            catch
+            {
+                Shutdown();
+                return;
+            }
 
             PathPrivoxy = $@"{PathCurrent}\binary\privoxy";
             PathShadowsocks = $@"{PathCurrent}\binary\shadowsocks";
@@ -142,6 +189,7 @@ namespace XTransmit
 
             // notifyicon
             NotifyIcon = new View.TrayNotify.SystemTray();
+            StartupUri = new System.Uri("View/WindowHome.xaml", System.UriKind.Relative);
             Exit += Application_Exit;
         }
 
@@ -152,8 +200,9 @@ namespace XTransmit
             /** if there were other proxy servers running they should set system proxy again
              */
             NativeMethods.DisableProxy();
-            PrivoxyManager.Stop();
+            PrivoxyManager.KillRunning();
             SSManager.KillRunning(); // server pool
+            CurlManager.KillRunning();
 
             Preference.WriteFile(FilePreferenceXml, GlobalPreference);
             Config.WriteFile(FileConfigXml, GlobalConfig);

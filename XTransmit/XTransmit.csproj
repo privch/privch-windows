@@ -59,6 +59,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -143,6 +144,7 @@
     <Compile Include="Utility\RegexHelper.cs" />
     <Compile Include="Utility\SSManager.cs" />
     <Compile Include="Utility\TextUtil.cs" />
+    <Compile Include="Utility\TransmitControl.cs" />
     <Compile Include="ViewModel\AboutVModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\CurlVModel.cs" />
@@ -201,6 +203,9 @@
     <Compile Include="View\WindowIPAddress.xaml.cs">
       <DependentUpon>WindowIPAddress.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WindowShutdown.xaml.cs">
+      <DependentUpon>WindowShutdown.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\WindowUserAgent.xaml.cs">
       <DependentUpon>WindowUserAgent.xaml</DependentUpon>
     </Compile>
@@ -258,6 +263,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\WindowShutdown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\WindowUserAgent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -277,7 +286,7 @@
     <None Include="Resources\Binary\shadowsocks\ss-local.exe.gz" />
     <Resource Include="Resources\Binary\privoxy\privoxy-config.txt" />
     <Resource Include="XTransmit.ico" />
+    <None Include="Resources\XTransmit-Off.ico" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

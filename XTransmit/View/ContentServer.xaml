@@ -24,20 +24,6 @@
 
                 <Separator/>
 
-                <Button ToolTip="{StaticResource server_fetch_info}"
-                        Content="{md:PackIcon Kind=AddLocation,Size=24}"
-                        Command="{Binding Path=CommandFetchInfo}"/>
-
-                <Button ToolTip="{StaticResource server_response_time}"
-                        Content="{md:PackIcon Kind=ServerNetwork,Size=24}"
-                        Command="{Binding Path=CommandFetchResponseTime}"/>
-
-                <Button ToolTip="{StaticResource server_ping_check}"
-                        Content="{md:PackIcon Kind=ChartAreaspline,Size=24}"
-                        Command="{Binding Path=CommandCheckPing}"/>
-
-                <Separator/>
-
                 <Button ToolTip="{StaticResource server_scan_qrcode}"
                         Content="{md:PackIcon Kind=QrcodeScan}"
                         Command="{Binding Path=CommandAddServerQRCode}"/>
@@ -53,6 +39,20 @@
                 <Button ToolTip="{StaticResource server_manual_setting}" 
                         Content="{md:PackIcon Kind=AddCircle}" 
                         Command="{Binding Path=CommandAddServerNew}"/>
+                
+                <Separator/>
+
+                <Button ToolTip="{StaticResource server_fetch_info}"
+                        Content="{md:PackIcon Kind=AddLocation,Size=24}"
+                        Command="{Binding Path=CommandFetchInfo}"/>
+
+                <Button ToolTip="{StaticResource server_response_time}"
+                        Content="{md:PackIcon Kind=ServerNetwork,Size=24}"
+                        Command="{Binding Path=CommandFetchResponseTime}"/>
+
+                <Button ToolTip="{StaticResource server_ping_check}"
+                        Content="{md:PackIcon Kind=ChartAreaspline,Size=24}"
+                        Command="{Binding Path=CommandCheckPing}"/>
             </ToolBar>
         </ToolBarTray>
 

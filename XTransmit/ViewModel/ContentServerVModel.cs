@@ -158,7 +158,7 @@ namespace XTransmit.ViewModel
             ServerView serverSelected = ServerViewListOC.FirstOrDefault(x => x.vServerProfile.Equals(App.GlobalConfig.RemoteServer));
             if (serverSelected != null)
             {
-                App.UpdateTransmitServer(serverSelected.vServerProfile);
+                App.ChangeTransmitServer(serverSelected.vServerProfile);
             }
 
             processig_fetch_info = false;
@@ -330,7 +330,7 @@ namespace XTransmit.ViewModel
             if (serverNew is ServerView serverView)
             {
                 // Set ServerProfile
-                App.UpdateTransmitServer(serverView.vServerProfile);
+                App.ChangeTransmitServer(serverView.vServerProfile);
                 await Task.Run(() => serverView.UpdateResponseTime());
             }
         }

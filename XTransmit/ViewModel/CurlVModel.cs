@@ -15,7 +15,7 @@ namespace XTransmit.ViewModel
      * NOTE
      * Optimize the save action
      * 
-     * Updated: 2019-10-02
+     * Updated: 2019-10-04
      */
     public class CurlVModel : BaseViewModel
     {
@@ -60,6 +60,11 @@ namespace XTransmit.ViewModel
             CollectionView collectionView = (CollectionView)CollectionViewSource.GetDefaultView(SiteListOC);
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("Website");
             collectionView.GroupDescriptions.Add(groupDescription);
+        }
+        public void WindowClose()
+        {
+            StopServerPool();
+            App.LockTransmit(false);
         }
 
         /** Server Pool 

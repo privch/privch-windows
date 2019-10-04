@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management;
 using System.Net;
 using System.Net.NetworkInformation;
 
 namespace XTransmit.Utility
 {
     /**
-     * Updated: 2019-09-30
+     * Updated: 2019-10-04
      */
     public static class NetworkUtil
     {
@@ -48,6 +49,24 @@ namespace XTransmit.Utility
             }
 
             return adapterList;
+        }
+
+        // set dns for current adapter
+        public static void SetDNS(string[] dns)
+        {
+            using (ManagementClass manClass = new ManagementClass("Win32_NetworkAdapterConfiguration"))
+            {
+                ManagementObjectCollection manObjC = manClass.GetInstances();
+                foreach (ManagementObject manObj in manObjC)
+                {
+                    if ((bool)manObj["IPEnabled"])
+                    {
+                        ManagementBaseObject inParams = manObj.GetMethodParameters("SetDNSServerSearchOrder");
+                        inParams["DNSServerSearchOrder"] = dns;
+                        ManagementBaseObject outParams = manObj.InvokeMethod("SetDNSServerSearchOrder", inParams, null);
+                    }
+                }
+            }
         }
 
         public static List<int> GetPortInUse(int startingPort)

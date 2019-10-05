@@ -8,12 +8,12 @@ using XTransmit.Utility;
 namespace XTransmit.Model.Server
 {
     /**
-     * Updated: 2019-10-02
+     * Updated: 2019-10-04
      */
     [Serializable]
     public class ServerProfile
     {
-        // constants
+        // encrypt method
         public static readonly string[] Ciphers =
         {
             "rc4-md5",
@@ -27,12 +27,15 @@ namespace XTransmit.Model.Server
             "salsa20",
         };
 
-        // values
+        // server arguments
         public string HostIP;
         public int HostPort;
         public string Encrypt;
         public string Password;
         public string Remarks;
+
+        public int Timeout;
+        public int ListenPort;
 
         public bool PluginEnabled;
         public string PluginName;
@@ -41,13 +44,11 @@ namespace XTransmit.Model.Server
         // preference and info
         public string FriendlyName;
         public string TimeCreated;
-        public int Timeout;
         public IPInfo IPData;
 
         // status
-        public string ResponseTime;
+        public string ResponseTime; //seconds
         public long Ping; // less then 0 means timeout or unreachable
-        public int ListenPort;
 
         public ServerProfile Copy()
         {
@@ -55,7 +56,7 @@ namespace XTransmit.Model.Server
         }
 
         /**<summary>
-         * Must be called after the App.GlobalConfig has been loaded
+         * Must be called after the App.GlobalConfig loaded
          * </summary> 
          */
         public ServerProfile()
@@ -66,19 +67,20 @@ namespace XTransmit.Model.Server
             Password = "";
             Remarks = "";
 
+            // App.GlobalConfig is null when deserialize the RemoteServer object in the Config
+            Timeout = App.GlobalConfig?.SSTimeout ?? 3;
+            ListenPort = -1;
+
             PluginEnabled = false;
             PluginName = "";
             PluginOption = "";
 
             FriendlyName = "";
             TimeCreated = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-            // App.GlobalConfig is null when deserialize the RemoteServer object in the Config
-            Timeout = App.GlobalConfig?.SSTimeout ?? 3; 
             IPData = null;
 
             ResponseTime = "";
             Ping = 0;
-            ListenPort = -1;
         }
 
         public void SetFriendlyNameDefault()
@@ -132,7 +134,6 @@ namespace XTransmit.Model.Server
             }
 
             // curl process
-            int timeout = App.GlobalConfig.ResponseConnTimeout;
             Process process = null;
             try
             {
@@ -140,7 +141,7 @@ namespace XTransmit.Model.Server
                     new ProcessStartInfo
                     {
                         FileName = CurlManager.CurlExePath,
-                        Arguments = $"--silent --connect-timeout {timeout} --proxy \"socks5://127.0.0.1:{ListenPort}\" " + "-w \"%{time_total}\" -o NUL -s \"https://google.com\"",
+                        Arguments = $"--silent --connect-timeout {Timeout} --proxy \"socks5://127.0.0.1:{ListenPort}\" " + "-w \"%{time_total}\" -o NUL -s \"https://google.com\"",
                         WorkingDirectory = App.PathCurl,
                         CreateNoWindow = true,
                         UseShellExecute = false,
@@ -161,7 +162,7 @@ namespace XTransmit.Model.Server
         }
 
         // OO Programming
-        public void FetchPingData(Ping ping)
+        public void FetchPingDelay(Ping ping)
         {
             try
             {

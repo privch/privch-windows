@@ -67,7 +67,7 @@ namespace XTransmit.Model.Curl
             // fake client
             if (fakeClient != null)
             {
-                ServerProfile server = SSManager.GerRendom();
+                ServerProfile server = ServerManager.GerRendom();
                 if (server != null)
                 {
                     arguments = arguments.Replace(fakeClient.Replace, $"socks5://127.0.0.1:{server.ListenPort}");
@@ -130,7 +130,7 @@ namespace XTransmit.Model.Curl
                         UseShellExecute = false,
                         RedirectStandardOutput = readReponse,
                     });
-
+                Debug.WriteLine(arguments);
                 response = process.StartInfo.RedirectStandardOutput ? process.StandardOutput.ReadToEnd() : sr_complete;
                 process.WaitForExit();
             }

@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using XTransmit.Model.Server;
 
 /**
  * shadowsocks-libev-win-x86_64, 2019-09-22
  * shadowsocks-libev 3.3.1
  * 
- * Updated: 2019-09-30
+ * TODO Next - Auto upgrade binaries
+ * 
+ * Updated: 2019-10-04
  */
 namespace XTransmit.Utility
 {
     public static class SSManager
     {
-        public static readonly Dictionary<ServerProfile, Process> SSProcessMap = new Dictionary<ServerProfile, Process>();
         private static string SSExePath => $@"{App.PathShadowsocks}\{ss_local_exe_name}";
-        private static readonly Random RandGen = new Random();
 
         private const string cygev_4_dll_name = "cygev-4.dll";
         private const string cygev_4_dll_md5 = "1d4ab5325fe69fd662ab1b9af8c03145";
@@ -98,13 +96,8 @@ namespace XTransmit.Utility
             return true;
         }
 
-        public static bool Start(ServerProfile server, int listen)
+        public static Process Execute(ServerProfile server, int listen)
         {
-            if (SSProcessMap.ContainsKey(server))
-            {
-                return true;
-            }
-
             string arguments = $"-s {server.HostIP} -p {server.HostPort} -l {listen} -k {server.Password} -m {server.Encrypt} -t {server.Timeout}";
 
             Process process = null;
@@ -121,56 +114,31 @@ namespace XTransmit.Utility
                         LoadUserProfile = false,
                     });
 
-                server.ListenPort = listen;
-                SSProcessMap.Add(server, process);
+                return process;
             }
             catch
             {
                 process?.Dispose();
-                return false;
             }
 
-            return true;
+            return null;
         }
 
-        public static void Stop(ServerProfile server)
+        public static void Exit(Process process)
         {
-            // server is null at the first time running
-            if (server != null && SSProcessMap.ContainsKey(server))
+            try
             {
-                Process process = SSProcessMap[server];
-
-                try
-                {
-                    process.CloseMainWindow();
-                    process.Kill();
-                    process.WaitForExit();
-                }
-                catch (Exception) { }
-                finally
-                {
-                    /**The dispose method calls Close
-                    * https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.close
-                    */
-                    process.Dispose();
-                }
-
-                server.ListenPort = -1;
-                SSProcessMap.Remove(server);
+                process.CloseMainWindow();
+                process.Kill();
+                process.WaitForExit();
             }
-        }
-
-        // Server Pool 
-        public static ServerProfile GerRendom()
-        {
-            if (SSProcessMap.Count > 0)
+            catch (Exception) { }
+            finally
             {
-                int index = RandGen.Next(0, SSProcessMap.Count - 1);
-                return SSProcessMap.Keys.ElementAt(index);
-            }
-            else
-            {
-                return null;
+                /**The dispose method calls Close
+                * https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.close
+                */
+                process?.Dispose();
             }
         }
     }

@@ -76,11 +76,16 @@ namespace XTransmit
             homeViewModel.UpdateProgress(progress);
         }
 
-        public static void LockTransmit(bool enable)
+        public static void UpdateLockTransmit()
         {
-            View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
-            ViewModel.HomeVModel homeViewModel = (ViewModel.HomeVModel)windowHome.DataContext;
-            homeViewModel.LockTransmitControl(enable);
+            // windowHome is null on shutdown
+            if (Current.MainWindow is View.WindowHome windowHome
+                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
+            {
+                homeViewModel.UpdateLockTransmit();
+            }
+
+            // NotifyIcon updates status at menu popup
         }
 
         public static void EnableTransmit(bool enable)
@@ -94,9 +99,12 @@ namespace XTransmit
                 TransmitControl.DisableTransmit();
             }
 
-            View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
-            ViewModel.HomeVModel homeViewModel = (ViewModel.HomeVModel)windowHome.DataContext;
-            homeViewModel?.UpdateTransmitStatus();
+            // DataContext is null at startup init
+            if (Current.MainWindow is View.WindowHome windowHome
+                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
+            {
+                homeViewModel.UpdateTransmitStatus();
+            }
 
             NotifyIcon.SwitchIcon(GlobalConfig.IsTransmitEnabled);
         }

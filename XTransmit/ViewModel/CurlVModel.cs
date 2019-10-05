@@ -33,13 +33,12 @@ namespace XTransmit.ViewModel
                     StopServerPool();
                 }
 
+                App.UpdateLockTransmit();
                 OnPropertyChanged("ServerPoolStatus");
-
-                App.LockTransmit(value);
             }
         }
 
-        public string ServerPoolStatus => App.GlobalConfig.IsServerPoolEnabled ? $"{SSManager.SSProcessMap.Count}" : null;
+        public string ServerPoolStatus => App.GlobalConfig.IsServerPoolEnabled ? $"{ServerManager.ServerProcessMap.Count}" : null;
 
         public ObservableCollection<SiteProfile> SiteListOC { get; private set; }
 
@@ -64,7 +63,7 @@ namespace XTransmit.ViewModel
         public void WindowClose()
         {
             StopServerPool();
-            App.LockTransmit(false);
+            App.UpdateLockTransmit();
         }
 
         /** Server Pool 
@@ -81,7 +80,7 @@ namespace XTransmit.ViewModel
                 int listen = NetworkUtil.GetAvailablePort(2000);
                 if (listen > 0)
                 {
-                    SSManager.Start(server, listen);
+                    ServerManager.Start(server, listen);
                 }
             }
 
@@ -99,7 +98,7 @@ namespace XTransmit.ViewModel
 
             foreach (ServerProfile server in ServerManager.ServerList)
             {
-                SSManager.Stop(server);
+                ServerManager.Stop(server);
             }
 
             // "pop" transmit status

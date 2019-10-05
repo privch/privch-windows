@@ -29,7 +29,7 @@ namespace XTransmit.ViewModel
             }
         }
 
-        public bool IsTransmitControllable { get; private set; }
+        public bool IsTransmitControllable => !App.GlobalConfig.IsServerPoolEnabled;
 
         // progress
         public ProgressInfo Progress { get; private set; }
@@ -64,7 +64,7 @@ namespace XTransmit.ViewModel
 
             // transmit control. Trigge the set
             IsTransmitEnabled = App.GlobalConfig.IsTransmitEnabled;
-            IsTransmitControllable = true;
+            App.GlobalConfig.IsServerPoolEnabled = false;
 
             // save data on closing
             Application.Current.MainWindow.Closing += MainWindow_Closing;
@@ -91,9 +91,8 @@ namespace XTransmit.ViewModel
             OnPropertyChanged("TransmitStatus");
         }
 
-        public void LockTransmitControl(bool enable)
+        public void UpdateLockTransmit()
         {
-            IsTransmitControllable = !enable;
             OnPropertyChanged("IsTransmitControllable");
         }
 
@@ -138,6 +137,10 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandShowCurl => new RelayCommand(ShowCurl);
         private void ShowCurl(object parameter)
         {
+            // TODO - Temporary
+            ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
+            serverViewModel.CommandSaveServer.Execute(null);
+
             new View.WindowCurl().Show();
         }
 

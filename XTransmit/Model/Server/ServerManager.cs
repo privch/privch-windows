@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -9,11 +11,14 @@ using XTransmit.Utility;
 namespace XTransmit.Model.Server
 {
     /**
-     * Updated: 2019-09-24
+     * Updated: 2019-10-04
      */
     public static class ServerManager
     {
+        public static readonly Dictionary<ServerProfile, Process> ServerProcessMap = new Dictionary<ServerProfile, Process>();
         public static List<ServerProfile> ServerList;
+
+        private static readonly Random RandGen = new Random();
         private static string ServerXmlPath;
 
         // Init server list by deserialize xml file
@@ -36,6 +41,50 @@ namespace XTransmit.Model.Server
             FileUtil.XmlSerialize(ServerXmlPath, listServerProfile);
         }
 
+        // TODO - Server type (SS, V2Ray ...)
+        public static bool Start(ServerProfile server, int listen)
+        {
+            if (ServerProcessMap.ContainsKey(server))
+            {
+                return true;
+            }
+
+            if (SSManager.Execute(server, listen) is Process process)
+            {
+                ServerProcessMap.Add(server, process);
+                server.ListenPort = listen;
+                return true;
+            }
+
+            return false;
+        }
+
+        public static void Stop(ServerProfile server)
+        {
+            // server is null at the first time running
+            if (server != null && ServerProcessMap.ContainsKey(server))
+            {
+                Process process = ServerProcessMap[server];
+                SSManager.Exit(process);
+
+                server.ListenPort = -1;
+                ServerProcessMap.Remove(server);
+            }
+        }
+
+        // Server Pool 
+        public static ServerProfile GerRendom()
+        {
+            if (ServerProcessMap.Count > 0)
+            {
+                int index = RandGen.Next(0, ServerProcessMap.Count - 1);
+                return ServerProcessMap.Keys.ElementAt(index);
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         /** Import ---------------------------------------------------------------------------------------
          * start with "ss://". 
@@ -57,13 +106,13 @@ namespace XTransmit.Model.Server
                 serverProfile.Remarks = HttpUtility.UrlDecode(tag, Encoding.UTF8);
             }
 
-            Match details = null;
+            Match details;
             try
             {
                 details = DetailsParser.Match(
                     Encoding.UTF8.GetString(Convert.FromBase64String(base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '='))));
             }
-            catch (FormatException)
+            catch (Exception)
             {
                 return null;
             }
@@ -73,10 +122,18 @@ namespace XTransmit.Model.Server
                 return null;
             }
 
+            try
+            {
+                serverProfile.HostPort = int.Parse(details.Groups["port"].Value);
+            }
+            catch
+            {
+                return null;
+            }
+
             serverProfile.Encrypt = details.Groups["method"].Value;
             serverProfile.Password = details.Groups["password"].Value;
             serverProfile.HostIP = details.Groups["hostname"].Value;
-            serverProfile.HostPort = int.Parse(details.Groups["port"].Value);
 
             serverProfile.SetFriendlyNameDefault();
             return serverProfile;
@@ -133,7 +190,7 @@ namespace XTransmit.Model.Server
                         userInfo = Encoding.UTF8.GetString(
                             Convert.FromBase64String(base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '=')));
                     }
-                    catch (FormatException)
+                    catch (Exception)
                     {
                         continue;
                     }

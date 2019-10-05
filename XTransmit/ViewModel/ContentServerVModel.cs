@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using XTransmit.Model.Server;
+using XTransmit.Utility;
 using XTransmit.View;
 using XTransmit.ViewModel.Model;
 using ZXing;
@@ -18,7 +19,7 @@ using ZXing.QrCode;
 namespace XTransmit.ViewModel
 {
     /**TODO - Column display option
-     * Updated: 2019-08-06
+     * Updated: 2019-10-05
      */
     class ContentServerVModel : BaseViewModel
     {
@@ -111,6 +112,11 @@ namespace XTransmit.ViewModel
             return false;
         }
 
+        private bool CanEdit(object parameter)
+        {
+            return !processig_fetch_info && !processing_fetch_response_time && !processing_check_ping;
+        }
+
         // save data
         public RelayCommand CommandSaveServer => new RelayCommand(SaveServer);
         private void SaveServer(object parameter)
@@ -185,9 +191,19 @@ namespace XTransmit.ViewModel
                         return;
                     }
 
-                    if (serverView.vServerProfile.ListenPort > 0)
+                    if (ServerManager.ServerProcessMap.ContainsKey(serverView.vServerProfile))
                     {
                         serverView.UpdateResponseTime();
+                    }
+                    else
+                    {
+                        int listen = NetworkUtil.GetAvailablePort(10000);
+                        if (listen > 0)
+                        {
+                            ServerManager.Start(serverView.vServerProfile, listen);
+                            serverView.UpdateResponseTime();
+                            ServerManager.Stop(serverView.vServerProfile);
+                        }
                     }
                 }
             });
@@ -233,9 +249,20 @@ namespace XTransmit.ViewModel
             CommandManager.InvalidateRequerySuggested();
         }
 
+        // select server, not in use
+        public RelayCommand CommandSelectServer => new RelayCommand(SelectServer, IsServerNotInUse);
+        private void SelectServer(object serverNew)
+        {
+            if (serverNew is ServerView serverView)
+            {
+                // Set ServerProfile
+                App.ChangeTransmitServer(serverView.vServerProfile);
+            }
+        }
+
         // add server by scan qrcode
         // TODO Fix - Some QRCode can not be recognized
-        public RelayCommand CommandAddServerQRCode => new RelayCommand(AddServerQRCode);
+        public RelayCommand CommandAddServerQRCode => new RelayCommand(AddServerQRCode, CanEdit);
         private void AddServerQRCode(object parameter)
         {
             // copy screen
@@ -269,7 +296,7 @@ namespace XTransmit.ViewModel
         }
 
         // add server by clipboard import
-        public RelayCommand CommandAddServerClipboard => new RelayCommand(AddServerClipboard);
+        public RelayCommand CommandAddServerClipboard => new RelayCommand(AddServerClipboard, CanEdit);
         private void AddServerClipboard(object parameter)
         {
             List<ServerProfile> serverList = ServerManager.ImportServers(Clipboard.GetText(TextDataFormat.Text));
@@ -285,7 +312,7 @@ namespace XTransmit.ViewModel
         }
 
         // add server by file import
-        public RelayCommand CommandAddServerFile => new RelayCommand(AddServerFile);
+        public RelayCommand CommandAddServerFile => new RelayCommand(AddServerFile, CanEdit);
         private void AddServerFile(object parameter)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
@@ -312,7 +339,7 @@ namespace XTransmit.ViewModel
         }
 
         // add server by manual create
-        public RelayCommand CommandAddServerNew => new RelayCommand(AddServerNew);
+        public RelayCommand CommandAddServerNew => new RelayCommand(AddServerNew, CanEdit);
         private void AddServerNew(object parameter)
         {
             ServerProfile server = new ServerProfile();
@@ -323,20 +350,8 @@ namespace XTransmit.ViewModel
             }
         }
 
-        // select server, not in use
-        public RelayCommand CommandSelectServer => new RelayCommand(SelectServer, IsServerNotInUse);
-        private async void SelectServer(object serverNew)
-        {
-            if (serverNew is ServerView serverView)
-            {
-                // Set ServerProfile
-                App.ChangeTransmitServer(serverView.vServerProfile);
-                await Task.Run(() => serverView.UpdateResponseTime());
-            }
-        }
-
         // edit server, not in use
-        public RelayCommand CommandEditServer => new RelayCommand(EditServer, IsServerNotInUse);
+        public RelayCommand CommandEditServer => new RelayCommand(EditServer, CanEdit);
         private void EditServer(object serverSelected)
         {
             ServerView serverView = (ServerView)serverSelected;
@@ -353,7 +368,7 @@ namespace XTransmit.ViewModel
         }
 
         // delete selected server(s), not in use
-        public RelayCommand CommandDeleteServers => new RelayCommand(DeleteServers);
+        public RelayCommand CommandDeleteServers => new RelayCommand(DeleteServers, CanEdit);
         private void DeleteServers(object serversSelected)
         {
             /** https://stackoverflow.com/a/14852516

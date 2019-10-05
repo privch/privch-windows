@@ -4,6 +4,9 @@ using XTransmit.Model.Server;
 
 namespace XTransmit.Utility
 {
+    /**
+     * Updated: 2019-10-04
+     */
     static class TransmitControl
     {
         public static void EnableTransmit()
@@ -44,7 +47,7 @@ namespace XTransmit.Utility
             PrivoxyManager.Start(config.SystemProxyPort, config.GlobalSocks5Port);
             if (config.RemoteServer != null)
             {
-                SSManager.Start(config.RemoteServer, config.GlobalSocks5Port);
+                ServerManager.Start(config.RemoteServer, config.GlobalSocks5Port);
             }
 
             App.GlobalConfig.IsTransmitEnabled = true;
@@ -54,7 +57,7 @@ namespace XTransmit.Utility
         {
             NativeMethods.DisableProxy();
             PrivoxyManager.Stop();
-            SSManager.Stop(App.GlobalConfig.RemoteServer);
+            ServerManager.Stop(App.GlobalConfig.RemoteServer);
 
             App.GlobalConfig.IsTransmitEnabled = false;
         }
@@ -65,8 +68,8 @@ namespace XTransmit.Utility
             {
                 if (App.GlobalConfig.IsTransmitEnabled)
                 {
-                    SSManager.Stop(App.GlobalConfig.RemoteServer);
-                    SSManager.Start(serverProfile, App.GlobalConfig.GlobalSocks5Port);
+                    ServerManager.Stop(App.GlobalConfig.RemoteServer);
+                    ServerManager.Start(serverProfile, App.GlobalConfig.GlobalSocks5Port);
                 }
 
                 App.GlobalConfig.RemoteServer = serverProfile;

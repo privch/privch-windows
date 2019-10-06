@@ -39,7 +39,7 @@
 
                 <TextBlock Margin="8, 0" VerticalAlignment="Center"
                            Style="{StaticResource MaterialDesignSubheadingTextBlock}"
-                           Text="{Binding UserAgentList.Count}"/>
+                           Text="{Binding UserAgentListOC.Count}"/>
             </ToolBar>
         </ToolBarTray>
 
@@ -51,7 +51,7 @@
                   CanUserSortColumns="True"
                   CanUserAddRows="True"
                   CanUserDeleteRows="True"
-                  ItemsSource="{Binding Path=UserAgentList}">
+                  ItemsSource="{Binding Path=UserAgentListOC}">
             <DataGrid.ContextMenu>
                 <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
                     <MenuItem Header="{StaticResource ua_copy_to_clipboard}" 
@@ -78,5 +78,23 @@
                                     Binding="{Binding Path=Value}"/>
             </DataGrid.Columns>
         </DataGrid>
+        <!-- ua no data -->
+        <Grid Grid.Row="1" Panel.ZIndex="1"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+            <TextBlock Margin="20" 
+                       Text="{StaticResource ua_no_data}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding UserAgentListOC.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
     </Grid>
 </Window>

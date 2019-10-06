@@ -4,13 +4,14 @@ using System.Windows;
 namespace XTransmit.View.TrayNotify
 {
     /**
-     * Updated: 2019-10-02
+     * Updated: 2019-10-06
      */
     public class SystemTray
     {
         private readonly System.Windows.Forms.NotifyIcon notifyIcon;
         private readonly System.Windows.Forms.MenuItem menuitemEnableTransmit;
 
+        private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
         private static readonly string sr_tray_enable_transmit = (string)Application.Current.FindResource("tray_enable_transmit");
         private static readonly string sr_tray_add_server_scan = (string)Application.Current.FindResource("tray_add_server_scan_qrcode");
         private static readonly string sr_tray_exit = (string)Application.Current.FindResource("_exit");
@@ -29,6 +30,7 @@ namespace XTransmit.View.TrayNotify
                 Visible = true,
             };
             notifyIcon.Click += NotifyIcon_Click;
+            notifyIcon.MouseMove += NotifyIcon_MouseMove;
 
             System.Windows.Forms.ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
             contextMenu.Popup += ContextMenu_Popup;
@@ -56,6 +58,18 @@ namespace XTransmit.View.TrayNotify
 
         /** NotifyIcon Handlers ==================================================================================
          */
+        private void NotifyIcon_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (App.GlobalConfig.RemoteServer != null)
+            {
+                notifyIcon.Text = App.GlobalConfig.RemoteServer.FriendlyName;
+            }
+            else
+            {
+                notifyIcon.Text = sr_server_not_set;
+            }
+        }
+
         private void NotifyIcon_Click(object sender, EventArgs e)
         {
             if (e is System.Windows.Forms.MouseEventArgs mouseEventArgs && mouseEventArgs.Button == System.Windows.Forms.MouseButtons.Left)

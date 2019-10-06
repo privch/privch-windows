@@ -14,10 +14,7 @@ namespace XTransmit.ViewModel
         public bool IsTransmitEnabled
         {
             get => App.GlobalConfig.IsTransmitEnabled;
-            set
-            {
-                App.EnableTransmit(value);
-            }
+            set => App.EnableTransmit(value);
         }
 
         public string TransmitStatus
@@ -38,7 +35,7 @@ namespace XTransmit.ViewModel
         public UserControl ContentDisplay { get; private set; }
         public List<ContentTable> ContentList { get; private set; }
 
-        private static readonly string sr_server_not_set = (string)Application.Current.FindResource("server_not_set");
+        private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
 
         public HomeVModel()
         {

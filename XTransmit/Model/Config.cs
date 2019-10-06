@@ -22,7 +22,7 @@ namespace XTransmit.Model
         // timeouts 
         public int SSTimeout;
         public int IPInfoConnTimeout;
-        public int ResponseConnTimeout;
+        public int ResponseConnTimeout; //not used
         public int PingTimeout; //ms
 
         public string NetworkAdapter;
@@ -36,7 +36,7 @@ namespace XTransmit.Model
             GlobalSocks5Port = 0;
             RemoteServer = null;
 
-            SSTimeout = 3;
+            SSTimeout = 5;
             IPInfoConnTimeout = 6;
             ResponseConnTimeout = 6;
             PingTimeout = 1200;

@@ -31,7 +31,7 @@ namespace XTransmit.ViewModel
         public void OnWindowClosing()
         {
             // isPingInProcess is also use to cancel task
-            isPingInProcess = false;
+            processing_ping = false;
 
             // save ip address data if there are changes
             if (IPManager.HasChangesToFile())
@@ -56,7 +56,7 @@ namespace XTransmit.ViewModel
 
         /** Commands --------------------------------------------------------------------------
          */
-        private volatile bool isPingInProcess = false;
+        private volatile bool processing_ping = false;
 
         // save data
         public RelayCommand CommandSaveData => new RelayCommand(SaveData);
@@ -106,10 +106,10 @@ namespace XTransmit.ViewModel
 
         // ping
         public RelayCommand CommandPingCheck => new RelayCommand(PingCheckAsync, CanPingCheck);
-        private bool CanPingCheck(object parameter) => !isPingInProcess;
+        private bool CanPingCheck(object parameter) => !processing_ping;
         private async void PingCheckAsync(object parameter)
         {
-            isPingInProcess = true;
+            processing_ping = true;
             System.Windows.Input.CommandManager.InvalidateRequerySuggested();
 
             Progress.IsIndeterminate = true;
@@ -122,7 +122,7 @@ namespace XTransmit.ViewModel
                 foreach (IPProfile ipProfile in IPListOC)
                 {
                     // isPingInProcess is also use to cancel task
-                    if (isPingInProcess == false)
+                    if (processing_ping == false)
                     {
                         return;
                     }
@@ -136,7 +136,7 @@ namespace XTransmit.ViewModel
             Progress.Value = 0;
             OnPropertyChanged("Progress");
 
-            isPingInProcess = false;
+            processing_ping = false;
             System.Windows.Input.CommandManager.InvalidateRequerySuggested();
         }
     }

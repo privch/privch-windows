@@ -70,7 +70,7 @@ namespace XTransmit.ViewModel
          */
         private void StartServerPool()
         {
-            if (ServerManager.ServerList.Count == 0)
+            if (ServerManager.ServerList.Count < 1)
             {
                 return;
             }

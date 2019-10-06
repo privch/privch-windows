@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using XTransmit.Model.UserAgent;
 
@@ -9,25 +10,23 @@ namespace XTransmit.ViewModel
      */
     class UserAgentVModel : BaseViewModel
     {
-        public List<UAProfile> UserAgentList { get; private set; }
+        public ObservableCollection<UAProfile> UserAgentListOC { get; private set; }
 
-        private string v_search;
+        private string search_value;
         public string Search
         {
-            get { return v_search; }
+            get { return search_value; }
             set
             {
-                v_search = value;
-                if (string.IsNullOrWhiteSpace(v_search))
+                search_value = value;
+                if (string.IsNullOrWhiteSpace(search_value))
                 {
-                    UserAgentList = UAManager.UAList;
+                    UserAgentListOC = new ObservableCollection<UAProfile>(UAManager.UAList);
                 }
                 else
                 {
-                    UserAgentList = UAManager.UAList.FindAll(ua =>
-                    {
-                        return ua.Value.ToLower().Contains(value.ToLower());
-                    });
+                    List<UAProfile> list = UAManager.UAList.FindAll(ua => ua.Value.ToLower().Contains(value.ToLower()));
+                    UserAgentListOC = new ObservableCollection<UAProfile>(list);
                 }
                 OnPropertyChanged("UserAgentList");
             }
@@ -35,7 +34,7 @@ namespace XTransmit.ViewModel
 
         public UserAgentVModel()
         {
-            UserAgentList = UAManager.UAList;
+            UserAgentListOC = new ObservableCollection<UAProfile>(UAManager.UAList);
         }
 
         public void OnWindowClosing()
@@ -74,7 +73,7 @@ namespace XTransmit.ViewModel
         private void ReloadData(object parameter)
         {
             UAManager.Reload();
-            UserAgentList = UAManager.UAList;
+            UserAgentListOC = new ObservableCollection<UAProfile>(UAManager.UAList);
             OnPropertyChanged("UserAgentList");
         }
     }

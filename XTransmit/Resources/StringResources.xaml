@@ -3,22 +3,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="_index">Index</system:String>
-    <system:String x:Key="_table">Table</system:String>
-    <system:String x:Key="_value">Value</system:String>
-    <system:String x:Key="_count">Count</system:String>
-    <system:String x:Key="_items">item(s)</system:String>
-    <system:String x:Key="_time">Time</system:String>
-
-    <system:String x:Key="_server">Server</system:String>
-    <system:String x:Key="_host">Host</system:String>
-    <system:String x:Key="_port">Port</system:String>
-    <system:String x:Key="_ping">Ping</system:String>
-    <system:String x:Key="_delay">Delay</system:String>
-    <system:String x:Key="_response">Response</system:String>
-    <system:String x:Key="_remarks">Remarks</system:String>
-    <system:String x:Key="_updated">Updated</system:String>
-
     <system:String x:Key="_yes">Yes</system:String>
     <system:String x:Key="_no">No</system:String>
     <system:String x:Key="_ok">OK</system:String>
@@ -39,6 +23,24 @@
     <system:String x:Key="_fetch">Fetch</system:String>
     <system:String x:Key="_search">Search</system:String>
 
+    <system:String x:Key="_server">Server</system:String>
+    <system:String x:Key="_host">Host</system:String>
+    <system:String x:Key="_port">Port</system:String>
+    <system:String x:Key="_ping">Ping</system:String>
+    <system:String x:Key="_delay">Delay</system:String>
+    <system:String x:Key="_response">Response</system:String>
+    <system:String x:Key="_remarks">Remarks</system:String>
+    <system:String x:Key="_created">Created</system:String>
+    <system:String x:Key="_added">Added</system:String>
+    <system:String x:Key="_updated">Updated</system:String>
+
+    <system:String x:Key="_index">Index</system:String>
+    <system:String x:Key="_table">Table</system:String>
+    <system:String x:Key="_value">Value</system:String>
+    <system:String x:Key="_count">Count</system:String>
+    <system:String x:Key="_items">item(s)</system:String>
+    <system:String x:Key="_time">Time</system:String>
+
     <system:String x:Key="_setting">Setting</system:String>
     <system:String x:Key="_about">About</system:String>
     <system:String x:Key="_os">System</system:String>
@@ -52,15 +54,18 @@
     <system:String x:Key="not_availabe">Not Availabe</system:String>
     <system:String x:Key="clear_all">Clear All</system:String>
     <system:String x:Key="confirm_by_enter">Enter to confirm</system:String>
-    <system:String x:Key="server_not_set">Server Not Set</system:String>
-
+    
     <system:String x:Key="app_name">XTransmit</system:String>
     <system:String x:Key="app_author">XinLake</system:String>
     <system:String x:Key="app_email">xinlake@outlook.com</system:String>
     <system:String x:Key="app_opensource_software">Open source software</system:String>
     <system:String x:Key="app_error_binary">Could not initialize the program files.</system:String>
 
+    <!-- home -->
+    <system:String x:Key="home_server_not_set">Server Not Set</system:String>
+    
     <!-- table server -->
+    <system:String x:Key="server_no_data">No data available now</system:String>
     <system:String x:Key="server_scan_qrcode">Scan QRCode</system:String>
     <system:String x:Key="server_import_clipboard">Import From Clipboard</system:String>
     <system:String x:Key="server_import_file">Import From File ...</system:String>
@@ -77,20 +82,6 @@
     <system:String x:Key="server_config_x_added">configuration(s) added.</system:String>
     <system:String x:Key="server_ask_keep_info_title">Fetch server info</system:String>
     <system:String x:Key="server_ask_keep_info_message">Keep the existing datas?</system:String>
-
-    <!-- table curl -->
-    <system:String x:Key="curl_title">X-CURL</system:String>
-    <system:String x:Key="curl_profile_title">Profile Title</system:String>
-    <system:String x:Key="curl_play_times">Play Times</system:String>
-    <system:String x:Key="curl_read_response">Read Response</system:String>
-    <system:String x:Key="curl_delay_format">Delay. Fixed, Random (Min, Max)</system:String>
-    <system:String x:Key="curl_site_information">Site Information</system:String>
-    <system:String x:Key="curl_website_url">Website URL</system:String>
-    <system:String x:Key="curl_fake_client_error">Unable to fack Client</system:String>
-    <system:String x:Key="curl_fake_ip_error">Unable to fake IP</system:String>
-    <system:String x:Key="curl_fake_ua_error">Unable to fake UA</system:String>
-    <system:String x:Key="curl_copy_argument_to_clipboard">Copy Argument to clipboard</system:String>
-    <system:String x:Key="curl_copy_response_to_clipboard">Copy Response to clipboard</system:String>
 
     <!-- table network -->
     <system:String x:Key="network_interface">Network Interface</system:String>
@@ -116,14 +107,31 @@
     <system:String x:Key="dialog_server_plugin_name">Plugin Name</system:String>
     <system:String x:Key="dialog_server_plugin_option">Plugin Option / Parameter</system:String>
 
+    <!-- table curl -->
+    <system:String x:Key="curl_title">X-CURL</system:String>
+    <system:String x:Key="curl_no_data">No data available now</system:String>
+    <system:String x:Key="curl_profile_title">Profile Title</system:String>
+    <system:String x:Key="curl_play_times">Play Times</system:String>
+    <system:String x:Key="curl_read_response">Read Response</system:String>
+    <system:String x:Key="curl_delay_format">Delay. Fixed, Random (Min, Max)</system:String>
+    <system:String x:Key="curl_site_information">Site Information</system:String>
+    <system:String x:Key="curl_website_url">Website URL</system:String>
+    <system:String x:Key="curl_fake_client_error">Unable to fack Client</system:String>
+    <system:String x:Key="curl_fake_ip_error">Unable to fake IP</system:String>
+    <system:String x:Key="curl_fake_ua_error">Unable to fake UA</system:String>
+    <system:String x:Key="curl_copy_argument_to_clipboard">Copy Argument to clipboard</system:String>
+    <system:String x:Key="curl_copy_response_to_clipboard">Copy Response to clipboard</system:String>
+
     <!-- window user-agent -->
     <system:String x:Key="ua_title">UserAgent</system:String>
+    <system:String x:Key="ua_no_data">No data available now</system:String>
     <system:String x:Key="ua_user_agent">User-Agent</system:String>
     <system:String x:Key="ua_copy_to_clipboard">Copy UserAgent to clipboard</system:String>
     <system:String x:Key="ua_ask_save_changes">User-Agent datas has changes, Save?</system:String>
 
     <!-- window ip address -->
     <system:String x:Key="ip_title">IP Address</system:String>
+    <system:String x:Key="ip_no_data">No data available now</system:String>
     <system:String x:Key="ip_new_table_form_file">New table from file ...</system:String>
     <system:String x:Key="ip_import_data_form_file">Import data from file ...</system:String>
     <system:String x:Key="ip_copy_table_name">Copy TableName to clipboard</system:String>

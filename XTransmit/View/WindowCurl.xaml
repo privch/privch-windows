@@ -113,5 +113,23 @@
                 </GroupStyle>
             </DataGrid.GroupStyle>
         </DataGrid>
+        <!-- Site no data -->
+        <Grid Grid.Row="1" Panel.ZIndex="1"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+            <TextBlock Margin="20" 
+                       Text="{StaticResource curl_no_data}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SiteListOC.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
     </Grid>
 </Window>

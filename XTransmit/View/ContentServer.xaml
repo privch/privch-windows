@@ -39,16 +39,18 @@
                 <Button ToolTip="{StaticResource server_manual_setting}" 
                         Content="{md:PackIcon Kind=AddCircle}" 
                         Command="{Binding Path=CommandAddServerNew}"/>
-                
+
                 <Separator/>
 
                 <Button ToolTip="{StaticResource server_fetch_info}"
                         Content="{md:PackIcon Kind=AddLocation,Size=24}"
                         Command="{Binding Path=CommandFetchInfo}"/>
 
+                <!--
                 <Button ToolTip="{StaticResource server_response_time}"
                         Content="{md:PackIcon Kind=ServerNetwork,Size=24}"
                         Command="{Binding Path=CommandFetchResponseTime}"/>
+                -->
 
                 <Button ToolTip="{StaticResource server_ping_check}"
                         Content="{md:PackIcon Kind=ChartAreaspline,Size=24}"
@@ -57,7 +59,8 @@
         </ToolBarTray>
 
         <!-- Server -->
-        <DataGrid x:Name="xDataGrid" Grid.Row="1"
+        <DataGrid x:Name="xDataGrid" 
+                  Grid.Row="1"
                   GridLinesVisibility="Horizontal"
                   SelectionMode="Extended"
                   IsReadOnly="True"
@@ -75,7 +78,7 @@
                             Command="{Binding Path=CommandDeleteServers}"
                             CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItems}"/>
             </DataGrid.InputBindings>
-            
+
             <DataGrid.ContextMenu>
                 <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
                     <MenuItem Icon="{md:PackIcon Kind=Check}" Header="{StaticResource server_menu_select}"
@@ -91,15 +94,33 @@
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
-            
+
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _server}" Binding="{Binding Path=FriendlyName}"/>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource _delay}" Binding="{Binding Path=ResponseTime}"/>
+                <!--<DataGridTextColumn Width="Auto" Header="{StaticResource _delay}" Binding="{Binding Path=ResponseTime}"/>-->
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _ping}" Binding="{Binding Path=Ping}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _host}" Binding="{Binding Path=HostIP}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _port}" Binding="{Binding Path=HostPort}"/>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource _remarks}" Binding="{Binding Path=Remarks}"/>
+                <DataGridTextColumn Width="*" Header="{StaticResource _added}" Binding="{Binding Path=TimeCreated}"/>
             </DataGrid.Columns>
         </DataGrid>
+        <!-- Server no data -->
+        <Grid Grid.Row="1" Panel.ZIndex="1"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+            <TextBlock Margin="20" 
+                       Text="{StaticResource server_no_data}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ServerViewListOC.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
     </Grid>
 </UserControl>

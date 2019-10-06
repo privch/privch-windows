@@ -10,7 +10,6 @@ namespace XTransmit
      * TODO - App Analyze
      * TODO - Reset preference if environment has changed
      * TODO - Check memory leak, stream close, object dispose.
-     * TODO - Display no data available
      * TODO - Add support for Remote Http Proxy, SSR, V2Ray ...
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers

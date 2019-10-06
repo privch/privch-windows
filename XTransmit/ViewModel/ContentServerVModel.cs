@@ -112,7 +112,7 @@ namespace XTransmit.ViewModel
             return false;
         }
 
-        private bool CanEdit(object parameter)
+        private bool CanEditList(object parameter)
         {
             return !processig_fetch_info && !processing_fetch_response_time && !processing_check_ping;
         }
@@ -262,7 +262,7 @@ namespace XTransmit.ViewModel
 
         // add server by scan qrcode
         // TODO Fix - Some QRCode can not be recognized
-        public RelayCommand CommandAddServerQRCode => new RelayCommand(AddServerQRCode, CanEdit);
+        public RelayCommand CommandAddServerQRCode => new RelayCommand(AddServerQRCode, CanEditList);
         private void AddServerQRCode(object parameter)
         {
             // copy screen
@@ -296,7 +296,7 @@ namespace XTransmit.ViewModel
         }
 
         // add server by clipboard import
-        public RelayCommand CommandAddServerClipboard => new RelayCommand(AddServerClipboard, CanEdit);
+        public RelayCommand CommandAddServerClipboard => new RelayCommand(AddServerClipboard, CanEditList);
         private void AddServerClipboard(object parameter)
         {
             List<ServerProfile> serverList = ServerManager.ImportServers(Clipboard.GetText(TextDataFormat.Text));
@@ -312,7 +312,7 @@ namespace XTransmit.ViewModel
         }
 
         // add server by file import
-        public RelayCommand CommandAddServerFile => new RelayCommand(AddServerFile, CanEdit);
+        public RelayCommand CommandAddServerFile => new RelayCommand(AddServerFile, CanEditList);
         private void AddServerFile(object parameter)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
@@ -339,7 +339,7 @@ namespace XTransmit.ViewModel
         }
 
         // add server by manual create
-        public RelayCommand CommandAddServerNew => new RelayCommand(AddServerNew, CanEdit);
+        public RelayCommand CommandAddServerNew => new RelayCommand(AddServerNew, CanEditList);
         private void AddServerNew(object parameter)
         {
             ServerProfile server = new ServerProfile();
@@ -351,7 +351,7 @@ namespace XTransmit.ViewModel
         }
 
         // edit server, not in use
-        public RelayCommand CommandEditServer => new RelayCommand(EditServer, CanEdit);
+        public RelayCommand CommandEditServer => new RelayCommand(EditServer, IsServerNotInUse);
         private void EditServer(object serverSelected)
         {
             ServerView serverView = (ServerView)serverSelected;
@@ -368,7 +368,11 @@ namespace XTransmit.ViewModel
         }
 
         // delete selected server(s), not in use
-        public RelayCommand CommandDeleteServers => new RelayCommand(DeleteServers, CanEdit);
+        public RelayCommand CommandDeleteServers => new RelayCommand(DeleteServers, CanDeleteServer);
+        private bool CanDeleteServer(object serverSelected)
+        {
+            return (ServerViewListOC.Count > 0) && CanEditList(null);
+        }
         private void DeleteServers(object serversSelected)
         {
             /** https://stackoverflow.com/a/14852516

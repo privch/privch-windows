@@ -115,8 +115,6 @@ namespace XTransmit
             View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
             ViewModel.HomeVModel homeViewModel = (ViewModel.HomeVModel)windowHome.DataContext;
             homeViewModel.UpdateTransmitStatus();
-
-            // TODO - Update NotifyIcon status
         }
 
         public static void AddServerByScanQRCode()

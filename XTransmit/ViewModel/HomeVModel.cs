@@ -7,7 +7,7 @@ using XTransmit.ViewModel.Control;
 namespace XTransmit.ViewModel
 {
     /**
-     * Updated: 2019-10-04
+     * Updated: 2019-10-07
      */
     public class HomeVModel : BaseViewModel
     {
@@ -17,14 +17,7 @@ namespace XTransmit.ViewModel
             set => App.EnableTransmit(value);
         }
 
-        public string TransmitStatus
-        {
-            get
-            {
-                return App.GlobalConfig.RemoteServer != null ?
-                    App.GlobalConfig.RemoteServer.FriendlyName : sr_server_not_set;
-            }
-        }
+        public string TransmitStatus => App.GlobalConfig.RemoteServer?.FriendlyName ?? sr_server_not_set;
 
         public bool IsTransmitControllable => !App.GlobalConfig.IsServerPoolEnabled;
 
@@ -35,7 +28,13 @@ namespace XTransmit.ViewModel
         public UserControl ContentDisplay { get; private set; }
         public List<ContentTable> ContentList { get; private set; }
 
+        // curl window
+        private Window windowCurl = null;
+
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
+        private static readonly string sr_server_title = (string)Application.Current.FindResource("server_title");
+        private static readonly string sr_network_title = (string)Application.Current.FindResource("netrowk_title");
+
 
         public HomeVModel()
         {
@@ -45,11 +44,10 @@ namespace XTransmit.ViewModel
             // init content list and display
             ContentList = new List<ContentTable>
             {
-                new ContentTable("Server", new View.ContentServer()),
-                new ContentTable("Netwrok", new View.ContentNetwork()),
+                new ContentTable(sr_server_title, new View.ContentServer()),
+                new ContentTable(sr_network_title, new View.ContentNetwork()),
             };
 
-            // TODO - Dragable table
             ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.Title == App.GlobalPreference.ContentDisplay);
             if (contentTable == null)
             {
@@ -116,8 +114,8 @@ namespace XTransmit.ViewModel
 
         /** Commands ======================================================================================================
          */
-        public RelayCommand CommandSwitchContent => new RelayCommand(SwitchContent);
-        private void SwitchContent(object newTitle)
+        public RelayCommand CommandSelectContent => new RelayCommand(SelectContent);
+        private void SelectContent(object newTitle)
         {
             if (newTitle is string title)
             {
@@ -138,7 +136,18 @@ namespace XTransmit.ViewModel
             ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
             serverViewModel.CommandSaveServer.Execute(null);
 
-            new View.WindowCurl().Show();
+            if (windowCurl == null || !windowCurl.IsLoaded)
+            {
+                windowCurl = new View.WindowCurl();
+            }
+
+            if (windowCurl.WindowState == WindowState.Minimized)
+            {
+                windowCurl.WindowState = WindowState.Normal;
+            }
+
+            windowCurl.Show();
+            windowCurl.Activate();
         }
 
         // show setting

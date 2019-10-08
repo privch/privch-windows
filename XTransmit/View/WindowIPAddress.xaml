@@ -74,7 +74,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="IP Address" Width="Auto" Binding="{Binding Path=IP}"/>
                 <DataGridTextColumn Header="Ping" Width="Auto" Binding="{Binding Path=Ping}"/>
-                <DataGridTextColumn Header="Remarks" Width="Auto" Binding="{Binding Path=Remarks}"/>
+                <DataGridTextColumn Header="Remarks" Width="*" Binding="{Binding Path=Remarks}"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu Background="{DynamicResource MaterialDesignBackground}">

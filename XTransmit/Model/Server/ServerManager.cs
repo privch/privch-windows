@@ -11,7 +11,7 @@ using XTransmit.Utility;
 namespace XTransmit.Model.Server
 {
     /**
-     * Updated: 2019-10-04
+     * Updated: 2019-10-07
      */
     public static class ServerManager
     {
@@ -39,6 +39,7 @@ namespace XTransmit.Model.Server
         public static void Save(List<ServerProfile> listServerProfile)
         {
             FileUtil.XmlSerialize(ServerXmlPath, listServerProfile);
+            ServerList = listServerProfile;
         }
 
         // TODO - Server type (SS, V2Ray ...)

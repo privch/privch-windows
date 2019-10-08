@@ -76,7 +76,7 @@
                 <DataGridTextColumn Width="Auto" Header="{StaticResource curl_profile_title}" Binding="{Binding Title}" />
                 <DataGridTextColumn Width="Auto" Header="{StaticResource curl_play_times}" Binding="{Binding PlayTimes}" />
                 <DataGridTextColumn Width="Auto" Header="{StaticResource curl_read_response}" Binding="{Binding IsReadResponse}" />
-                <DataGridTextColumn Width="Auto" Header="{StaticResource _updated}" Binding="{Binding TimeUpdated}" />
+                <DataGridTextColumn Width="*" Header="{StaticResource _updated}" Binding="{Binding TimeUpdated}" />
             </DataGrid.Columns>
 
             <DataGrid.GroupStyle>

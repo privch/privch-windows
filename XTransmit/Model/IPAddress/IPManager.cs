@@ -43,14 +43,10 @@ namespace XTransmit.Model.IPAddress
         }
 
         // save, save as
-        public static void Save(string pathIpXml = null)
+        public static void Save(IPProfile[] ipArray)
         {
-            if (string.IsNullOrWhiteSpace(pathIpXml))
-            {
-                pathIpXml = IPXmlPath;
-            }
-
-            FileUtil.XmlSerialize(pathIpXml, IPArray);
+            FileUtil.XmlSerialize(IPXmlPath, ipArray);
+            IPArray = ipArray;
         }
 
         // determin wether the ip list has been changed

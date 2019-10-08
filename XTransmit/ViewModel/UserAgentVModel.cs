@@ -6,7 +6,7 @@ using XTransmit.Model.UserAgent;
 namespace XTransmit.ViewModel
 {
     /** 
-     * Updated: 2019-09-28
+     * Updated: 2019-10-07
      */
     class UserAgentVModel : BaseViewModel
     {
@@ -25,8 +25,8 @@ namespace XTransmit.ViewModel
                 }
                 else
                 {
-                    List<UAProfile> list = UAManager.UAList.FindAll(ua => ua.Value.ToLower().Contains(value.ToLower()));
-                    UserAgentListOC = new ObservableCollection<UAProfile>(list);
+                    List<UAProfile> uaList = UAManager.UAList.FindAll(ua => ua.Value.ToLower().Contains(value.ToLower()));
+                    UserAgentListOC = new ObservableCollection<UAProfile>(uaList);
                 }
                 OnPropertyChanged("UserAgentList");
             }
@@ -40,7 +40,8 @@ namespace XTransmit.ViewModel
         public void OnWindowClosing()
         {
             // save user-agent data if it has changes, when this window is closing
-            if (UAManager.HasChangesToFile())
+            List<UAProfile> uaList = new List<UAProfile>(UserAgentListOC);
+            if (UAManager.HasChangesToFile(uaList))
             {
                 string title = (string)Application.Current.FindResource("ua_title");
                 string ask_save = (string)Application.Current.FindResource("ua_ask_save_changes");
@@ -50,7 +51,7 @@ namespace XTransmit.ViewModel
 
                 if (dialog.CancelableResult == true)
                 {
-                    UAManager.Save();
+                    UAManager.Save(uaList);
                 }
                 else
                 {
@@ -65,7 +66,11 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandSaveData => new RelayCommand(SaveData);
         private void SaveData(object parameter)
         {
-            UAManager.Save();
+            List<UAProfile> uaList = new List<UAProfile>(UserAgentListOC);
+            if (UAManager.HasChangesToFile(uaList))
+            {
+                UAManager.Save(uaList);
+            }
         }
 
         // reload data from file

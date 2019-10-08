@@ -34,7 +34,8 @@ namespace XTransmit.ViewModel
             processing_ping = false;
 
             // save ip address data if there are changes
-            if (IPManager.HasChangesToFile())
+            IPProfile[] ipArray = new List<IPProfile>(IPListOC).ToArray();
+            if (IPManager.HasChangesToFile(ipArray))
             {
                 string title = (string)Application.Current.FindResource("ip_title");
                 string ask_save = (string)Application.Current.FindResource("ip_ask_save_data");
@@ -44,7 +45,7 @@ namespace XTransmit.ViewModel
 
                 if (dialog.CancelableResult == true)
                 {
-                    IPManager.Save();
+                    IPManager.Save(ipArray);
                 }
                 else
                 {
@@ -62,9 +63,10 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandSaveData => new RelayCommand(SaveData);
         private void SaveData(object parameter)
         {
-            if (IPManager.HasChangesToFile())
+            IPProfile[] ipArray = new List<IPProfile>(IPListOC).ToArray();
+            if (IPManager.HasChangesToFile(ipArray))
             {
-                IPManager.Save();
+                IPManager.Save(ipArray);
             }
         }
 

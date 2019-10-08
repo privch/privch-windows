@@ -65,6 +65,7 @@
     <system:String x:Key="home_server_not_set">Server Not Set</system:String>
     
     <!-- table server -->
+    <system:String x:Key="server_title">Servers</system:String>
     <system:String x:Key="server_no_data">No data available now</system:String>
     <system:String x:Key="server_scan_qrcode">Scan QRCode</system:String>
     <system:String x:Key="server_import_clipboard">Import From Clipboard</system:String>
@@ -84,6 +85,7 @@
     <system:String x:Key="server_ask_keep_info_message">Keep the existing datas?</system:String>
 
     <!-- table network -->
+    <system:String x:Key="netrowk_title">Network</system:String>
     <system:String x:Key="network_interface">Network Interface</system:String>
 
     <!-- dialog setting -->

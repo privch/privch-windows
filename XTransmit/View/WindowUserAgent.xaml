@@ -73,7 +73,7 @@
                                     Header="{StaticResource _client}" 
                                     Binding="{Binding Path=Client}"/>
 
-                <DataGridTextColumn Width="Auto" 
+                <DataGridTextColumn Width="*" 
                                     Header="{StaticResource ua_user_agent}" 
                                     Binding="{Binding Path=Value}"/>
             </DataGrid.Columns>

@@ -36,14 +36,10 @@ namespace XTransmit.Model.UserAgent
             }
         }
 
-        public static void Save(string pathUaXml = null)
+        public static void Save(List<UAProfile> uaList)
         {
-            if (string.IsNullOrWhiteSpace(pathUaXml))
-            {
-                pathUaXml = UAXmlPath;
-            }
-
-            FileUtil.XmlSerialize(pathUaXml, UAList);
+            FileUtil.XmlSerialize(UAXmlPath, uaList);
+            UAList = uaList;
         }
 
         // determin wether the ip list has been changed

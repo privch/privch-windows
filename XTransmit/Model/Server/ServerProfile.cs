@@ -34,9 +34,6 @@ namespace XTransmit.Model.Server
         public string Password;
         public string Remarks;
 
-        public int Timeout;
-        public int ListenPort;
-
         public bool PluginEnabled;
         public string PluginName;
         public string PluginOption;
@@ -47,6 +44,7 @@ namespace XTransmit.Model.Server
         public IPInfo IPData;
 
         // status
+        public int ListenPort;
         public string ResponseTime; //seconds
         public long Ping; // less then 0 means timeout or unreachable
 
@@ -67,18 +65,15 @@ namespace XTransmit.Model.Server
             Password = "";
             Remarks = "";
 
-            // App.GlobalConfig is null when deserialize the RemoteServer object in the Config
-            Timeout = App.GlobalConfig?.SSTimeout ?? 3;
-            ListenPort = -1;
-
             PluginEnabled = false;
             PluginName = "";
             PluginOption = "";
 
             FriendlyName = "";
-            TimeCreated = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            TimeCreated = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             IPData = null;
 
+            ListenPort = -1;
             ResponseTime = "";
             Ping = 0;
         }
@@ -135,13 +130,14 @@ namespace XTransmit.Model.Server
 
             // curl process
             Process process = null;
+            int timeout = App.GlobalConfig.SSTimeout;
             try
             {
                 process = Process.Start(
                     new ProcessStartInfo
                     {
                         FileName = CurlManager.CurlExePath,
-                        Arguments = $"--silent --connect-timeout {Timeout} --proxy \"socks5://127.0.0.1:{ListenPort}\" " + "-w \"%{time_total}\" -o NUL -s \"https://google.com\"",
+                        Arguments = $"--silent --connect-timeout {timeout} --proxy \"socks5://127.0.0.1:{ListenPort}\" " + "-w \"%{time_total}\" -o NUL -s \"https://google.com\"",
                         WorkingDirectory = App.PathCurl,
                         CreateNoWindow = true,
                         UseShellExecute = false,

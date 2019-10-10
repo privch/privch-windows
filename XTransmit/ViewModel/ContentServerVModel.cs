@@ -144,7 +144,7 @@ namespace XTransmit.ViewModel
             }
 
             processig_fetch_info = true;
-            App.UpdateProgress(40);
+            App.UpdateHomeProgress(40);
 
             await Task.Run(() =>
             {
@@ -160,15 +160,15 @@ namespace XTransmit.ViewModel
                 }
             });
 
-            // it will update the server info only if the server is not changed
             ServerView serverSelected = ServerViewListOC.FirstOrDefault(x => x.vServerProfile.Equals(App.GlobalConfig.RemoteServer));
             if (serverSelected != null)
             {
-                App.ChangeTransmitServer(serverSelected.vServerProfile);
+                App.GlobalConfig.RemoteServer = serverSelected.vServerProfile;
+                App.UpdateHomeTransmitStatue();
             }
 
             processig_fetch_info = false;
-            App.UpdateProgress(-40);
+            App.UpdateHomeProgress(-40);
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -178,7 +178,7 @@ namespace XTransmit.ViewModel
         private async void FetchResponseTime(object parameter)
         {
             processing_fetch_response_time = true;
-            App.UpdateProgress(40);
+            App.UpdateHomeProgress(40);
 
             await Task.Run(() =>
             {
@@ -209,7 +209,7 @@ namespace XTransmit.ViewModel
             });
 
             processing_fetch_response_time = false;
-            App.UpdateProgress(-40);
+            App.UpdateHomeProgress(-40);
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -219,7 +219,7 @@ namespace XTransmit.ViewModel
         private async void CheckPing(object parameter)
         {
             processing_check_ping = true;
-            App.UpdateProgress(40);
+            App.UpdateHomeProgress(40);
 
             int timeout = App.GlobalConfig.PingTimeout;
             using (Ping ping = new Ping())
@@ -245,7 +245,7 @@ namespace XTransmit.ViewModel
             }
 
             processing_check_ping = false;
-            App.UpdateProgress(-40);
+            App.UpdateHomeProgress(-40);
             CommandManager.InvalidateRequerySuggested();
         }
 

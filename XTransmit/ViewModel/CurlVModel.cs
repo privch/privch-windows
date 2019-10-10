@@ -33,7 +33,7 @@ namespace XTransmit.ViewModel
                     StopServerPool();
                 }
 
-                App.UpdateLockTransmit();
+                App.UpdateTransmitLock();
                 OnPropertyChanged("ServerPoolStatus");
             }
         }
@@ -63,7 +63,7 @@ namespace XTransmit.ViewModel
         public void WindowClose()
         {
             StopServerPool();
-            App.UpdateLockTransmit();
+            App.UpdateTransmitLock();
         }
 
         /** Server Pool 

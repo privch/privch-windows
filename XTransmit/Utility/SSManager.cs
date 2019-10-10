@@ -98,7 +98,8 @@ namespace XTransmit.Utility
 
         public static Process Execute(ServerProfile server, int listen)
         {
-            string arguments = $"-s {server.HostIP} -p {server.HostPort} -l {listen} -k {server.Password} -m {server.Encrypt} -t {server.Timeout}";
+            int timeout = App.GlobalConfig.SSTimeout;
+            string arguments = $"-s {server.HostIP} -p {server.HostPort} -l {listen} -k {server.Password} -m {server.Encrypt} -t {timeout}";
 
             Process process = null;
             try

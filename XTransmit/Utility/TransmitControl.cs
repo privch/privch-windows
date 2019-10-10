@@ -9,68 +9,58 @@ namespace XTransmit.Utility
      */
     static class TransmitControl
     {
-        public static void EnableTransmit()
+        public static bool StartServer()
         {
             Config config = App.GlobalConfig;
-            if (config.RemoteServer == null)
-            {
-                return;
-            }
+            List<int> portInUse = NetworkUtil.GetPortInUse(2000);
 
-            if (config.SystemProxyPort == 0)
+            // proxy port
+            if (config.SystemProxyPort == 0 || portInUse.Contains(config.SystemProxyPort))
             {
-                config.SystemProxyPort = NetworkUtil.GetAvailablePort(2000);
+                config.SystemProxyPort = NetworkUtil.GetAvailablePort(2000, portInUse);
+                portInUse.Add(config.SystemProxyPort);
             }
             else
             {
-                List<int> portInUse = NetworkUtil.GetPortInUse(2000);
-                if (portInUse.Contains(config.SystemProxyPort))
-                {
-                    config.SystemProxyPort = NetworkUtil.GetAvailablePort(2000, portInUse);
-                }
+                portInUse.Add(config.SystemProxyPort);
             }
-            NativeMethods.EnableProxy($"127.0.0.1:{config.SystemProxyPort}", NativeMethods.Bypass);
 
-            if (config.GlobalSocks5Port == 0)
+            // shadowsocks port
+            if (config.GlobalSocks5Port == 0 || portInUse.Contains(config.GlobalSocks5Port))
             {
-                config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(3000);
+                config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(2000, portInUse);
+                portInUse.Add(config.GlobalSocks5Port);
             }
             else
             {
-                List<int> portInUse = NetworkUtil.GetPortInUse(3000);
-                if (portInUse.Contains(config.GlobalSocks5Port))
-                {
-                    config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(3000, portInUse);
-                }
+                portInUse.Add(config.GlobalSocks5Port);
             }
 
-            PrivoxyManager.Start(config.SystemProxyPort, config.GlobalSocks5Port);
+            if (!PrivoxyManager.Start(config.SystemProxyPort, config.GlobalSocks5Port))
+            {
+                return false;
+            }
+
             if (config.RemoteServer != null)
             {
-                ServerManager.Start(config.RemoteServer, config.GlobalSocks5Port);
+                return ServerManager.Start(config.RemoteServer, config.GlobalSocks5Port);
             }
 
-            App.GlobalConfig.IsTransmitEnabled = true;
+            return true;
         }
 
-        public static void DisableTransmit()
+        public static void StopServer()
         {
-            NativeMethods.DisableProxy();
             PrivoxyManager.Stop();
             ServerManager.Stop(App.GlobalConfig.RemoteServer);
-
-            App.GlobalConfig.IsTransmitEnabled = false;
         }
 
         public static void ChangeTransmitServer(ServerProfile serverProfile)
         {
             if (App.GlobalConfig.RemoteServer == null || !App.GlobalConfig.RemoteServer.Equals(serverProfile))
             {
-                if (App.GlobalConfig.IsTransmitEnabled)
-                {
-                    ServerManager.Stop(App.GlobalConfig.RemoteServer);
-                    ServerManager.Start(serverProfile, App.GlobalConfig.GlobalSocks5Port);
-                }
+                ServerManager.Stop(App.GlobalConfig.RemoteServer);
+                ServerManager.Start(serverProfile, App.GlobalConfig.GlobalSocks5Port);
 
                 App.GlobalConfig.RemoteServer = serverProfile;
             }

@@ -18,7 +18,9 @@ namespace XTransmit.Model.IPAddress
          */
         public static IPProfile[] IPArray;
         private static string IPXmlPath;
+
         private static readonly Random RandGen = new Random();
+        private static readonly object locker = new object();
 
         public static void Load(string pathIpXml)
         {
@@ -140,20 +142,26 @@ namespace XTransmit.Model.IPAddress
 
         public static IPProfile GetRandom()
         {
-            if (IPArray != null && IPArray.Length > 0)
+            lock (locker)
             {
-                int i = RandGen.Next(0, IPArray.Length - 1);
-                return IPArray[i];
-            }
-            else
-            {
-                return null;
+                if (IPArray != null && IPArray.Length > 0)
+                {
+                    int i = RandGen.Next(0, IPArray.Length - 1);
+                    return IPArray[i];
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
         public static string GetGenerate()
         {
-            return $"{RandGen.Next(1, 255)}.{RandGen.Next(0, 255)}.{RandGen.Next(0, 255)}.{RandGen.Next(0, 255)}";
+            lock (locker)
+            {
+                return $"{RandGen.Next(1, 255)}.{RandGen.Next(0, 255)}.{RandGen.Next(0, 255)}.{RandGen.Next(0, 255)}";
+            }
         }
     }
 }

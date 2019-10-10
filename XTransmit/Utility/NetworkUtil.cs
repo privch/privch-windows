@@ -69,7 +69,7 @@ namespace XTransmit.Utility
             }
         }
 
-        public static List<int> GetPortInUse(int startingPort)
+        public static List<int> GetPortInUse(int startPort)
         {
             IPEndPoint[] endPoints;
             List<int> portList = new List<int>();
@@ -79,19 +79,19 @@ namespace XTransmit.Utility
             // getting active connections
             TcpConnectionInformation[] connections = properties.GetActiveTcpConnections();
             portList.AddRange(from n in connections
-                              where n.LocalEndPoint.Port >= startingPort
+                              where n.LocalEndPoint.Port >= startPort
                               select n.LocalEndPoint.Port);
 
             // getting active tcp listners - WCF service listening in tcp
             endPoints = properties.GetActiveTcpListeners();
             portList.AddRange(from n in endPoints
-                              where n.Port >= startingPort
+                              where n.Port >= startPort
                               select n.Port);
 
             // getting active udp listeners
             endPoints = properties.GetActiveUdpListeners();
             portList.AddRange(from n in endPoints
-                              where n.Port >= startingPort
+                              where n.Port >= startPort
                               select n.Port);
 
             portList.Sort();
@@ -104,17 +104,17 @@ namespace XTransmit.Utility
          * </summary>
          * <returns>The free port or 0 if it did not find a free port</returns>
          */
-        public static int GetAvailablePort(int startingPort, List<int> exceptPort = null)
+        public static int GetAvailablePort(int startPort, List<int> exceptPort = null)
         {
             if (exceptPort == null)
             {
-                exceptPort = GetPortInUse(startingPort);
+                exceptPort = GetPortInUse(startPort);
             }
 
             Random random = new Random();
-            for (int i = startingPort; i < ushort.MaxValue; i++) // random enough times
+            for (int i = startPort; i < ushort.MaxValue; i++) // random enough times
             {
-                int port = random.Next(startingPort, ushort.MaxValue);
+                int port = random.Next(startPort, ushort.MaxValue);
                 if (!exceptPort.Contains(port))
                 {
                     return port;

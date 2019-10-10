@@ -20,6 +20,7 @@ namespace XTransmit.Model.Server
 
         private static readonly Random RandGen = new Random();
         private static string ServerXmlPath;
+        private static readonly object locker = new object();
 
         // Init server list by deserialize xml file
         public static void Load(string pathServerXml)
@@ -76,14 +77,17 @@ namespace XTransmit.Model.Server
         // Server Pool 
         public static ServerProfile GerRendom()
         {
-            if (ServerProcessMap.Count > 0)
+            lock (locker)
             {
-                int index = RandGen.Next(0, ServerProcessMap.Count - 1);
-                return ServerProcessMap.Keys.ElementAt(index);
-            }
-            else
-            {
-                return null;
+                if (ServerProcessMap.Count > 0)
+                {
+                    int index = RandGen.Next(0, ServerProcessMap.Count - 1);
+                    return ServerProcessMap.Keys.ElementAt(index);
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 

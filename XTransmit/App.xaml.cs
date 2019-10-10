@@ -18,7 +18,7 @@ namespace XTransmit
      * NOTE
      * EventHandler name "_"
      * 
-     * Updated: 2019-10-04
+     * Updated: 2019-10-10
      */
     public partial class App : Application
     {
@@ -41,6 +41,34 @@ namespace XTransmit
         private static View.TrayNotify.SystemTray NotifyIcon;
 
         // controller ==================================================
+        public static void UpdateTransmitLock()
+        {
+            // WindowHome is null on shutdown. NotifyIcon updates status at menu popup
+            if (Current.MainWindow is View.WindowHome windowHome
+                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
+            {
+                homeViewModel.UpdateLockTransmit();
+            }
+        }
+
+        public static void UpdateHomeProgress(int progress)
+        {
+            if (Current.MainWindow is View.WindowHome windowHome
+                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
+            {
+                homeViewModel.UpdateProgress(progress);
+            }
+        }
+
+        public static void UpdateHomeTransmitStatue()
+        {
+            if (Current.MainWindow is View.WindowHome windowHome
+                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
+            {
+                homeViewModel.UpdateTransmitStatus();
+            }
+        }
+
         public static void CloseMainWindow()
         {
             Current.MainWindow.Hide();
@@ -52,7 +80,9 @@ namespace XTransmit
             if (Current.MainWindow.IsVisible)
             {
                 if (Current.MainWindow.WindowState == WindowState.Minimized)
+                {
                     Current.MainWindow.WindowState = WindowState.Normal;
+                }
 
                 Current.MainWindow.Activate();
             }
@@ -68,60 +98,40 @@ namespace XTransmit
             windowHome.SendSnakebarMessage(message);
         }
 
-        public static void UpdateProgress(int progress)
-        {
-            View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
-            ViewModel.HomeVModel homeViewModel = (ViewModel.HomeVModel)windowHome.DataContext;
-            homeViewModel.UpdateProgress(progress);
-        }
-
-        public static void UpdateLockTransmit()
-        {
-            // windowHome is null on shutdown
-            if (Current.MainWindow is View.WindowHome windowHome
-                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
-            {
-                homeViewModel.UpdateLockTransmit();
-            }
-
-            // NotifyIcon updates status at menu popup
-        }
-
         public static void EnableTransmit(bool enable)
         {
             if (enable)
             {
-                TransmitControl.EnableTransmit();
+                if (NativeMethods.EnableProxy($"127.0.0.1:{GlobalConfig.SystemProxyPort}", NativeMethods.Bypass) != 0)
+                {
+                    GlobalConfig.IsTransmitEnabled = true;
+                }
             }
             else
             {
-                TransmitControl.DisableTransmit();
+                if (NativeMethods.DisableProxy() != 0)
+                {
+                    GlobalConfig.IsTransmitEnabled = false;
+                }
             }
 
-            // DataContext is null at startup init
-            if (Current.MainWindow is View.WindowHome windowHome
-                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
-            {
-                homeViewModel.UpdateTransmitStatus();
-            }
-
+            UpdateHomeTransmitStatue();
             NotifyIcon.SwitchIcon(GlobalConfig.IsTransmitEnabled);
         }
 
         public static void ChangeTransmitServer(Model.Server.ServerProfile serverProfile)
         {
             TransmitControl.ChangeTransmitServer(serverProfile);
-
-            View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
-            ViewModel.HomeVModel homeViewModel = (ViewModel.HomeVModel)windowHome.DataContext;
-            homeViewModel.UpdateTransmitStatus();
+            UpdateHomeTransmitStatue();
         }
 
         public static void AddServerByScanQRCode()
         {
-            View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
-            ViewModel.HomeVModel homeViewModel = (ViewModel.HomeVModel)windowHome.DataContext;
-            homeViewModel.AddServerByScanQRCode();
+            if (Current.MainWindow is View.WindowHome windowHome
+                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
+            {
+                homeViewModel.AddServerByScanQRCode();
+            }
         }
 
         /** Application ===============================================================================
@@ -196,6 +206,9 @@ namespace XTransmit
             GlobalPreference = Preference.LoadFileOrDefault(FilePreferenceXml);
             GlobalConfig = Config.LoadFileOrDefault(FileConfigXml);
 
+            // TODO - Alert and exit if fail
+            TransmitControl.StartServer();
+
             // notifyicon
             NotifyIcon = new View.TrayNotify.SystemTray();
             StartupUri = new System.Uri("View/WindowHome.xaml", System.UriKind.Relative);
@@ -209,7 +222,7 @@ namespace XTransmit
             /** if there were other proxy servers running they should set system proxy again
              */
             NativeMethods.DisableProxy();
-            PrivoxyManager.KillRunning();
+            TransmitControl.StopServer();
             SSManager.KillRunning(); // server pool
             CurlManager.KillRunning();
 

@@ -106,16 +106,6 @@ namespace XTransmit.ViewModel.Model
             }
         }
 
-        public int Timeout
-        {
-            get => vServerProfile.Timeout;
-            set
-            {
-                vServerProfile.Timeout = value;
-                OnPropertyChanged("Timeout");
-            }
-        }
-
         public string TimeCreated => vServerProfile.TimeCreated;
 
         public string ResponseTime => vServerProfile.ResponseTime;

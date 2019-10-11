@@ -11,6 +11,7 @@ namespace XTransmit.View.TrayNotify
         private readonly System.Windows.Forms.NotifyIcon notifyIcon;
         private readonly System.Windows.Forms.MenuItem menuitemEnableTransmit;
 
+        private static readonly string sr_app_name = (string)Application.Current.FindResource("app_name");
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
         private static readonly string sr_tray_enable_transmit = (string)Application.Current.FindResource("tray_enable_transmit");
         private static readonly string sr_tray_add_server_scan = (string)Application.Current.FindResource("tray_add_server_scan_qrcode");
@@ -49,10 +50,22 @@ namespace XTransmit.View.TrayNotify
             notifyIcon.Dispose();
         }
 
+        public void ShowMessage(string text, string title = null)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                title = sr_app_name;
+            }
+
+            notifyIcon.BalloonTipTitle = title;
+            notifyIcon.BalloonTipText = text;
+            notifyIcon.ShowBalloonTip(500);
+        }
+
         public void SwitchIcon(bool active)
         {
-            notifyIcon.Icon = active ? 
-                Properties.Resources.XTransmit : 
+            notifyIcon.Icon = active ?
+                Properties.Resources.XTransmit :
                 Properties.Resources.XTransmit_Off;
         }
 

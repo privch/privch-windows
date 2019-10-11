@@ -38,7 +38,7 @@ namespace XTransmit
         public static Preference GlobalPreference { get; private set; }
         public static Config GlobalConfig { get; private set; }
 
-        private static View.TrayNotify.SystemTray NotifyIcon;
+        public static View.TrayNotify.SystemTray NotifyIcon;
 
         // controller ==================================================
         public static void UpdateTransmitLock()
@@ -92,7 +92,7 @@ namespace XTransmit
             }
         }
 
-        public static void ShowNotify(string message)
+        public static void ShowHomeNotify(string message)
         {
             View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
             windowHome.SendSnakebarMessage(message);

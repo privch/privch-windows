@@ -279,7 +279,8 @@ namespace XTransmit.ViewModel
             Result result = reader.decode(bitmap);
             if (result == null || string.IsNullOrWhiteSpace(result.Text))
             {
-                App.ShowNotify(sr_config_0_found);
+                App.ShowHomeNotify(sr_config_0_found);
+                App.NotifyIcon.ShowMessage(sr_config_0_found);
                 return;
             }
 
@@ -287,11 +288,13 @@ namespace XTransmit.ViewModel
             if (serverList.Count > 0)
             {
                 int added = AddServer(serverList);
-                App.ShowNotify($"{added} {sr_config_x_imported}");
+                App.ShowHomeNotify($"{added} {sr_config_x_imported}");
+                App.NotifyIcon.ShowMessage($"{added} {sr_config_x_imported}");
             }
             else
             {
-                App.ShowNotify(sr_config_0_imported);
+                App.ShowHomeNotify(sr_config_0_imported);
+                App.NotifyIcon.ShowMessage(sr_config_0_imported);
             }
         }
 
@@ -303,11 +306,11 @@ namespace XTransmit.ViewModel
             if (serverList.Count > 0)
             {
                 int added = AddServer(serverList);
-                App.ShowNotify($"{added} {sr_config_x_imported}");
+                App.ShowHomeNotify($"{added} {sr_config_x_imported}");
             }
             else
             {
-                App.ShowNotify(sr_config_0_imported);
+                App.ShowHomeNotify(sr_config_0_imported);
             }
         }
 
@@ -330,11 +333,11 @@ namespace XTransmit.ViewModel
             if (serverList.Count > 0)
             {
                 int added = AddServer(serverList);
-                App.ShowNotify($"{added} {sr_config_x_imported}");
+                App.ShowHomeNotify($"{added} {sr_config_x_imported}");
             }
             else
             {
-                App.ShowNotify(sr_config_0_imported);
+                App.ShowHomeNotify(sr_config_0_imported);
             }
         }
 
@@ -346,7 +349,7 @@ namespace XTransmit.ViewModel
             if (new DialogServerConfig(server).ShowDialog() is bool update && update == true)
             {
                 int added = AddServer(server);
-                App.ShowNotify($"{added} {sr_config_x_added}");
+                App.ShowHomeNotify($"{added} {sr_config_x_added}");
             }
         }
 

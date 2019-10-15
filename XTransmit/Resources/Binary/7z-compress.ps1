@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 $7z = "D:\[Knight]\7-Zip\7z.exe"
 
 
-#curl 7.66
+#curl 7.66.0
 Set-Location -Path "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\curl"
 $files = 
     "curl.exe",
@@ -37,3 +37,14 @@ foreach($file in $files) {
 }
 
 
+#privoxy 3.0.28
+Set-Location -Path "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\privoxy"
+$files = 
+    "privoxy.exe"
+
+foreach($file in $files) {
+    if (Test-Path -Path ".\$file") {
+        & $7z a -tgzip "$file.gz" $file
+        Remove-Item $file
+    }
+}

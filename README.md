@@ -14,5 +14,5 @@ XTransmit is a Windows .NET WPF desktop application, with shadowsocks client, si
 | [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/) | MIT |
 | [LiveCharts](https://lvcharts.net/) | MIT |
 | [ZXing.Net](https://github.com/micjahn/ZXing.Net/) | Apache 2.0 |
-| [Privoxy](https://github.com/xinlake/privoxy-windows/) | GPL 2.0 |
+| [privoxy-windows](https://github.com/xinlake/privoxy-windows/) | GPL 2.0 |
 | [proxyctrl](https://github.com/xinlake/proxyctrl/) | Apache 2.0 |

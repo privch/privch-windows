@@ -65,7 +65,7 @@ namespace XTransmit.Model.Curl
                 try
                 {
                     string value = curlArgument.Value;
-                    if (value.Length > 2)
+                    if (value.Length > 0) // such as timeout setting
                     {
                         sb.Append(' ').Append(value);
                     }

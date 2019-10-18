@@ -11,15 +11,15 @@ using XTransmit.Utility;
 namespace XTransmit.Model.Server
 {
     /**
-     * Updated: 2019-10-07
+     * Updated: 2019-10-18
      */
     public static class ServerManager
     {
         public static readonly Dictionary<ServerProfile, Process> ServerProcessMap = new Dictionary<ServerProfile, Process>();
         public static List<ServerProfile> ServerList;
 
-        private static readonly Random RandGen = new Random();
         private static string ServerXmlPath;
+        private static readonly Random RandGen = new Random();
         private static readonly object locker = new object();
 
         // Init server list by deserialize xml file
@@ -79,10 +79,14 @@ namespace XTransmit.Model.Server
         {
             lock (locker)
             {
-                if (ServerProcessMap.Count > 0)
+                if (ServerProcessMap.Count > 1)
                 {
                     int index = RandGen.Next(0, ServerProcessMap.Count - 1);
                     return ServerProcessMap.Keys.ElementAt(index);
+                }
+                else if (ServerProcessMap.Count > 0)
+                {
+                    return ServerProcessMap.Keys.ElementAt(0);
                 }
                 else
                 {

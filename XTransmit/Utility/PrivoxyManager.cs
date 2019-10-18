@@ -22,7 +22,7 @@ namespace XTransmit.Utility
 
         private const string privoxy_exe_name = "privoxy.exe";
         private const string privoxy_exe_process = "privoxy";
-        private const string privoxy_exe_md5 = "a762c8edb152499befb32bd4d370bd4b";
+        private const string privoxy_exe_md5 = "01286f3784dd8271db0e2f2a28040045";
 
         private const string privoxy_config_txt_name = "privoxy-config.txt";
 

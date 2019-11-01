@@ -89,10 +89,10 @@ namespace XTransmit.Utility
                         FileName = PathPrivoxyExe,
                         Arguments = $@"{App.PathPrivoxy}\{privoxy_config_txt_name}",
                         WorkingDirectory = App.PathPrivoxy,
-                        UseShellExecute = true,
+                        UseShellExecute = false,
                         CreateNoWindow = true,
-                        LoadUserProfile = false,
-                        WindowStyle = ProcessWindowStyle.Hidden,
+                        //LoadUserProfile = false,
+                        //WindowStyle = ProcessWindowStyle.Hidden,
                     });
             }
             catch
@@ -112,7 +112,7 @@ namespace XTransmit.Utility
 
             try
             {
-                process_privoxy.CloseMainWindow();
+                //process_privoxy.CloseMainWindow();
                 process_privoxy.Kill();
                 process_privoxy.WaitForExit();
             }

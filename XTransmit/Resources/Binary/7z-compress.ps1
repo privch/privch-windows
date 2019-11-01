@@ -1,5 +1,5 @@
 $ErrorActionPreference = "Stop"
-$7z = "D:\[Knight]\7-Zip\7z.exe"
+$7z = "D:\[Knight]\7-Zip\Console\x64\7za.exe"
 
 
 #curl 7.66.0

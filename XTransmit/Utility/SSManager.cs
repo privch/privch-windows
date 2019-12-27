@@ -3,11 +3,9 @@ using System.Diagnostics;
 using XTransmit.Model.Server;
 
 /**
- * shadowsocks-libev 3.3.2
+ * shadowsocks-libev 3.3.3
  * 
  * TODO Next - Auto upgrade binaries
- * 
- * Updated: 2019-10-18
  */
 namespace XTransmit.Utility
 {
@@ -16,26 +14,26 @@ namespace XTransmit.Utility
         private static string SSExePath => $@"{App.PathShadowsocks}\{ss_local_exe_name}";
 
         private const string cygev_4_dll_name = "cygev-4.dll";
-        private const string cygev_4_dll_md5 = "421fb9fcdc295478b12e7dde15fb6a37";
+        private const string cygev_4_dll_md5 = "71aaf445429c4fa3c730b4188613198b";
 
         private const string cyggcc_s_seh_1_dll_name = "cyggcc_s-seh-1.dll";
-        private const string cyggcc_s_seh_1_dll_md5 = "cb2d18daafb4da4a6b685f1eb2978537";
+        private const string cyggcc_s_seh_1_dll_md5 = "9243f3c280c9c374f28f9658476dc15f";
 
         private const string cygmbedcrypto_3_dll_name = "cygmbedcrypto-3.dll";
-        private const string cygmbedcrypto_3_dll_md5 = "cab058d7a200d824e3185b44a58b8c7f";
+        private const string cygmbedcrypto_3_dll_md5 = "0587a4c2ae5b811c59dad2a0d5d55b8a";
 
         private const string cygpcre_1_dll_name = "cygpcre-1.dll";
-        private const string cygpcre_1_dll_md5 = "626aefcaa0b5d68d12fc7d25e38ba864";
+        private const string cygpcre_1_dll_md5 = "350ef023918125eea94c2b8e88012949";
 
         private const string cygsodium_23_dll_name = "cygsodium-23.dll";
-        private const string cygsodium_23_dll_md5 = "3ec7ae45c200d64e6d3befbbf6e65447";
+        private const string cygsodium_23_dll_md5 = "02f11f502273052dd0813de6195dbdcc";
 
         private const string cygwin1_dll_name = "cygwin1.dll";
-        private const string cygwin1_dll_md5 = "42c5eb56ae8be10f34b53bef76caa24e";
+        private const string cygwin1_dll_md5 = "476090dabde7721ffa2bfd1c011dc6de";
 
         private const string ss_local_exe_name = "ss-local-x.exe"; // name ss-local-x.exe is for process control
         private const string ss_local_exe_process = "ss-local-x";
-        private const string ss_local_exe_md5 = "b3e1ab0406cc0c820af86b53a501aca3";
+        private const string ss_local_exe_md5 = "f8edbd2176fa2a16fee4f11305bf376d";
 
         public static void KillRunning()
         {

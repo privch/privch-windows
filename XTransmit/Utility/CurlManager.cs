@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 
-/**curl-win64-mingw 7.66.0
- * Updated: 2019-09-30
+/**
+ * curl-win64-mingw 7.67.0
  */
 namespace XTransmit.Utility
 {
@@ -12,13 +12,13 @@ namespace XTransmit.Utility
 
         private const string curl_exe_name = "curl-x.exe"; // name "curl-x.exe" is for process control
         private const string curl_exe_process = "curl-x";
-        private const string curl_exe_md5 = "4db15511286782dc5ae8156e61482d35";
+        private const string curl_exe_md5 = "190d43949bbd8e8ed59cb3f408523010";
 
         private const string libcurl_x64_dll_name = "libcurl-x64.dll";
-        private const string libcurl_x64_dll_md5 = "530d1f8002357f0335ed498d1c9e0ab1";
+        private const string libcurl_x64_dll_md5 = "4444374adc31bf391a5d4b11a57aa4ef";
 
         private const string curl_ca_bundle_crt_name = "curl-ca-bundle.crt";
-        private const string curl_ca_bundle_crt_md5 = "6c8779e5755d9dddf677bf7a52d035ce";
+        private const string curl_ca_bundle_crt_md5 = "3231fbcbbb54c2963dc37f7224f127ff";
 
         public static void KillRunning()
         {

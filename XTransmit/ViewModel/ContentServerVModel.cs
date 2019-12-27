@@ -18,8 +18,8 @@ using ZXing.QrCode;
 
 namespace XTransmit.ViewModel
 {
-    /**TODO - Column display option
-     * Updated: 2019-10-05
+    /**
+     * TODO - Column display option
      */
     class ContentServerVModel : BaseViewModel
     {
@@ -144,7 +144,7 @@ namespace XTransmit.ViewModel
             }
 
             processig_fetch_info = true;
-            App.UpdateHomeProgress(40);
+            App.AddHomeProgress("ipinfo");
 
             await Task.Run(() =>
             {
@@ -158,7 +158,7 @@ namespace XTransmit.ViewModel
 
                     serverView.UpdateIPInfo(!keep);
                 }
-            });
+            }).ConfigureAwait(true);
 
             ServerView serverSelected = ServerViewListOC.FirstOrDefault(x => x.vServerProfile.Equals(App.GlobalConfig.RemoteServer));
             if (serverSelected != null)
@@ -168,7 +168,7 @@ namespace XTransmit.ViewModel
             }
 
             processig_fetch_info = false;
-            App.UpdateHomeProgress(-40);
+            App.RemoveHomeProgress("ipinfo");
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -178,7 +178,7 @@ namespace XTransmit.ViewModel
         private async void FetchResponseTime(object parameter)
         {
             processing_fetch_response_time = true;
-            App.UpdateHomeProgress(40);
+            App.AddHomeProgress("response-time");
 
             await Task.Run(() =>
             {
@@ -206,10 +206,10 @@ namespace XTransmit.ViewModel
                         }
                     }
                 }
-            });
+            }).ConfigureAwait(true);
 
             processing_fetch_response_time = false;
-            App.UpdateHomeProgress(-40);
+            App.RemoveHomeProgress("response-time");
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -219,7 +219,7 @@ namespace XTransmit.ViewModel
         private async void CheckPing(object parameter)
         {
             processing_check_ping = true;
-            App.UpdateHomeProgress(40);
+            App.AddHomeProgress("ping");
 
             int timeout = App.GlobalConfig.PingTimeout;
             using (Ping ping = new Ping())
@@ -234,7 +234,7 @@ namespace XTransmit.ViewModel
 
                     try
                     {
-                        PingReply reply = await ping.SendPingAsync(serverView.HostIP, timeout);
+                        PingReply reply = await ping.SendPingAsync(serverView.HostIP, timeout).ConfigureAwait(true);
                         serverView.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                     }
                     catch (Exception)
@@ -245,7 +245,7 @@ namespace XTransmit.ViewModel
             }
 
             processing_check_ping = false;
-            App.UpdateHomeProgress(-40);
+            App.RemoveHomeProgress("ping");
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -274,6 +274,7 @@ namespace XTransmit.ViewModel
 
             BitmapLuminanceSource sourceScreen = new BitmapLuminanceSource(bitmapScreen);
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(sourceScreen));
+            bitmapScreen.Dispose();
 
             QRCodeReader reader = new QRCodeReader();
             Result result = reader.decode(bitmap);

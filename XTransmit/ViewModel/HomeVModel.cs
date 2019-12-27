@@ -6,9 +6,6 @@ using XTransmit.ViewModel.Control;
 
 namespace XTransmit.ViewModel
 {
-    /**
-     * Updated: 2019-10-07
-     */
     public class HomeVModel : BaseViewModel
     {
         public bool IsTransmitEnabled
@@ -23,6 +20,7 @@ namespace XTransmit.ViewModel
 
         // progress
         public ProgressInfo Progress { get; private set; }
+        private readonly Dictionary<string, int> ProgressList;
 
         // table
         public UserControl ContentDisplay { get; private set; }
@@ -40,6 +38,7 @@ namespace XTransmit.ViewModel
         {
             // init progress
             Progress = new ProgressInfo(0, false);
+            ProgressList = new Dictionary<string, int>();
 
             // init content list and display
             ContentList = new List<ContentTable>
@@ -99,16 +98,43 @@ namespace XTransmit.ViewModel
         }
 
         // Progress is indeterminated, This mothod increase/decrease the progress value.
-        // TODO Next - Progress list
-        public void UpdateProgress(int progress)
+        // TODO - Improve progress list
+        public void AddProgress(string id)
         {
-            Progress.Value += progress;
-            if (Progress.Value < 0) Progress.Value = 0;
+            if (!ProgressList.ContainsKey(id))
+            {
+                // max value: 100
+                ProgressList.Add(id, 50);
 
-            if (Progress.Value == 0) Progress.IsIndeterminate = false;
-            else Progress.IsIndeterminate = true;
+                int newValue = 0;
+                foreach(int value in ProgressList.Values)
+                {
+                    newValue += (100 - newValue) >> 1;
+                }
 
-            OnPropertyChanged("Progress");
+                Progress.Value = newValue;
+                Progress.IsIndeterminate = true;
+                OnPropertyChanged("Progress");
+            }
+        }
+        public void RemoveProgress(string id)
+        {
+            if (ProgressList.ContainsKey(id))
+            {
+                ProgressList.Remove(id);
+
+                int newValue = 0;
+                foreach (int value in ProgressList.Values)
+                {
+                    newValue += (100 - newValue) >> 1;
+                }
+
+                Progress.Value = newValue;
+                if (Progress.Value == 0) Progress.IsIndeterminate = false;
+                else Progress.IsIndeterminate = true;
+
+                OnPropertyChanged("Progress");
+            }
         }
 
 

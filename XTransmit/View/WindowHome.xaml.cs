@@ -5,9 +5,6 @@ using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
-    /**
-     * Updated: 2019-08-06
-     */
     public partial class WindowHome : Window
     {
         public WindowHome()

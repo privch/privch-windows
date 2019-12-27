@@ -51,12 +51,21 @@ namespace XTransmit
             }
         }
 
-        public static void UpdateHomeProgress(int progress)
+        public static void AddHomeProgress(string id)
         {
             if (Current.MainWindow is View.WindowHome windowHome
                 && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
             {
-                homeViewModel.UpdateProgress(progress);
+                homeViewModel.AddProgress(id);
+            }
+        }
+
+        public static void RemoveHomeProgress(string id)
+        {
+            if (Current.MainWindow is View.WindowHome windowHome
+                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
+            {
+                homeViewModel.RemoveProgress(id);
             }
         }
 
@@ -152,7 +161,6 @@ namespace XTransmit
             {
                 return false;
             }
-
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)

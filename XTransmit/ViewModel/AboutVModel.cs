@@ -20,11 +20,11 @@ namespace XTransmit.ViewModel
                 Label = "MaterialDesignInXamlToolkit", Text = "MIT",
                 Uri = "https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/blob/master/LICENSE"},
             new ItemInfo {
-                Label = "ZXing.Net", Text = "Apache-2.0",
-                Uri = "https://www.apache.org/licenses/LICENSE-2.0"},
-            new ItemInfo {
                 Label = "LiveCharts", Text = "MIT",
                 Uri = "https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT"},
+            new ItemInfo {
+                Label = "ZXing.Net", Text = "Apache-2.0",
+                Uri = "https://www.apache.org/licenses/LICENSE-2.0"},
             new ItemInfo {
                 Label = "proxyctrl", Text = "Apache-2.0",
                 Uri = "https://www.apache.org/licenses/LICENSE-2.0"},

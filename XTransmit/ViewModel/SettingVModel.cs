@@ -2,7 +2,6 @@
 {
     /** 
      * TODO - Add customize option.
-     * Updated: 2019-08-06
      */
     class SettingVModel : BaseViewModel
     {
@@ -22,7 +21,7 @@
             set
             {
                 App.GlobalConfig.IPInfoConnTimeout = value;
-                OnPropertyChanged("IPInfoConnTimeout");
+                OnPropertyChanged(nameof(IPInfoConnTimeout));
             }
         }
 
@@ -32,7 +31,7 @@
             set
             {
                 App.GlobalConfig.ResponseConnTimeout = value;
-                OnPropertyChanged("ResponseConnTimeout");
+                OnPropertyChanged(nameof(ResponseConnTimeout));
             }
         }
 
@@ -42,7 +41,7 @@
             set
             {
                 App.GlobalConfig.PingTimeout = value;
-                OnPropertyChanged("PingTimeout");
+                OnPropertyChanged(nameof(PingTimeout));
             }
         }
 

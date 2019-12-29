@@ -13,19 +13,19 @@ namespace XTransmit.Model
     public class Config
     {
         // transmit
-        public bool IsTransmitEnabled;
-        public bool IsServerPoolEnabled;
-        public int SystemProxyPort;
-        public int GlobalSocks5Port;
-        public ServerProfile RemoteServer;
+        public bool IsTransmitEnabled { get; set; }
+        public bool IsServerPoolEnabled { get; set; }
+        public int SystemProxyPort { get; set; }
+        public int GlobalSocks5Port { get; set; }
+        public ServerProfile RemoteServer { get; set; }
 
         // timeouts 
-        public int SSTimeout;
-        public int IPInfoConnTimeout;
-        public int ResponseConnTimeout; //not used
-        public int PingTimeout; //ms
+        public int SSTimeout { get; set; }
+        public int IPInfoConnTimeout { get; set; }
+        public int ResponseConnTimeout { get; set; } //not used
+        public int PingTimeout { get; set; } //ms
 
-        public string NetworkAdapter;
+        public string NetworkAdapter { get; set; }
 
         public Config()
         {

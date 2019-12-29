@@ -1,34 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Runtime.InteropServices;
-
-/**
- * Updated: 2019-08-02
- */
 
 namespace XTransmit.Utility
 {
     public static class NativeMethods
     {
-        public static readonly string Bypass;
-        static NativeMethods()
-        {
-            Bypass = string.Join(";", arrayBypass);
-        }
-
-        public static Uri GetCurrentConfig(string url)
-        {
-            IWebProxy proxy = WebRequest.GetSystemWebProxy();
-            Uri uriProxy = proxy.GetProxy(new Uri(url));
-            return uriProxy;
-        }
-
-        [DllImport("proxyctrl.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        internal static extern int EnableProxy(string server, string bypass);
-
-        [DllImport("proxyctrl.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        internal static extern int DisableProxy();
-
         private static readonly string[] arrayBypass = {
             "<local>", // for enable the "skip LAN" option
             "localhost",
@@ -52,5 +30,21 @@ namespace XTransmit.Utility
             "172.31.*",
             "192.168.*"
         };
+
+        public static readonly string Bypass = string.Join(";", arrayBypass);
+
+        [SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
+        public static Uri GetCurrentConfig(string url)
+        {
+            IWebProxy proxy = WebRequest.GetSystemWebProxy();
+            Uri uriProxy = proxy.GetProxy(new Uri(url));
+            return uriProxy;
+        }
+
+        [DllImport("proxyctrl.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        internal static extern int EnableProxy(string server, string bypass);
+
+        [DllImport("proxyctrl.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        internal static extern int DisableProxy();
     }
 }

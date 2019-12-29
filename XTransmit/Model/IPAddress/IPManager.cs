@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,20 +8,20 @@ using XTransmit.Utility;
 
 namespace XTransmit.Model.IPAddress
 {
-    /**
-     * Updated: 2019-10-04
-     */
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public static class IPManager
     {
         /**NOTE
          * If use List<IPProfile> there will an exception occurs at the App exit 
          * when the number of IPProfile item is big (such as 60029 or more).
          */
-        public static IPProfile[] IPArray;
+        private static IPProfile[] IPArray;
         private static string IPXmlPath;
 
         private static readonly Random RandGen = new Random();
         private static readonly object locker = new object();
+
+        public static IPProfile[] GetIPArray() => IPArray;
 
         public static void Load(string pathIpXml)
         {
@@ -30,7 +31,7 @@ namespace XTransmit.Model.IPAddress
             }
             else
             {
-                IPArray = new IPProfile[] { };
+                IPArray = Array.Empty<IPProfile>();
             }
 
             IPXmlPath = pathIpXml;
@@ -70,6 +71,8 @@ namespace XTransmit.Model.IPAddress
          * TODO - Test
          * </summary>
          */
+        [SuppressMessage("Globalization", "CA1307:Specify StringComparison", Justification = "<Pending>")]
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public static HashSet<string> Import(string pathTxtUtf8)
         {
             char[] separatorIPByte = new char[] { '.' };

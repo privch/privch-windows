@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 /**
  * Updated: 2019-09-30
@@ -14,7 +15,7 @@ namespace XTransmit.Utility
         file named 'config' in the current directory (except Win32 which will look for
         'config.txt'). If no config_file is found, Privoxy will fail to start.
      */
-
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public static class PrivoxyManager
     {
         public static readonly string PathPrivoxyExe = $@"{App.PathPrivoxy}\{privoxy_exe_name}";
@@ -69,6 +70,7 @@ namespace XTransmit.Utility
             return true;
         }
 
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public static bool Start(int portPrivoxy, int portShadowsocks)
         {
             string config = Properties.Resources.privoxy_config_txt;

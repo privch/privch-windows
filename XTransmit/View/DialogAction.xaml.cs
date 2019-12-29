@@ -2,12 +2,9 @@
 
 namespace XTransmit.View
 {
-    /**
-     * Updated: 2019-10-02
-     */
     public partial class DialogAction : Window
     {
-        public bool? CancelableResult = null;
+        public bool? CancelableResult { get; set; } = null;
 
         public DialogAction(string title, string message)
         {

@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using XTransmit.Model.UserAgent;
 
 namespace XTransmit.ViewModel
 {
-    /** 
-     * Updated: 2019-10-07
-     */
     class UserAgentVModel : BaseViewModel
     {
         public ObservableCollection<UAProfile> UserAgentListOC { get; private set; }
 
         private string search_value;
+
+        [SuppressMessage("Globalization", "CA1304:Specify CultureInfo", Justification = "<Pending>")]
         public string Search
         {
             get { return search_value; }

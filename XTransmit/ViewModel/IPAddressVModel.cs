@@ -22,7 +22,7 @@ namespace XTransmit.ViewModel
         public IPAddressVModel()
         {
             Progress = new ProgressInfo(0, false);
-            IPListOC = new ObservableCollection<IPProfile>(IPManager.IPArray);
+            IPListOC = new ObservableCollection<IPProfile>(IPManager.GetIPArray());
 
             //msdn.microsoft.com/en-us/library/hh198861.aspx
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(IPListOC, lock_sync);
@@ -75,8 +75,8 @@ namespace XTransmit.ViewModel
         private void ReloadData(object parameter)
         {
             IPManager.Reload();
-            IPListOC = new ObservableCollection<IPProfile>(IPManager.IPArray);
-            OnPropertyChanged("IPListOC");
+            IPListOC = new ObservableCollection<IPProfile>(IPManager.GetIPArray());
+            OnPropertyChanged(nameof(IPListOC));
         }
 
         // add new data to datatable
@@ -116,7 +116,7 @@ namespace XTransmit.ViewModel
 
             Progress.IsIndeterminate = true;
             Progress.Value = 50;
-            OnPropertyChanged("Progress");
+            OnPropertyChanged(nameof(Progress));
 
             int timeout = App.GlobalConfig.PingTimeout;
             using (Ping ping = new Ping())
@@ -129,14 +129,14 @@ namespace XTransmit.ViewModel
                         return;
                     }
 
-                    PingReply reply = await ping.SendPingAsync(ipProfile.IP, timeout);
+                    PingReply reply = await ping.SendPingAsync(ipProfile.IP, timeout).ConfigureAwait(true);
                     ipProfile.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                 }
             }
 
             Progress.IsIndeterminate = false;
             Progress.Value = 0;
-            OnPropertyChanged("Progress");
+            OnPropertyChanged(nameof(Progress));
 
             processing_ping = false;
             System.Windows.Input.CommandManager.InvalidateRequerySuggested();

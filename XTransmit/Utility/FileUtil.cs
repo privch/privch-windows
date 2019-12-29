@@ -1,17 +1,19 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace XTransmit.Utility
 {
-    /**
-     * Updated: 2019-09-29
-     */
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public static class FileUtil
     {
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
+        [SuppressMessage("Globalization", "CA1307:Specify StringComparison", Justification = "<Pending>")]
         public static bool CheckMD5(string filePath, string md5Hex)
         {
             byte[] md5File = GetMD5(filePath);
@@ -30,6 +32,11 @@ namespace XTransmit.Utility
             return sBuilder.ToString().Equals(md5Hex);
         }
 
+        /*
+         * TODO - Use cryptographically stronger options
+         * https://docs.microsoft.com/en-us/visualstudio/code-quality/ca5351?view=vs-2019
+         */
+        [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "<Pending>")]
         public static byte[] GetMD5(string filePath)
         {
             // original data
@@ -81,6 +88,7 @@ namespace XTransmit.Utility
 
         /** XML ------------------------------------------------------------------------
          */
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static void XmlSerialize(string pathXml, object objInput)
         {
             StreamWriter swXml = null;
@@ -102,16 +110,21 @@ namespace XTransmit.Utility
         {
             object result = null;
             FileStream fsXml = null;
+            XmlReader xmlReader = null;
 
             try
             {
                 fsXml = new FileStream(pathXml, FileMode.Open);
-                result = new XmlSerializer(type).Deserialize(fsXml);
+                xmlReader = XmlReader.Create(fsXml);
+                result = new XmlSerializer(type).Deserialize(xmlReader);
+
+                xmlReader.Close();
                 fsXml.Close();
             }
             catch (Exception) { }
             finally
             {
+                xmlReader?.Dispose();
                 fsXml?.Dispose();
             }
 

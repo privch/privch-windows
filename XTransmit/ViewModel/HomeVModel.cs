@@ -8,15 +8,15 @@ namespace XTransmit.ViewModel
 {
     public class HomeVModel : BaseViewModel
     {
-        public bool IsTransmitEnabled
+        public static bool IsTransmitEnabled
         {
             get => App.GlobalConfig.IsTransmitEnabled;
             set => App.EnableTransmit(value);
         }
 
-        public string TransmitStatus => App.GlobalConfig.RemoteServer?.FriendlyName ?? sr_server_not_set;
+        public static string TransmitStatus => App.GlobalConfig.RemoteServer?.FriendlyName ?? sr_server_not_set;
 
-        public bool IsTransmitControllable => !App.GlobalConfig.IsServerPoolEnabled;
+        public static bool IsTransmitControllable => !App.GlobalConfig.IsServerPoolEnabled;
 
         // progress
         public ProgressInfo Progress { get; private set; }
@@ -81,13 +81,13 @@ namespace XTransmit.ViewModel
          */
         public void UpdateTransmitStatus()
         {
-            OnPropertyChanged("IsTransmitEnabled");
-            OnPropertyChanged("TransmitStatus");
+            OnPropertyChanged(nameof(IsTransmitEnabled));
+            OnPropertyChanged(nameof(TransmitStatus));
         }
 
         public void UpdateLockTransmit()
         {
-            OnPropertyChanged("IsTransmitControllable");
+            OnPropertyChanged(nameof(IsTransmitControllable));
         }
 
         public void AddServerByScanQRCode()
@@ -114,7 +114,7 @@ namespace XTransmit.ViewModel
 
                 Progress.Value = newValue;
                 Progress.IsIndeterminate = true;
-                OnPropertyChanged("Progress");
+                OnPropertyChanged(nameof(Progress));
             }
         }
         public void RemoveProgress(string id)
@@ -133,7 +133,7 @@ namespace XTransmit.ViewModel
                 if (Progress.Value == 0) Progress.IsIndeterminate = false;
                 else Progress.IsIndeterminate = true;
 
-                OnPropertyChanged("Progress");
+                OnPropertyChanged(nameof(Progress));
             }
         }
 
@@ -149,7 +149,7 @@ namespace XTransmit.ViewModel
                 if (ContentDisplay != content)
                 {
                     ContentDisplay = content;
-                    OnPropertyChanged("ContentDisplay");
+                    OnPropertyChanged(nameof(ContentDisplay));
                 }
             }
         }

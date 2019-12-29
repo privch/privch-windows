@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -14,7 +16,8 @@ namespace XTransmit.ViewModel
     public class ServerConfigVModel : BaseViewModel
     {
         public ServerView ServerInfoData { get; private set; }
-        public ItemInfo[] ServerIPData { get; private set; }
+
+        public List<ItemInfo> ServerIPData { get; private set; }
 
         private bool vIsFetching = false;
         public bool IsFetching
@@ -23,7 +26,7 @@ namespace XTransmit.ViewModel
             private set
             {
                 vIsFetching = value;
-                OnPropertyChanged("IsFetching");
+                OnPropertyChanged(nameof(IsFetching));
             }
         }
 
@@ -40,9 +43,10 @@ namespace XTransmit.ViewModel
             ServerIPData = UpdateInfo();
         }
 
-        private ItemInfo[] UpdateInfo()
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
+        private List<ItemInfo> UpdateInfo()
         {
-            return new ItemInfo[]
+            return new List<ItemInfo>()
             {
                 new ItemInfo{Label = "Created", Text = ServerInfoData.TimeCreated ?? sr_not_availabe},
                 new ItemInfo{Label = "Last Ping (ms)", Text = ServerInfoData.Ping.ToString()},
@@ -70,10 +74,10 @@ namespace XTransmit.ViewModel
             await Task.Run(() =>
             {
                 ServerInfoData.UpdateIPInfo(true);
-            });
+            }).ConfigureAwait(true);
 
             ServerIPData = UpdateInfo();
-            OnPropertyChanged("ServerIPData");
+            OnPropertyChanged(nameof(ServerIPData));
 
             IsFetching = false;
             CommandManager.InvalidateRequerySuggested();

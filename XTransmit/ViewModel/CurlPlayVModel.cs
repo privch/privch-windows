@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using XTransmit.Model.Curl;
 using XTransmit.ViewModel.Control;
 
 namespace XTransmit.ViewModel
 {
-    /**
-     * Updated: 2019-08-04
-     */
-    public class CurlPlayVModel : BaseViewModel
+    public class CurlPlayVModel : BaseViewModel, IDisposable
     {
         public SiteProfile Profile { get; private set; }
         public ProgressInfo Progress { get; private set; }
@@ -25,6 +23,8 @@ namespace XTransmit.ViewModel
         private readonly SiteWorker siteWorker;
         private readonly Action<SiteProfile> actionSaveProfile; // callback action 
 
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public CurlPlayVModel(SiteProfile siteProfile, Action<SiteProfile> actionSaveProfile)
         {
             Profile = siteProfile;
@@ -41,6 +41,22 @@ namespace XTransmit.ViewModel
             this.actionSaveProfile = actionSaveProfile;
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                siteWorker.Dispose();
+            }
+        }
+
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         private bool ParseDelay(string delay)
         {
             int delay_minimum;
@@ -88,9 +104,9 @@ namespace XTransmit.ViewModel
                 Progress.Set(70, true);
             }
 
-            OnPropertyChanged("IsNotRunning");
-            OnPropertyChanged("Progress");
-            OnPropertyChanged("WindowProgress");
+            OnPropertyChanged(nameof(IsNotRunning));
+            OnPropertyChanged(nameof(Progress));
+            OnPropertyChanged(nameof(WindowProgress));
         }
 
         private void OnSiteResponse(CurlResponse curlResponse)
@@ -98,12 +114,14 @@ namespace XTransmit.ViewModel
             WindowProgress = (double)curlResponse.Index / Profile.PlayTimes;
             ResponseList.Insert(0, curlResponse);
 
-            OnPropertyChanged("WindowProgress");
+            OnPropertyChanged(nameof(WindowProgress));
         }
 
         /** Commands ==================================================================================
          */
         public RelayCommand CommandSetDalay => new RelayCommand(UpdateDelay);
+
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         private void UpdateDelay(object parameter)
         {
             ParseDelay(DelaySetting);
@@ -111,8 +129,8 @@ namespace XTransmit.ViewModel
             IsRandomDelay = Profile.DelayMax > Profile.DelayMin;
             DelaySetting = IsRandomDelay ? $"{Profile.DelayMin} - {Profile.DelayMax}" : Profile.DelayMin.ToString();
 
-            OnPropertyChanged("DelaySetting");
-            OnPropertyChanged("IsRandomDelay");
+            OnPropertyChanged(nameof(DelaySetting));
+            OnPropertyChanged(nameof(IsRandomDelay));
         }
 
         public RelayCommand CommandSaveProfile => new RelayCommand(SaveProfile, CanSaveProfile);
@@ -138,9 +156,9 @@ namespace XTransmit.ViewModel
                 siteWorker.StartBgWork(Profile);
             }
 
-            OnPropertyChanged("IsNotRunning");
-            OnPropertyChanged("Progress");
-            OnPropertyChanged("WindowProgress");
+            OnPropertyChanged(nameof(IsNotRunning));
+            OnPropertyChanged(nameof(Progress));
+            OnPropertyChanged(nameof(WindowProgress));
         }
 
         // response ------------------------------------------------------------

@@ -44,7 +44,7 @@ namespace XTransmit.View
             var messageQueue = xSnackbarNotify.MessageQueue;
 
             // the message queue can be called from any thread
-            Task.Factory.StartNew(() => messageQueue.Enqueue(message));
+            Task.Run(() => messageQueue.Enqueue(message));
         }
     }
 }

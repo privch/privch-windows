@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.NetworkInformation;
 using System.Text;
 using XTransmit.Model.IPAddress;
@@ -7,10 +8,8 @@ using XTransmit.Utility;
 
 namespace XTransmit.Model.Server
 {
-    /**
-     * Updated: 2019-10-04
-     */
     [Serializable]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public class ServerProfile
     {
         // encrypt method
@@ -28,25 +27,25 @@ namespace XTransmit.Model.Server
         };
 
         // server arguments
-        public string HostIP;
-        public int HostPort;
-        public string Encrypt;
-        public string Password;
-        public string Remarks;
+        public string HostIP { get; set; }
+        public int HostPort { get; set; }
+        public string Encrypt { get; set; }
+        public string Password { get; set; }
+        public string Remarks { get; set; }
 
-        public bool PluginEnabled;
-        public string PluginName;
-        public string PluginOption;
+        public bool PluginEnabled { get; set; }
+        public string PluginName { get; set; }
+        public string PluginOption { get; set; }
 
         // preference and info
-        public string FriendlyName;
-        public string TimeCreated;
-        public IPInfo IPData;
+        public string FriendlyName { get; set; }
+        public string TimeCreated { get; set; }
+        public IPInfo IPData { get; set; }
 
         // status
-        public int ListenPort;
-        public string ResponseTime; //seconds
-        public long Ping; // less then 0 means timeout or unreachable
+        public int ListenPort { get; set; }
+        public string ResponseTime { get; set; } //seconds
+        public long Ping { get; set; } // less then 0 means timeout or unreachable
 
         public ServerProfile Copy()
         {
@@ -57,6 +56,7 @@ namespace XTransmit.Model.Server
          * Must be called after the App.GlobalConfig loaded
          * </summary> 
          */
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public ServerProfile()
         {
             HostIP = "";
@@ -83,6 +83,7 @@ namespace XTransmit.Model.Server
             FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostIP} - {HostPort}" : Remarks;
         }
 
+        [SuppressMessage("Globalization", "CA1307:Specify StringComparison", Justification = "<Pending>")]
         public void SetFriendNameByIPData()
         {
             if (IPData == null)
@@ -158,6 +159,7 @@ namespace XTransmit.Model.Server
         }
 
         // OO Programming
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public void FetchPingDelay(Ping ping)
         {
             try

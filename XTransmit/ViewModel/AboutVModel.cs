@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using XTransmit.ViewModel.Control;
 
 /**
  * NOTE - Check for update.
- * Updated: 2019-08-28
  */
 namespace XTransmit.ViewModel
 {
@@ -14,7 +14,8 @@ namespace XTransmit.ViewModel
         public string Name { get; private set; }
         public string Version { get; private set; }
 
-        public ItemInfo[] OpensourceSoftware => new ItemInfo[]
+        [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
+        public static ItemInfo[] OpensourceSoftware => new ItemInfo[]
         {
             new ItemInfo {
                 Label = "MaterialDesignInXamlToolkit", Text = "MIT",
@@ -30,6 +31,7 @@ namespace XTransmit.ViewModel
                 Uri = "https://www.apache.org/licenses/LICENSE-2.0"},
         };
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public AboutVModel()
         {
             Name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;

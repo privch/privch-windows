@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace XTransmit.Model.Curl
 {
-    /**
-     * Updated: 2019-09-30
-     */
     [Serializable]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public class SiteProfile
     {
         // site info
@@ -22,7 +21,8 @@ namespace XTransmit.Model.Curl
 
         // curl. 
         public bool IsReadResponse { get; set; }
-        public List<CurlArgument> ArgumentList { get; set; }
+        public List<CurlArgument> ArgumentList { get; private set; }
+
 
         /**<summary>
          * Return a new object with all properties to default value.
@@ -30,6 +30,7 @@ namespace XTransmit.Model.Curl
          * The object properties value will be overwritten from the XML file.
          * </summary>
          */
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public SiteProfile()
         {
             Title = "Title";
@@ -47,6 +48,7 @@ namespace XTransmit.Model.Curl
         // copy object, use serializer
         public SiteProfile Copy() => (SiteProfile)Utility.TextUtil.CopyBySerializer(this);
 
+        [SuppressMessage("Globalization", "CA1307:Specify StringComparison", Justification = "<Pending>")]
         public string GetArguments()
         {
             StringBuilder sb = new StringBuilder("--silent");

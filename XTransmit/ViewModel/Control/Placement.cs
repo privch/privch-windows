@@ -2,13 +2,15 @@
 
 namespace XTransmit.ViewModel.Control
 {
-    /** A parameterless costructor is needed by serializer.
-     * 
-     * Updated: 2019-08-02
+    /** 
+     * A parameterless costructor is needed by serializer.
      */
     [Serializable]
     public class Placement
     {
-        public double X, Y, W, H;
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double W { get; set; }
+        public double H { get; set; }
     }
 }

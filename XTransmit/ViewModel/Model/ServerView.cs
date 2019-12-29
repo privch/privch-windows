@@ -1,14 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using XTransmit.Model.Server;
 
 namespace XTransmit.ViewModel.Model
 {
-    /**
-     * Updated: 2019-10-02
-     */
     public class ServerView : INotifyPropertyChanged
     {
-        public string[] Ciphers => ServerProfile.Ciphers;
+        // TODO - Optimize?
+        public static List<string> Ciphers => new List<string>(ServerProfile.Ciphers);
 
         /** SS Server Info --------------------------------
          */
@@ -18,7 +17,7 @@ namespace XTransmit.ViewModel.Model
             set
             {
                 vServerProfile.HostIP = value;
-                OnPropertyChanged("HostIP");
+                OnPropertyChanged(nameof(HostIP));
             }
         }
 
@@ -28,7 +27,7 @@ namespace XTransmit.ViewModel.Model
             set
             {
                 vServerProfile.HostPort = value;
-                OnPropertyChanged("HostPort");
+                OnPropertyChanged(nameof(HostPort));
             }
         }
 
@@ -38,7 +37,7 @@ namespace XTransmit.ViewModel.Model
             set
             {
                 vServerProfile.Password = value;
-                OnPropertyChanged("Password");
+                OnPropertyChanged(nameof(Password));
             }
         }
 
@@ -48,7 +47,7 @@ namespace XTransmit.ViewModel.Model
             set
             {
                 vServerProfile.Encrypt = value;
-                OnPropertyChanged("Encrypt");
+                OnPropertyChanged(nameof(Encrypt));
             }
         }
 
@@ -58,7 +57,7 @@ namespace XTransmit.ViewModel.Model
             set
             {
                 vServerProfile.Remarks = value;
-                OnPropertyChanged("Remarks");
+                OnPropertyChanged(nameof(Remarks));
             }
         }
 
@@ -70,7 +69,7 @@ namespace XTransmit.ViewModel.Model
             set
             {
                 vServerProfile.PluginEnabled = value;
-                OnPropertyChanged("PluginEnabled");
+                OnPropertyChanged(nameof(PluginEnabled));
             }
         }
 
@@ -80,7 +79,7 @@ namespace XTransmit.ViewModel.Model
             set
             {
                 vServerProfile.PluginName = value;
-                OnPropertyChanged("PluginName");
+                OnPropertyChanged(nameof(PluginName));
             }
         }
 
@@ -90,7 +89,7 @@ namespace XTransmit.ViewModel.Model
             set
             {
                 vServerProfile.PluginOption = value;
-                OnPropertyChanged("PluginOption");
+                OnPropertyChanged(nameof(PluginOption));
             }
         }
 
@@ -102,7 +101,7 @@ namespace XTransmit.ViewModel.Model
             set
             {
                 vServerProfile.FriendlyName = value;
-                OnPropertyChanged("FriendlyName");
+                OnPropertyChanged(nameof(FriendlyName));
             }
         }
 
@@ -116,7 +115,7 @@ namespace XTransmit.ViewModel.Model
             set
             {
                 vServerProfile.Ping = value;
-                OnPropertyChanged("Ping");
+                OnPropertyChanged(nameof(Ping));
             }
         }
 
@@ -125,17 +124,17 @@ namespace XTransmit.ViewModel.Model
             vServerProfile.FetchIPData(focus);
             vServerProfile.SetFriendNameByIPData();
 
-            OnPropertyChanged("FriendlyName");
+            OnPropertyChanged(nameof(FriendlyName));
         }
 
         public void UpdateResponseTime()
         {
             vServerProfile.FetchResponseTime();
-            OnPropertyChanged("ResponseTime");
+            OnPropertyChanged(nameof(ResponseTime));
         }
 
 
-        public readonly ServerProfile vServerProfile;
+        public ServerProfile vServerProfile { get; }
 
         public ServerView(ServerProfile serverProfile) => vServerProfile = serverProfile;
 

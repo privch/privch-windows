@@ -4,8 +4,8 @@ using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
-    /** Curl website list
-     * Updated: 2019-10-04
+    /**
+     * Curl website list
      */
     public partial class WindowCurl : Window
     {
@@ -25,8 +25,8 @@ namespace XTransmit.View
 
         private void WindowCurl_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Is this a good way?
-            ((CurlVModel)DataContext).WindowClose();
+            // Is it a good way?
+            CurlVModel.WindowClose();
 
             // Save window placement
             Preference preference = App.GlobalPreference;

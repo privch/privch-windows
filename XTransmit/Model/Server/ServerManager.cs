@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,13 +11,11 @@ using XTransmit.Utility;
 
 namespace XTransmit.Model.Server
 {
-    /**
-     * Updated: 2019-10-18
-     */
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public static class ServerManager
     {
         public static readonly Dictionary<ServerProfile, Process> ServerProcessMap = new Dictionary<ServerProfile, Process>();
-        public static List<ServerProfile> ServerList;
+        public static List<ServerProfile> ServerList { get; private set; }
 
         private static string ServerXmlPath;
         private static readonly Random RandGen = new Random();
@@ -44,6 +43,7 @@ namespace XTransmit.Model.Server
         }
 
         // TODO - Server type (SS, V2Ray ...)
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static bool Start(ServerProfile server, int listen)
         {
             if (ServerProcessMap.ContainsKey(server))
@@ -99,6 +99,8 @@ namespace XTransmit.Model.Server
          * start with "ss://". 
          * Reference code: github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
          */
+        [SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public static ServerProfile ParseLegacyServer(string ssUrl)
         {
             var match = UrlFinder.Match(ssUrl);
@@ -153,6 +155,7 @@ namespace XTransmit.Model.Server
          * </summary>
          * <returns>Return count added</returns>
          */
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static List<ServerProfile> ImportServers(string serverInfos)
         {
             string[] serverInfoArray = serverInfos.Split(new string[] { "\r\n", "\r", "\n", " " }, StringSplitOptions.RemoveEmptyEntries);

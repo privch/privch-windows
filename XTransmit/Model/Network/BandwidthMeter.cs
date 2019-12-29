@@ -1,14 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.NetworkInformation;
 using System.Threading;
 
 namespace XTransmit.Model.Network
 {
-    /**TODO - Start-Stop test
-     * Updated: 2019-08-02
+    /**
+     * TODO - Start-Stop test
      */
-    public class BandwidthMeter
+    public class BandwidthMeter : IDisposable
     {
         private readonly Action<long[]> OnSpeedUpdated;
         private NetworkInterface adapter = null;
@@ -22,6 +23,21 @@ namespace XTransmit.Model.Network
             this.OnSpeedUpdated = OnSpeedUpdated;
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Stop();
+            }
+        }
+
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public void SetAdapter(NetworkInterface adapterNew)
         {
             adapter = adapterNew;
@@ -57,6 +73,7 @@ namespace XTransmit.Model.Network
             bgWork.Dispose();
         }
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void BWDoWork(object sender, DoWorkEventArgs e)
         {
             while (!bgWork.CancellationPending)

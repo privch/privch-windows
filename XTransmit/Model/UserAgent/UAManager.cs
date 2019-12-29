@@ -5,12 +5,9 @@ using XTransmit.Utility;
 
 namespace XTransmit.Model.UserAgent
 {
-    /**
-     * Updated: 2019-09-28
-     */
     public static class UAManager
     {
-        public static List<UAProfile> UAList;
+        public static List<UAProfile> UAList { get; private set; }
         private static string UAXmlPath;
 
         private static readonly Random RandGen = new Random();

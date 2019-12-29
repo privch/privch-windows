@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 
 namespace XTransmit.View.TrayNotify
 {
-    /**
-     * Updated: 2019-10-06
-     */
-    public class SystemTray
+    public class SystemTray : IDisposable
     {
         private readonly System.Windows.Forms.NotifyIcon notifyIcon;
         private readonly System.Windows.Forms.MenuItem menuitemEnableTransmit;
@@ -17,6 +15,7 @@ namespace XTransmit.View.TrayNotify
         private static readonly string sr_tray_add_server_scan = (string)Application.Current.FindResource("tray_add_server_scan_qrcode");
         private static readonly string sr_tray_exit = (string)Application.Current.FindResource("_exit");
 
+        [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         public SystemTray()
         {
             menuitemEnableTransmit = new System.Windows.Forms.MenuItem(sr_tray_enable_transmit, MenuItem_EnableTransmit)
@@ -47,7 +46,17 @@ namespace XTransmit.View.TrayNotify
 
         public void Dispose()
         {
-            notifyIcon.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                notifyIcon.Dispose();
+                menuitemEnableTransmit.Dispose();
+            }
         }
 
         public void ShowMessage(string text, string title = null)

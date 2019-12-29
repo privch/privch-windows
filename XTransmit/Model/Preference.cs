@@ -13,17 +13,17 @@ namespace XTransmit.Model
     [Serializable]
     public class Preference
     {
-        public string ContentDisplay;
+        public string ContentDisplay { get; set; }
 
-        public Placement WindowHome;
-        public Placement WindowSetting;
-        public Placement WindowAbout;
-        public Placement WindowServerConfig;
+        public Placement WindowHome { get; set; }
+        public Placement WindowSetting { get; set; }
+        public Placement WindowAbout { get; set; }
+        public Placement WindowServerConfig { get; set; }
 
-        public Placement WindowCurl;
-        public Placement WindowCurlRunner;
-        public Placement WindowIPAddress;
-        public Placement WindowUserAgent;
+        public Placement WindowCurl { get; set; }
+        public Placement WindowCurlRunner { get; set; }
+        public Placement WindowIPAddress { get; set; }
+        public Placement WindowUserAgent { get; set; }
 
         /** construct to default values.
          */

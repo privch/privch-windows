@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using XTransmit.Model.Server;
 
 /**
@@ -9,6 +10,7 @@ using XTransmit.Model.Server;
  */
 namespace XTransmit.Utility
 {
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public static class SSManager
     {
         private static string SSExePath => $@"{App.PathShadowsocks}\{ss_local_exe_name}";
@@ -67,23 +69,23 @@ namespace XTransmit.Utility
             catch { return false; }
 
             // Check binary files
-            object[,] checks =
+            object[][] checks =
             {
-                { $@"{App.PathShadowsocks}\{cygev_4_dll_name}", cygev_4_dll_md5, Properties.Resources.cygev_4_dll_gz },
-                { $@"{App.PathShadowsocks}\{cyggcc_s_seh_1_dll_name}", cyggcc_s_seh_1_dll_md5 , Properties.Resources.cyggcc_s_seh_1_dll_gz },
-                { $@"{App.PathShadowsocks}\{cygmbedcrypto_3_dll_name}", cygmbedcrypto_3_dll_md5, Properties.Resources.cygmbedcrypto_3_dll_gz },
-                { $@"{App.PathShadowsocks}\{cygpcre_1_dll_name}", cygpcre_1_dll_md5 , Properties.Resources.cygpcre_1_dll_gz },
-                { $@"{App.PathShadowsocks}\{cygsodium_23_dll_name}", cygsodium_23_dll_md5 , Properties.Resources.cygsodium_23_dll_gz },
-                { $@"{App.PathShadowsocks}\{cygwin1_dll_name}", cygwin1_dll_md5 , Properties.Resources.cygwin1_dll_gz },
-                { SSExePath, ss_local_exe_md5, Properties.Resources.ss_local_exe_gz },
+                new object[] { $@"{App.PathShadowsocks}\{cygev_4_dll_name}", cygev_4_dll_md5, Properties.Resources.cygev_4_dll_gz },
+                new object[] { $@"{App.PathShadowsocks}\{cyggcc_s_seh_1_dll_name}", cyggcc_s_seh_1_dll_md5, Properties.Resources.cyggcc_s_seh_1_dll_gz },
+                new object[] { $@"{App.PathShadowsocks}\{cygmbedcrypto_3_dll_name}", cygmbedcrypto_3_dll_md5, Properties.Resources.cygmbedcrypto_3_dll_gz },
+                new object[] { $@"{App.PathShadowsocks}\{cygpcre_1_dll_name}", cygpcre_1_dll_md5, Properties.Resources.cygpcre_1_dll_gz },
+                new object[] { $@"{App.PathShadowsocks}\{cygsodium_23_dll_name}", cygsodium_23_dll_md5, Properties.Resources.cygsodium_23_dll_gz },
+                new object[] { $@"{App.PathShadowsocks}\{cygwin1_dll_name}", cygwin1_dll_md5, Properties.Resources.cygwin1_dll_gz },
+                new object[] { SSExePath, ss_local_exe_md5, Properties.Resources.ss_local_exe_gz },
             };
 
             int length = checks.GetLength(0);
             for (int i = 0; i < length; i++)
             {
-                if (!FileUtil.CheckMD5((string)checks[i, 0], (string)checks[i, 1]))
+                if (!FileUtil.CheckMD5((string)checks[i][0], (string)checks[i][1]))
                 {
-                    if (!FileUtil.UncompressGZ((string)checks[i, 0], (byte[])checks[i, 2]))
+                    if (!FileUtil.UncompressGZ((string)checks[i][0], (byte[])checks[i][2]))
                     {
                         return false;
                     }
@@ -93,6 +95,7 @@ namespace XTransmit.Utility
             return true;
         }
 
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static Process Execute(ServerProfile server, int listen)
         {
             int timeout = App.GlobalConfig.SSTimeout;
@@ -122,6 +125,7 @@ namespace XTransmit.Utility
             return null;
         }
 
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static void Exit(Process process)
         {
             try

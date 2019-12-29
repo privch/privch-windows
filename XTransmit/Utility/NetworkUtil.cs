@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Management;
 using System.Net;
@@ -7,13 +8,12 @@ using System.Net.NetworkInformation;
 
 namespace XTransmit.Utility
 {
-    /**
-     * Updated: 2019-10-04
-     */
     public static class NetworkUtil
     {
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static int CompareNetworkInterfaceBySpeed(NetworkInterface x, NetworkInterface y) => (int)(x.Speed - y.Speed);
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static List<NetworkInterface> GetValidNetworkInterface()
         {
             List<NetworkInterface> adapterList = new List<NetworkInterface>();

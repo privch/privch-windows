@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using XTransmit.Model.IPAddress;
 using XTransmit.Model.Server;
@@ -9,13 +10,11 @@ using XTransmit.Utility;
 
 namespace XTransmit.Model.Curl
 {
-    /**
-     * Updated: 2019-09-30
-     */
-    public class SiteWorker
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+    public class SiteWorker : IDisposable
     {
-        public Action<bool> OnStateUpdated = null;
-        public Action<CurlResponse> OnResponse = null;
+        public Action<bool> OnStateUpdated { get; set; } = null;
+        public Action<CurlResponse> OnResponse { get; set; } = null;
 
         private BackgroundWorker bgWork = null;
         private static readonly Random random = new Random();
@@ -30,6 +29,20 @@ namespace XTransmit.Model.Curl
         {
             this.OnStateUpdated = OnStateUpdated;
             this.OnResponse = OnResponse;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                StopBgWork();
+            }
         }
 
         public void StartBgWork(SiteProfile profile)
@@ -146,6 +159,7 @@ namespace XTransmit.Model.Curl
             return response;
         }
 
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         private void BWDoWork(object sender, DoWorkEventArgs ex)
         {
             SiteProfile profile = (SiteProfile)ex.Argument;

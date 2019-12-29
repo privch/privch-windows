@@ -1,6 +1,7 @@
 ﻿using LiveCharts;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Windows;
@@ -10,10 +11,7 @@ using XTransmit.Utility;
 
 namespace XTransmit.ViewModel
 {
-    /**
-     * Updated: 2019-08-02
-     */
-    class ContentNetworkVModel : BaseViewModel
+    class ContentNetworkVModel : BaseViewModel, IDisposable
     {
         private bool vIsActivated = false;
         public bool IsActivated
@@ -28,7 +26,7 @@ namespace XTransmit.ViewModel
         }
 
         public List<string> NetworkInterfaceAll { get; private set; } // interface descriptions
-        public string NetworkInterfaceSelected
+        public static string NetworkInterfaceSelected
         {
             get { return App.GlobalConfig.NetworkAdapter; }
             set { App.GlobalConfig.NetworkAdapter = value; }
@@ -44,6 +42,7 @@ namespace XTransmit.ViewModel
         private static readonly string sr_download = (string)Application.Current.FindResource("_download");
         private static readonly string sr_upload = (string)Application.Current.FindResource("_upload");
 
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public ContentNetworkVModel()
         {
             // init live chart
@@ -107,6 +106,19 @@ namespace XTransmit.ViewModel
             adapterSpeedMeter.Stop();
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                adapterSpeedMeter.Dispose();
+            }
+        }
 
         /** Network interfaces --------------------------------------------------------
          */
@@ -142,7 +154,7 @@ namespace XTransmit.ViewModel
         private void ToggleActivate(object obj)
         {
             IsActivated = !IsActivated;
-            OnPropertyChanged("IsActivated");
+            OnPropertyChanged(nameof(IsActivated));
         }
     }
 }

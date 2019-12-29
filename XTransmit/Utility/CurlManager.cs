@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 /**
  * curl-win64-mingw 7.67.0
  */
 namespace XTransmit.Utility
 {
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public static class CurlManager
     {
         public static string CurlExePath => $@"{App.PathCurl}\{curl_exe_name}";
@@ -52,19 +54,19 @@ namespace XTransmit.Utility
             catch (Exception) { return false; }
 
             // Check binary files
-            object[,] checks =
+            object[][] checks = 
             {
-                { CurlExePath, curl_exe_md5, Properties.Resources.curl_exe_gz },
-                { $@"{App.PathCurl}\{libcurl_x64_dll_name}", libcurl_x64_dll_md5, Properties.Resources.libcurl_x64_dll_gz },
-                { $@"{App.PathCurl}\{curl_ca_bundle_crt_name}", curl_ca_bundle_crt_md5, Properties.Resources.curl_ca_bundle_crt_gz },
+                new object[] { CurlExePath, curl_exe_md5, Properties.Resources.curl_exe_gz },
+                new object[] { $@"{App.PathCurl}\{libcurl_x64_dll_name}", libcurl_x64_dll_md5, Properties.Resources.libcurl_x64_dll_gz },
+                new object[] { $@"{App.PathCurl}\{curl_ca_bundle_crt_name}", curl_ca_bundle_crt_md5, Properties.Resources.curl_ca_bundle_crt_gz },
             };
 
             int length = checks.GetLength(0);
             for (int i = 0; i < length; i++)
             {
-                if (!FileUtil.CheckMD5((string)checks[i, 0], (string)checks[i, 1]))
+                if (!FileUtil.CheckMD5((string)checks[i][0], (string)checks[i][1]))
                 {
-                    if(!FileUtil.UncompressGZ((string)checks[i, 0], (byte[])checks[i, 2]))
+                    if (!FileUtil.UncompressGZ((string)checks[i][0], (byte[])checks[i][2]))
                     {
                         return false;
                     }

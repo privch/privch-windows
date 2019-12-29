@@ -14,8 +14,6 @@ namespace XTransmit.ViewModel
     /**
      * NOTE
      * Optimize the save action
-     * 
-     * Updated: 2019-10-04
      */
     public class CurlVModel : BaseViewModel
     {
@@ -34,11 +32,11 @@ namespace XTransmit.ViewModel
                 }
 
                 App.UpdateTransmitLock();
-                OnPropertyChanged("ServerPoolStatus");
+                OnPropertyChanged(nameof(ServerPoolStatus));
             }
         }
 
-        public string ServerPoolStatus => App.GlobalConfig.IsServerPoolEnabled ? $"{ServerManager.ServerProcessMap.Count}" : null;
+        public static string ServerPoolStatus => App.GlobalConfig.IsServerPoolEnabled ? $"{ServerManager.ServerProcessMap.Count}" : null;
 
         public ObservableCollection<SiteProfile> SiteListOC { get; private set; }
 
@@ -60,7 +58,7 @@ namespace XTransmit.ViewModel
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("Website");
             collectionView.GroupDescriptions.Add(groupDescription);
         }
-        public void WindowClose()
+        public static void WindowClose()
         {
             StopServerPool();
             App.UpdateTransmitLock();
@@ -68,7 +66,7 @@ namespace XTransmit.ViewModel
 
         /** Server Pool 
          */
-        private void StartServerPool()
+        private static void StartServerPool()
         {
             if (ServerManager.ServerList.Count < 1)
             {
@@ -88,7 +86,7 @@ namespace XTransmit.ViewModel
             App.GlobalConfig.IsServerPoolEnabled = true;
         }
 
-        private void StopServerPool()
+        private static void StopServerPool()
         {
             // "push" transmit status
             if (App.GlobalConfig.IsTransmitEnabled)

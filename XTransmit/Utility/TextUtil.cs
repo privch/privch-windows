@@ -1,13 +1,13 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace XTransmit.Utility
 {
-    /**
-     * Updated: 2019-10-02
-     */
+    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
     public static class TextUtil
     {
         /**
@@ -74,20 +74,40 @@ namespace XTransmit.Utility
          * Time-consuming 21ms, 19ms, 20ms
          * </summary>
          */
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static object CopyBySerializer(object objectFrom)
         {
-            XmlSerializer xmlSerializer = new XmlSerializer(objectFrom.GetType());
-            MemoryStream memoryStream = new MemoryStream();
+            MemoryStream memoryStream = null;
+            XmlReader xmlReader = null;
+            object objectTo = null;
 
-            xmlSerializer.Serialize(memoryStream, objectFrom);
-            memoryStream.Position = 0;
-            object objectTo = xmlSerializer.Deserialize(memoryStream);
+            try
+            {
+                memoryStream = new MemoryStream();
+                XmlSerializer xmlSerializer = new XmlSerializer(objectFrom.GetType());
 
-            memoryStream.Close();
-            memoryStream.Dispose();
+                xmlSerializer.Serialize(memoryStream, objectFrom);
+                memoryStream.Position = 0;
+
+                xmlReader = XmlReader.Create(memoryStream);
+                objectTo = xmlSerializer.Deserialize(xmlReader);
+
+                xmlReader.Close();
+                memoryStream.Close();
+            }
+            catch { }
+            finally
+            {
+                xmlReader?.Dispose();
+                memoryStream?.Dispose();
+            }
+
             return objectTo;
         }
 
+        [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "<Pending>")]
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static byte[] GetMD5(object objectXmlUtf8)
         {
             byte[] md5Value = null;
@@ -96,8 +116,8 @@ namespace XTransmit.Utility
             using (MD5 md5 = MD5.Create())
             {
                 new XmlSerializer(objectXmlUtf8.GetType()).Serialize(swMem, objectXmlUtf8);
-                swMem.Flush(); 
-                
+                swMem.Flush();
+
                 /**Any data written to a MemoryStream object is written into RAM, 
                  * MemoryStream.Flush() method is redundant.
                  */

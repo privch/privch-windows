@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 using XTransmit.Model;
@@ -17,8 +18,6 @@ namespace XTransmit
      * 
      * NOTE
      * EventHandler name "_"
-     * 
-     * Updated: 2019-10-10
      */
     public partial class App : Application
     {
@@ -38,7 +37,7 @@ namespace XTransmit
         public static Preference GlobalPreference { get; private set; }
         public static Config GlobalConfig { get; private set; }
 
-        public static View.TrayNotify.SystemTray NotifyIcon;
+        public static View.TrayNotify.SystemTray NotifyIcon { get; private set; }
 
         // controller ==================================================
         public static void UpdateTransmitLock()
@@ -163,9 +162,13 @@ namespace XTransmit
             }
         }
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            // for avoid loading WindowHome on startup exceptions
+            string dirData = "data";
+            string dirBin = "binary";
+
+            // to avoid loading WindowHome on startup exceptions
             StartupUri = new System.Uri("View/WindowShutdown.xaml", System.UriKind.Relative);
 
             // single instance
@@ -177,24 +180,24 @@ namespace XTransmit
 
             // init directory
             PathCurrent = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-            try { Directory.CreateDirectory($@"{PathCurrent}\datas"); }
+            try { Directory.CreateDirectory($@"{PathCurrent}\{dirData}"); }
             catch
             {
                 Shutdown();
                 return;
             }
 
-            PathPrivoxy = $@"{PathCurrent}\binary\privoxy";
-            PathShadowsocks = $@"{PathCurrent}\binary\shadowsocks";
-            PathCurl = $@"{PathCurrent}\binary\curl";
+            PathPrivoxy = $@"{PathCurrent}\{dirBin}\privoxy";
+            PathShadowsocks = $@"{PathCurrent}\{dirBin}\shadowsocks";
+            PathCurl = $@"{PathCurrent}\{dirBin}\curl";
 
-            FilePreferenceXml = $@"{PathCurrent}\datas\Preference.xml";
-            FileConfigXml = $@"{PathCurrent}\datas\Config.xml";
-            FileIPAddressXml = $@"{PathCurrent}\datas\IPAddress.xml"; //china ip optimized
-            FileUserAgentXml = $@"{PathCurrent}\datas\UserAgent.xml";
+            FilePreferenceXml = $@"{PathCurrent}\{dirData}\Preference.xml";
+            FileConfigXml = $@"{PathCurrent}\{dirData}\Config.xml";
+            FileIPAddressXml = $@"{PathCurrent}\{dirData}\IPAddress.xml"; //china ip optimized
+            FileUserAgentXml = $@"{PathCurrent}\{dirData}\UserAgent.xml";
 
-            FileServerXml = $@"{PathCurrent}\datas\Servers.xml";
-            FileCurlXml = $@"{PathCurrent}\datas\Curl.xml";
+            FileServerXml = $@"{PathCurrent}\{dirData}\Servers.xml";
+            FileCurlXml = $@"{PathCurrent}\{dirData}\Curl.xml";
 
             // init binaries
             PrivoxyManager.KillRunning();
@@ -229,7 +232,7 @@ namespace XTransmit
 
             /** if there were other proxy servers running they should set system proxy again
              */
-            NativeMethods.DisableProxy();
+            _ = NativeMethods.DisableProxy();
             TransmitControl.StopServer();
             SSManager.KillRunning(); // server pool
             CurlManager.KillRunning();

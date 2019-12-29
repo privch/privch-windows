@@ -1,24 +1,24 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace XTransmit.Model.IPAddress
 {
-    /**
-     * Updated: 2019-10-02
-     */
+    [Serializable]
     public class IPInfo
     {
-        public string ip;
-        public string hostname;
-        public string city;
-        public string region;
-        public string country;
-        public string loc;
-        public string org;
-        public string postal;
-        public string timezone;
+        public string ip { get; set; }
+        public string hostname { get; set; }
+        public string city { get; set; }
+        public string region { get; set; }
+        public string country { get; set; }
+        public string loc { get; set; }
+        public string org { get; set; }
+        public string postal { get; set; }
+        public string timezone { get; set; }
 
         // Copy by serializer
         public IPInfo Copy() => (IPInfo)Utility.TextUtil.CopyBySerializer(this);
@@ -28,6 +28,7 @@ namespace XTransmit.Model.IPAddress
          * TODO - UA, Proxy Parameter.
          * </summary>
          */
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static IPInfo Fetch(string ip)
         {
             int timeout = App.GlobalConfig.IPInfoConnTimeout;
@@ -69,10 +70,26 @@ namespace XTransmit.Model.IPAddress
 
             MemoryStream msJson = new MemoryStream(Encoding.UTF8.GetBytes(json));
             IPInfo ipinfo = new DataContractJsonSerializer(typeof(IPInfo)).ReadObject(msJson) as IPInfo;
-            msJson.Close();
-            msJson.Dispose();
+            msJson.Close(); // caused ca2202, why ? 
+            msJson.Dispose(); 
 
             return ipinfo;
+        }
+
+        /** Serializable ==================================================
+         */
+        public override int GetHashCode() => ip.GetHashCode();
+
+        public override bool Equals(object objectNew)
+        {
+            if (objectNew is IPInfo ipinfo)
+            {
+                return ip == ipinfo.ip;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

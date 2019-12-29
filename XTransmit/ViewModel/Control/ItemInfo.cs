@@ -1,8 +1,8 @@
-﻿namespace XTransmit.ViewModel.Control
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace XTransmit.ViewModel.Control
 {
-    /**
-     * Updated: 2019-08-06
-     */
+    [SuppressMessage("Design", "CA1056:Uri properties should not be strings", Justification = "<Pending>")]
     public class ItemInfo
     {
         public MaterialDesignThemes.Wpf.PackIconKind IconKind { get; set; }

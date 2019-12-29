@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -216,6 +217,8 @@ namespace XTransmit.ViewModel
         // ping 
         public RelayCommand CommandCheckPing => new RelayCommand(CheckPing, CanCheckPing);
         private bool CanCheckPing(object parameter) => !processing_check_ping;
+
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private async void CheckPing(object parameter)
         {
             processing_check_ping = true;

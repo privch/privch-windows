@@ -2,12 +2,9 @@
 
 namespace XTransmit.View
 {
-    /**
-     * Updated: 2019-08-06
-     */
     public partial class DialogEdit : Window
     {
-        public string EditText;
+        public string EditText { get; set; }
 
         public DialogEdit(string title, string message)
         {

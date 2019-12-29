@@ -3,9 +3,6 @@ using System.ComponentModel;
 
 namespace XTransmit.Model.IPAddress
 {
-    /**
-     * Updated: 2019-10-02
-     */
     [Serializable]
     public class IPProfile : INotifyPropertyChanged
     {
@@ -17,7 +14,7 @@ namespace XTransmit.Model.IPAddress
             set
             {
                 ping_delay = value;
-                OnPropertyChanged("Ping");
+                OnPropertyChanged(nameof(Ping));
             }
         }
 

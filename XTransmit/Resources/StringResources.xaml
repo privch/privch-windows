@@ -141,6 +141,6 @@
     <system:String x:Key="ip_ask_save_data">IP datas has changes, Save?</system:String>
 
     <!-- system tray -->
-    <system:String x:Key="tray_enable_transmit">Enable transmit</system:String>
+    <system:String x:Key="tray_enable_transmit">Enable XTransmit</system:String>
     <system:String x:Key="tray_add_server_scan_qrcode">Add server by scan QRCode</system:String>
 </ResourceDictionary>

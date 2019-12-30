@@ -114,6 +114,7 @@ namespace XTransmit.ViewModel
 
                 Progress.Value = newValue;
                 Progress.IsIndeterminate = true;
+
                 OnPropertyChanged(nameof(Progress));
             }
         }

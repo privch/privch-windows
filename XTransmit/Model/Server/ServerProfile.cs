@@ -93,14 +93,14 @@ namespace XTransmit.Model.Server
 
             StringBuilder stringBuilder = new StringBuilder();
 
-            if (!string.IsNullOrWhiteSpace(IPData.country))
-                stringBuilder.Append(IPData.country);
+            if (!string.IsNullOrWhiteSpace(IPData.Country))
+                stringBuilder.Append(IPData.Country);
 
-            if (!string.IsNullOrWhiteSpace(IPData.region))
-                stringBuilder.Append(" - " + IPData.region);
+            if (!string.IsNullOrWhiteSpace(IPData.Region))
+                stringBuilder.Append(" - " + IPData.Region);
 
-            if (!string.IsNullOrWhiteSpace(IPData.city))
-                stringBuilder.Append(" - " + IPData.city);
+            if (!string.IsNullOrWhiteSpace(IPData.City))
+                stringBuilder.Append(" - " + IPData.City);
 
             string friendlyName = stringBuilder.ToString();
             if (!string.IsNullOrWhiteSpace(friendlyName))

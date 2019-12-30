@@ -51,13 +51,13 @@ namespace XTransmit.ViewModel
                 new ItemInfo{Label = "Created", Text = ServerInfoData.TimeCreated ?? sr_not_availabe},
                 new ItemInfo{Label = "Last Ping (ms)", Text = ServerInfoData.Ping.ToString()},
 
-                new ItemInfo{Label = "Country", Text = ServerInfoData.vServerProfile.IPData?.country ?? sr_not_availabe},
-                new ItemInfo{Label = "Region", Text = ServerInfoData.vServerProfile.IPData?.region ?? sr_not_availabe},
-                new ItemInfo{Label = "City", Text = ServerInfoData.vServerProfile.IPData?.city ?? sr_not_availabe},
-                new ItemInfo{Label = "Location", Text = ServerInfoData.vServerProfile.IPData?.loc ?? sr_not_availabe},
-                new ItemInfo{Label = "Org", Text = ServerInfoData.vServerProfile.IPData?.org ?? sr_not_availabe},
-                new ItemInfo{Label = "Postal", Text = ServerInfoData.vServerProfile.IPData?.postal ?? sr_not_availabe},
-                new ItemInfo{Label = "Host Name", Text = ServerInfoData.vServerProfile.IPData?.hostname ?? sr_not_availabe},
+                new ItemInfo{Label = "Country", Text = ServerInfoData.vServerProfile.IPData?.Country ?? sr_not_availabe},
+                new ItemInfo{Label = "Region", Text = ServerInfoData.vServerProfile.IPData?.Region ?? sr_not_availabe},
+                new ItemInfo{Label = "City", Text = ServerInfoData.vServerProfile.IPData?.City ?? sr_not_availabe},
+                new ItemInfo{Label = "Location", Text = ServerInfoData.vServerProfile.IPData?.Loc ?? sr_not_availabe},
+                new ItemInfo{Label = "Org", Text = ServerInfoData.vServerProfile.IPData?.Org ?? sr_not_availabe},
+                new ItemInfo{Label = "Postal", Text = ServerInfoData.vServerProfile.IPData?.Postal ?? sr_not_availabe},
+                //new ItemInfo{Label = "Host Name", Text = ServerInfoData.vServerProfile.IPData?.hostname ?? sr_not_availabe},
             };
         }
 

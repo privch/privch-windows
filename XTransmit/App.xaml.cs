@@ -15,6 +15,7 @@ namespace XTransmit
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
      * TODO - Icon for the status of server pool mode
+     * TODO - Autorun, Add a shortcut to the user Startup menu
      * 
      * NOTE
      * EventHandler name "_"

@@ -1,5 +1,9 @@
 v0.5.4
-
+* Adjusted few UI text
+* Rename the data folder from "datas" to "data"
+* Fixed a problem caused by fetch server information
+* Improved progress display
+* Other stability improvements
 
 v0.5.3
 * Initial release

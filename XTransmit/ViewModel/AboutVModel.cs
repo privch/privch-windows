@@ -15,7 +15,8 @@ namespace XTransmit.ViewModel
         public string Version { get; private set; }
 
         [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
-        public static ItemInfo[] OpensourceSoftware => new ItemInfo[]
+        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
+        public ItemInfo[] OpensourceSoftware => new ItemInfo[]
         {
             new ItemInfo {
                 Label = "MaterialDesignInXamlToolkit", Text = "MIT",

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Data;
 using XTransmit.Model.Curl;
@@ -36,7 +37,8 @@ namespace XTransmit.ViewModel
             }
         }
 
-        public static string ServerPoolStatus => App.GlobalConfig.IsServerPoolEnabled ? $"{ServerManager.ServerProcessMap.Count}" : null;
+        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
+        public string ServerPoolStatus => App.GlobalConfig.IsServerPoolEnabled ? $"{ServerManager.ServerProcessMap.Count}" : null;
 
         public ObservableCollection<SiteProfile> SiteListOC { get; private set; }
 

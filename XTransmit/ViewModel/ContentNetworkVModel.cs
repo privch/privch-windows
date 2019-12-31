@@ -26,7 +26,9 @@ namespace XTransmit.ViewModel
         }
 
         public List<string> NetworkInterfaceAll { get; private set; } // interface descriptions
-        public static string NetworkInterfaceSelected
+
+        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
+        public string NetworkInterfaceSelected
         {
             get { return App.GlobalConfig.NetworkAdapter; }
             set { App.GlobalConfig.NetworkAdapter = value; }

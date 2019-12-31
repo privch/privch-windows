@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,9 +15,11 @@ namespace XTransmit.ViewModel
             set => App.EnableTransmit(value);
         }
 
-        public static string TransmitStatus => App.GlobalConfig.RemoteServer?.FriendlyName ?? sr_server_not_set;
+        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
+        public string TransmitStatus => App.GlobalConfig.RemoteServer?.FriendlyName ?? sr_server_not_set;
 
-        public static bool IsTransmitControllable => !App.GlobalConfig.IsServerPoolEnabled;
+        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
+        public bool IsTransmitControllable => !App.GlobalConfig.IsServerPoolEnabled;
 
         // progress
         public ProgressInfo Progress { get; private set; }

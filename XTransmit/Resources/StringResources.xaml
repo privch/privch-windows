@@ -78,6 +78,7 @@
     <system:String x:Key="server_menu_edit">Edit (E)</system:String>
     <system:String x:Key="server_menu_delete">Delete Selection (Del)</system:String>
     <system:String x:Key="server_config_0_found">No configuration(s) found.</system:String>
+    <system:String x:Key="server_config_exist">configuration already exist.</system:String>
     <system:String x:Key="server_config_x_imported">configuration(s) imported.</system:String>
     <system:String x:Key="server_config_0_imported">No configuration(s) imported.</system:String>
     <system:String x:Key="server_config_x_added">configuration(s) added.</system:String>

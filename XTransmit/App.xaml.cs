@@ -8,7 +8,6 @@ using XTransmit.Utility;
 namespace XTransmit
 {
     /**TODO - English, Chinese language
-     * TODO - App Analyze
      * TODO - Reset preference if environment has changed
      * TODO - Check memory leak, stream close, object dispose.
      * TODO - Add support for Remote Http Proxy, SSR, V2Ray ...

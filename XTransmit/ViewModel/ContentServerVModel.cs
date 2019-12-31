@@ -28,6 +28,7 @@ namespace XTransmit.ViewModel
 
         // languages
         private static readonly string sr_config_0_found = (string)Application.Current.FindResource("server_config_0_found");
+        private static readonly string sr_config_exist = (string)Application.Current.FindResource("server_config_exist");
         private static readonly string sr_config_x_imported = (string)Application.Current.FindResource("server_config_x_imported");
         private static readonly string sr_config_0_imported = (string)Application.Current.FindResource("server_config_0_imported");
         private static readonly string sr_config_x_added = (string)Application.Current.FindResource("server_config_x_added");
@@ -292,8 +293,10 @@ namespace XTransmit.ViewModel
             if (serverList.Count > 0)
             {
                 int added = AddServer(serverList);
-                App.ShowHomeNotify($"{added} {sr_config_x_imported}");
-                App.NotifyIcon.ShowMessage($"{added} {sr_config_x_imported}");
+                string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_exist;
+
+                App.ShowHomeNotify(notify);
+                App.NotifyIcon.ShowMessage(notify);
             }
             else
             {
@@ -310,7 +313,9 @@ namespace XTransmit.ViewModel
             if (serverList.Count > 0)
             {
                 int added = AddServer(serverList);
-                App.ShowHomeNotify($"{added} {sr_config_x_imported}");
+                string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_exist;
+
+                App.ShowHomeNotify(notify);
             }
             else
             {
@@ -337,7 +342,9 @@ namespace XTransmit.ViewModel
             if (serverList.Count > 0)
             {
                 int added = AddServer(serverList);
-                App.ShowHomeNotify($"{added} {sr_config_x_imported}");
+                string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_exist;
+
+                App.ShowHomeNotify(notify);
             }
             else
             {

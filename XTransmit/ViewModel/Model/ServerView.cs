@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using XTransmit.Model.Server;
 
 namespace XTransmit.ViewModel.Model
 {
     public class ServerView : INotifyPropertyChanged
     {
-        // TODO - Optimize?
-        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public static List<string> Ciphers => new List<string>(ServerProfile.Ciphers);
+        public static List<string> Ciphers { get; } = new List<string>(ServerProfile.Ciphers);
 
         /** SS Server Info --------------------------------
          */
@@ -135,7 +132,7 @@ namespace XTransmit.ViewModel.Model
             OnPropertyChanged(nameof(ResponseTime));
         }
 
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
         public ServerProfile vServerProfile { get; }
 
         public ServerView(ServerProfile serverProfile) => vServerProfile = serverProfile;

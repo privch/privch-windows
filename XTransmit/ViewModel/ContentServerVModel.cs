@@ -45,21 +45,12 @@ namespace XTransmit.ViewModel
             {
                 ServerViewListOC.Add(new ServerView(server));
             }
-
-            // save data on closing
-            Application.Current.MainWindow.Closing += MainWindow_Closing;
         }
 
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        ~ContentServerVModel()
         {
-            // case "hide" 
-            if (Application.Current.MainWindow.IsVisible)
-            {
-                return;
-            }
-
-            // cancel task
-            processig_fetch_info = false;
+            // cancel tasks
+            processing_fetch_info = false;
             processing_fetch_response_time = false;
             processing_check_ping = false;
 
@@ -70,7 +61,7 @@ namespace XTransmit.ViewModel
 
         /** Commands =========================================================================================================
          */
-        private volatile bool processig_fetch_info = false; // also use to cancel task
+        private volatile bool processing_fetch_info = false; // also use to cancel task
         private volatile bool processing_fetch_response_time = false; // also use to cancel task
         private volatile bool processing_check_ping = false;  // also use to cancel task
 
@@ -116,7 +107,7 @@ namespace XTransmit.ViewModel
 
         private bool CanEditList(object parameter)
         {
-            return !processig_fetch_info && !processing_fetch_response_time && !processing_check_ping;
+            return !processing_fetch_info && !processing_fetch_response_time && !processing_check_ping;
         }
 
         // save data
@@ -135,7 +126,7 @@ namespace XTransmit.ViewModel
 
         // ipinfo
         public RelayCommand CommandFetchInfo => new RelayCommand(FetchServerInfo, CanFetchInfo);
-        private bool CanFetchInfo(object parameter) => !processig_fetch_info;
+        private bool CanFetchInfo(object parameter) => !processing_fetch_info;
         private async void FetchServerInfo(object parameter)
         {
             DialogAction dialog = new DialogAction(sr_ask_keep_info_title, sr_ask_keep_info_message);
@@ -145,7 +136,7 @@ namespace XTransmit.ViewModel
                 return;
             }
 
-            processig_fetch_info = true;
+            processing_fetch_info = true;
             App.AddHomeProgress("ipinfo");
 
             await Task.Run(() =>
@@ -153,7 +144,7 @@ namespace XTransmit.ViewModel
                 foreach (ServerView serverView in ServerViewListOC)
                 {
                     // isFetchInProcess is also use to cancel task
-                    if (processig_fetch_info == false)
+                    if (processing_fetch_info == false)
                     {
                         break;
                     }
@@ -169,7 +160,7 @@ namespace XTransmit.ViewModel
                 App.UpdateHomeTransmitStatue();
             }
 
-            processig_fetch_info = false;
+            processing_fetch_info = false;
             App.RemoveHomeProgress("ipinfo");
             CommandManager.InvalidateRequerySuggested();
         }

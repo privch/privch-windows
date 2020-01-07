@@ -7,8 +7,8 @@ using XTransmit.Utility;
 
 namespace XTransmit
 {
-    /**TODO - English, Chinese language
-     * TODO - Reset preference if environment has changed
+    /**
+     * TODO - English, Chinese language
      * TODO - Check memory leak, stream close, object dispose.
      * TODO - Add support for Remote Http Proxy, SSR, V2Ray ...
      * TODO - Auto search and add servers
@@ -17,7 +17,7 @@ namespace XTransmit
      * TODO - Autorun, Add a shortcut to the user Startup menu
      * 
      * NOTE
-     * EventHandler name "_"
+     * EventHandler name use "_"
      */
     public partial class App : Application
     {

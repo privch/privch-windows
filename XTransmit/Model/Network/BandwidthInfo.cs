@@ -2,9 +2,6 @@
 
 namespace XTransmit.Model.Network
 {
-    /**
-     * Updated: 2019-08-02
-     */
     public class BandwidthInfo
     {
         public DateTime Time { get; set; }

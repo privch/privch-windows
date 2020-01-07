@@ -82,7 +82,9 @@ namespace XTransmit.ViewModel
 
             NetworkInterfaceAll = new List<string>();
             foreach (NetworkInterface adapter in adapterList)
+            {
                 NetworkInterfaceAll.Add(adapter.Description);
+            }
 
             // init speed meter
             adapterSpeedMeter = new BandwidthMeter(AdapterSpeedMeter_UpdateSpeed);
@@ -90,22 +92,18 @@ namespace XTransmit.ViewModel
             if (NetworkInterfaceAll.Count > 0)
             {
                 if (NetworkInterfaceAll.FirstOrDefault(item => item == NetworkInterfaceSelected) == null)
+                {
                     NetworkInterfaceSelected = adapterList[0].Description;
+                }
 
                 IsActivated = true;
             }
-
-            // stop SpeedMeter on closing
-            Application.Current.MainWindow.Closing += MainWindow_Closing;
         }
 
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        ~ContentNetworkVModel()
         {
-            // case "hide" 
-            if (Application.Current.MainWindow.IsVisible)
-                return;
-
             adapterSpeedMeter.Stop();
+            Dispose();
         }
 
         public void Dispose()

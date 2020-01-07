@@ -7,19 +7,21 @@ using XTransmit.ViewModel.Control;
 
 namespace XTransmit.ViewModel
 {
+    // TODO - Improve progress list
     public class HomeVModel : BaseViewModel
     {
-        public static bool IsTransmitEnabled
-        {
-            get => App.GlobalConfig.IsTransmitEnabled;
-            set => App.EnableTransmit(value);
-        }
-
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public string TransmitStatus => App.GlobalConfig.RemoteServer?.FriendlyName ?? sr_server_not_set;
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public bool IsTransmitControllable => !App.GlobalConfig.IsServerPoolEnabled;
+
+        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
+        public bool IsTransmitEnabled
+        {
+            get => App.GlobalConfig.IsTransmitEnabled;
+            set => App.EnableTransmit(value);
+        }
 
         // progress
         public ProgressInfo Progress { get; private set; }
@@ -59,29 +61,19 @@ namespace XTransmit.ViewModel
             contentTable.IsChecked = true;
             ContentDisplay = contentTable.Content;
 
-            // transmit control. Trigge the set
+            // to trigge the control
             IsTransmitEnabled = App.GlobalConfig.IsTransmitEnabled;
             App.GlobalConfig.IsServerPoolEnabled = false;
-
-            // save data on closing
-            Application.Current.MainWindow.Closing += MainWindow_Closing;
-        }
-
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            // case "hide" 
-            if (Application.Current.MainWindow.IsVisible)
-            {
-                return;
-            }
-
-            // save preference
-            ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.IsChecked);
-            App.GlobalPreference.ContentDisplay = contentTable.Title;
         }
 
         /** actoins ====================================================================================================== 
          */
+        public string GetCurrentContent()
+        {
+            ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.IsChecked);
+            return contentTable.Title;
+        }
+
         public void UpdateTransmitStatus()
         {
             OnPropertyChanged(nameof(IsTransmitEnabled));
@@ -101,7 +93,6 @@ namespace XTransmit.ViewModel
         }
 
         // Progress is indeterminated, This mothod increase/decrease the progress value.
-        // TODO - Improve progress list
         public void AddProgress(string id)
         {
             if (!ProgressList.ContainsKey(id))
@@ -110,7 +101,7 @@ namespace XTransmit.ViewModel
                 ProgressList.Add(id, 50);
 
                 int newValue = 0;
-                foreach(int value in ProgressList.Values)
+                foreach (int value in ProgressList.Values)
                 {
                     newValue += (100 - newValue) >> 1;
                 }
@@ -158,7 +149,7 @@ namespace XTransmit.ViewModel
             }
         }
 
-        // open curl
+        // open the xcurl
         public RelayCommand CommandShowCurl => new RelayCommand(ShowCurl);
         private void ShowCurl(object parameter)
         {

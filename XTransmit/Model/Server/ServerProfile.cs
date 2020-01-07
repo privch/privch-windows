@@ -150,7 +150,7 @@ namespace XTransmit.Model.Server
             }
             catch
             {
-                ResponseTime = "N.A";
+                ResponseTime = "";
             }
             finally
             {
@@ -164,7 +164,7 @@ namespace XTransmit.Model.Server
         {
             try
             {
-                PingReply reply = ping.Send(HostIP, 5000);
+                PingReply reply = ping.Send(HostIP, App.GlobalConfig.PingTimeout);
                 Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
             }
             catch (Exception)

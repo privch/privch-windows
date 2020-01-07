@@ -6,8 +6,7 @@ using XTransmit.ViewModel.Control;
 namespace XTransmit.Model
 {
     /**<summary>
-     * UI Preference, Such as window position and size.
-     * Updated: 2019-10-02
+     * UI Preference, Such as window position, window size, tab status.
      * </summary>
      */
     [Serializable]
@@ -44,7 +43,7 @@ namespace XTransmit.Model
             {
                 X = sw * 0.2,
                 Y = sh * 0.2,
-                W = 0, // SiteToContent
+                W = 0, // SizeToContent
                 H = 0,
             };
 
@@ -60,7 +59,7 @@ namespace XTransmit.Model
             {
                 X = sw * 0.2,
                 Y = sh * 0.2,
-                W = 0, // SiteToContent
+                W = 0, // SizeToContent
                 H = 0,
             };
 

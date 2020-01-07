@@ -23,6 +23,7 @@ namespace XTransmit.View
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            // hide but not exit
             if (IsVisible)
             {
                 e.Cancel = true;
@@ -30,8 +31,12 @@ namespace XTransmit.View
                 return;
             }
 
-            // Save window placement
+            // save preference
+            HomeVModel viewModel = (HomeVModel)DataContext;
             Preference preference = App.GlobalPreference;
+            preference.ContentDisplay = viewModel.GetCurrentContent();
+
+            // window placement
             preference.WindowHome.X = Left;
             preference.WindowHome.Y = Top;
             preference.WindowHome.W = Width;

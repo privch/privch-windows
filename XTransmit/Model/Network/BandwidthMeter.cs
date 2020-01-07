@@ -63,10 +63,14 @@ namespace XTransmit.Model.Network
         public void Stop()
         {
             if (bgWork == null)
+            {
                 return;
+            }
 
             if (bgWork.IsBusy)
+            {
                 bgWork.CancelAsync();
+            }
 
             bgWork.DoWork -= BWDoWork;
             bgWork.ProgressChanged -= BWProgressChanged;

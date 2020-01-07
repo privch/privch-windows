@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace XTransmit.ViewModel.Control
 {
@@ -8,9 +9,63 @@ namespace XTransmit.ViewModel.Control
     [Serializable]
     public class Placement
     {
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double W { get; set; }
-        public double H { get; set; }
+        public double X
+        {
+            get => vx;
+            set
+            {
+                vx = value;
+                if (vx < 0) vx = 0;
+                if (vx >= SystemParameters.PrimaryScreenWidth)
+                {
+                    vx = SystemParameters.PrimaryScreenWidth - 10;
+                }
+            }
+        }
+
+        public double Y
+        {
+            get => vy;
+            set
+            {
+                vy = value;
+                if (vy < 0) vy = 0;
+                if (vy >= SystemParameters.PrimaryScreenHeight)
+                {
+                    vy = SystemParameters.PrimaryScreenHeight - 10;
+                }
+            }
+        }
+
+        public double W
+        {
+            get => vw;
+            set 
+            { 
+                vw = value;
+                if (vw < 1 || vw >= SystemParameters.PrimaryScreenWidth)
+                {
+                    vw = SystemParameters.PrimaryScreenWidth / 2;
+                }
+            }
+        }
+
+        public double H
+        {
+            get => vh;
+            set
+            {
+                vh = value;
+                if (vh <1 || vh>= SystemParameters.PrimaryScreenHeight)
+                {
+                    vh = SystemParameters.PrimaryScreenHeight / 2;
+                }
+            }
+        }
+
+        private double vx;
+        private double vy;
+        private double vw;
+        private double vh;
     }
 }

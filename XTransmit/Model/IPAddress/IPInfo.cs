@@ -43,10 +43,10 @@ namespace XTransmit.Model.IPAddress
         internal string country = sr_not_availabe;
 
         [DataMember(Name = "loc")]
-        internal string loc = sr_not_availabe;
+        internal string location = sr_not_availabe;
 
         [DataMember(Name = "org")]
-        internal string org = sr_not_availabe;
+        internal string organization = sr_not_availabe;
 
         [DataMember(Name = "postal")]
         internal string postal = sr_not_availabe;
@@ -63,8 +63,8 @@ namespace XTransmit.Model.IPAddress
         public string City { get; set; }
         public string Region { get; set; }
         public string Country { get; set; }
-        public string Loc { get; set; }
-        public string Org { get; set; }
+        public string Location { get; set; }
+        public string Organization { get; set; }
         public string Postal { get; set; }
         public string Timezone { get; set; }
 
@@ -139,8 +139,8 @@ namespace XTransmit.Model.IPAddress
                 City = ipinfoio.city,
                 Region = ipinfoio.region,
                 Country = ipinfoio.country,
-                Loc = ipinfoio.loc,
-                Org = ipinfoio.org,
+                Location = ipinfoio.location,
+                Organization = ipinfoio.organization,
                 Postal = ipinfoio.postal,
                 Timezone = ipinfoio.timezone,
             };

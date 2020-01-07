@@ -6,7 +6,6 @@ namespace XTransmit.Model
 {
     /**<summary>
      * Feature options. Such as SystemProxy, Privoxy, Shadowsocks.
-     * Updated: 2019-10-02
      * </summary> 
      */
     [Serializable]

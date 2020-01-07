@@ -63,6 +63,9 @@
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.DataTooltip>
+                <lvc:DefaultTooltip Background="Black"/>
+            </lvc:CartesianChart.DataTooltip>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

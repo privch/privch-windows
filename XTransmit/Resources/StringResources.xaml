@@ -62,6 +62,9 @@
     <system:String x:Key="app_error_binary">Could not initialize the program files.</system:String>
 
     <!-- home -->
+    <system:String x:Key="task_ping_server">Ping server</system:String>
+    <system:String x:Key="task_fetch_info">Fetch info</system:String>
+    <system:String x:Key="task_check_response_time">Check response time</system:String>
     <system:String x:Key="home_server_not_set">Server Not Set</system:String>
     
     <!-- table server -->

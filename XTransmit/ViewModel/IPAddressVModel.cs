@@ -14,14 +14,14 @@ namespace XTransmit.ViewModel
      */
     class IPAddressVModel : BaseViewModel
     {
-        public ProgressInfo Progress { get; private set; }
+        public ProgressView Progress { get; private set; }
 
         public ObservableCollection<IPProfile> IPListOC { get; private set; }
 
         private static readonly object lock_sync = new object();
         public IPAddressVModel()
         {
-            Progress = new ProgressInfo(0, false);
+            Progress = new ProgressView(0, false);
             IPListOC = new ObservableCollection<IPProfile>(IPManager.GetIPArray());
 
             //msdn.microsoft.com/en-us/library/hh198861.aspx

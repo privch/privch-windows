@@ -12,6 +12,7 @@ using System.Windows.Input;
 using XTransmit.Model.Server;
 using XTransmit.Utility;
 using XTransmit.View;
+using XTransmit.ViewModel.Control;
 using XTransmit.ViewModel.Model;
 using ZXing;
 using ZXing.Common;
@@ -21,12 +22,16 @@ namespace XTransmit.ViewModel
 {
     /**
      * TODO - Column display option
+     * TODO - Optimize task cancellation
      */
     class ContentServerVModel : BaseViewModel
     {
         public ObservableCollection<ServerView> ServerViewListOC { get; private set; }
 
         // languages
+        private static readonly string sr_task_ping_server = (string)Application.Current.FindResource("task_ping_server");
+        private static readonly string sr_task_fetch_info = (string)Application.Current.FindResource("task_fetch_info");
+        private static readonly string sr_task_check_response_time = (string)Application.Current.FindResource("task_check_response_time");
         private static readonly string sr_config_0_found = (string)Application.Current.FindResource("server_config_0_found");
         private static readonly string sr_config_exist = (string)Application.Current.FindResource("server_config_exist");
         private static readonly string sr_config_x_imported = (string)Application.Current.FindResource("server_config_x_imported");
@@ -137,11 +142,16 @@ namespace XTransmit.ViewModel
             }
 
             processing_fetch_info = true;
-            App.AddHomeProgress("ipinfo");
+            TaskView task = new TaskView
+            {
+                Id = sr_task_fetch_info,
+                StopAction = () => { processing_fetch_info = false; }
+            };
+            App.AddHomeProgress(task);
 
             await Task.Run(() =>
             {
-                foreach (ServerView serverView in ServerViewListOC)
+                for (int i = 0; i < ServerViewListOC.Count; ++i)
                 {
                     // isFetchInProcess is also use to cancel task
                     if (processing_fetch_info == false)
@@ -149,7 +159,8 @@ namespace XTransmit.ViewModel
                         break;
                     }
 
-                    serverView.UpdateIPInfo(!keep);
+                    ServerViewListOC[i].UpdateIPInfo(!keep);
+                    task.Progress100 = (i * 100 / ServerViewListOC.Count) + 1;
                 }
             }).ConfigureAwait(true);
 
@@ -161,7 +172,7 @@ namespace XTransmit.ViewModel
             }
 
             processing_fetch_info = false;
-            App.RemoveHomeProgress("ipinfo");
+            App.RemoveHomeProgress(task);
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -171,19 +182,24 @@ namespace XTransmit.ViewModel
         private async void FetchResponseTime(object parameter)
         {
             processing_fetch_response_time = true;
-            App.AddHomeProgress("response-time");
+            TaskView task = new TaskView
+            {
+                Id = sr_task_check_response_time,
+                StopAction = () => { processing_fetch_response_time = false; }
+            };
+            App.AddHomeProgress(task);
 
             await Task.Run(() =>
             {
-                foreach (ServerView serverView in ServerViewListOC)
+                for (int i = 0; i < ServerViewListOC.Count; ++i)
                 {
                     // isFetchInProcess is also use to cancel task
                     if (processing_fetch_response_time == false)
                     {
-                        // TODO - Break
-                        return;
+                        break;
                     }
 
+                    ServerView serverView = ServerViewListOC[i];
                     if (ServerManager.ServerProcessMap.ContainsKey(serverView.vServerProfile))
                     {
                         serverView.UpdateResponseTime();
@@ -198,11 +214,13 @@ namespace XTransmit.ViewModel
                             ServerManager.Stop(serverView.vServerProfile);
                         }
                     }
+
+                    task.Progress100 = (i * 100 / ServerViewListOC.Count) + 1;
                 }
             }).ConfigureAwait(true);
 
             processing_fetch_response_time = false;
-            App.RemoveHomeProgress("response-time");
+            App.RemoveHomeProgress(task);
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -214,19 +232,25 @@ namespace XTransmit.ViewModel
         private async void CheckPing(object parameter)
         {
             processing_check_ping = true;
-            App.AddHomeProgress("ping");
+            TaskView task = new TaskView
+            {
+                Id = sr_task_ping_server,
+                StopAction = () => { processing_check_ping = false; }
+            };
+            App.AddHomeProgress(task);
 
             int timeout = App.GlobalConfig.PingTimeout;
             using (Ping ping = new Ping())
             {
-                foreach (ServerView serverView in ServerViewListOC)
+                for (int i = 0; i < ServerViewListOC.Count; ++i)
                 {
                     // isPingInProcess is also use to cancel task
                     if (processing_check_ping == false)
                     {
-                        return;
+                        break;
                     }
 
+                    ServerView serverView = ServerViewListOC[i];
                     try
                     {
                         PingReply reply = await ping.SendPingAsync(serverView.HostIP, timeout).ConfigureAwait(true);
@@ -236,11 +260,13 @@ namespace XTransmit.ViewModel
                     {
                         serverView.Ping = -1;
                     }
+
+                    task.Progress100 = (i * 100 / ServerViewListOC.Count) + 1;
                 }
             }
 
             processing_check_ping = false;
-            App.RemoveHomeProgress("ping");
+            App.RemoveHomeProgress(task);
             CommandManager.InvalidateRequerySuggested();
         }
 

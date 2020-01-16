@@ -16,18 +16,18 @@ namespace XTransmit.ViewModel
 
         [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public ItemInfo[] OpensourceSoftware => new ItemInfo[]
+        public ItemView[] OpensourceSoftware => new ItemView[]
         {
-            new ItemInfo {
+            new ItemView {
                 Label = "MaterialDesignInXamlToolkit", Text = "MIT",
                 Uri = "https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/blob/master/LICENSE"},
-            new ItemInfo {
+            new ItemView {
                 Label = "LiveCharts", Text = "MIT",
                 Uri = "https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT"},
-            new ItemInfo {
+            new ItemView {
                 Label = "ZXing.Net", Text = "Apache-2.0",
                 Uri = "https://www.apache.org/licenses/LICENSE-2.0"},
-            new ItemInfo {
+            new ItemView {
                 Label = "proxyctrl", Text = "Apache-2.0",
                 Uri = "https://www.apache.org/licenses/LICENSE-2.0"},
         };

@@ -1,14 +1,11 @@
 ﻿namespace XTransmit.ViewModel.Control
 {
-    /**
-     * Updated: 2019-08-02
-     */
-    public class ProgressInfo
+    public class ProgressView
     {
-        public int Value { get; set; }
-        public bool IsIndeterminate { get; set; }
+        public int Value { get; set; } = 0;
+        public bool IsIndeterminate { get; set; } = false;
 
-        public ProgressInfo(int value, bool isIndeterminate)
+        public ProgressView(int value, bool isIndeterminate)
         {
             Value = value;
             IsIndeterminate = isIndeterminate;

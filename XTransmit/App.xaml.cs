@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using XTransmit.Model;
 using XTransmit.Utility;
+using XTransmit.ViewModel.Control;
 
 namespace XTransmit
 {
@@ -50,21 +51,21 @@ namespace XTransmit
             }
         }
 
-        public static void AddHomeProgress(string id)
+        public static void AddHomeProgress(TaskView task)
         {
             if (Current.MainWindow is View.WindowHome windowHome
                 && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
             {
-                homeViewModel.AddProgress(id);
+                homeViewModel.AddProgress(task);
             }
         }
 
-        public static void RemoveHomeProgress(string id)
+        public static void RemoveHomeProgress(TaskView task)
         {
             if (Current.MainWindow is View.WindowHome windowHome
                 && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
             {
-                homeViewModel.RemoveProgress(id);
+                homeViewModel.RemoveProgress(task);
             }
         }
 

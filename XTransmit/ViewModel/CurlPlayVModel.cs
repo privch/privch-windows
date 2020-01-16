@@ -9,7 +9,7 @@ namespace XTransmit.ViewModel
     public class CurlPlayVModel : BaseViewModel, IDisposable
     {
         public SiteProfile Profile { get; private set; }
-        public ProgressInfo Progress { get; private set; }
+        public ProgressView Progress { get; private set; }
 
         public string WindowTitle { get { return $"{Profile.Website} {Profile.Title}"; } }
         public double WindowProgress { get; private set; }
@@ -28,7 +28,7 @@ namespace XTransmit.ViewModel
         public CurlPlayVModel(SiteProfile siteProfile, Action<SiteProfile> actionSaveProfile)
         {
             Profile = siteProfile;
-            Progress = new ProgressInfo(0, false);
+            Progress = new ProgressView(0, false);
             WindowProgress = 0;
 
             IsNotRunning = true;

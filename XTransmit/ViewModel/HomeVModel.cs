@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
@@ -7,7 +8,6 @@ using XTransmit.ViewModel.Control;
 
 namespace XTransmit.ViewModel
 {
-    // TODO - Improve progress list
     public class HomeVModel : BaseViewModel
     {
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
@@ -24,8 +24,8 @@ namespace XTransmit.ViewModel
         }
 
         // progress
-        public ProgressInfo Progress { get; private set; }
-        private readonly Dictionary<string, int> ProgressList;
+        public ProgressView Progress { get; private set; }
+        public ObservableCollection<TaskView> TaskList { get; private set; }
 
         // table
         public UserControl ContentDisplay { get; private set; }
@@ -42,8 +42,8 @@ namespace XTransmit.ViewModel
         public HomeVModel()
         {
             // init progress
-            Progress = new ProgressInfo(0, false);
-            ProgressList = new Dictionary<string, int>();
+            Progress = new ProgressView(0, false);
+            TaskList = new ObservableCollection<TaskView>();
 
             // init content list and display
             ContentList = new List<ContentTable>
@@ -66,7 +66,7 @@ namespace XTransmit.ViewModel
             App.GlobalConfig.IsServerPoolEnabled = false;
         }
 
-        /** actoins ====================================================================================================== 
+        /** methods ====================================================================================================== 
          */
         public string GetCurrentContent()
         {
@@ -93,40 +93,27 @@ namespace XTransmit.ViewModel
         }
 
         // Progress is indeterminated, This mothod increase/decrease the progress value.
-        public void AddProgress(string id)
+        public void AddProgress(TaskView task)
         {
-            if (!ProgressList.ContainsKey(id))
+            if (!TaskList.Contains(task))
             {
                 // max value: 100
-                ProgressList.Add(id, 50);
+                TaskList.Add(task);
 
-                int newValue = 0;
-                foreach (int value in ProgressList.Values)
-                {
-                    newValue += (100 - newValue) >> 1;
-                }
-
-                Progress.Value = newValue;
+                Progress.Value += (100 - Progress.Value) >> 1;
                 Progress.IsIndeterminate = true;
 
                 OnPropertyChanged(nameof(Progress));
             }
         }
-        public void RemoveProgress(string id)
+        public void RemoveProgress(TaskView task)
         {
-            if (ProgressList.ContainsKey(id))
+            if (TaskList.Contains(task))
             {
-                ProgressList.Remove(id);
+                TaskList.Remove(task);
 
-                int newValue = 0;
-                foreach (int value in ProgressList.Values)
-                {
-                    newValue += (100 - newValue) >> 1;
-                }
-
-                Progress.Value = newValue;
-                if (Progress.Value == 0) Progress.IsIndeterminate = false;
-                else Progress.IsIndeterminate = true;
+                Progress.Value -= (100 - Progress.Value);
+                Progress.IsIndeterminate = Progress.Value > 0;
 
                 OnPropertyChanged(nameof(Progress));
             }
@@ -146,6 +133,16 @@ namespace XTransmit.ViewModel
                     ContentDisplay = content;
                     OnPropertyChanged(nameof(ContentDisplay));
                 }
+            }
+        }
+
+        public RelayCommand CommandStopTask => new RelayCommand(StopTask);
+        private void StopTask(object parameter)
+        {
+            if (parameter is string id)
+            {
+                TaskView taskView = TaskList.FirstOrDefault(task => task.Id == id);
+                taskView?.StopAction?.Invoke();
             }
         }
 

@@ -17,7 +17,7 @@ namespace XTransmit.ViewModel
     {
         public ServerView ServerInfoData { get; private set; }
 
-        public List<ItemInfo> ServerIPData { get; private set; }
+        public List<ItemView> ServerIPData { get; private set; }
 
         private bool vIsFetching = false;
         public bool IsFetching
@@ -44,19 +44,19 @@ namespace XTransmit.ViewModel
         }
 
         [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
-        private List<ItemInfo> UpdateInfo()
+        private List<ItemView> UpdateInfo()
         {
-            return new List<ItemInfo>()
+            return new List<ItemView>()
             {
-                new ItemInfo{Label = "Created", Text = ServerInfoData.TimeCreated ?? sr_not_availabe},
-                new ItemInfo{Label = "Last Ping (ms)", Text = ServerInfoData.Ping.ToString()},
+                new ItemView{Label = "Created", Text = ServerInfoData.TimeCreated ?? sr_not_availabe},
+                new ItemView{Label = "Last Ping (ms)", Text = ServerInfoData.Ping.ToString()},
 
-                new ItemInfo{Label = "Country", Text = ServerInfoData.vServerProfile.IPData?.Country ?? sr_not_availabe},
-                new ItemInfo{Label = "Region", Text = ServerInfoData.vServerProfile.IPData?.Region ?? sr_not_availabe},
-                new ItemInfo{Label = "City", Text = ServerInfoData.vServerProfile.IPData?.City ?? sr_not_availabe},
-                new ItemInfo{Label = "Location", Text = ServerInfoData.vServerProfile.IPData?.Location ?? sr_not_availabe},
-                new ItemInfo{Label = "Org", Text = ServerInfoData.vServerProfile.IPData?.Organization ?? sr_not_availabe},
-                new ItemInfo{Label = "Postal", Text = ServerInfoData.vServerProfile.IPData?.Postal ?? sr_not_availabe},
+                new ItemView{Label = "Country", Text = ServerInfoData.vServerProfile.IPData?.Country ?? sr_not_availabe},
+                new ItemView{Label = "Region", Text = ServerInfoData.vServerProfile.IPData?.Region ?? sr_not_availabe},
+                new ItemView{Label = "City", Text = ServerInfoData.vServerProfile.IPData?.City ?? sr_not_availabe},
+                new ItemView{Label = "Location", Text = ServerInfoData.vServerProfile.IPData?.Location ?? sr_not_availabe},
+                new ItemView{Label = "Org", Text = ServerInfoData.vServerProfile.IPData?.Organization ?? sr_not_availabe},
+                new ItemView{Label = "Postal", Text = ServerInfoData.vServerProfile.IPData?.Postal ?? sr_not_availabe},
                 //new ItemInfo{Label = "Host Name", Text = ServerInfoData.vServerProfile.IPData?.hostname ?? sr_not_availabe},
             };
         }

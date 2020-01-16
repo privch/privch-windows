@@ -144,7 +144,7 @@ namespace XTransmit.ViewModel
             processing_fetch_info = true;
             TaskView task = new TaskView
             {
-                Id = sr_task_fetch_info,
+                Name = sr_task_fetch_info,
                 StopAction = () => { processing_fetch_info = false; }
             };
             App.AddHomeProgress(task);
@@ -184,7 +184,7 @@ namespace XTransmit.ViewModel
             processing_fetch_response_time = true;
             TaskView task = new TaskView
             {
-                Id = sr_task_check_response_time,
+                Name = sr_task_check_response_time,
                 StopAction = () => { processing_fetch_response_time = false; }
             };
             App.AddHomeProgress(task);
@@ -234,7 +234,7 @@ namespace XTransmit.ViewModel
             processing_check_ping = true;
             TaskView task = new TaskView
             {
-                Id = sr_task_ping_server,
+                Name = sr_task_ping_server,
                 StopAction = () => { processing_check_ping = false; }
             };
             App.AddHomeProgress(task);

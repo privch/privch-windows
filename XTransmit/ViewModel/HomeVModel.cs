@@ -25,7 +25,7 @@ namespace XTransmit.ViewModel
 
         // progress
         public ProgressView Progress { get; private set; }
-        public ObservableCollection<TaskView> TaskList { get; private set; }
+        public ObservableCollection<TaskView> TaskListOC { get; private set; }
 
         // table
         public UserControl ContentDisplay { get; private set; }
@@ -43,7 +43,7 @@ namespace XTransmit.ViewModel
         {
             // init progress
             Progress = new ProgressView(0, false);
-            TaskList = new ObservableCollection<TaskView>();
+            TaskListOC = new ObservableCollection<TaskView>();
 
             // init content list and display
             ContentList = new List<ContentTable>
@@ -92,13 +92,13 @@ namespace XTransmit.ViewModel
             serverViewModel.CommandAddServerQRCode.Execute(null);
         }
 
-        // Progress is indeterminated, This mothod increase/decrease the progress value.
-        public void AddProgress(TaskView task)
+        // Progress is indeterminated
+        public void AddTask(TaskView task)
         {
-            if (!TaskList.Contains(task))
+            if (!TaskListOC.Contains(task))
             {
                 // max value: 100
-                TaskList.Add(task);
+                TaskListOC.Add(task);
 
                 Progress.Value += (100 - Progress.Value) >> 1;
                 Progress.IsIndeterminate = true;
@@ -106,11 +106,11 @@ namespace XTransmit.ViewModel
                 OnPropertyChanged(nameof(Progress));
             }
         }
-        public void RemoveProgress(TaskView task)
+        public void RemoveTask(TaskView task)
         {
-            if (TaskList.Contains(task))
+            if (TaskListOC.Contains(task))
             {
-                TaskList.Remove(task);
+                TaskListOC.Remove(task);
 
                 Progress.Value -= (100 - Progress.Value);
                 Progress.IsIndeterminate = Progress.Value > 0;
@@ -141,7 +141,7 @@ namespace XTransmit.ViewModel
         {
             if (parameter is string id)
             {
-                TaskView taskView = TaskList.FirstOrDefault(task => task.Id == id);
+                TaskView taskView = TaskListOC.FirstOrDefault(task => task.Name == id);
                 taskView?.StopAction?.Invoke();
             }
         }

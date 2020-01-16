@@ -4,13 +4,13 @@ namespace XTransmit.ViewModel.Control
 {
     public class TaskView : BaseViewModel
     {
-        public string Id
+        public string Name
         {
-            get => id;
+            get => name;
             set
             {
-                id = value;
-                OnPropertyChanged(nameof(Id));
+                name = value;
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -36,20 +36,20 @@ namespace XTransmit.ViewModel.Control
 
         public Action StopAction { get; set; } = null;
 
-        private string id;
+        private string name;
         private int progress100 = 0;
         private bool cancellationPending = false;
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return Name.GetHashCode();
         }
 
         public override bool Equals(object newTask)
         {
             if (newTask is TaskView task)
             {
-                return Id == task.Id;
+                return Name == task.Name;
             }
 
             return false;

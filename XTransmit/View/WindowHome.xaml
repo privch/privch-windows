@@ -61,6 +61,7 @@
 
             <!-- background tasks -->
             <md:PopupBox Grid.Column="2" Margin="5, 0"
+                         StaysOpen="False"
                          IsEnabled="{Binding Path=Progress.IsIndeterminate}">
                 <!-- total progress -->
                 <md:PopupBox.ToggleContent>
@@ -69,7 +70,7 @@
                                  Value="{Binding Path=Progress.Value, Mode=OneWay}"/>
                 </md:PopupBox.ToggleContent>
                 <!-- deatils -->
-                <ListView ItemsSource="{Binding TaskList}">
+                <ListView ItemsSource="{Binding TaskListOC}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -108,7 +109,8 @@
 
             <!-- the "more" menu -->
             <md:PopupBox Grid.Column="3" Margin="5, 0" 
-                         PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
+                         PlacementMode="BottomAndAlignRightEdges" 
+                         StaysOpen="False">
                 <StackPanel>
                     <Button Content="{StaticResource curl_title}" Command="{Binding Path=CommandShowCurl}"/>
                     <Separator/>

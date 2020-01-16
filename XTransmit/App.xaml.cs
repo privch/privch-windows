@@ -16,6 +16,8 @@ namespace XTransmit
      * TODO - Auto detect and remove invalid servers
      * TODO - Icon for the status of server pool mode
      * TODO - Autorun, Add a shortcut to the user Startup menu
+     * TODO - Optimize readonly DataGrids, Use ListView, ListBox instead
+     * TODO - May need to add a controller
      * 
      * NOTE
      * EventHandler name use "_"
@@ -56,7 +58,7 @@ namespace XTransmit
             if (Current.MainWindow is View.WindowHome windowHome
                 && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
             {
-                homeViewModel.AddProgress(task);
+                homeViewModel.AddTask(task);
             }
         }
 
@@ -65,7 +67,7 @@ namespace XTransmit
             if (Current.MainWindow is View.WindowHome windowHome
                 && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
             {
-                homeViewModel.RemoveProgress(task);
+                homeViewModel.RemoveTask(task);
             }
         }
 

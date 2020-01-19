@@ -99,6 +99,8 @@
     <system:String x:Key="dialog_setting_response_timeout">Retrieve response timeout (second)</system:String>
     <system:String x:Key="dialog_setting_ping_timeout">Ping timeout (millisecond)</system:String>
     <system:String x:Key="dialog_setting_replace_old_server">Enable replacement of old server</system:String>
+    <system:String x:Key="dialog_setting_status_proxy_port">Proxy port</system:String>
+    <system:String x:Key="dialog_setting_status_ss_port">Shadowsocks port</system:String>
 
     <!-- dialog about -->
     <system:String x:Key="dialog_about_title">About XTransmit</system:String>

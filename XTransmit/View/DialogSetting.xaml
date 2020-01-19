@@ -40,8 +40,14 @@
     </Window.Resources>
 
     <Grid>
-        <!-- Seems have no choise, it's hard to fill the list if using a vector control here such as ItemsControl, ListView, ListBox -->
-        <StackPanel Grid.IsSharedSizeScope="True"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- It seems no other choice here, it's hard to fill the list if using a vector control here such as ItemsControl, ListView, ListBox -->
+        <StackPanel Grid.Column="0"
+                    Grid.IsSharedSizeScope="True"
                     Orientation="Vertical"
                     HorizontalAlignment="Stretch" >
 
@@ -62,7 +68,7 @@
                          md:HintAssist.Hint="{StaticResource dialog_setting_ipinfo_timeout}"
                          Text="{Binding IPInfoConnTimeout}"/>
             </DockPanel>
-            
+
             <!-- ping timeout -->
             <DockPanel>
                 <md:PackIcon DockPanel.Dock="Left"
@@ -71,7 +77,7 @@
                          md:HintAssist.Hint="{StaticResource dialog_setting_response_timeout}"
                          Text="{Binding ResponseConnTimeout}"/>
             </DockPanel>
-            
+
             <!-- ping timeout -->
             <DockPanel>
                 <md:PackIcon DockPanel.Dock="Left"
@@ -80,10 +86,43 @@
                          md:HintAssist.Hint="{StaticResource dialog_setting_ping_timeout}"
                          Text="{Binding PingTimeout}"/>
             </DockPanel>
-            
+
             <!-- replace old data when importing new server -->
             <CheckBox Content="{StaticResource dialog_setting_replace_old_server}"
                       IsChecked="{Binding IsReplaceOldServer}"/>
         </StackPanel>
+
+        <!-- Status, Right =========================================================================== -->
+        <ItemsControl Grid.Column="1"
+                      ItemsSource="{Binding Status}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="x_status_c1"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="x_status_c2"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Margin="8"
+                                   Opacity=".7"
+                                   Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                   Text="{Binding Path=Label}"/>
+
+                        <TextBox Grid.Column="1" Margin="8"
+                                 MaxWidth="220"
+                                 TextWrapping="Wrap"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource MaterialDesignTextBoxBase}"
+                                 Text="{Binding Path=Text}"/>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"
+                                Grid.IsSharedSizeScope="True"
+                                HorizontalAlignment="Stretch" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
     </Grid>
 </Window>

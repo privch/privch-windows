@@ -1,4 +1,7 @@
-﻿namespace XTransmit.ViewModel
+﻿using System.Windows;
+using XTransmit.ViewModel.Control;
+
+namespace XTransmit.ViewModel
 {
     /** 
      * TODO - Add customize option.
@@ -55,8 +58,25 @@
             }
         }
 
+        public ItemView[] Status { get; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public SettingVModel()
         {
+            Status = new ItemView[]
+            {
+                new ItemView
+                {
+                    Label=(string)Application.Current.FindResource("dialog_setting_status_proxy_port"),
+                    Text=App.GlobalConfig.SystemProxyPort.ToString(),
+                },
+
+                new ItemView
+                {
+                    Label = (string)Application.Current.FindResource("dialog_setting_status_ss_port"),
+                    Text = App.GlobalConfig.GlobalSocks5Port.ToString(),
+                }
+            };
         }
     }
 }

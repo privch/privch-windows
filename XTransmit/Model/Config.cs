@@ -24,6 +24,8 @@ namespace XTransmit.Model
         public int ResponseConnTimeout { get; set; } //not used
         public int PingTimeout { get; set; } //ms
 
+        public bool IsReplaceOldServer { get; set; }
+
         public string NetworkAdapter { get; set; }
 
         public Config()
@@ -38,7 +40,9 @@ namespace XTransmit.Model
             SSTimeout = 5;
             IPInfoConnTimeout = 6;
             ResponseConnTimeout = 6;
-            PingTimeout = 1200;
+            PingTimeout = 3000;
+
+            IsReplaceOldServer = false;
         }
 
 

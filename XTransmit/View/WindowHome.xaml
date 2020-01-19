@@ -114,7 +114,7 @@
                 <StackPanel>
                     <Button Content="{StaticResource curl_title}" Command="{Binding Path=CommandShowCurl}"/>
                     <Separator/>
-                    <Button Content="{StaticResource _setting}" Command="{Binding Path=CommandShowSetting}"/>
+                    <Button Content="{StaticResource _settings}" Command="{Binding Path=CommandShowSetting}"/>
                     <Button Content="{StaticResource _about}" Command="{Binding Path=CommandShowAbout}"/>
                     <Separator/>
                     <Button Content="{StaticResource _exit}" Command="{Binding Path=CommandExit}"/>

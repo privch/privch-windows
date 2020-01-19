@@ -40,6 +40,7 @@
     </Window.Resources>
 
     <Grid>
+        <!-- Seems have no choise, it's hard to fill the list if using a vector control here such as ItemsControl, ListView, ListBox -->
         <StackPanel Grid.IsSharedSizeScope="True"
                     Orientation="Vertical"
                     HorizontalAlignment="Stretch" >
@@ -79,6 +80,10 @@
                          md:HintAssist.Hint="{StaticResource dialog_setting_ping_timeout}"
                          Text="{Binding PingTimeout}"/>
             </DockPanel>
+            
+            <!-- replace old data when importing new server -->
+            <CheckBox Content="{StaticResource dialog_setting_replace_old_server}"
+                      IsChecked="{Binding IsReplaceOldServer}"/>
         </StackPanel>
     </Grid>
 </Window>

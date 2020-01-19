@@ -41,7 +41,7 @@
     <system:String x:Key="_items">item(s)</system:String>
     <system:String x:Key="_time">Time</system:String>
 
-    <system:String x:Key="_setting">Setting</system:String>
+    <system:String x:Key="_settings">Settings</system:String>
     <system:String x:Key="_about">About</system:String>
     <system:String x:Key="_os">System</system:String>
     <system:String x:Key="_client">Client</system:String>
@@ -63,7 +63,7 @@
 
     <!-- home -->
     <system:String x:Key="task_ping_server">Ping server</system:String>
-    <system:String x:Key="task_fetch_info">Fetch info</system:String>
+    <system:String x:Key="task_fetch_info">Fetch server info</system:String>
     <system:String x:Key="task_check_response_time">Check response time</system:String>
     <system:String x:Key="home_server_not_set">Server Not Set</system:String>
     
@@ -74,17 +74,17 @@
     <system:String x:Key="server_import_clipboard">Import From Clipboard</system:String>
     <system:String x:Key="server_import_file">Import From File ...</system:String>
     <system:String x:Key="server_manual_setting">Manual Setting</system:String>
-    <system:String x:Key="server_fetch_info">Fetch Info ...</system:String>
+    <system:String x:Key="server_fetch_info">Fetch server info ...</system:String>
     <system:String x:Key="server_response_time">Response Time</system:String>
     <system:String x:Key="server_ping_check">Ping Server</system:String>
     <system:String x:Key="server_menu_select">Select (Double Click)</system:String>
     <system:String x:Key="server_menu_edit">Edit (E)</system:String>
     <system:String x:Key="server_menu_delete">Delete Selection (Del)</system:String>
-    <system:String x:Key="server_config_0_found">No configuration(s) found.</system:String>
-    <system:String x:Key="server_config_exist">configuration already exist.</system:String>
-    <system:String x:Key="server_config_x_imported">configuration(s) imported.</system:String>
-    <system:String x:Key="server_config_0_imported">No configuration(s) imported.</system:String>
-    <system:String x:Key="server_config_x_added">configuration(s) added.</system:String>
+    <system:String x:Key="server_config_0_found">No server(s) found.</system:String>
+    <system:String x:Key="server_config_exist">The server already exist.</system:String>
+    <system:String x:Key="server_config_x_imported">server(s) imported.</system:String>
+    <system:String x:Key="server_config_0_imported">No server(s) imported.</system:String>
+    <system:String x:Key="server_config_x_added">server(s) added.</system:String>
     <system:String x:Key="server_ask_keep_info_title">Fetch server info</system:String>
     <system:String x:Key="server_ask_keep_info_message">Keep the existing datas?</system:String>
 
@@ -94,10 +94,11 @@
 
     <!-- dialog setting -->
     <system:String x:Key="dialog_setting_title">Settings</system:String>
-    <system:String x:Key="dialog_setting_ss_timeout">Default ss connection timeout</system:String>
-    <system:String x:Key="dialog_setting_ipinfo_timeout">Fetch info timeout</system:String>
-    <system:String x:Key="dialog_setting_response_timeout">Fetch response timeout</system:String>
-    <system:String x:Key="dialog_setting_ping_timeout">Ping timeout</system:String>
+    <system:String x:Key="dialog_setting_ss_timeout">Default ss connection timeout (second)</system:String>
+    <system:String x:Key="dialog_setting_ipinfo_timeout">Retrieve info timeout (seconds)</system:String>
+    <system:String x:Key="dialog_setting_response_timeout">Retrieve response timeout (second)</system:String>
+    <system:String x:Key="dialog_setting_ping_timeout">Ping timeout (millisecond)</system:String>
+    <system:String x:Key="dialog_setting_replace_old_server">Enable replacement of old server</system:String>
 
     <!-- dialog about -->
     <system:String x:Key="dialog_about_title">About XTransmit</system:String>

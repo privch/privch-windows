@@ -45,6 +45,16 @@
             }
         }
 
+        public bool IsReplaceOldServer
+        {
+            get { return App.GlobalConfig.IsReplaceOldServer; }
+            set
+            {
+                App.GlobalConfig.IsReplaceOldServer = value;
+                OnPropertyChanged(nameof(IsReplaceOldServer));
+            }
+        }
+
         public SettingVModel()
         {
         }

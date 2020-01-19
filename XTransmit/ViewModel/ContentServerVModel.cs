@@ -75,11 +75,20 @@ namespace XTransmit.ViewModel
             int added = 0;
             foreach (ServerProfile server in serverList)
             {
-                // no duplicates
-                if (ServerViewListOC.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server)) == null)
+                ServerView serverView = ServerViewListOC.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server));
+                if (serverView == null)
                 {
                     ServerViewListOC.Add(new ServerView(server));
                     ++added;
+                }
+                else
+                {
+                    if (App.GlobalConfig.IsReplaceOldServer)
+                    {
+                        int i = ServerViewListOC.IndexOf(serverView);
+                        ServerViewListOC[i] = new ServerView(server);
+                        ++added;
+                    }
                 }
             }
 
@@ -89,10 +98,21 @@ namespace XTransmit.ViewModel
         private int AddServer(ServerProfile server)
         {
             int added = 0;
-            if (ServerViewListOC.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server)) == null)
+
+            ServerView serverView = ServerViewListOC.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server));
+            if (serverView == null)
             {
                 ServerViewListOC.Add(new ServerView(server));
                 ++added;
+            }
+            else
+            {
+                if (App.GlobalConfig.IsReplaceOldServer)
+                {
+                    int i = ServerViewListOC.IndexOf(serverView);
+                    ServerViewListOC[i] = new ServerView(server);
+                    ++added;
+                }
             }
 
             return added;
@@ -377,7 +397,9 @@ namespace XTransmit.ViewModel
             if (new DialogServerConfig(server).ShowDialog() is bool update && update == true)
             {
                 int added = AddServer(server);
-                App.ShowHomeNotify($"{added} {sr_config_x_added}");
+                string notify = added > 0 ? $"{added} {sr_config_x_added}" : sr_config_exist;
+
+                App.ShowHomeNotify(notify);
             }
         }
 

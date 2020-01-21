@@ -12,8 +12,7 @@ using System.Windows.Input;
 using XTransmit.Model.Server;
 using XTransmit.Utility;
 using XTransmit.View;
-using XTransmit.ViewModel.Control;
-using XTransmit.ViewModel.Model;
+using XTransmit.ViewModel.Element;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
@@ -29,14 +28,20 @@ namespace XTransmit.ViewModel
         public ObservableCollection<ServerView> ServerViewListOC { get; private set; }
 
         // languages
+        private static readonly string sr_yes = (string)Application.Current.FindResource("_yes");
+        private static readonly string sr_no = (string)Application.Current.FindResource("_no");
+        private static readonly string sr_cancel = (string)Application.Current.FindResource("_cancel");
+
         private static readonly string sr_task_ping_server = (string)Application.Current.FindResource("task_ping_server");
         private static readonly string sr_task_fetch_info = (string)Application.Current.FindResource("task_fetch_info");
         private static readonly string sr_task_check_response_time = (string)Application.Current.FindResource("task_check_response_time");
+
         private static readonly string sr_config_0_found = (string)Application.Current.FindResource("server_config_0_found");
         private static readonly string sr_config_exist = (string)Application.Current.FindResource("server_config_exist");
         private static readonly string sr_config_x_imported = (string)Application.Current.FindResource("server_config_x_imported");
         private static readonly string sr_config_0_imported = (string)Application.Current.FindResource("server_config_0_imported");
         private static readonly string sr_config_x_added = (string)Application.Current.FindResource("server_config_x_added");
+
         private static readonly string sr_ask_keep_info_title = (string)Application.Current.FindResource("server_ask_keep_info_title");
         private static readonly string sr_ask_keep_info_message = (string)Application.Current.FindResource("server_ask_keep_info_message");
 
@@ -154,9 +159,27 @@ namespace XTransmit.ViewModel
         private bool CanFetchInfo(object parameter) => !processing_fetch_info;
         private async void FetchServerInfo(object parameter)
         {
-            DialogAction dialog = new DialogAction(sr_ask_keep_info_title, sr_ask_keep_info_message);
+            bool? force = null;
+            Dictionary<string, Action> actions = new Dictionary<string, Action>
+            {
+                {
+                    sr_yes,
+                    () => { force = false; }
+                },
+
+                {
+                    sr_no,
+                    () => { force = true; }
+                },
+
+                {
+                    sr_cancel,
+                    null
+                },
+            };
+            DialogAction dialog = new DialogAction(sr_ask_keep_info_title, sr_ask_keep_info_message, actions);
             dialog.ShowDialog();
-            if (!(dialog.CancelableResult is bool keep))
+            if (force == null)
             {
                 return;
             }
@@ -179,7 +202,7 @@ namespace XTransmit.ViewModel
                         break;
                     }
 
-                    ServerViewListOC[i].UpdateIPInfo(!keep);
+                    ServerViewListOC[i].UpdateIPInfo((bool)force);
                     task.Progress100 = (i * 100 / ServerViewListOC.Count) + 1;
                 }
             }).ConfigureAwait(true);

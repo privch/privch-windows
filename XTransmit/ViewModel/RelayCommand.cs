@@ -4,10 +4,8 @@ using System.Windows.Input;
 
 namespace XTransmit.ViewModel
 {
-    /** See 
+    /**
      * msdn.microsoft.com/en-us/magazine/dd419663.aspx?f=255&MSPPError=-2147217396#id0090030
-     * 
-     * Updated: 2019-08-02
      */
     public class RelayCommand : ICommand
     {

@@ -43,6 +43,7 @@ namespace XTransmit.Model
             PingTimeout = 3000;
 
             IsReplaceOldServer = false;
+            NetworkAdapter = null;
         }
 
 

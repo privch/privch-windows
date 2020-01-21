@@ -4,9 +4,6 @@ using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
-    /**
-     * Updated: 2019-08-02
-     */
     public partial class DialogAbout : Window
     {
         public DialogAbout()

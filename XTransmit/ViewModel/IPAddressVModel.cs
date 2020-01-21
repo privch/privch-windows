@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.NetworkInformation;
 using System.Windows;
 using XTransmit.Model.IPAddress;
-using XTransmit.ViewModel.Control;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {
-    /**TODO - Cancelable Ping
+    /**
      * TODO - Confirm that ObservableCollection write data directly to the original list/array items,
      *        and not the items copied form original list/array
-     * Updated: 2019-10-04
+     * TODO - Remove the ping check
      */
     class IPAddressVModel : BaseViewModel
     {
@@ -18,10 +19,14 @@ namespace XTransmit.ViewModel
 
         public ObservableCollection<IPProfile> IPListOC { get; private set; }
 
+        private static readonly string sr_stop_ping = (string)Application.Current.FindResource("ip_stop_ping");
+
         private static readonly object lock_sync = new object();
+
+
         public IPAddressVModel()
         {
-            Progress = new ProgressView(0, false);
+            Progress = new ProgressView(0, false, sr_stop_ping);
             IPListOC = new ObservableCollection<IPProfile>(IPManager.GetIPArray());
 
             //msdn.microsoft.com/en-us/library/hh198861.aspx
@@ -39,11 +44,26 @@ namespace XTransmit.ViewModel
             {
                 string title = (string)Application.Current.FindResource("ip_title");
                 string ask_save = (string)Application.Current.FindResource("ip_ask_save_data");
+                string sr_yes = (string)Application.Current.FindResource("_yes");
+                string sr_no = (string)Application.Current.FindResource("_no");
 
-                View.DialogAction dialog = new View.DialogAction(title, ask_save);
+                bool save = false;
+                Dictionary<string, Action> actions = new Dictionary<string, Action>
+                {
+                    {
+                        sr_yes,
+                        () => { save = true; }
+                    },
+
+                    {
+                        sr_no,
+                        () => { save = false; }
+                    },
+                };
+                View.DialogAction dialog = new View.DialogAction(title, ask_save, actions);
                 dialog.ShowDialog();
 
-                if (dialog.CancelableResult == true)
+                if (save)
                 {
                     IPManager.Save(ipArray);
                 }
@@ -58,6 +78,11 @@ namespace XTransmit.ViewModel
         /** Commands --------------------------------------------------------------------------
          */
         private volatile bool processing_ping = false;
+
+        public void StopPing()
+        {
+            processing_ping = false;
+        }
 
         // save data
         public RelayCommand CommandSaveData => new RelayCommand(SaveData);
@@ -126,7 +151,7 @@ namespace XTransmit.ViewModel
                     // isPingInProcess is also use to cancel task
                     if (processing_ping == false)
                     {
-                        return;
+                        break;
                     }
 
                     PingReply reply = await ping.SendPingAsync(ipProfile.IP, timeout).ConfigureAwait(true);

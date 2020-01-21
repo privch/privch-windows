@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using XTransmit.ViewModel.Control;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {
@@ -37,12 +37,13 @@ namespace XTransmit.ViewModel
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
         private static readonly string sr_server_title = (string)Application.Current.FindResource("server_title");
         private static readonly string sr_network_title = (string)Application.Current.FindResource("netrowk_title");
+        private static readonly string sr_task_running = (string)Application.Current.FindResource("home_x_task_running");
 
 
         public HomeVModel()
         {
             // init progress
-            Progress = new ProgressView(0, false);
+            Progress = new ProgressView(0, false, null);
             TaskListOC = new ObservableCollection<TaskView>();
 
             // init content list and display
@@ -92,7 +93,7 @@ namespace XTransmit.ViewModel
             serverViewModel.CommandAddServerQRCode.Execute(null);
         }
 
-        // Progress is indeterminated
+        //ProgressBar is showing in indeterminate mode
         public void AddTask(TaskView task)
         {
             if (!TaskListOC.Contains(task))
@@ -102,6 +103,7 @@ namespace XTransmit.ViewModel
 
                 Progress.Value += (100 - Progress.Value) >> 1;
                 Progress.IsIndeterminate = true;
+                Progress.Description = $"{TaskListOC.Count} {sr_task_running}";
 
                 OnPropertyChanged(nameof(Progress));
             }
@@ -114,6 +116,7 @@ namespace XTransmit.ViewModel
 
                 Progress.Value -= (100 - Progress.Value);
                 Progress.IsIndeterminate = Progress.Value > 0;
+                Progress.Description = $"{TaskListOC.Count} {sr_task_running}";
 
                 OnPropertyChanged(nameof(Progress));
             }
@@ -139,9 +142,9 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandStopTask => new RelayCommand(StopTask);
         private void StopTask(object parameter)
         {
-            if (parameter is string id)
+            if (parameter is string name)
             {
-                TaskView taskView = TaskListOC.FirstOrDefault(task => task.Name == id);
+                TaskView taskView = TaskListOC.FirstOrDefault(task => task.Name == name);
                 taskView?.StopAction?.Invoke();
             }
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace XTransmit.ViewModel.Control
+namespace XTransmit.ViewModel.Element
 {
     public class TaskView : BaseViewModel
     {
@@ -24,21 +24,10 @@ namespace XTransmit.ViewModel.Control
             }
         }
 
-        public bool CancellationPending
-        {
-            get => cancellationPending;
-            set
-            {
-                cancellationPending = value;
-                OnPropertyChanged(nameof(CancellationPending));
-            }
-        }
-
         public Action StopAction { get; set; } = null;
 
-        private string name;
+        private string name = null;
         private int progress100 = 0;
-        private bool cancellationPending = false;
 
         public override int GetHashCode()
         {

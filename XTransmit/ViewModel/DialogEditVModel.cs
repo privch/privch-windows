@@ -1,28 +1,30 @@
-﻿namespace XTransmit.ViewModel
+﻿using System;
+
+namespace XTransmit.ViewModel
 {
-    /**
-     * Updated: 2019-08-06
-     */
     class DialogEditVModel : BaseViewModel
     {
-        public string Title { get; private set; }
-        public string Message { get; private set; }
-        public string Text { get; set; }
+        public string Title { get; }
+        public string Message { get; }
 
-        public DialogEditVModel(string title, string message)
+        private readonly Action actionComplete;
+
+        public DialogEditVModel(string title, string message, Action action)
         {
             Title = title;
             Message = message;
+
+            actionComplete = action;
         }
 
-        /** Commands =========================================================================================================
+        /** Commands ================================================================================
          */
         public RelayCommand CommandCloseOK => new RelayCommand(CloseOK);
         private void CloseOK(object parameter)
         {
             if (parameter is View.DialogEdit dialog)
             {
-                dialog.EditText = Text;
+                actionComplete?.Invoke();
                 dialog.Close();
             }
         }
@@ -32,7 +34,7 @@
         {
             if (parameter is View.DialogEdit dialog)
             {
-                dialog.EditText = null;
+                actionComplete?.Invoke();
                 dialog.Close();
             }
         }

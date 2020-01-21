@@ -66,6 +66,7 @@
     <system:String x:Key="task_fetch_info">Fetch server info</system:String>
     <system:String x:Key="task_check_response_time">Check response time</system:String>
     <system:String x:Key="home_server_not_set">Server Not Set</system:String>
+    <system:String x:Key="home_x_task_running">task(s) running</system:String>
     
     <!-- table server -->
     <system:String x:Key="server_title">Servers</system:String>
@@ -145,6 +146,7 @@
     <system:String x:Key="ip_import_data_form_file">Import data from file ...</system:String>
     <system:String x:Key="ip_copy_table_name">Copy TableName to clipboard</system:String>
     <system:String x:Key="ip_delete_selected_table">Delete selected table</system:String>
+    <system:String x:Key="ip_stop_ping">Click to stop</system:String>
     <system:String x:Key="ip_ask_save_data">IP datas has changes, Save?</system:String>
 
     <!-- system tray -->

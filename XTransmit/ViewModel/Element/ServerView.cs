@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using XTransmit.Model.Server;
 
-namespace XTransmit.ViewModel.Model
+namespace XTransmit.ViewModel.Element
 {
-    public class ServerView : INotifyPropertyChanged
+    public class ServerView : BaseViewModel
     {
         public static List<string> Ciphers { get; } = new List<string>(ServerProfile.Ciphers);
 
@@ -118,9 +117,9 @@ namespace XTransmit.ViewModel.Model
             }
         }
 
-        public void UpdateIPInfo(bool focus)
+        public void UpdateIPInfo(bool force)
         {
-            vServerProfile.FetchIPData(focus);
+            vServerProfile.FetchIPData(force);
             vServerProfile.SetFriendNameByIPData();
 
             OnPropertyChanged(nameof(FriendlyName));
@@ -135,12 +134,9 @@ namespace XTransmit.ViewModel.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
         public ServerProfile vServerProfile { get; }
 
-        public ServerView(ServerProfile serverProfile) => vServerProfile = serverProfile;
-
-
-        /** INotifyPropertyChanged =================================================================================
-         */
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public ServerView(ServerProfile serverProfile)
+        {
+            vServerProfile = serverProfile;
+        }
     }
 }

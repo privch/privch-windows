@@ -66,6 +66,7 @@
                 <!-- total progress -->
                 <md:PopupBox.ToggleContent>
                     <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                 ToolTip="{Binding Path=Progress.Description}"
                                  IsIndeterminate="{Binding Path=Progress.IsIndeterminate}"
                                  Value="{Binding Path=Progress.Value, Mode=OneWay}"/>
                 </md:PopupBox.ToggleContent>
@@ -85,13 +86,13 @@
                                 <ProgressBar Grid.Column="1"
                                              IsIndeterminate="False"
                                              Width="200"
-                                             ToolTip="{Binding Path=Id}"
+                                             ToolTip="{Binding Path=Name}"
                                              Value="{Binding Path=Progress100, Mode=OneWay}"/>
                                 <Button Grid.Column="2"
                                         Style="{StaticResource MaterialDesignIconButton}"
                                         ToolTip="{StaticResource _cancel}"
                                         Command="{Binding ElementName=xWindow, Path=DataContext.CommandStopTask}"
-                                        CommandParameter="{Binding Path=Id}">
+                                        CommandParameter="{Binding Path=Name}">
                                     <md:PackIcon Kind="Stop"/>
                                 </Button>
                             </Grid>

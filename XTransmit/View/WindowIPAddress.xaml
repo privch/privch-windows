@@ -50,11 +50,15 @@
             </ToolBarTray>
 
             <!-- running progress -->
-            <Grid Grid.Column="1" Background="{DynamicResource MaterialDesignToolBarBackground}">
+            <Grid Grid.Column="1"
+                  Background="{DynamicResource MaterialDesignToolBarBackground}">
                 <ProgressBar Margin="10"
                              Style="{StaticResource MaterialDesignCircularProgressBar}"
+                             IsEnabled="{Binding Path=Progress.IsIndeterminate}"
+                             ToolTip="{Binding Path=Progress.Description}"
                              IsIndeterminate="{Binding Path=Progress.IsIndeterminate}"
-                             Value="{Binding Path=Progress.Value}"/>
+                             Value="{Binding Path=Progress.Value, Mode=OneWay}"
+                             MouseLeftButtonDown="ProgressBar_MouseLeftButtonDown"/>
             </Grid>
         </Grid>
 
@@ -80,6 +84,7 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
+
         <!-- ip no data -->
         <Grid Grid.Row="1" Panel.ZIndex="1"
               VerticalAlignment="Center"

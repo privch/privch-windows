@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using XTransmit.Model.Curl;
-using XTransmit.ViewModel.Control;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {
@@ -28,7 +28,7 @@ namespace XTransmit.ViewModel
         public CurlPlayVModel(SiteProfile siteProfile, Action<SiteProfile> actionSaveProfile)
         {
             Profile = siteProfile;
-            Progress = new ProgressView(0, false);
+            Progress = new ProgressView(0, false, null);
             WindowProgress = 0;
 
             IsNotRunning = true;
@@ -96,12 +96,12 @@ namespace XTransmit.ViewModel
             IsNotRunning = !isRunning;
             if (IsNotRunning)
             {
-                Progress.Set(0, false);
+                Progress.Set(0, false, null);
                 WindowProgress = 0;
             }
             else
             {
-                Progress.Set(70, true);
+                Progress.Set(70, true, null);
             }
 
             OnPropertyChanged(nameof(IsNotRunning));
@@ -146,13 +146,13 @@ namespace XTransmit.ViewModel
             IsNotRunning = !IsNotRunning;
             if (IsNotRunning)
             {
-                Progress.Set(0, false);
+                Progress.Set(0, false, null);
                 WindowProgress = 0;
                 siteWorker.StopBgWork();
             }
             else
             {
-                Progress.Set(70, true);
+                Progress.Set(70, true, null);
                 siteWorker.StartBgWork(Profile);
             }
 

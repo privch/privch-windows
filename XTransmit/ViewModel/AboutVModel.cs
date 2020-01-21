@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using XTransmit.ViewModel.Control;
+using XTransmit.ViewModel.Element;
 
 /**
  * NOTE - Check for update.
@@ -14,25 +14,11 @@ namespace XTransmit.ViewModel
         public string Name { get; private set; }
         public string Version { get; private set; }
 
-        [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public ItemView[] OpensourceSoftware => new ItemView[]
-        {
-            new ItemView {
-                Label = "MaterialDesignInXamlToolkit", Text = "MIT",
-                Uri = "https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/blob/master/LICENSE"},
-            new ItemView {
-                Label = "LiveCharts", Text = "MIT",
-                Uri = "https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT"},
-            new ItemView {
-                Label = "ZXing.Net", Text = "Apache-2.0",
-                Uri = "https://www.apache.org/licenses/LICENSE-2.0"},
-            new ItemView {
-                Label = "proxyctrl", Text = "Apache-2.0",
-                Uri = "https://www.apache.org/licenses/LICENSE-2.0"},
-        };
+        public ItemView[] OpensourceSoftware { get; }
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+        [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         public AboutVModel()
         {
             Name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
@@ -45,20 +31,47 @@ namespace XTransmit.ViewModel
             {
                 Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
+
+            OpensourceSoftware = new ItemView[]
+            {
+                new ItemView
+                {
+                    Label = "MaterialDesignInXamlToolkit", Text = "MIT",
+                    Uri = "https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/blob/master/LICENSE"
+                },
+
+                new ItemView
+                {
+                    Label = "LiveCharts", Text = "MIT",
+                    Uri = "https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT"
+                },
+
+                new ItemView
+                {
+                    Label = "ZXing.Net", Text = "Apache-2.0",
+                    Uri = "https://www.apache.org/licenses/LICENSE-2.0"
+                },
+
+                new ItemView
+                {
+                    Label = "proxyctrl", Text = "Apache-2.0",
+                    Uri = "https://www.apache.org/licenses/LICENSE-2.0"
+                },
+            };
         }
 
 
         /** Commands ======================================================================================================
          */
-        public RelayCommand CommandSendEmail => new RelayCommand(sendEmail);
-        private void sendEmail(object parameter)
+        public RelayCommand CommandSendEmail => new RelayCommand(SendEmail);
+        private void SendEmail(object parameter)
         {
             string app_email = (string)Application.Current.FindResource("app_email");
             Process.Start($@"mailto://{app_email}"); // return null
         }
 
-        public RelayCommand CommandViewLicense => new RelayCommand(viewLicense);
-        private void viewLicense(object parameter)
+        public RelayCommand CommandViewLicense => new RelayCommand(ViewLicense);
+        private void ViewLicense(object parameter)
         {
             string uri = (string)parameter;
             Process.Start(uri);

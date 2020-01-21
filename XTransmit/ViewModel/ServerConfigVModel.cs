@@ -5,14 +5,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using XTransmit.Utility;
-using XTransmit.ViewModel.Control;
-using XTransmit.ViewModel.Model;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {
-    /**
-     * Updated: 2019-08-08
-     */
     public class ServerConfigVModel : BaseViewModel
     {
         public ServerView ServerInfoData { get; private set; }

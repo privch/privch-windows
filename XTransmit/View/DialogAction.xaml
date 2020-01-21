@@ -1,10 +1,11 @@
 ﻿<Window x:Class="XTransmit.View.DialogAction"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Style="{StaticResource WindowApp}"
+        x:Name="xWindow"
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
+        Style="{StaticResource WindowApp}"
         Title="{Binding Path=Title}">
     <Grid>
         <Grid.RowDefinitions>
@@ -16,24 +17,24 @@
                    HorizontalAlignment="Center"
                    Text="{Binding Path=Message}"/>
 
-        <!-- confirm ===================================================================================== -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Button Grid.Column="0" Margin="8"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Content="{StaticResource _yes}"
-                    Command="{Binding Path=CommandCloseYes}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-
-            <Button Grid.Column="1" Margin="8"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Content="{StaticResource _no}"
-                    Command="{Binding Path=CommandCloseNo}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-        </Grid>
+        <!-- Action buttons ===================================================================================== -->
+        <ItemsControl Grid.Row="1"
+                      ItemsSource="{Binding ActionList}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Margin="8"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Content="{Binding Path=Key}"
+                            Command="{Binding ElementName=xWindow, Path=DataContext.CommandAction}"
+                            CommandParameter="{Binding Path=Key}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
     </Grid>
 </Window>

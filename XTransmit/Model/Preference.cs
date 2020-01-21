@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using XTransmit.Utility;
-using XTransmit.ViewModel.Control;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.Model
 {

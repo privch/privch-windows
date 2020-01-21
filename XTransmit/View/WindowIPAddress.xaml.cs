@@ -1,12 +1,10 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using XTransmit.Model;
 using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
-    /**
-     * Updated: 2019-09-28
-     */
     public partial class WindowIPAddress : Window
     {
         public WindowIPAddress()
@@ -20,13 +18,13 @@ namespace XTransmit.View
             Height = preference.WindowIPAddress.H;
 
             DataContext = new IPAddressVModel();
-            Closing += WindowIPSet_Closing;
+            Closing += WindowIPAddress_Closing;
         }
 
-        private void WindowIPSet_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void WindowIPAddress_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            xDataGrid.CommitEdit();
-            xDataGrid.CancelEdit();
+            xDataGrid.CancelEdit(DataGridEditingUnit.Cell);
+            xDataGrid.CancelEdit(DataGridEditingUnit.Row);
             ((IPAddressVModel)DataContext).OnWindowClosing();
 
             // Save window placement
@@ -35,6 +33,11 @@ namespace XTransmit.View
             preference.WindowIPAddress.Y = Top;
             preference.WindowIPAddress.W = Width;
             preference.WindowIPAddress.H = Height;
+        }
+
+        private void ProgressBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ((IPAddressVModel)DataContext).StopPing();
         }
     }
 }

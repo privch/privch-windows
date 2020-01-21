@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
@@ -45,11 +46,26 @@ namespace XTransmit.ViewModel
             {
                 string title = (string)Application.Current.FindResource("ua_title");
                 string ask_save = (string)Application.Current.FindResource("ua_ask_save_changes");
+                string sr_yes = (string)Application.Current.FindResource("_yes");
+                string sr_no = (string)Application.Current.FindResource("_no");
 
-                View.DialogAction dialog = new View.DialogAction(title, ask_save);
+                bool save = false;
+                Dictionary<string, Action> actions = new Dictionary<string, Action>
+                {
+                    {
+                        sr_yes,
+                        () => { save = true; }
+                    },
+
+                    {
+                        sr_no,
+                        () => { save = false; }
+                    },
+                };
+                View.DialogAction dialog = new View.DialogAction(title, ask_save, actions);
                 dialog.ShowDialog();
 
-                if (dialog.CancelableResult == true)
+                if (save)
                 {
                     UAManager.Save(uaList);
                 }

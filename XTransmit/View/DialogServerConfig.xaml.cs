@@ -3,7 +3,7 @@ using System.Windows;
 using XTransmit.Model;
 using XTransmit.Model.Server;
 using XTransmit.ViewModel;
-using XTransmit.ViewModel.Model;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.View
 {

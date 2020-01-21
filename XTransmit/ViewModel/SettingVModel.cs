@@ -1,10 +1,10 @@
 ﻿using System.Windows;
-using XTransmit.ViewModel.Control;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {
     /** 
-     * TODO - Add customize option.
+     * TODO - Add custom options.
      */
     class SettingVModel : BaseViewModel
     {
@@ -14,7 +14,7 @@ namespace XTransmit.ViewModel
             set
             {
                 App.GlobalConfig.SSTimeout = value;
-                OnPropertyChanged("ConectionTimeouts");
+                OnPropertyChanged(nameof(SSTimeouts));
             }
         }
 
@@ -67,7 +67,7 @@ namespace XTransmit.ViewModel
             {
                 new ItemView
                 {
-                    Label=(string)Application.Current.FindResource("dialog_setting_status_proxy_port"),
+                    Label = (string)Application.Current.FindResource("dialog_setting_status_proxy_port"),
                     Text=App.GlobalConfig.SystemProxyPort.ToString(),
                 },
 

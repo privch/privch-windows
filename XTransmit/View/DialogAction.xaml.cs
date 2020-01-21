@@ -1,15 +1,15 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace XTransmit.View
 {
     public partial class DialogAction : Window
     {
-        public bool? CancelableResult { get; set; } = null;
-
-        public DialogAction(string title, string message)
+        public DialogAction(string title, string message, Dictionary<string, Action> actions)
         {
             InitializeComponent();
-            DataContext = new ViewModel.DialogButtonVModel(title, message);
+            DataContext = new ViewModel.DialogActionVModel(this, title, message, actions);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace XTransmit.ViewModel.Control
+namespace XTransmit.ViewModel.Element
 {
     /** 
      * A parameterless costructor is needed by serializer.
@@ -63,9 +63,9 @@ namespace XTransmit.ViewModel.Control
             }
         }
 
-        private double vx;
-        private double vy;
-        private double vw;
-        private double vh;
+        private double vx = 0;
+        private double vy = 0;
+        private double vw = 0;
+        private double vh = 0;
     }
 }

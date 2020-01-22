@@ -13,7 +13,6 @@ namespace XTransmit.Utility
     public static class FileUtil
     {
         [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
-        [SuppressMessage("Globalization", "CA1307:Specify StringComparison", Justification = "<Pending>")]
         public static bool CheckMD5(string filePath, string md5Hex)
         {
             byte[] md5File = GetMD5(filePath);
@@ -22,14 +21,14 @@ namespace XTransmit.Utility
                 return false;
             }
 
-            // Create a new Stringbuilder to collect the bytes and create a string.
+            // convert input md5 hex string to the "0x" format
             StringBuilder sBuilder = new StringBuilder();
             for (int i = 0; i < md5File.Length; i++)
             {
                 sBuilder.Append(md5File[i].ToString("x2"));
             }
 
-            return sBuilder.ToString().Equals(md5Hex);
+            return sBuilder.ToString().Equals(md5Hex, StringComparison.OrdinalIgnoreCase);
         }
 
         /*

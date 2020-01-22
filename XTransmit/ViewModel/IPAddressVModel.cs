@@ -4,29 +4,24 @@ using System.Collections.ObjectModel;
 using System.Net.NetworkInformation;
 using System.Windows;
 using XTransmit.Model.IPAddress;
-using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {
     /**
      * TODO - Confirm that ObservableCollection write data directly to the original list/array items,
      *        and not the items copied form original list/array
-     * TODO - Remove the ping check
+     * TODO - Optimize or remove the ping check
      */
     class IPAddressVModel : BaseViewModel
     {
-        public ProgressView Progress { get; private set; }
+        public bool IsProcessingPing { get; private set; } = false;
 
         public ObservableCollection<IPProfile> IPListOC { get; private set; }
 
-        private static readonly string sr_stop_ping = (string)Application.Current.FindResource("ip_stop_ping");
-
         private static readonly object lock_sync = new object();
-
 
         public IPAddressVModel()
         {
-            Progress = new ProgressView(0, false, sr_stop_ping);
             IPListOC = new ObservableCollection<IPProfile>(IPManager.GetIPArray());
 
             //msdn.microsoft.com/en-us/library/hh198861.aspx
@@ -36,7 +31,7 @@ namespace XTransmit.ViewModel
         public void OnWindowClosing()
         {
             // isPingInProcess is also use to cancel task
-            processing_ping = false;
+            IsProcessingPing = false;
 
             // save ip address data if there are changes
             IPProfile[] ipArray = new List<IPProfile>(IPListOC).ToArray();
@@ -77,11 +72,9 @@ namespace XTransmit.ViewModel
 
         /** Commands --------------------------------------------------------------------------
          */
-        private volatile bool processing_ping = false;
-
         public void StopPing()
         {
-            processing_ping = false;
+            IsProcessingPing = false;
         }
 
         // save data
@@ -133,15 +126,12 @@ namespace XTransmit.ViewModel
 
         // ping
         public RelayCommand CommandPingCheck => new RelayCommand(PingCheckAsync, CanPingCheck);
-        private bool CanPingCheck(object parameter) => !processing_ping;
+        private bool CanPingCheck(object parameter) => !IsProcessingPing;
         private async void PingCheckAsync(object parameter)
         {
-            processing_ping = true;
+            IsProcessingPing = true;
+            OnPropertyChanged(nameof(IsProcessingPing));
             System.Windows.Input.CommandManager.InvalidateRequerySuggested();
-
-            Progress.IsIndeterminate = true;
-            Progress.Value = 50;
-            OnPropertyChanged(nameof(Progress));
 
             int timeout = App.GlobalConfig.PingTimeout;
             using (Ping ping = new Ping())
@@ -149,7 +139,7 @@ namespace XTransmit.ViewModel
                 foreach (IPProfile ipProfile in IPListOC)
                 {
                     // isPingInProcess is also use to cancel task
-                    if (processing_ping == false)
+                    if (IsProcessingPing == false)
                     {
                         break;
                     }
@@ -159,11 +149,8 @@ namespace XTransmit.ViewModel
                 }
             }
 
-            Progress.IsIndeterminate = false;
-            Progress.Value = 0;
-            OnPropertyChanged(nameof(Progress));
-
-            processing_ping = false;
+            IsProcessingPing = false;
+            OnPropertyChanged(nameof(IsProcessingPing));
             System.Windows.Input.CommandManager.InvalidateRequerySuggested();
         }
     }

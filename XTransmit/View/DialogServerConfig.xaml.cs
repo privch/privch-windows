@@ -7,9 +7,6 @@ using XTransmit.ViewModel.Element;
 
 namespace XTransmit.View
 {
-    /** 
-     * Updated: 2019-08-06
-     */
     public partial class DialogServerConfig : Window
     {
         public DialogServerConfig(ServerProfile serverProfile)

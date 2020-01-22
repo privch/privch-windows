@@ -10,8 +10,10 @@ namespace XTransmit.Utility
 {
     public static class NetworkUtil
     {
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
-        public static int CompareNetworkInterfaceBySpeed(NetworkInterface x, NetworkInterface y) => (int)(x.Speed - y.Speed);
+        public static int CompareNetworkInterfaceBySpeed(NetworkInterface x, NetworkInterface y)
+        {
+            return (int)(x?.Speed ?? 0 - y?.Speed ?? 0);
+        }
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static List<NetworkInterface> GetValidNetworkInterface()

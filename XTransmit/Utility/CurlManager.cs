@@ -2,9 +2,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-/**
- * curl-win64-mingw 7.67.0
- */
 namespace XTransmit.Utility
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
@@ -12,19 +9,21 @@ namespace XTransmit.Utility
     {
         public static string CurlExePath => $@"{App.PathCurl}\{curl_exe_name}";
 
+        /** curl-win64-mingw 7.68.0
+         */
         private const string curl_exe_name = "curl-x.exe"; // name "curl-x.exe" is for process control
         private const string curl_exe_process = "curl-x";
-        private const string curl_exe_md5 = "190d43949bbd8e8ed59cb3f408523010";
+        private const string curl_exe_md5 = "ED3506CA9DC52F0044035F7555EA8FF7";
 
         private const string libcurl_x64_dll_name = "libcurl-x64.dll";
-        private const string libcurl_x64_dll_md5 = "4444374adc31bf391a5d4b11a57aa4ef";
+        private const string libcurl_x64_dll_md5 = "C659B529429384AF7F9853F5E32F2B69";
 
         private const string curl_ca_bundle_crt_name = "curl-ca-bundle.crt";
-        private const string curl_ca_bundle_crt_md5 = "3231fbcbbb54c2963dc37f7224f127ff";
+        private const string curl_ca_bundle_crt_md5 = "C726AE88FD600AA26DF1D30F42B51FEC";
 
         public static void KillRunning()
         {
-            // this list contain only this app's "curl" process
+            // this list contains only this app's "curl" process
             Process[] list = Process.GetProcessesByName(curl_exe_process);
             if (list != null && list.Length > 0)
             {
@@ -49,11 +48,11 @@ namespace XTransmit.Utility
 
         public static bool Prepare()
         {
-            // Creates all directories and subdirectories
+            // create directories and sub directories
             try { System.IO.Directory.CreateDirectory(App.PathCurl); }
             catch (Exception) { return false; }
 
-            // Check binary files
+            // check files
             object[][] checks = 
             {
                 new object[] { CurlExePath, curl_exe_md5, Properties.Resources.curl_exe_gz },

@@ -14,8 +14,8 @@ namespace XTransmit.ViewModel
     class ContentNetworkVModel : BaseViewModel, IDisposable
     {
         private bool isActivated = false;
-        public bool IsActivated 
-        { 
+        public bool IsActivated
+        {
             get => isActivated;
             private set
             {

@@ -1,9 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-/**
- * Updated: 2019-08-02
- */
-
 namespace XTransmit.Utility
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]

@@ -90,7 +90,7 @@ namespace XTransmit.ViewModel
                 new View.DialogPrompt(sr_title, sr_invalid_ip).ShowDialog();
                 return;
             }
-            if (ServerInfoData.HostPort < 100 || ServerInfoData.HostPort > 65535)
+            if (ServerInfoData.HostPort < 1 || ServerInfoData.HostPort > 65535)
             {
                 new View.DialogPrompt(sr_title, sr_invalid_port).ShowDialog();
                 return;

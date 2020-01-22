@@ -2,8 +2,8 @@
 
 namespace XTransmit.Model.Curl
 {
-    /** Proxy traffic
-     * Updated: 2019-09-29
+    /** 
+     * Proxy traffic
      */
     class FakeClient
     {
@@ -13,11 +13,13 @@ namespace XTransmit.Model.Curl
         public string Replace;
         public Method FakeMethod;
 
+
         /**
          * <summary>
-         * [Proxy/Socks5]
+         * [Proxy/Socks5]. Case sensitive
          * </summary>
          */
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static FakeClient From(string input)
         {
             Match fakeMatch = Regex.Match(input, Pattern);
@@ -26,7 +28,16 @@ namespace XTransmit.Model.Curl
                 return null;
             }
 
-            string fakeMethod = fakeMatch.Value.Substring(7, fakeMatch.Value.Length - 8);
+            string fakeMethod;
+            try
+            {
+                fakeMethod = fakeMatch.Value.Substring(7, fakeMatch.Value.Length - 8);
+            }
+            catch
+            {
+                return null;
+            }
+
             if (string.IsNullOrWhiteSpace(fakeMethod))
             {
                 return null;

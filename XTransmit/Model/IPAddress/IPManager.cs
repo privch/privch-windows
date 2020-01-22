@@ -11,8 +11,11 @@ namespace XTransmit.Model.IPAddress
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public static class IPManager
     {
-        /**NOTE
-         * If use List<IPProfile> there will an exception occurs at the App exit 
+        /**
+         * TODO - Remove the locker
+         * 
+         * NOTE
+         * If use List<IPProfile> it will cause an exception when the App exit 
          * when the number of IPProfile item is big (such as 60029 or more).
          */
         private static IPProfile[] IPArray;
@@ -21,7 +24,10 @@ namespace XTransmit.Model.IPAddress
         private static readonly Random RandGen = new Random();
         private static readonly object locker = new object();
 
-        public static IPProfile[] GetIPArray() => IPArray;
+        public static IPProfile[] GetIPArray()
+        {
+            return IPArray;
+        }
 
         public static void Load(string pathIpXml)
         {
@@ -71,7 +77,6 @@ namespace XTransmit.Model.IPAddress
          * TODO - Test
          * </summary>
          */
-        [SuppressMessage("Globalization", "CA1307:Specify StringComparison", Justification = "<Pending>")]
         [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public static HashSet<string> Import(string pathTxtUtf8)
         {
@@ -93,20 +98,26 @@ namespace XTransmit.Model.IPAddress
                 string ipLine = fileLine.Trim();
 
                 // skip comment line
-                if (ipLine.StartsWith(@"#") || ipLine.StartsWith(@"//"))
+                if (ipLine.StartsWith(@"#", StringComparison.Ordinal) || ipLine.StartsWith(@"//", StringComparison.Ordinal))
+                {
                     continue;
+                }
 
                 // parse ip
                 string[] ipBytes = ipLine.Split(separatorIPByte, StringSplitOptions.RemoveEmptyEntries);
                 if (ipBytes == null || ipBytes.Length != 4)
+                {
                     continue;
+                }
 
                 if (ipBytes[3].Contains(@"/") || ipBytes[3].Contains(@"-"))
                 {
                     // more ip
                     string[] ipByte4Range = ipBytes[3].Split(separatorByte4, StringSplitOptions.RemoveEmptyEntries);
                     if (ipByte4Range == null || ipByte4Range.Length != 2)
+                    {
                         continue;
+                    }
 
                     int ipByte4From, ipByte4To;
                     try
@@ -116,7 +127,9 @@ namespace XTransmit.Model.IPAddress
                     }
                     catch { continue; }
                     if (ipByte4From < 0 || ipByte4To < ipByte4From)
+                    {
                         continue;
+                    }
 
                     string ipByte123 = $"{ipBytes[0]}.{ipBytes[1]}.{ipBytes[2]}.";
                     for (int ipByte4 = ipByte4From; ipByte4 <= ipByte4To; ipByte4++)

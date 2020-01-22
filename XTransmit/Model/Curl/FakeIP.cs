@@ -2,8 +2,8 @@
 
 namespace XTransmit.Model.Curl
 {
-    /** Affect http head only
-     * Updated: 2019-09-28
+    /** 
+     * Affect http header only
      */
     class FakeIP
     {
@@ -13,11 +13,13 @@ namespace XTransmit.Model.Curl
         public string Replace;
         public Method FakeMethod;
 
+
         /**
          * <summary>
-         * [IP/Pick], [IP/Gen]
+         * [IP/Pick], [IP/Gen]. Case sensitive
          * </summary>
          */
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static FakeIP From(string input)
         {
             Match fakeMatch = Regex.Match(input, Pattern);
@@ -26,7 +28,16 @@ namespace XTransmit.Model.Curl
                 return null;
             }
 
-            string fakeMethod = fakeMatch.Value.Substring(4, fakeMatch.Value.Length - 5);
+            string fakeMethod;
+            try
+            {
+                fakeMethod = fakeMatch.Value.Substring(4, fakeMatch.Value.Length - 5);
+            }
+            catch
+            {
+                return null;
+            }
+
             if (string.IsNullOrWhiteSpace(fakeMethod))
             {
                 return null;

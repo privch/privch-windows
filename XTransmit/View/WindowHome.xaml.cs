@@ -17,6 +17,8 @@ namespace XTransmit.View
             Width = preference.WindowHome.W;
             Height = preference.WindowHome.H;
 
+            Visibility = preference.IsWindowHomeVisible ? Visibility.Visible : Visibility.Hidden;
+
             DataContext = new HomeVModel();
             Closing += Window_Closing;
         }

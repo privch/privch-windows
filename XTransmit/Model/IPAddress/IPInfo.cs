@@ -125,7 +125,10 @@ namespace XTransmit.Model.IPAddress
                 DataContractJsonSerializer deserializer = new DataContractJsonSerializer(typeof(IPInfoIO));
                 ipinfoio = deserializer.ReadObject(msJson) as IPInfoIO;
             }
-            catch { }
+            catch
+            {
+                return null;
+            }
             finally
             {
                 msJson.Close(); // caused ca2202, why ? 

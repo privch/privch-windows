@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 
 namespace XTransmit.Model.Curl
@@ -30,12 +31,11 @@ namespace XTransmit.Model.Curl
          * The object properties value will be overwritten from the XML file.
          * </summary>
          */
-        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public SiteProfile()
         {
             Title = "Title";
             Website = "Website";
-            TimeUpdated = DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss");
+            TimeUpdated = DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss", CultureInfo.InvariantCulture);
 
             PlayTimes = 1;
             DelayMin = 0; //no delay
@@ -45,10 +45,9 @@ namespace XTransmit.Model.Curl
             ArgumentList = new List<CurlArgument>();
         }
 
-        // copy object, use serializer
+        // copy object by serializer
         public SiteProfile Copy() => (SiteProfile)Utility.TextUtil.CopyBySerializer(this);
 
-        [SuppressMessage("Globalization", "CA1307:Specify StringComparison", Justification = "<Pending>")]
         public string GetArguments()
         {
             StringBuilder sb = new StringBuilder("--silent");
@@ -57,7 +56,7 @@ namespace XTransmit.Model.Curl
                 try
                 {
                     string argument = curlArgument.Argument;
-                    if (argument.StartsWith("-"))
+                    if (argument.StartsWith("-", StringComparison.Ordinal))
                     {
                         sb.Append(' ').Append(argument);
                     }

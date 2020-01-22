@@ -40,7 +40,7 @@
             </ToolBar>
         </ToolBarTray>
 
-        <!-- Site Profile -->
+        <!-- Site profiles -->
         <DataGrid x:Name="xDataGrid" 
                   Grid.Row="1"
                   GridLinesVisibility="Horizontal"
@@ -109,7 +109,8 @@
                 </GroupStyle>
             </DataGrid.GroupStyle>
         </DataGrid>
-        <!-- Site no data -->
+        
+        <!-- Empty content -->
         <Grid Grid.Row="1" Panel.ZIndex="1"
               VerticalAlignment="Center"
               HorizontalAlignment="Center">

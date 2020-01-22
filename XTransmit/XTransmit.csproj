@@ -132,8 +132,8 @@
     <Compile Include="Model\Curl\FakeClient.cs" />
     <Compile Include="Model\Curl\FakeUA.cs" />
     <Compile Include="Model\Curl\FakeIP.cs" />
-    <Compile Include="Model\Network\BandwidthInfo.cs" />
     <Compile Include="Model\Network\BandwidthMeter.cs" />
+    <Compile Include="Model\Network\BandwidthInfo.cs" />
     <Compile Include="Model\IPAddress\IPProfile.cs" />
     <Compile Include="Model\IPAddress\IPManager.cs" />
     <Compile Include="Model\IPAddress\IPInfo.cs" />
@@ -152,24 +152,24 @@
     <Compile Include="Utility\TransmitControl.cs" />
     <Compile Include="ViewModel\AboutVModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="ViewModel\Element\TaskView.cs" />
     <Compile Include="ViewModel\CurlVModel.cs" />
     <Compile Include="ViewModel\ContentNetworkVModel.cs" />
     <Compile Include="ViewModel\ContentServerVModel.cs" />
-    <Compile Include="ViewModel\Element\ContentTable.cs" />
-    <Compile Include="ViewModel\Element\Placement.cs" />
-    <Compile Include="ViewModel\Element\ProgressView.cs" />
-    <Compile Include="ViewModel\Element\ServerView.cs" />
     <Compile Include="ViewModel\CurlPlayVModel.cs" />
     <Compile Include="ViewModel\DialogActionVModel.cs" />
     <Compile Include="ViewModel\DialogEditVModel.cs" />
     <Compile Include="ViewModel\HomeVModel.cs" />
     <Compile Include="ViewModel\IPAddressVModel.cs" />
-    <Compile Include="ViewModel\Element\ItemView.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="ViewModel\ServerConfigVModel.cs" />
     <Compile Include="ViewModel\SettingVModel.cs" />
     <Compile Include="ViewModel\UserAgentVModel.cs" />
+    <Compile Include="ViewModel\Element\ItemView.cs" />
+    <Compile Include="ViewModel\Element\ContentTable.cs" />
+    <Compile Include="ViewModel\Element\Placement.cs" />
+    <Compile Include="ViewModel\Element\ProgressView.cs" />
+    <Compile Include="ViewModel\Element\ServerView.cs" />
+    <Compile Include="ViewModel\Element\TaskView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="View\WindowCurl.xaml.cs">

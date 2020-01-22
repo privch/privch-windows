@@ -127,7 +127,7 @@ namespace XTransmit.ViewModel.Element
 
         public void UpdateResponseTime()
         {
-            vServerProfile.FetchResponseTime();
+            vServerProfile.CheckResponseTime();
             OnPropertyChanged(nameof(ResponseTime));
         }
 

@@ -12,6 +12,7 @@ namespace XTransmit.Model
     [Serializable]
     public class Preference
     {
+        public bool IsWindowHomeVisible { get; set; }
         public string ContentDisplay { get; set; }
 
         public Placement WindowHome { get; set; }
@@ -28,6 +29,9 @@ namespace XTransmit.Model
          */
         public Preference()
         {
+            IsWindowHomeVisible = true;
+            ContentDisplay = "";
+
             double sw = SystemParameters.PrimaryScreenWidth;
             double sh = SystemParameters.PrimaryScreenHeight;
 
@@ -94,8 +98,6 @@ namespace XTransmit.Model
                 W = sw * 0.6,
                 H = sh * 0.6,
             };
-
-            ContentDisplay = "";
         }
 
 

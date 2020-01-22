@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -100,7 +101,6 @@ namespace XTransmit.Model.Server
          * Reference code: github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
          */
         [SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
-        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public static ServerProfile ParseLegacyServer(string ssUrl)
         {
             var match = UrlFinder.Match(ssUrl);
@@ -121,7 +121,8 @@ namespace XTransmit.Model.Server
             try
             {
                 details = DetailsParser.Match(
-                    Encoding.UTF8.GetString(Convert.FromBase64String(base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '='))));
+                    Encoding.UTF8.GetString(
+                        Convert.FromBase64String(base64.PadRight(base64.Length + (4 - (base64.Length % 4)) % 4, '='))));
             }
             catch (Exception)
             {
@@ -135,7 +136,7 @@ namespace XTransmit.Model.Server
 
             try
             {
-                serverProfile.HostPort = int.Parse(details.Groups["port"].Value);
+                serverProfile.HostPort = int.Parse(details.Groups["port"].Value, CultureInfo.InvariantCulture);
             }
             catch
             {

@@ -4,9 +4,6 @@ using XTransmit.Model.Server;
 
 namespace XTransmit.Utility
 {
-    /**
-     * Updated: 2019-10-04
-     */
     static class TransmitControl
     {
         public static bool StartServer()

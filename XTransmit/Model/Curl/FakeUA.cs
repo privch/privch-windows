@@ -2,8 +2,8 @@
 
 namespace XTransmit.Model.Curl
 {
-    /** Define the UA info in http head
-     * Updated: 2019-09-28
+    /** 
+     * Replace the UA info in http header
      */
     class FakeUA
     {
@@ -12,7 +12,7 @@ namespace XTransmit.Model.Curl
 
         /**
          * <summary>
-         * [UA]
+         * [UA]. Case sensitive
          * </summary>
          */
         public static FakeUA From(string input)

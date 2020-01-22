@@ -11,16 +11,14 @@ namespace XTransmit.ViewModel
     {
         public ObservableCollection<UAProfile> UserAgentListOC { get; private set; }
 
-        private string search_value;
-
         [SuppressMessage("Globalization", "CA1304:Specify CultureInfo", Justification = "<Pending>")]
         public string Search
         {
-            get { return search_value; }
+            get { return searchValue; }
             set
             {
-                search_value = value;
-                if (string.IsNullOrWhiteSpace(search_value))
+                searchValue = value;
+                if (string.IsNullOrWhiteSpace(searchValue))
                 {
                     UserAgentListOC = new ObservableCollection<UAProfile>(UAManager.UAList);
                 }
@@ -32,6 +30,7 @@ namespace XTransmit.ViewModel
                 OnPropertyChanged("UserAgentList");
             }
         }
+        private string searchValue;
 
         public UserAgentVModel()
         {

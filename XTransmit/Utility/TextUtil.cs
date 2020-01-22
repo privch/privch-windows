@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,7 +8,6 @@ using System.Xml.Serialization;
 
 namespace XTransmit.Utility
 {
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
     public static class TextUtil
     {
         /**
@@ -59,14 +59,14 @@ namespace XTransmit.Utility
             }
             else
             {
-                return i.ToString("0 B"); // Byte
+                return i.ToString("0 B", CultureInfo.InvariantCulture); // Byte
             }
 
             // Divide by 1024 to get fractional value
             readable = (readable / 1024);
 
             // Return formatted number with suffix
-            return readable.ToString("0.## ") + suffix;
+            return readable.ToString("0.## ", CultureInfo.InvariantCulture) + suffix;
         }
 
         /**<summary>
@@ -74,10 +74,14 @@ namespace XTransmit.Utility
          * Time-consuming 21ms, 19ms, 20ms
          * </summary>
          */
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static object CopyBySerializer(object objectFrom)
         {
+            if(objectFrom == null)
+            {
+                return null;
+            }
+
             MemoryStream memoryStream = null;
             XmlReader xmlReader = null;
             object objectTo = null;
@@ -107,9 +111,13 @@ namespace XTransmit.Utility
         }
 
         [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "<Pending>")]
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static byte[] GetMD5(object objectXmlUtf8)
         {
+            if (objectXmlUtf8 == null)
+            {
+                return null;
+            }
+
             byte[] md5Value = null;
             using (MemoryStream memObj = new MemoryStream())
             using (StreamWriter swMem = new StreamWriter(memObj, new UTF8Encoding(false)))

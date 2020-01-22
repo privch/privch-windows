@@ -2,9 +2,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-/**
- * Updated: 2019-09-30
- */
 namespace XTransmit.Utility
 {
     /** Notes:
@@ -21,6 +18,8 @@ namespace XTransmit.Utility
         public static readonly string PathPrivoxyExe = $@"{App.PathPrivoxy}\{privoxy_exe_name}";
         private static Process process_privoxy = null;
 
+        /** privoxy-windows 3.0.28
+         */
         private const string privoxy_exe_name = "privoxy.exe";
         private const string privoxy_exe_process = "privoxy";
         private const string privoxy_exe_md5 = "01286f3784dd8271db0e2f2a28040045";
@@ -54,11 +53,11 @@ namespace XTransmit.Utility
 
         public static bool Prepare()
         {
-            // Creates all directories and subdirectories
+            // create directories and sub directories
             try { System.IO.Directory.CreateDirectory(App.PathPrivoxy); }
             catch (Exception) { return false; }
 
-            // Check binary files
+            // check files
             if (!FileUtil.CheckMD5(PathPrivoxyExe, privoxy_exe_md5))
             {
                 if (!FileUtil.UncompressGZ(PathPrivoxyExe, Properties.Resources.privoxy_exe_gz))
@@ -73,11 +72,13 @@ namespace XTransmit.Utility
         [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public static bool Start(int portPrivoxy, int portShadowsocks)
         {
-            string config = Properties.Resources.privoxy_config_txt;
-            config = config.Replace("PORT_PRIVOXY", portPrivoxy.ToString());
-            config = config.Replace("PORT_SSLOCAL", portShadowsocks.ToString());
+            string config_path = $@"{App.PathPrivoxy}\{privoxy_config_txt_name}";
+            string config_text = Properties.Resources.privoxy_config_txt;
 
-            if (!FileUtil.WriteUTF8($@"{App.PathPrivoxy}\{privoxy_config_txt_name}", config))
+            config_text = config_text.Replace("PORT_PRIVOXY", portPrivoxy.ToString());
+            config_text = config_text.Replace("PORT_SSLOCAL", portShadowsocks.ToString());
+
+            if (!FileUtil.WriteUTF8(config_path, config_text))
             {
                 return false;
             }
@@ -89,7 +90,7 @@ namespace XTransmit.Utility
                     new ProcessStartInfo
                     {
                         FileName = PathPrivoxyExe,
-                        Arguments = $@"{App.PathPrivoxy}\{privoxy_config_txt_name}",
+                        Arguments = config_path,
                         WorkingDirectory = App.PathPrivoxy,
                         UseShellExecute = false,
                         CreateNoWindow = true,
@@ -120,7 +121,7 @@ namespace XTransmit.Utility
             }
             catch (Exception) { }
 
-            //The Dispose method calls Close
+            // it calls the Close method
             process_privoxy.Dispose();
         }
     }

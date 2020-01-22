@@ -53,12 +53,20 @@
             <Grid Grid.Column="1"
                   Background="{DynamicResource MaterialDesignToolBarBackground}">
                 <ProgressBar Margin="10"
-                             Style="{StaticResource MaterialDesignCircularProgressBar}"
-                             IsEnabled="{Binding Path=Progress.IsIndeterminate}"
-                             ToolTip="{Binding Path=Progress.Description}"
-                             IsIndeterminate="{Binding Path=Progress.IsIndeterminate}"
-                             Value="{Binding Path=Progress.Value, Mode=OneWay}"
-                             MouseLeftButtonDown="ProgressBar_MouseLeftButtonDown"/>
+                             Value="70"
+                             ToolTip="{StaticResource ip_stop_ping}"
+                             IsIndeterminate="{Binding Path=IsProcessingPing}"
+                             MouseLeftButtonDown="ProgressBar_MouseLeftButtonDown">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar" BasedOn="{StaticResource MaterialDesignCircularProgressBar}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsProcessingPing}" Value="False">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
             </Grid>
         </Grid>
 

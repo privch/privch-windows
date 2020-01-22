@@ -74,6 +74,7 @@
                                     Binding="{Binding Path=Value}"/>
             </DataGrid.Columns>
         </DataGrid>
+        
         <!-- ua no data -->
         <Grid Grid.Row="1" Panel.ZIndex="1"
               VerticalAlignment="Center"

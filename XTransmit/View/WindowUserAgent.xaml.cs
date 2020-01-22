@@ -25,7 +25,7 @@ namespace XTransmit.View
         {
             xDataGrid.CancelEdit(DataGridEditingUnit.Cell);
             xDataGrid.CancelEdit(DataGridEditingUnit.Row);
-            ((UserAgentVModel)DataContext).OnWindowClosing();
+            ((UserAgentVModel)DataContext).OnWindowClosing(); // better way?
 
             // Save window placement
             Preference preference = App.GlobalPreference;

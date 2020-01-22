@@ -8,19 +8,20 @@ namespace XTransmit.Model.Network
 {
     /**
      * TODO - Start-Stop test
+     * TODO - Use Task instead
      */
     public class BandwidthMeter : IDisposable
     {
-        private readonly Action<long[]> OnSpeedUpdated;
+        private readonly Action<long[]> actionSpeedUpdated;
         private NetworkInterface adapter = null;
         private BackgroundWorker bgWork = null;
 
         private long adapterBytesSent = 0;
         private long adapterBytesReceived = 0;
 
-        public BandwidthMeter(Action<long[]> OnSpeedUpdated)
+        public BandwidthMeter(Action<long[]> actionSpeedUpdated)
         {
-            this.OnSpeedUpdated = OnSpeedUpdated;
+            this.actionSpeedUpdated = actionSpeedUpdated;
         }
 
         public void Dispose()
@@ -107,7 +108,7 @@ namespace XTransmit.Model.Network
             if (e.UserState is long[] values)
             {
                 // callback, publish values
-                OnSpeedUpdated?.Invoke(values);
+                actionSpeedUpdated?.Invoke(values);
             }
         }
     }

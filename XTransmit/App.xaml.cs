@@ -82,6 +82,7 @@ namespace XTransmit
 
         public static void CloseMainWindow()
         {
+            GlobalPreference.IsWindowHomeVisible = Current.MainWindow.IsVisible;
             Current.MainWindow.Hide();
             Current.MainWindow.Close();
         }
@@ -217,6 +218,7 @@ namespace XTransmit
             }
 
             // load data
+            // TODO - ConfigManager? PrefManager?
             GlobalPreference = Preference.LoadFileOrDefault(FilePreferenceXml);
             GlobalConfig = Config.LoadFileOrDefault(FileConfigXml);
 
@@ -247,7 +249,7 @@ namespace XTransmit
         // Something wrong happen, Unexpercted, Abnormally
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            // TODO - Handle exception safety
+            // TODO - Startup another process for user to send feedback
             //string app_name = (string)FindResource("app_name");
             //new View.DialogPrompt(app_name, e.Exception.Message).ShowDialog();
             Shutdown();

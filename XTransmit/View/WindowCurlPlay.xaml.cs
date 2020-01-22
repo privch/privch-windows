@@ -6,9 +6,6 @@ using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
-    /**
-     * Updated: 2019-08-02
-     */
     public partial class WindowCurlPlay : Window
     {
         public WindowCurlPlay(SiteProfile siteProfile, Action<SiteProfile> actionSaveProfile)

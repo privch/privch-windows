@@ -3,11 +3,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using XTransmit.Model.Server;
 
-/**
- * shadowsocks-libev 3.3.3
- * 
- * TODO Next - Auto upgrade binaries
- */
 namespace XTransmit.Utility
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
@@ -15,31 +10,33 @@ namespace XTransmit.Utility
     {
         private static string SSExePath => $@"{App.PathShadowsocks}\{ss_local_exe_name}";
 
+        /** shadowsocks-libev 3.3.4
+         */
         private const string cygev_4_dll_name = "cygev-4.dll";
-        private const string cygev_4_dll_md5 = "71aaf445429c4fa3c730b4188613198b";
+        private const string cygev_4_dll_md5 = "0F6CE5CF3FE78F6B730155E4CE254185";
 
         private const string cyggcc_s_seh_1_dll_name = "cyggcc_s-seh-1.dll";
-        private const string cyggcc_s_seh_1_dll_md5 = "9243f3c280c9c374f28f9658476dc15f";
+        private const string cyggcc_s_seh_1_dll_md5 = "0CB45DABA5809E2A67C9062637792E04";
 
         private const string cygmbedcrypto_3_dll_name = "cygmbedcrypto-3.dll";
-        private const string cygmbedcrypto_3_dll_md5 = "0587a4c2ae5b811c59dad2a0d5d55b8a";
+        private const string cygmbedcrypto_3_dll_md5 = "48B2B0FD2CBA64784C487D329D010A81";
 
         private const string cygpcre_1_dll_name = "cygpcre-1.dll";
-        private const string cygpcre_1_dll_md5 = "350ef023918125eea94c2b8e88012949";
+        private const string cygpcre_1_dll_md5 = "1020C690FDB824BF5D17C4FFC68ED71A";
 
         private const string cygsodium_23_dll_name = "cygsodium-23.dll";
-        private const string cygsodium_23_dll_md5 = "02f11f502273052dd0813de6195dbdcc";
+        private const string cygsodium_23_dll_md5 = "DAD70135850DA1B8013A499AF9E16B2C";
 
         private const string cygwin1_dll_name = "cygwin1.dll";
-        private const string cygwin1_dll_md5 = "476090dabde7721ffa2bfd1c011dc6de";
+        private const string cygwin1_dll_md5 = "476090DABDE7721FFA2BFD1C011DC6DE";
 
         private const string ss_local_exe_name = "ss-local-x.exe"; // name ss-local-x.exe is for process control
         private const string ss_local_exe_process = "ss-local-x";
-        private const string ss_local_exe_md5 = "f8edbd2176fa2a16fee4f11305bf376d";
+        private const string ss_local_exe_md5 = "CB9B8D4C913304A531C07C65734CE53F";
 
         public static void KillRunning()
         {
-            // this list contain only this app's "ss" process
+            // this list contains only this app's "ss" process
             Process[] list = Process.GetProcessesByName(ss_local_exe_process);
             if (list != null && list.Length > 0)
             {
@@ -64,11 +61,11 @@ namespace XTransmit.Utility
 
         public static bool Prepare()
         {
-            // Creates all directories and subdirectories
+            // create directories and sub directories
             try { System.IO.Directory.CreateDirectory(App.PathShadowsocks); }
             catch { return false; }
 
-            // Check binary files
+            // check files
             object[][] checks =
             {
                 new object[] { $@"{App.PathShadowsocks}\{cygev_4_dll_name}", cygev_4_dll_md5, Properties.Resources.cygev_4_dll_gz },
@@ -119,6 +116,7 @@ namespace XTransmit.Utility
             }
             catch
             {
+                // it is correct
                 process?.Dispose();
             }
 
@@ -137,9 +135,9 @@ namespace XTransmit.Utility
             catch (Exception) { }
             finally
             {
-                /**The dispose method calls Close
-                * https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.close
-                */
+                /** The dispose method calls the Close method
+                 * https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.close
+                 */
                 process?.Dispose();
             }
         }

@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 $7z = "D:\[Knight]\7-Zip\Console\x64\7za.exe"
 
 
-#curl 7.66.0
+#curl 7.68.0
 Set-Location -Path "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\curl"
 $files = 
     "curl.exe",
@@ -12,13 +12,14 @@ $files =
 
 foreach($file in $files) {
     if (Test-Path -Path ".\$file") {
+        Get-FileHash .\$file -Algorithm MD5 | Format-List
         & $7z a -tgzip "$file.gz" $file
         Remove-Item $file
     }
 }
 
 
-#shadowsocks 3.3.1
+#shadowsocks 3.3.4
 Set-Location -Path "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\shadowsocks"
 $files = 
     "cygev-4.dll",
@@ -31,6 +32,7 @@ $files =
 
 foreach($file in $files) {
     if (Test-Path -Path ".\$file") {
+        Get-FileHash .\$file -Algorithm MD5 | Format-List
         & $7z a -tgzip "$file.gz" $file
         Remove-Item $file
     }
@@ -44,7 +46,11 @@ $files =
 
 foreach($file in $files) {
     if (Test-Path -Path ".\$file") {
+        Get-FileHash .\$file -Algorithm MD5 | Format-List
         & $7z a -tgzip "$file.gz" $file
         Remove-Item $file
     }
 }
+
+
+Read-Host "Complete. Press any key to close...";

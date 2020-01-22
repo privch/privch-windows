@@ -8,7 +8,7 @@ namespace XTransmit.Utility
     public static class NativeMethods
     {
         private static readonly string[] arrayBypass = {
-            "<local>", // for enable the "skip LAN" option
+            "<local>", // to enable the "Skip LAN" option
             "localhost",
             "127.*",
             "10.*",

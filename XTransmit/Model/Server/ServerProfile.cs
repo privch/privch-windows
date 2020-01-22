@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Net.NetworkInformation;
 using System.Text;
 using XTransmit.Model.IPAddress;
@@ -56,7 +57,6 @@ namespace XTransmit.Model.Server
          * Must be called after the App.GlobalConfig loaded
          * </summary> 
          */
-        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public ServerProfile()
         {
             HostIP = "";
@@ -70,7 +70,7 @@ namespace XTransmit.Model.Server
             PluginOption = "";
 
             FriendlyName = "";
-            TimeCreated = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            TimeCreated = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
             IPData = null;
 
             ListenPort = -1;
@@ -83,7 +83,6 @@ namespace XTransmit.Model.Server
             FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostIP} - {HostPort}" : Remarks;
         }
 
-        [SuppressMessage("Globalization", "CA1307:Specify StringComparison", Justification = "<Pending>")]
         public void SetFriendNameByIPData()
         {
             if (IPData == null)
@@ -94,19 +93,27 @@ namespace XTransmit.Model.Server
             StringBuilder stringBuilder = new StringBuilder();
 
             if (!string.IsNullOrWhiteSpace(IPData.Country))
+            {
                 stringBuilder.Append(IPData.Country);
+            }
 
             if (!string.IsNullOrWhiteSpace(IPData.Region))
+            {
                 stringBuilder.Append(" - " + IPData.Region);
+            }
 
             if (!string.IsNullOrWhiteSpace(IPData.City))
+            {
                 stringBuilder.Append(" - " + IPData.City);
+            }
 
             string friendlyName = stringBuilder.ToString();
             if (!string.IsNullOrWhiteSpace(friendlyName))
             {
-                if (friendlyName.StartsWith(" - "))
+                if (friendlyName.StartsWith(" - ", StringComparison.Ordinal))
+                {
                     friendlyName = friendlyName.Substring(3);
+                }
 
                 FriendlyName = friendlyName;
             }
@@ -122,7 +129,7 @@ namespace XTransmit.Model.Server
 
         // TODO - UA.
         // return seconds
-        public void FetchResponseTime()
+        public void CheckResponseTime()
         {
             if (ListenPort <= 0)
             {
@@ -159,9 +166,13 @@ namespace XTransmit.Model.Server
         }
 
         // OO Programming
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
-        public void FetchPingDelay(Ping ping)
+        public void CheckPingDelay(Ping ping)
         {
+            if (ping == null)
+            {
+                return;
+            }
+
             try
             {
                 PingReply reply = ping.Send(HostIP, App.GlobalConfig.PingTimeout);

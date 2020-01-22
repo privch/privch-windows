@@ -2,9 +2,6 @@
 
 namespace XTransmit.Model.UserAgent
 {
-    /**
-     * Updated: 2019-09-28
-     */
     [Serializable]
     public class UAProfile
     {

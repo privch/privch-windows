@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using XTransmit.Model.IPAddress;
 using XTransmit.Model.Server;
 
 namespace XTransmit.ViewModel.Element
@@ -11,50 +12,50 @@ namespace XTransmit.ViewModel.Element
          */
         public string HostIP
         {
-            get => vServerProfile.HostIP;
+            get => serverProfile.HostIP;
             set
             {
-                vServerProfile.HostIP = value;
+                serverProfile.HostIP = value;
                 OnPropertyChanged(nameof(HostIP));
             }
         }
 
         public int HostPort
         {
-            get => vServerProfile.HostPort;
+            get => serverProfile.HostPort;
             set
             {
-                vServerProfile.HostPort = value;
+                serverProfile.HostPort = value;
                 OnPropertyChanged(nameof(HostPort));
             }
         }
 
         public string Password
         {
-            get => vServerProfile.Password;
+            get => serverProfile.Password;
             set
             {
-                vServerProfile.Password = value;
+                serverProfile.Password = value;
                 OnPropertyChanged(nameof(Password));
             }
         }
 
         public string Encrypt
         {
-            get => vServerProfile.Encrypt;
+            get => serverProfile.Encrypt;
             set
             {
-                vServerProfile.Encrypt = value;
+                serverProfile.Encrypt = value;
                 OnPropertyChanged(nameof(Encrypt));
             }
         }
 
         public string Remarks
         {
-            get => vServerProfile.Remarks;
+            get => serverProfile.Remarks;
             set
             {
-                vServerProfile.Remarks = value;
+                serverProfile.Remarks = value;
                 OnPropertyChanged(nameof(Remarks));
             }
         }
@@ -63,30 +64,30 @@ namespace XTransmit.ViewModel.Element
          */
         public bool PluginEnabled
         {
-            get => vServerProfile.PluginEnabled;
+            get => serverProfile.PluginEnabled;
             set
             {
-                vServerProfile.PluginEnabled = value;
+                serverProfile.PluginEnabled = value;
                 OnPropertyChanged(nameof(PluginEnabled));
             }
         }
 
         public string PluginName
         {
-            get => vServerProfile.PluginName;
+            get => serverProfile.PluginName;
             set
             {
-                vServerProfile.PluginName = value;
+                serverProfile.PluginName = value;
                 OnPropertyChanged(nameof(PluginName));
             }
         }
 
         public string PluginOption
         {
-            get => vServerProfile.PluginOption;
+            get => serverProfile.PluginOption;
             set
             {
-                vServerProfile.PluginOption = value;
+                serverProfile.PluginOption = value;
                 OnPropertyChanged(nameof(PluginOption));
             }
         }
@@ -95,48 +96,55 @@ namespace XTransmit.ViewModel.Element
          */
         public string FriendlyName
         {
-            get => vServerProfile.FriendlyName;
+            get => serverProfile.FriendlyName;
             set
             {
-                vServerProfile.FriendlyName = value;
+                serverProfile.FriendlyName = value;
                 OnPropertyChanged(nameof(FriendlyName));
             }
         }
 
-        public string TimeCreated => vServerProfile.TimeCreated;
+        public string TimeCreated => serverProfile.TimeCreated;
 
-        public string ResponseTime => vServerProfile.ResponseTime;
+        public IPInfo IPData => serverProfile.IPData;
+
+        public string ResponseTime => serverProfile.ResponseTime;
 
         public long Ping
         {
-            get => vServerProfile.Ping;
+            get => serverProfile.Ping;
             set
             {
-                vServerProfile.Ping = value;
+                serverProfile.Ping = value;
                 OnPropertyChanged(nameof(Ping));
             }
         }
 
         public void UpdateIPInfo(bool force)
         {
-            vServerProfile.FetchIPData(force);
-            vServerProfile.SetFriendNameByIPData();
+            serverProfile.FetchIPData(force);
+            serverProfile.SetFriendNameByIPData();
 
             OnPropertyChanged(nameof(FriendlyName));
         }
 
         public void UpdateResponseTime()
         {
-            vServerProfile.CheckResponseTime();
+            serverProfile.CheckResponseTime();
             OnPropertyChanged(nameof(ResponseTime));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-        public ServerProfile vServerProfile { get; }
+        // Server profile
+        private readonly ServerProfile serverProfile;
+
+        public ServerProfile GetvServerProfile()
+        {
+            return serverProfile;
+        }
 
         public ServerView(ServerProfile serverProfile)
         {
-            vServerProfile = serverProfile;
+            this.serverProfile = serverProfile;
         }
     }
 }

@@ -188,9 +188,9 @@ namespace XTransmit.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon XTransmit {
+        internal static System.Drawing.Icon xtransmit_off {
             get {
-                object obj = ResourceManager.GetObject("XTransmit", resourceCulture);
+                object obj = ResourceManager.GetObject("xtransmit_off", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -198,9 +198,9 @@ namespace XTransmit.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon XTransmit_Off {
+        internal static System.Drawing.Icon xtransmit_on {
             get {
-                object obj = ResourceManager.GetObject("XTransmit_Off", resourceCulture);
+                object obj = ResourceManager.GetObject("xtransmit_on", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

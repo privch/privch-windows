@@ -1,15 +1,15 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using XTransmit.Model;
 using XTransmit.Model.Server;
 using XTransmit.ViewModel;
-using XTransmit.ViewModel.Element;
 
 namespace XTransmit.View
 {
     public partial class DialogServerConfig : Window
     {
-        public DialogServerConfig(ServerProfile serverProfile)
+        public DialogServerConfig(ServerProfile serverProfile, Action<bool> actionComplete)
         {
             InitializeComponent();
 
@@ -18,7 +18,7 @@ namespace XTransmit.View
             Top = preference.WindowServerConfig.Y;
 
             // set viewmodel
-            DataContext = new ServerConfigVModel(new ServerView(serverProfile));
+            DataContext = new ServerConfigVModel(serverProfile, actionComplete);
             Closing += Window_Closing;
         }
 

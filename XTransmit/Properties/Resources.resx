@@ -154,10 +154,10 @@
   <data name="ss_local_exe_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Binary\shadowsocks\ss-local.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="XTransmit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\XTransmit.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="xtransmit_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon\XTransmit-Off.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="XTransmit_Off" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\XTransmit-Off.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="xtransmit_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon\XTransmit-On.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -80,7 +80,7 @@ namespace XTransmit.ViewModel
             int added = 0;
             foreach (ServerProfile server in serverList)
             {
-                ServerView serverView = ServerViewListOC.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server));
+                ServerView serverView = ServerViewListOC.FirstOrDefault(predicate: x => x.GetvServerProfile().Equals(server));
                 if (serverView == null)
                 {
                     ServerViewListOC.Add(new ServerView(server));
@@ -104,7 +104,7 @@ namespace XTransmit.ViewModel
         {
             int added = 0;
 
-            ServerView serverView = ServerViewListOC.FirstOrDefault(predicate: x => x.vServerProfile.Equals(server));
+            ServerView serverView = ServerViewListOC.FirstOrDefault(predicate: x => x.GetvServerProfile().Equals(server));
             if (serverView == null)
             {
                 ServerViewListOC.Add(new ServerView(server));
@@ -127,7 +127,7 @@ namespace XTransmit.ViewModel
         {
             if (serverNew is ServerView serverInfo)
             {
-                if (!serverInfo.vServerProfile.Equals(App.GlobalConfig.RemoteServer))
+                if (!serverInfo.GetvServerProfile().Equals(App.GlobalConfig.RemoteServer))
                 {
                     return true;
                 }
@@ -148,7 +148,7 @@ namespace XTransmit.ViewModel
             List<ServerProfile> profiles = new List<ServerProfile>();
             foreach (ServerView serverView in ServerViewListOC)
             {
-                profiles.Add(serverView.vServerProfile);
+                profiles.Add(serverView.GetvServerProfile());
             }
 
             ServerManager.Save(profiles);
@@ -207,10 +207,10 @@ namespace XTransmit.ViewModel
                 }
             }).ConfigureAwait(true);
 
-            ServerView serverSelected = ServerViewListOC.FirstOrDefault(x => x.vServerProfile.Equals(App.GlobalConfig.RemoteServer));
+            ServerView serverSelected = ServerViewListOC.FirstOrDefault(x => x.GetvServerProfile().Equals(App.GlobalConfig.RemoteServer));
             if (serverSelected != null)
             {
-                App.GlobalConfig.RemoteServer = serverSelected.vServerProfile;
+                App.GlobalConfig.RemoteServer = serverSelected.GetvServerProfile();
                 App.UpdateHomeTransmitStatue();
             }
 
@@ -243,7 +243,7 @@ namespace XTransmit.ViewModel
                     }
 
                     ServerView serverView = ServerViewListOC[i];
-                    if (ServerManager.ServerProcessMap.ContainsKey(serverView.vServerProfile))
+                    if (ServerManager.ServerProcessMap.ContainsKey(serverView.GetvServerProfile()))
                     {
                         serverView.UpdateResponseTime();
                     }
@@ -252,9 +252,9 @@ namespace XTransmit.ViewModel
                         int listen = NetworkUtil.GetAvailablePort(10000);
                         if (listen > 0)
                         {
-                            ServerManager.Start(serverView.vServerProfile, listen);
+                            ServerManager.Start(serverView.GetvServerProfile(), listen);
                             serverView.UpdateResponseTime();
-                            ServerManager.Stop(serverView.vServerProfile);
+                            ServerManager.Stop(serverView.GetvServerProfile());
                         }
                     }
 
@@ -320,7 +320,7 @@ namespace XTransmit.ViewModel
             if (serverNew is ServerView serverView)
             {
                 // Set ServerProfile
-                App.ChangeTransmitServer(serverView.vServerProfile);
+                App.ChangeTransmitServer(serverView.GetvServerProfile());
             }
         }
 
@@ -417,13 +417,15 @@ namespace XTransmit.ViewModel
         private void AddServerNew(object parameter)
         {
             ServerProfile server = new ServerProfile();
-            if (new DialogServerConfig(server).ShowDialog() is bool update && update == true)
-            {
-                int added = AddServer(server);
-                string notify = added > 0 ? $"{added} {sr_config_x_added}" : sr_config_exist;
 
-                App.ShowHomeNotify(notify);
-            }
+            new DialogServerConfig(server,
+                (bool result) =>
+                {
+                    int added = AddServer(server);
+                    string notify = added > 0 ? $"{added} {sr_config_x_added}" : sr_config_exist;
+
+                    App.ShowHomeNotify(notify);
+                }).ShowDialog();
         }
 
         // edit server, not in use
@@ -431,16 +433,17 @@ namespace XTransmit.ViewModel
         private void EditServer(object serverSelected)
         {
             ServerView serverView = (ServerView)serverSelected;
-            ServerProfile serverProfile = serverView.vServerProfile.Copy();
+            ServerProfile serverProfile = serverView.GetvServerProfile().Copy();
 
-            if (new DialogServerConfig(serverProfile).ShowDialog() is bool update && update == true)
-            {
-                int index = ServerViewListOC.IndexOf(serverView);
-                if (index >= 0)
+            new DialogServerConfig(serverProfile,
+                (bool result) =>
                 {
-                    ServerViewListOC[index] = new ServerView(serverProfile);
-                }
-            }
+                    int index = ServerViewListOC.IndexOf(serverView);
+                    if (index >= 0)
+                    {
+                        ServerViewListOC[index] = new ServerView(serverProfile);
+                    }
+                }).ShowDialog();
         }
 
         // delete selected server(s), not in use

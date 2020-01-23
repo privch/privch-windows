@@ -26,7 +26,8 @@ namespace XTransmit.View.TrayNotify
             // init notify icon
             notifyIcon = new System.Windows.Forms.NotifyIcon
             {
-                Icon = Properties.Resources.XTransmit,
+                Icon = App.GlobalConfig.IsTransmitEnabled ? 
+                    Properties.Resources.xtransmit_on : Properties.Resources.xtransmit_off,
                 Visible = true,
             };
             notifyIcon.Click += NotifyIcon_Click;
@@ -74,8 +75,8 @@ namespace XTransmit.View.TrayNotify
         public void SwitchIcon(bool active)
         {
             notifyIcon.Icon = active ?
-                Properties.Resources.XTransmit :
-                Properties.Resources.XTransmit_Off;
+                Properties.Resources.xtransmit_on :
+                Properties.Resources.xtransmit_off;
         }
 
         /** NotifyIcon Handlers ==================================================================================

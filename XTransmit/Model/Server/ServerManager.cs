@@ -154,7 +154,7 @@ namespace XTransmit.Model.Server
         /**<summary>
          * The "serverInfo" will be splited by "\r\n", "\r", "\n", " "
          * </summary>
-         * <returns>Return count added</returns>
+         * <returns>Return number of server added</returns>
          */
         [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static List<ServerProfile> ImportServers(string serverInfos)

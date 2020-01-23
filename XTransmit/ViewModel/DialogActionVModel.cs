@@ -9,7 +9,7 @@ namespace XTransmit.ViewModel
         public string Message { get; }
         public Dictionary<string, Action> ActionList { get; }
 
-        private View.DialogAction Dialog;
+        private readonly View.DialogAction Dialog;
 
         public DialogActionVModel(View.DialogAction dialog, string title, string message, Dictionary<string, Action> actions)
         {

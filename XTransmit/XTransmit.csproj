@@ -44,7 +44,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>XTransmit.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icon\XTransmit-On.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
@@ -290,9 +290,9 @@
     <None Include="Resources\Binary\shadowsocks\cygsodium-23.dll.gz" />
     <None Include="Resources\Binary\shadowsocks\cygwin1.dll.gz" />
     <None Include="Resources\Binary\shadowsocks\ss-local.exe.gz" />
-    <Resource Include="Resources\Binary\privoxy\privoxy-config.txt" />
-    <Resource Include="XTransmit.ico" />
-    <None Include="Resources\XTransmit-Off.ico" />
+    <None Include="Resources\Binary\privoxy\privoxy-config.txt" />
+    <None Include="Resources\Icon\XTransmit-On.ico" />
+    <None Include="Resources\Icon\XTransmit-Off.ico" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.8\analyzers\dotnet\cs\Microsoft.CodeAnalysis.VersionCheckAnalyzer.resources.dll" />

@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows;
+using XTransmit.Model;
 using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
@@ -11,50 +12,50 @@ namespace XTransmit.ViewModel
     {
         public int SSTimeouts
         {
-            get => App.GlobalConfig.SSTimeout;
+            get => ConfigManager.Global.SSTimeout;
             set
             {
-                App.GlobalConfig.SSTimeout = value;
+                ConfigManager.Global.SSTimeout = value;
                 OnPropertyChanged(nameof(SSTimeouts));
             }
         }
 
         public int IPInfoConnTimeout
         {
-            get => App.GlobalConfig.IPInfoConnTimeout;
+            get => ConfigManager.Global.IPInfoConnTimeout;
             set
             {
-                App.GlobalConfig.IPInfoConnTimeout = value;
+                ConfigManager.Global.IPInfoConnTimeout = value;
                 OnPropertyChanged(nameof(IPInfoConnTimeout));
             }
         }
 
         public int ResponseConnTimeout
         {
-            get { return App.GlobalConfig.ResponseConnTimeout; }
+            get { return ConfigManager.Global.ResponseConnTimeout; }
             set
             {
-                App.GlobalConfig.ResponseConnTimeout = value;
+                ConfigManager.Global.ResponseConnTimeout = value;
                 OnPropertyChanged(nameof(ResponseConnTimeout));
             }
         }
 
         public int PingTimeout
         {
-            get { return App.GlobalConfig.PingTimeout; }
+            get { return ConfigManager.Global.PingTimeout; }
             set
             {
-                App.GlobalConfig.PingTimeout = value;
+                ConfigManager.Global.PingTimeout = value;
                 OnPropertyChanged(nameof(PingTimeout));
             }
         }
 
         public bool IsReplaceOldServer
         {
-            get { return App.GlobalConfig.IsReplaceOldServer; }
+            get { return ConfigManager.Global.IsReplaceOldServer; }
             set
             {
-                App.GlobalConfig.IsReplaceOldServer = value;
+                ConfigManager.Global.IsReplaceOldServer = value;
                 OnPropertyChanged(nameof(IsReplaceOldServer));
             }
         }
@@ -68,13 +69,13 @@ namespace XTransmit.ViewModel
                 new ItemView
                 {
                     Label = (string)Application.Current.FindResource("dialog_setting_status_proxy_port"),
-                    Text=App.GlobalConfig.SystemProxyPort.ToString(CultureInfo.InvariantCulture),
+                    Text=ConfigManager.Global.SystemProxyPort.ToString(CultureInfo.InvariantCulture),
                 },
 
                 new ItemView
                 {
                     Label = (string)Application.Current.FindResource("dialog_setting_status_ss_port"),
-                    Text = App.GlobalConfig.GlobalSocks5Port.ToString(CultureInfo.InvariantCulture),
+                    Text = ConfigManager.Global.GlobalSocks5Port.ToString(CultureInfo.InvariantCulture),
                 }
             };
         }

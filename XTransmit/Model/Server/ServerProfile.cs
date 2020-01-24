@@ -54,7 +54,7 @@ namespace XTransmit.Model.Server
         }
 
         /**<summary>
-         * Must be called after the App.GlobalConfig loaded
+         * Must be called after the ConfigManager.Global loaded
          * </summary> 
          */
         public ServerProfile()
@@ -138,7 +138,7 @@ namespace XTransmit.Model.Server
 
             // curl process
             Process process = null;
-            int timeout = App.GlobalConfig.SSTimeout;
+            int timeout = ConfigManager.Global.SSTimeout;
             try
             {
                 process = Process.Start(
@@ -175,7 +175,7 @@ namespace XTransmit.Model.Server
 
             try
             {
-                PingReply reply = ping.Send(HostIP, App.GlobalConfig.PingTimeout);
+                PingReply reply = ping.Send(HostIP, ConfigManager.Global.PingTimeout);
                 Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
             }
             catch (Exception)

@@ -10,7 +10,7 @@ namespace XTransmit.View
         {
             InitializeComponent();
 
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             Left = preference.WindowSetting.X;
             Top = preference.WindowSetting.Y;
 
@@ -21,7 +21,7 @@ namespace XTransmit.View
         private void DialogSetting_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // Save window placement
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             preference.WindowSetting.X = Left;
             preference.WindowSetting.Y = Top;
         }

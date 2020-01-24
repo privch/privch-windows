@@ -67,6 +67,7 @@
     <system:String x:Key="task_check_response_time">Check response time</system:String>
     <system:String x:Key="home_server_not_set">Server Not Set</system:String>
     <system:String x:Key="home_x_task_running">task(s) running</system:String>
+    <system:String x:Key="home_cant_add_server">Can't add server yet.</system:String>
     
     <!-- table server -->
     <system:String x:Key="server_title">Servers</system:String>
@@ -151,5 +152,4 @@
 
     <!-- system tray -->
     <system:String x:Key="tray_enable_transmit">Enable XTransmit</system:String>
-    <system:String x:Key="tray_add_server_scan_qrcode">Add server by scan QRCode</system:String>
 </ResourceDictionary>

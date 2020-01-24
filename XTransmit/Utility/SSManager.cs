@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using XTransmit.Model;
 using XTransmit.Model.Server;
 
 namespace XTransmit.Utility
@@ -94,7 +95,7 @@ namespace XTransmit.Utility
 
         public static Process Execute(ServerProfile server, int listen)
         {
-            int timeout = App.GlobalConfig.SSTimeout;
+            int timeout = ConfigManager.Global.SSTimeout;
             string arguments = $"-s {server.HostIP} -p {server.HostPort} -l {listen} -k {server.Password} -m {server.Encrypt} -t {timeout}";
 
             Process process = null;

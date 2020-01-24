@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.NetworkInformation;
 using System.Windows;
+using XTransmit.Model;
 using XTransmit.Model.IPAddress;
 
 namespace XTransmit.ViewModel
@@ -133,7 +134,7 @@ namespace XTransmit.ViewModel
             OnPropertyChanged(nameof(IsProcessingPing));
             System.Windows.Input.CommandManager.InvalidateRequerySuggested();
 
-            int timeout = App.GlobalConfig.PingTimeout;
+            int timeout = ConfigManager.Global.PingTimeout;
             using (Ping ping = new Ping())
             {
                 foreach (IPProfile ipProfile in IPListOC)

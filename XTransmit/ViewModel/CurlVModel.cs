@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Data;
 using XTransmit.Control;
+using XTransmit.Model;
 using XTransmit.Model.Curl;
 using XTransmit.Model.IPAddress;
 using XTransmit.Model.Server;
@@ -16,7 +17,7 @@ namespace XTransmit.ViewModel
     {
         public bool IsServerPoolEnabled
         {
-            get => App.GlobalConfig.IsServerPoolEnabled;
+            get => ConfigManager.IsServerPoolEnabled;
             set
             {
                 if (value)
@@ -28,13 +29,14 @@ namespace XTransmit.ViewModel
                     ServerPoolCtrl.StopServerPool();
                 }
 
-                InterfaceCtrl.UpdateHomeTransmitLock();
+                InterfaceCtrl.UpdateTransmitLock();
                 OnPropertyChanged(nameof(ServerPoolStatus));
             }
         }
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public string ServerPoolStatus => App.GlobalConfig.IsServerPoolEnabled ? $"{ServerManager.ServerProcessMap.Count}" : null;
+        public string ServerPoolStatus => ConfigManager.IsServerPoolEnabled ? 
+            $"{ServerManager.ServerProcessMap.Count}" : null;
 
         public ObservableCollection<SiteProfile> SiteListOC { get; private set; }
 
@@ -45,9 +47,6 @@ namespace XTransmit.ViewModel
             IPManager.Load(App.FileIPAddressXml);
             UAManager.Load(App.FileUserAgentXml);
             SiteManager.Load(App.FileCurlXml);
-
-            // don't restore pool status
-            App.GlobalConfig.IsServerPoolEnabled = false;
 
             // load curl data
             SiteListOC = new ObservableCollection<SiteProfile>(SiteManager.SiteList);

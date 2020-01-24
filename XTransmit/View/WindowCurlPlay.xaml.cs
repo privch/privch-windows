@@ -17,7 +17,7 @@ namespace XTransmit.View
 
             InitializeComponent();
 
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             Left = preference.WindowCurlRunner.X;
             Top = preference.WindowCurlRunner.Y;
             Width = preference.WindowCurlRunner.W;
@@ -30,7 +30,7 @@ namespace XTransmit.View
         private void WindowCurl_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // Save window placement
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             preference.WindowCurlRunner.X = Left;
             preference.WindowCurlRunner.Y = Top;
             preference.WindowCurlRunner.W = Width;

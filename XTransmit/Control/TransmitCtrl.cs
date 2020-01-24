@@ -9,7 +9,7 @@ namespace XTransmit.Control
     {
         public static bool StartServer()
         {
-            Config config = App.GlobalConfig;
+            Config config = ConfigManager.Global;
             List<int> portInUse = NetworkUtil.GetPortInUse(2000);
 
             // proxy port
@@ -50,38 +50,38 @@ namespace XTransmit.Control
         public static void StopServer()
         {
             PrivoxyManager.Stop();
-            ServerManager.Stop(App.GlobalConfig.RemoteServer);
+            ServerManager.Stop(ConfigManager.Global.RemoteServer);
         }
 
         public static void EnableTransmit(bool enable)
         {
             if (enable)
             {
-                if (NativeMethods.EnableProxy($"127.0.0.1:{App.GlobalConfig.SystemProxyPort}", NativeMethods.Bypass) != 0)
+                if (NativeMethods.EnableProxy($"127.0.0.1:{ConfigManager.Global.SystemProxyPort}", NativeMethods.Bypass) != 0)
                 {
-                    App.GlobalConfig.IsTransmitEnabled = true;
+                    ConfigManager.Global.IsTransmitEnabled = true;
                 }
             }
             else
             {
                 if (NativeMethods.DisableProxy() != 0)
                 {
-                    App.GlobalConfig.IsTransmitEnabled = false;
+                    ConfigManager.Global.IsTransmitEnabled = false;
                 }
             }
 
             InterfaceCtrl.UpdateHomeTransmitStatue();
-            App.NotifyIcon.SwitchIcon(App.GlobalConfig.IsTransmitEnabled);
+            InterfaceCtrl.NotifyIcon.UpdateIcon();
         }
 
         public static void ChangeTransmitServer(ServerProfile serverProfile)
         {
-            if (App.GlobalConfig.RemoteServer == null || !App.GlobalConfig.RemoteServer.Equals(serverProfile))
+            if (ConfigManager.Global.RemoteServer == null || !ConfigManager.Global.RemoteServer.Equals(serverProfile))
             {
-                ServerManager.Stop(App.GlobalConfig.RemoteServer);
-                ServerManager.Start(serverProfile, App.GlobalConfig.GlobalSocks5Port);
+                ServerManager.Stop(ConfigManager.Global.RemoteServer);
+                ServerManager.Start(serverProfile, ConfigManager.Global.GlobalSocks5Port);
 
-                App.GlobalConfig.RemoteServer = serverProfile;
+                ConfigManager.Global.RemoteServer = serverProfile;
                 InterfaceCtrl.UpdateHomeTransmitStatue();
             }
         }

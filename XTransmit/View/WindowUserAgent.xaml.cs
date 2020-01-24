@@ -11,7 +11,7 @@ namespace XTransmit.View
         {
             InitializeComponent();
 
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             Left = preference.WindowUserAgent.X;
             Top = preference.WindowUserAgent.Y;
             Width = preference.WindowUserAgent.W;
@@ -28,7 +28,7 @@ namespace XTransmit.View
             ((UserAgentVModel)DataContext).OnWindowClosing(); // better way?
 
             // Save window placement
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             preference.WindowUserAgent.X = Left;
             preference.WindowUserAgent.Y = Top;
             preference.WindowUserAgent.W = Width;

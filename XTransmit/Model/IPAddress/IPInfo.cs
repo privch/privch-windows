@@ -5,15 +5,12 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Windows;
 
 namespace XTransmit.Model.IPAddress
 {
     [DataContract(Name = "IPInfoIO")]
     public class IPInfoIO : IExtensibleDataObject
     {
-        private static readonly string sr_not_availabe = (string)Application.Current.FindResource("not_availabe");
-
         private ExtensionDataObject extensionDataObjectValue;
         public ExtensionDataObject ExtensionData
         {
@@ -28,31 +25,31 @@ namespace XTransmit.Model.IPAddress
         }
 
         [DataMember(Name = "ip")]
-        internal string ip = sr_not_availabe;
+        internal string ip = null;
 
         [DataMember(Name = "hostname")]
-        internal string hostname = sr_not_availabe;
+        internal string hostname = null;
 
         [DataMember(Name = "city")]
-        internal string city = sr_not_availabe;
+        internal string city = null;
 
         [DataMember(Name = "region")]
-        internal string region = sr_not_availabe;
+        internal string region = null;
 
         [DataMember(Name = "country")]
-        internal string country = sr_not_availabe;
+        internal string country = null;
 
         [DataMember(Name = "loc")]
-        internal string location = sr_not_availabe;
+        internal string location = null;
 
         [DataMember(Name = "org")]
-        internal string organization = sr_not_availabe;
+        internal string organization = null;
 
         [DataMember(Name = "postal")]
-        internal string postal = sr_not_availabe;
+        internal string postal = null;
 
         [DataMember(Name = "timezone")]
-        internal string timezone = sr_not_availabe;
+        internal string timezone = null;
     }
 
     [Serializable]
@@ -79,7 +76,7 @@ namespace XTransmit.Model.IPAddress
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static IPInfo Fetch(string ip)
         {
-            int timeout = App.GlobalConfig.IPInfoConnTimeout;
+            int timeout = ConfigManager.Global.IPInfoConnTimeout;
 
             // curl process
             Process process = null;

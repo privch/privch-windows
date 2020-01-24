@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using XTransmit.Control;
+using XTransmit.Model;
 using XTransmit.Model.Server;
 using XTransmit.Utility;
 using XTransmit.View;
@@ -76,6 +77,11 @@ namespace XTransmit.ViewModel
         private volatile bool processing_fetch_response_time = false; // also use to cancel task
         private volatile bool processing_check_ping = false;  // also use to cancel task
 
+        public bool CanEditList(object parameter)
+        {
+            return !processing_fetch_info && !processing_fetch_response_time && !processing_check_ping;
+        }
+
         private int AddServer(List<ServerProfile> serverList)
         {
             int added = 0;
@@ -89,7 +95,7 @@ namespace XTransmit.ViewModel
                 }
                 else
                 {
-                    if (App.GlobalConfig.IsReplaceOldServer)
+                    if (ConfigManager.Global.IsReplaceOldServer)
                     {
                         int i = ServerViewListOC.IndexOf(serverView);
                         ServerViewListOC[i] = new ServerView(server);
@@ -113,7 +119,7 @@ namespace XTransmit.ViewModel
             }
             else
             {
-                if (App.GlobalConfig.IsReplaceOldServer)
+                if (ConfigManager.Global.IsReplaceOldServer)
                 {
                     int i = ServerViewListOC.IndexOf(serverView);
                     ServerViewListOC[i] = new ServerView(server);
@@ -128,17 +134,12 @@ namespace XTransmit.ViewModel
         {
             if (serverNew is ServerView serverInfo)
             {
-                if (!serverInfo.GetvServerProfile().Equals(App.GlobalConfig.RemoteServer))
+                if (!serverInfo.GetvServerProfile().Equals(ConfigManager.Global.RemoteServer))
                 {
                     return true;
                 }
             }
             return false;
-        }
-
-        private bool CanEditList(object parameter)
-        {
-            return !processing_fetch_info && !processing_fetch_response_time && !processing_check_ping;
         }
 
         // save data
@@ -208,10 +209,10 @@ namespace XTransmit.ViewModel
                 }
             }).ConfigureAwait(true);
 
-            ServerView serverSelected = ServerViewListOC.FirstOrDefault(x => x.GetvServerProfile().Equals(App.GlobalConfig.RemoteServer));
+            ServerView serverSelected = ServerViewListOC.FirstOrDefault(x => x.GetvServerProfile().Equals(ConfigManager.Global.RemoteServer));
             if (serverSelected != null)
             {
-                App.GlobalConfig.RemoteServer = serverSelected.GetvServerProfile();
+                ConfigManager.Global.RemoteServer = serverSelected.GetvServerProfile();
                 InterfaceCtrl.UpdateHomeTransmitStatue();
             }
 
@@ -283,7 +284,7 @@ namespace XTransmit.ViewModel
             };
             InterfaceCtrl.AddHomeTask(task);
 
-            int timeout = App.GlobalConfig.PingTimeout;
+            int timeout = ConfigManager.Global.PingTimeout;
             using (Ping ping = new Ping())
             {
                 for (int i = 0; i < ServerViewListOC.Count; ++i)
@@ -346,7 +347,7 @@ namespace XTransmit.ViewModel
             if (result == null || string.IsNullOrWhiteSpace(result.Text))
             {
                 InterfaceCtrl.ShowHomeNotify(sr_config_0_found);
-                App.NotifyIcon.ShowMessage(sr_config_0_found);
+                InterfaceCtrl.NotifyIcon.ShowMessage(sr_config_0_found);
                 return;
             }
 
@@ -357,12 +358,12 @@ namespace XTransmit.ViewModel
                 string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_exist;
 
                 InterfaceCtrl.ShowHomeNotify(notify);
-                App.NotifyIcon.ShowMessage(notify);
+                InterfaceCtrl.NotifyIcon.ShowMessage(notify);
             }
             else
             {
                 InterfaceCtrl.ShowHomeNotify(sr_config_0_imported);
-                App.NotifyIcon.ShowMessage(sr_config_0_imported);
+                InterfaceCtrl.NotifyIcon.ShowMessage(sr_config_0_imported);
             }
         }
 

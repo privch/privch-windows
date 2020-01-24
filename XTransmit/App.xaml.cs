@@ -14,7 +14,6 @@ namespace XTransmit
      * TODO - Add support for Remote Http Proxy, SSR, V2Ray ...
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
-     * TODO - Icon for the status of server pool mode
      * TODO - Autorun, Add a shortcut to the user Startup menu
      * TODO - Optimize readonly DataGrids, Use ListView, ListBox instead
      * 
@@ -36,15 +35,10 @@ namespace XTransmit
         public static string FileServerXml { get; private set; }
         public static string FileCurlXml { get; private set; }
 
-        public static Preference GlobalPreference { get; private set; }
-        public static Config GlobalConfig { get; private set; }
-
-        public static View.TrayNotify.SystemTray NotifyIcon { get; private set; }
-
 
         public static void CloseMainWindow()
         {
-            GlobalPreference.IsWindowHomeVisible = Current.MainWindow.IsVisible;
+            PreferenceManager.Global.IsWindowHomeVisible = Current.MainWindow.IsVisible;
             Current.MainWindow.Hide();
             Current.MainWindow.Close();
         }
@@ -138,22 +132,20 @@ namespace XTransmit
             }
 
             // load data
-            // TODO - ConfigManager? PrefManager?
-            GlobalPreference = Preference.LoadFileOrDefault(FilePreferenceXml);
-            GlobalConfig = Config.LoadFileOrDefault(FileConfigXml);
+            PreferenceManager.LoadFileOrDefault(FilePreferenceXml);
+            ConfigManager.LoadFileOrDefault(FileConfigXml);
 
             // TODO - Alert and exit if fail
+            InterfaceCtrl.Initialize();
             TransmitCtrl.StartServer();
 
-            // notifyicon
-            NotifyIcon = new View.TrayNotify.SystemTray();
             StartupUri = new System.Uri("View/WindowHome.xaml", System.UriKind.Relative);
             Exit += Application_Exit;
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            NotifyIcon.Dispose();
+            InterfaceCtrl.Uninit();
 
             /** if there were other proxy servers running they should set system proxy again
              */
@@ -162,8 +154,8 @@ namespace XTransmit
             SSManager.KillRunning(); // server pool
             CurlManager.KillRunning();
 
-            Preference.WriteFile(FilePreferenceXml, GlobalPreference);
-            Config.WriteFile(FileConfigXml, GlobalConfig);
+            PreferenceManager.WriteFile(FilePreferenceXml);
+            ConfigManager.WriteFile(FileConfigXml);
         }
 
         // Something wrong happen, Unexpercted, Abnormally

@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using XTransmit.Control;
+using XTransmit.Model;
 
 namespace XTransmit.View.TrayNotify
 {
@@ -12,23 +13,25 @@ namespace XTransmit.View.TrayNotify
 
         private static readonly string sr_app_name = (string)Application.Current.FindResource("app_name");
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
-        private static readonly string sr_tray_enable_transmit = (string)Application.Current.FindResource("tray_enable_transmit");
-        private static readonly string sr_tray_add_server_scan = (string)Application.Current.FindResource("tray_add_server_scan_qrcode");
-        private static readonly string sr_tray_setting = (string)Application.Current.FindResource("_settings");
-        private static readonly string sr_tray_exit = (string)Application.Current.FindResource("_exit");
 
         [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         public SystemTray()
         {
-            menuitemEnableTransmit = new System.Windows.Forms.MenuItem(sr_tray_enable_transmit, MenuItem_EnableTransmit)
+            string enable_transmit = (string)Application.Current.FindResource("tray_enable_transmit");
+            string scan_qrcode = (string)Application.Current.FindResource("server_scan_qrcode");
+            string import_clipboard = (string)Application.Current.FindResource("server_import_clipboard");
+            string setting = (string)Application.Current.FindResource("_settings");
+            string exit = (string)Application.Current.FindResource("_exit");
+
+            menuitemEnableTransmit = new System.Windows.Forms.MenuItem(enable_transmit, MenuItem_EnableTransmit)
             {
-                Checked = App.GlobalConfig.IsTransmitEnabled
+                Checked = ConfigManager.Global.IsTransmitEnabled
             };
 
             // init notify icon
             notifyIcon = new System.Windows.Forms.NotifyIcon
             {
-                Icon = App.GlobalConfig.IsTransmitEnabled ? 
+                Icon = ConfigManager.Global.IsTransmitEnabled ?
                     Properties.Resources.xtransmit_on : Properties.Resources.xtransmit_off,
                 Visible = true,
             };
@@ -38,13 +41,12 @@ namespace XTransmit.View.TrayNotify
             System.Windows.Forms.ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
             contextMenu.Popup += ContextMenu_Popup;
             contextMenu.MenuItems.Add(menuitemEnableTransmit);
-            contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(
-                sr_tray_add_server_scan, MenuItem_AddServer_ScanQRCode));
             contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(
-                sr_tray_setting, MenuItem_Setting));
-            contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(
-                sr_tray_exit, MenuItem_Exit));
+            contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(scan_qrcode, MenuItem_AddServer_ScanQRCode));
+            contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(import_clipboard, MenuItem_AddServer_Clipboard));
+            contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(setting, MenuItem_Setting));
+            contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(exit, MenuItem_Exit));
 
             notifyIcon.ContextMenu = contextMenu;
         }
@@ -64,6 +66,11 @@ namespace XTransmit.View.TrayNotify
             }
         }
 
+        public void UpdateTransmitLock()
+        {
+            menuitemEnableTransmit.Enabled = !ConfigManager.IsServerPoolEnabled;
+        }
+
         public void ShowMessage(string text, string title = null)
         {
             if (string.IsNullOrWhiteSpace(title))
@@ -76,20 +83,27 @@ namespace XTransmit.View.TrayNotify
             notifyIcon.ShowBalloonTip(500);
         }
 
-        public void SwitchIcon(bool active)
+        public void UpdateIcon()
         {
-            notifyIcon.Icon = active ?
-                Properties.Resources.xtransmit_on :
-                Properties.Resources.xtransmit_off;
+            if (ConfigManager.IsServerPoolEnabled)
+            {
+                // TODO - ServerPool Icon
+            }
+            else
+            {
+                notifyIcon.Icon = ConfigManager.Global.IsTransmitEnabled ?
+                    Properties.Resources.xtransmit_on :
+                    Properties.Resources.xtransmit_off;
+            }
         }
 
         /** NotifyIcon Handlers ==================================================================================
          */
         private void NotifyIcon_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (App.GlobalConfig.RemoteServer != null)
+            if (ConfigManager.Global.RemoteServer != null)
             {
-                notifyIcon.Text = App.GlobalConfig.RemoteServer.FriendlyName;
+                notifyIcon.Text = ConfigManager.Global.RemoteServer.FriendlyName;
             }
             else
             {
@@ -107,17 +121,21 @@ namespace XTransmit.View.TrayNotify
 
         private void ContextMenu_Popup(object sender, EventArgs e)
         {
-            menuitemEnableTransmit.Checked = App.GlobalConfig.IsTransmitEnabled;
-            menuitemEnableTransmit.Enabled = !App.GlobalConfig.IsServerPoolEnabled;
+            menuitemEnableTransmit.Checked = ConfigManager.Global.IsTransmitEnabled;
         }
 
         private void MenuItem_EnableTransmit(object sender, EventArgs e)
         {
-            TransmitCtrl.EnableTransmit(!App.GlobalConfig.IsTransmitEnabled);
-            menuitemEnableTransmit.Checked = App.GlobalConfig.IsTransmitEnabled;
+            TransmitCtrl.EnableTransmit(!ConfigManager.Global.IsTransmitEnabled);
+            menuitemEnableTransmit.Checked = ConfigManager.Global.IsTransmitEnabled;
         }
 
         private void MenuItem_AddServer_ScanQRCode(object sender, EventArgs e)
+        {
+            InterfaceCtrl.AddServerByScanQRCode();
+        }
+
+        private void MenuItem_AddServer_Clipboard(object sender, EventArgs e)
         {
             InterfaceCtrl.AddServerByScanQRCode();
         }

@@ -1,4 +1,5 @@
-﻿using XTransmit.Model.Server;
+﻿using XTransmit.Model;
+using XTransmit.Model.Server;
 using XTransmit.Utility;
 
 namespace XTransmit.Control
@@ -21,15 +22,15 @@ namespace XTransmit.Control
                 }
             }
 
-            App.GlobalConfig.IsServerPoolEnabled = true;
+            ConfigManager.IsServerPoolEnabled = true;
         }
 
         public static void StopServerPool()
         {
             // exclude the transmit server
-            if (App.GlobalConfig.IsTransmitEnabled)
+            if (ConfigManager.Global.IsTransmitEnabled)
             {
-                ServerManager.ServerList.Remove(App.GlobalConfig.RemoteServer);
+                ServerManager.ServerList.Remove(ConfigManager.Global.RemoteServer);
             }
 
             foreach (ServerProfile server in ServerManager.ServerList)
@@ -38,12 +39,12 @@ namespace XTransmit.Control
             }
 
             // restore
-            if (App.GlobalConfig.IsTransmitEnabled)
+            if (ConfigManager.Global.IsTransmitEnabled)
             {
-                ServerManager.ServerList.Add(App.GlobalConfig.RemoteServer);
+                ServerManager.ServerList.Add(ConfigManager.Global.RemoteServer);
             }
 
-            App.GlobalConfig.IsServerPoolEnabled = false;
+            ConfigManager.IsServerPoolEnabled = false;
         }
     }
 }

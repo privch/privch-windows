@@ -14,7 +14,7 @@ namespace XTransmit.View
         {
             InitializeComponent();
 
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             Left = preference.WindowCurl.X;
             Top = preference.WindowCurl.Y;
             Width = preference.WindowCurl.W;
@@ -28,10 +28,10 @@ namespace XTransmit.View
         {
             // Turn off serverpool
             ServerPoolCtrl.StopServerPool();
-            InterfaceCtrl.UpdateHomeTransmitLock();
+            InterfaceCtrl.UpdateTransmitLock();
 
             // Save window placement
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             preference.WindowCurl.X = Left;
             preference.WindowCurl.Y = Top;
             preference.WindowCurl.W = Width;

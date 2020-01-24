@@ -8,6 +8,18 @@ namespace XTransmit.Control
 {
     internal static class InterfaceCtrl
     {
+        public static View.TrayNotify.SystemTray NotifyIcon { get; private set; }
+
+        public static void Initialize()
+        {
+            NotifyIcon = new View.TrayNotify.SystemTray();
+        }
+        public static void Uninit()
+        {
+            NotifyIcon.Dispose();
+        }
+
+
         public static void ShowSetting()
         {
             DialogSetting dialogSetting = Application.Current.Windows.OfType<DialogSetting>().FirstOrDefault();
@@ -30,7 +42,7 @@ namespace XTransmit.Control
             }
         }
 
-        public static void UpdateHomeTransmitLock()
+        public static void UpdateTransmitLock()
         {
             // WindowHome is null on shutdown. NotifyIcon updates status at menu popup
             if (Application.Current.MainWindow is WindowHome windowHome
@@ -38,6 +50,8 @@ namespace XTransmit.Control
             {
                 homeViewModel.UpdateTransmitLock();
             }
+
+            NotifyIcon.UpdateTransmitLock();
         }
 
         public static void UpdateHomeTransmitStatue()
@@ -73,6 +87,15 @@ namespace XTransmit.Control
                 && windowHome.DataContext is HomeVModel homeViewModel)
             {
                 homeViewModel.AddServerByScanQRCode();
+            }
+        }
+
+        public static void MenuItem_AddServer_Clipboard()
+        {
+            if (Application.Current.MainWindow is WindowHome windowHome
+                && windowHome.DataContext is HomeVModel homeViewModel)
+            {
+                homeViewModel.AddServerByClipboard();
             }
         }
     }

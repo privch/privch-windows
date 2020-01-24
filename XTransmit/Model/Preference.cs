@@ -99,33 +99,32 @@ namespace XTransmit.Model
                 H = sh * 0.6,
             };
         }
+    }
 
+    internal static class PreferenceManager
+    {
+        public static Preference Global;
 
         /**<summary>
          * Object is constructed by serializer with default values,
          * property (which also specified in the XML) value will be overwritten from the XML
          * </summary>
          */
-        public static Preference LoadFileOrDefault(string pathPrefXml)
+        public static void LoadFileOrDefault(string pathPrefXml)
         {
             if (FileUtil.XmlDeserialize(pathPrefXml, typeof(Preference)) is Preference preference)
             {
-                return preference;
+                Global = preference;
             }
             else
             {
-                return new Preference();
+                Global = new Preference();
             }
         }
 
-        public static void WriteFile(string pathPrefXml, Preference preference)
+        public static void WriteFile(string pathPrefXml)
         {
-            if (preference is null)
-            {
-                throw new ArgumentNullException(nameof(preference));
-            }
-
-            FileUtil.XmlSerialize(pathPrefXml, preference);
+            FileUtil.XmlSerialize(pathPrefXml, Global);
         }
     }
 }

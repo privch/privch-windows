@@ -11,7 +11,7 @@ namespace XTransmit.View
         {
             InitializeComponent();
 
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             Left = preference.WindowIPAddress.X;
             Top = preference.WindowIPAddress.Y;
             Width = preference.WindowIPAddress.W;
@@ -28,7 +28,7 @@ namespace XTransmit.View
             ((IPAddressVModel)DataContext).OnWindowClosing();
 
             // Save window placement
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             preference.WindowIPAddress.X = Left;
             preference.WindowIPAddress.Y = Top;
             preference.WindowIPAddress.W = Width;

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using XTransmit.Control;
+using XTransmit.Model;
 using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
@@ -12,15 +13,15 @@ namespace XTransmit.ViewModel
     public class HomeVModel : BaseViewModel
     {
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public string TransmitStatus => App.GlobalConfig.RemoteServer?.FriendlyName ?? sr_server_not_set;
+        public string TransmitStatus => ConfigManager.Global.RemoteServer?.FriendlyName ?? sr_server_not_set;
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public bool IsTransmitControllable => !App.GlobalConfig.IsServerPoolEnabled;
+        public bool IsTransmitControllable => !ConfigManager.IsServerPoolEnabled;
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public bool IsTransmitEnabled
         {
-            get => App.GlobalConfig.IsTransmitEnabled;
+            get => ConfigManager.Global.IsTransmitEnabled;
             set => TransmitCtrl.EnableTransmit(value);
         }
 
@@ -36,7 +37,7 @@ namespace XTransmit.ViewModel
         private static readonly string sr_server_title = (string)Application.Current.FindResource("server_title");
         private static readonly string sr_network_title = (string)Application.Current.FindResource("netrowk_title");
         private static readonly string sr_task_running = (string)Application.Current.FindResource("home_x_task_running");
-
+        private static readonly string sr_cant_add_server = (string)Application.Current.FindResource("home_cant_add_server");
 
         public HomeVModel()
         {
@@ -51,7 +52,7 @@ namespace XTransmit.ViewModel
                 new ContentTable(sr_network_title, new View.ContentNetwork()),
             };
 
-            ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.Title == App.GlobalPreference.ContentDisplay);
+            ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.Title == PreferenceManager.Global.ContentDisplay);
             if (contentTable == null)
             {
                 contentTable = ContentList[0];
@@ -61,8 +62,7 @@ namespace XTransmit.ViewModel
             ContentDisplay = contentTable.Content;
 
             // to trigge the control
-            IsTransmitEnabled = App.GlobalConfig.IsTransmitEnabled;
-            App.GlobalConfig.IsServerPoolEnabled = false;
+            IsTransmitEnabled = ConfigManager.Global.IsTransmitEnabled;
         }
 
         /** methods ====================================================================================================== 
@@ -118,7 +118,28 @@ namespace XTransmit.ViewModel
         {
             // TODO - Take care of the ContentTables list order
             ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
-            serverViewModel.CommandAddServerQRCode.Execute(null);
+            if (serverViewModel.CanEditList(null))
+            {
+                serverViewModel.CommandAddServerQRCode.Execute(null);
+            }
+            else
+            {
+                InterfaceCtrl.NotifyIcon.ShowMessage(sr_cant_add_server);
+            }
+        }
+
+        public void AddServerByClipboard()
+        {
+            // TODO - Take care of the ContentTables list order
+            ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
+            if (serverViewModel.CanEditList(null))
+            {
+                serverViewModel.CommandAddServerClipboard.Execute(null);
+            }
+            else
+            {
+                InterfaceCtrl.NotifyIcon.ShowMessage(sr_cant_add_server);
+            }
         }
 
 

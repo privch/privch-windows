@@ -11,7 +11,7 @@ namespace XTransmit.View
         {
             InitializeComponent();
 
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             Left = preference.WindowHome.X;
             Top = preference.WindowHome.Y;
             Width = preference.WindowHome.W;
@@ -35,7 +35,7 @@ namespace XTransmit.View
 
             // save preference
             HomeVModel viewModel = (HomeVModel)DataContext;
-            Preference preference = App.GlobalPreference;
+            Preference preference = PreferenceManager.Global;
             preference.ContentDisplay = viewModel.GetCurrentContent();
 
             // window placement

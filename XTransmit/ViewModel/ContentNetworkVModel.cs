@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Media;
+using XTransmit.Model;
 using XTransmit.Model.Network;
 using XTransmit.Utility;
 
@@ -38,10 +39,10 @@ namespace XTransmit.ViewModel
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public string NetworkInterfaceSelected
         {
-            get => App.GlobalConfig.NetworkAdapter;
+            get => ConfigManager.Global.NetworkAdapter;
             set
             {
-                App.GlobalConfig.NetworkAdapter = value;
+                ConfigManager.Global.NetworkAdapter = value;
             }
         }
 

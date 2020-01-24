@@ -13,7 +13,6 @@ namespace XTransmit.Model
     {
         // transmit
         public bool IsTransmitEnabled { get; set; }
-        public bool IsServerPoolEnabled { get; set; }
         public int SystemProxyPort { get; set; }
         public int GlobalSocks5Port { get; set; }
         public ServerProfile RemoteServer { get; set; }
@@ -31,8 +30,6 @@ namespace XTransmit.Model
         public Config()
         {
             IsTransmitEnabled = false;
-            IsServerPoolEnabled = false;
-
             SystemProxyPort = 0;
             GlobalSocks5Port = 0;
             RemoteServer = null;
@@ -45,33 +42,35 @@ namespace XTransmit.Model
             IsReplaceOldServer = false;
             NetworkAdapter = null;
         }
+    }
 
+    internal static class ConfigManager
+    {
+        public static Config Global;
+
+        //status
+        public static bool IsServerPoolEnabled = false;
 
         /**<summary>
          * Object is constructed by serializer with default values,
          * property (which also specified in the XML) value will be overwritten from the XML
          * </summary>
          */
-        public static Config LoadFileOrDefault(string pathConfigXml)
+        public static void LoadFileOrDefault(string pathConfigXml)
         {
             if (FileUtil.XmlDeserialize(pathConfigXml, typeof(Config)) is Config config)
             {
-                return config;
+                Global = config;
             }
             else
             {
-                return new Config();
+                Global = new Config();
             }
         }
 
-        public static void WriteFile(string pathConfigXml, Config config)
+        public static void WriteFile(string pathConfigXml)
         {
-            if (config is null)
-            {
-                throw new ArgumentNullException(nameof(config));
-            }
-
-            FileUtil.XmlSerialize(pathConfigXml, config);
+            FileUtil.XmlSerialize(pathConfigXml, Global);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
@@ -10,9 +11,8 @@ using System.Xml.Serialization;
 namespace XTransmit.Utility
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    public static class FileUtil
+    internal static class FileUtil
     {
-        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public static bool CheckMD5(string filePath, string md5Hex)
         {
             byte[] md5File = GetMD5(filePath);
@@ -25,7 +25,7 @@ namespace XTransmit.Utility
             StringBuilder sBuilder = new StringBuilder();
             for (int i = 0; i < md5File.Length; i++)
             {
-                sBuilder.Append(md5File[i].ToString("x2"));
+                sBuilder.Append(md5File[i].ToString("x2", CultureInfo.InvariantCulture));
             }
 
             return sBuilder.ToString().Equals(md5Hex, StringComparison.OrdinalIgnoreCase);
@@ -87,7 +87,6 @@ namespace XTransmit.Utility
 
         /** XML ------------------------------------------------------------------------
          */
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static void XmlSerialize(string pathXml, object objInput)
         {
             StreamWriter swXml = null;

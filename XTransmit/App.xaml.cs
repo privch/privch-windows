@@ -2,9 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
+using XTransmit.Control;
 using XTransmit.Model;
 using XTransmit.Utility;
-using XTransmit.ViewModel.Element;
 
 namespace XTransmit
 {
@@ -17,7 +17,6 @@ namespace XTransmit
      * TODO - Icon for the status of server pool mode
      * TODO - Autorun, Add a shortcut to the user Startup menu
      * TODO - Optimize readonly DataGrids, Use ListView, ListBox instead
-     * TODO - May need to add a controller
      * 
      * NOTE
      * EventHandler name use "_"
@@ -42,43 +41,6 @@ namespace XTransmit
 
         public static View.TrayNotify.SystemTray NotifyIcon { get; private set; }
 
-        // controller ==================================================
-        public static void UpdateTransmitLock()
-        {
-            // WindowHome is null on shutdown. NotifyIcon updates status at menu popup
-            if (Current.MainWindow is View.WindowHome windowHome
-                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
-            {
-                homeViewModel.UpdateLockTransmit();
-            }
-        }
-
-        public static void AddHomeProgress(TaskView task)
-        {
-            if (Current.MainWindow is View.WindowHome windowHome
-                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
-            {
-                homeViewModel.AddTask(task);
-            }
-        }
-
-        public static void RemoveHomeProgress(TaskView task)
-        {
-            if (Current.MainWindow is View.WindowHome windowHome
-                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
-            {
-                homeViewModel.RemoveTask(task);
-            }
-        }
-
-        public static void UpdateHomeTransmitStatue()
-        {
-            if (Current.MainWindow is View.WindowHome windowHome
-                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
-            {
-                homeViewModel.UpdateTransmitStatus();
-            }
-        }
 
         public static void CloseMainWindow()
         {
@@ -101,48 +63,6 @@ namespace XTransmit
             else
             {
                 Current.MainWindow.Show();
-            }
-        }
-
-        public static void ShowHomeNotify(string message)
-        {
-            View.WindowHome windowHome = (View.WindowHome)Current.MainWindow;
-            windowHome.SendSnakebarMessage(message);
-        }
-
-        public static void EnableTransmit(bool enable)
-        {
-            if (enable)
-            {
-                if (NativeMethods.EnableProxy($"127.0.0.1:{GlobalConfig.SystemProxyPort}", NativeMethods.Bypass) != 0)
-                {
-                    GlobalConfig.IsTransmitEnabled = true;
-                }
-            }
-            else
-            {
-                if (NativeMethods.DisableProxy() != 0)
-                {
-                    GlobalConfig.IsTransmitEnabled = false;
-                }
-            }
-
-            UpdateHomeTransmitStatue();
-            NotifyIcon.SwitchIcon(GlobalConfig.IsTransmitEnabled);
-        }
-
-        public static void ChangeTransmitServer(Model.Server.ServerProfile serverProfile)
-        {
-            TransmitControl.ChangeTransmitServer(serverProfile);
-            UpdateHomeTransmitStatue();
-        }
-
-        public static void AddServerByScanQRCode()
-        {
-            if (Current.MainWindow is View.WindowHome windowHome
-                && windowHome.DataContext is ViewModel.HomeVModel homeViewModel)
-            {
-                homeViewModel.AddServerByScanQRCode();
             }
         }
 
@@ -223,7 +143,7 @@ namespace XTransmit
             GlobalConfig = Config.LoadFileOrDefault(FileConfigXml);
 
             // TODO - Alert and exit if fail
-            TransmitControl.StartServer();
+            TransmitCtrl.StartServer();
 
             // notifyicon
             NotifyIcon = new View.TrayNotify.SystemTray();
@@ -238,7 +158,7 @@ namespace XTransmit
             /** if there were other proxy servers running they should set system proxy again
              */
             _ = NativeMethods.DisableProxy();
-            TransmitControl.StopServer();
+            TransmitCtrl.StopServer();
             SSManager.KillRunning(); // server pool
             CurlManager.KillRunning();
 
@@ -250,7 +170,6 @@ namespace XTransmit
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             // TODO - Startup another process for user to send feedback
-            //string app_name = (string)FindResource("app_name");
             //new View.DialogPrompt(app_name, e.Exception.Message).ShowDialog();
             Shutdown();
         }

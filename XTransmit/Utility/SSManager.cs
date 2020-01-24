@@ -6,7 +6,7 @@ using XTransmit.Model.Server;
 namespace XTransmit.Utility
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    public static class SSManager
+    internal static class SSManager
     {
         private static string SSExePath => $@"{App.PathShadowsocks}\{ss_local_exe_name}";
 
@@ -92,7 +92,6 @@ namespace XTransmit.Utility
             return true;
         }
 
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static Process Execute(ServerProfile server, int listen)
         {
             int timeout = App.GlobalConfig.SSTimeout;
@@ -123,7 +122,6 @@ namespace XTransmit.Utility
             return null;
         }
 
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static void Exit(Process process)
         {
             try

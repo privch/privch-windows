@@ -4,7 +4,7 @@ using XTransmit.Utility;
 
 namespace XTransmit.Model.Curl
 {
-    public static class SiteManager
+    internal static class SiteManager
     {
         public static List<SiteProfile> SiteList { get; private set; }
         private static string CurlXmlPath;

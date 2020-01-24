@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace XTransmit.Utility
 {
@@ -69,14 +70,13 @@ namespace XTransmit.Utility
             return true;
         }
 
-        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public static bool Start(int portPrivoxy, int portShadowsocks)
         {
             string config_path = $@"{App.PathPrivoxy}\{privoxy_config_txt_name}";
             string config_text = Properties.Resources.privoxy_config_txt;
 
-            config_text = config_text.Replace("PORT_PRIVOXY", portPrivoxy.ToString());
-            config_text = config_text.Replace("PORT_SSLOCAL", portShadowsocks.ToString());
+            config_text = config_text.Replace("PORT_PRIVOXY", portPrivoxy.ToString(CultureInfo.InvariantCulture));
+            config_text = config_text.Replace("PORT_SSLOCAL", portShadowsocks.ToString(CultureInfo.InvariantCulture));
 
             if (!FileUtil.WriteUTF8(config_path, config_text))
             {

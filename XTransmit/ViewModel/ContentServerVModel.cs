@@ -9,6 +9,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using XTransmit.Control;
 using XTransmit.Model.Server;
 using XTransmit.Utility;
 using XTransmit.View;
@@ -190,7 +191,7 @@ namespace XTransmit.ViewModel
                 Name = sr_task_fetch_info,
                 StopAction = () => { processing_fetch_info = false; }
             };
-            App.AddHomeProgress(task);
+            InterfaceCtrl.AddHomeTask(task);
 
             await Task.Run(() =>
             {
@@ -211,11 +212,11 @@ namespace XTransmit.ViewModel
             if (serverSelected != null)
             {
                 App.GlobalConfig.RemoteServer = serverSelected.GetvServerProfile();
-                App.UpdateHomeTransmitStatue();
+                InterfaceCtrl.UpdateHomeTransmitStatue();
             }
 
             processing_fetch_info = false;
-            App.RemoveHomeProgress(task);
+            InterfaceCtrl.RemoveHomeTask(task);
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -230,7 +231,7 @@ namespace XTransmit.ViewModel
                 Name = sr_task_check_response_time,
                 StopAction = () => { processing_fetch_response_time = false; }
             };
-            App.AddHomeProgress(task);
+            InterfaceCtrl.AddHomeTask(task);
 
             await Task.Run(() =>
             {
@@ -263,7 +264,7 @@ namespace XTransmit.ViewModel
             }).ConfigureAwait(true);
 
             processing_fetch_response_time = false;
-            App.RemoveHomeProgress(task);
+            InterfaceCtrl.RemoveHomeTask(task);
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -280,7 +281,7 @@ namespace XTransmit.ViewModel
                 Name = sr_task_ping_server,
                 StopAction = () => { processing_check_ping = false; }
             };
-            App.AddHomeProgress(task);
+            InterfaceCtrl.AddHomeTask(task);
 
             int timeout = App.GlobalConfig.PingTimeout;
             using (Ping ping = new Ping())
@@ -309,7 +310,7 @@ namespace XTransmit.ViewModel
             }
 
             processing_check_ping = false;
-            App.RemoveHomeProgress(task);
+            InterfaceCtrl.RemoveHomeTask(task);
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -320,7 +321,7 @@ namespace XTransmit.ViewModel
             if (serverNew is ServerView serverView)
             {
                 // Set ServerProfile
-                App.ChangeTransmitServer(serverView.GetvServerProfile());
+                TransmitCtrl.ChangeTransmitServer(serverView.GetvServerProfile());
             }
         }
 
@@ -344,7 +345,7 @@ namespace XTransmit.ViewModel
             Result result = reader.decode(bitmap);
             if (result == null || string.IsNullOrWhiteSpace(result.Text))
             {
-                App.ShowHomeNotify(sr_config_0_found);
+                InterfaceCtrl.ShowHomeNotify(sr_config_0_found);
                 App.NotifyIcon.ShowMessage(sr_config_0_found);
                 return;
             }
@@ -355,12 +356,12 @@ namespace XTransmit.ViewModel
                 int added = AddServer(serverList);
                 string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_exist;
 
-                App.ShowHomeNotify(notify);
+                InterfaceCtrl.ShowHomeNotify(notify);
                 App.NotifyIcon.ShowMessage(notify);
             }
             else
             {
-                App.ShowHomeNotify(sr_config_0_imported);
+                InterfaceCtrl.ShowHomeNotify(sr_config_0_imported);
                 App.NotifyIcon.ShowMessage(sr_config_0_imported);
             }
         }
@@ -375,11 +376,11 @@ namespace XTransmit.ViewModel
                 int added = AddServer(serverList);
                 string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_exist;
 
-                App.ShowHomeNotify(notify);
+                InterfaceCtrl.ShowHomeNotify(notify);
             }
             else
             {
-                App.ShowHomeNotify(sr_config_0_imported);
+                InterfaceCtrl.ShowHomeNotify(sr_config_0_imported);
             }
         }
 
@@ -404,11 +405,11 @@ namespace XTransmit.ViewModel
                 int added = AddServer(serverList);
                 string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_exist;
 
-                App.ShowHomeNotify(notify);
+                InterfaceCtrl.ShowHomeNotify(notify);
             }
             else
             {
-                App.ShowHomeNotify(sr_config_0_imported);
+                InterfaceCtrl.ShowHomeNotify(sr_config_0_imported);
             }
         }
 
@@ -424,7 +425,7 @@ namespace XTransmit.ViewModel
                     int added = AddServer(server);
                     string notify = added > 0 ? $"{added} {sr_config_x_added}" : sr_config_exist;
 
-                    App.ShowHomeNotify(notify);
+                    InterfaceCtrl.ShowHomeNotify(notify);
                 }).ShowDialog();
         }
 

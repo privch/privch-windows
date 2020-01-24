@@ -120,6 +120,11 @@ namespace XTransmit.Model
 
         public static void WriteFile(string pathPrefXml, Preference preference)
         {
+            if (preference is null)
+            {
+                throw new ArgumentNullException(nameof(preference));
+            }
+
             FileUtil.XmlSerialize(pathPrefXml, preference);
         }
     }

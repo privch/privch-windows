@@ -5,7 +5,7 @@ using XTransmit.Utility;
 
 namespace XTransmit.Model.UserAgent
 {
-    public static class UAManager
+    internal static class UAManager
     {
         public static List<UAProfile> UAList { get; private set; }
         private static string UAXmlPath;

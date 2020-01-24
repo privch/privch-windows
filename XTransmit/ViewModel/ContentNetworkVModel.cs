@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Windows;
@@ -55,7 +56,6 @@ namespace XTransmit.ViewModel
         private static readonly string sr_download = (string)Application.Current.FindResource("_download");
         private static readonly string sr_upload = (string)Application.Current.FindResource("_upload");
 
-        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public ContentNetworkVModel()
         {
             // init live chart
@@ -83,7 +83,8 @@ namespace XTransmit.ViewModel
                 }
             };
 
-            ChartXFormatter = value => new DateTime((long)(value * TimeSpan.FromHours(1).Ticks)).ToString("HH:mm:ss");
+            ChartXFormatter = value => new DateTime((long)(value * TimeSpan.FromHours(1).Ticks)).ToString("HH:mm:ss", 
+                CultureInfo.InvariantCulture);
             ChartYFormatter = value => $"{TextUtil.GetBytesReadable((long)value)}/s";
 
             // get network interfaces

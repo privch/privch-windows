@@ -76,5 +76,23 @@ namespace XTransmit.Model.Curl
 
             return sb.ToString();
         }
+
+
+        public override int GetHashCode()
+        {
+            return (Website + Title).GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is SiteProfile siteProfile)
+            {
+                return GetHashCode() == siteProfile.GetHashCode();
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

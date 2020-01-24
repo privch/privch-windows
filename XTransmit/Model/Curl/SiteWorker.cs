@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Windows;
 using XTransmit.Model.IPAddress;
 using XTransmit.Model.Server;
@@ -11,10 +12,10 @@ using XTransmit.Utility;
 namespace XTransmit.Model.Curl
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    public class SiteWorker : IDisposable
+    internal class SiteWorker : IDisposable
     {
-        public Action<bool> OnStateUpdated { get; set; } = null;
-        public Action<CurlResponse> OnResponse { get; set; } = null;
+        private readonly Action<bool> actionStateUpdated;
+        private readonly Action<CurlResponse> actionResponse;
 
         private BackgroundWorker bgWork = null;
         private static readonly Random random = new Random();
@@ -25,10 +26,10 @@ namespace XTransmit.Model.Curl
         private static readonly string sr_complete = (string)Application.Current.FindResource("_complete");
         private static readonly string sr_failed = (string)Application.Current.FindResource("_failed");
 
-        public SiteWorker(Action<bool> OnStateUpdated, Action<CurlResponse> OnResponse)
+        public SiteWorker(Action<bool> actionStateUpdated, Action<CurlResponse> actionResponse)
         {
-            this.OnStateUpdated = OnStateUpdated;
-            this.OnResponse = OnResponse;
+            this.actionStateUpdated = actionStateUpdated;
+            this.actionResponse = actionResponse;
         }
 
         public void Dispose()
@@ -159,7 +160,6 @@ namespace XTransmit.Model.Curl
             return response;
         }
 
-        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         private void BWDoWork(object sender, DoWorkEventArgs ex)
         {
             SiteProfile profile = (SiteProfile)ex.Argument;
@@ -169,15 +169,14 @@ namespace XTransmit.Model.Curl
             FakeIP fakeip = FakeIP.From(arguments); // fake ip
             FakeUA fakeua = FakeUA.From(arguments); // fake ua
 
-            // report begin state
+            // less than 0 means begin
             bgWork.ReportProgress(-1, null);
 
             for (int i = 1; i <= profile.PlayTimes; i++)
             {
-                /** Report progress, states. 
-                 * progress is indicated in e.UserState
+                /** Report progress, states. e.UserState is progress value
                  */
-                string time = DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss");
+                string time = DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss", CultureInfo.InvariantCulture);
                 try
                 {
                     string response = PlaySite(arguments, fakeClient, fakeip, fakeua, profile.IsReadResponse);
@@ -231,19 +230,19 @@ namespace XTransmit.Model.Curl
                 string time = (string)state[1];
                 string response = (string)state[2];
 
-                OnResponse?.Invoke(new CurlResponse(index, time, response));
+                actionResponse?.Invoke(new CurlResponse(index, time, response));
             }
             else
             {
                 // state: running
-                OnStateUpdated?.Invoke(true);
+                actionStateUpdated?.Invoke(true);
             }
         }
 
         private void BWCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             // state: not running
-            OnStateUpdated?.Invoke(false);
+            actionStateUpdated?.Invoke(false);
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using XTransmit.Model;
 using XTransmit.Model.Server;
+using XTransmit.Utility;
 
-namespace XTransmit.Utility
+namespace XTransmit.Control
 {
-    static class TransmitControl
+    internal static class TransmitCtrl
     {
         public static bool StartServer()
         {
@@ -52,6 +53,27 @@ namespace XTransmit.Utility
             ServerManager.Stop(App.GlobalConfig.RemoteServer);
         }
 
+        public static void EnableTransmit(bool enable)
+        {
+            if (enable)
+            {
+                if (NativeMethods.EnableProxy($"127.0.0.1:{App.GlobalConfig.SystemProxyPort}", NativeMethods.Bypass) != 0)
+                {
+                    App.GlobalConfig.IsTransmitEnabled = true;
+                }
+            }
+            else
+            {
+                if (NativeMethods.DisableProxy() != 0)
+                {
+                    App.GlobalConfig.IsTransmitEnabled = false;
+                }
+            }
+
+            InterfaceCtrl.UpdateHomeTransmitStatue();
+            App.NotifyIcon.SwitchIcon(App.GlobalConfig.IsTransmitEnabled);
+        }
+
         public static void ChangeTransmitServer(ServerProfile serverProfile)
         {
             if (App.GlobalConfig.RemoteServer == null || !App.GlobalConfig.RemoteServer.Equals(serverProfile))
@@ -60,6 +82,7 @@ namespace XTransmit.Utility
                 ServerManager.Start(serverProfile, App.GlobalConfig.GlobalSocks5Port);
 
                 App.GlobalConfig.RemoteServer = serverProfile;
+                InterfaceCtrl.UpdateHomeTransmitStatue();
             }
         }
     }

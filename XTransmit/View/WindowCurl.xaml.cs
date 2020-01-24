@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using XTransmit.Control;
 using XTransmit.Model;
 using XTransmit.ViewModel;
 
@@ -25,8 +26,9 @@ namespace XTransmit.View
 
         private void WindowCurl_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Is it a good way?
-            CurlVModel.WindowClose();
+            // Turn off serverpool
+            ServerPoolCtrl.StopServerPool();
+            InterfaceCtrl.UpdateHomeTransmitLock();
 
             // Save window placement
             Preference preference = App.GlobalPreference;

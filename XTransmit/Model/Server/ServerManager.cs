@@ -13,7 +13,7 @@ using XTransmit.Utility;
 namespace XTransmit.Model.Server
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    public static class ServerManager
+    internal static class ServerManager
     {
         public static readonly Dictionary<ServerProfile, Process> ServerProcessMap = new Dictionary<ServerProfile, Process>();
         public static List<ServerProfile> ServerList { get; private set; }
@@ -44,7 +44,6 @@ namespace XTransmit.Model.Server
         }
 
         // TODO - Server type (SS, V2Ray ...)
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static bool Start(ServerProfile server, int listen)
         {
             if (ServerProcessMap.ContainsKey(server))
@@ -156,7 +155,6 @@ namespace XTransmit.Model.Server
          * </summary>
          * <returns>Return number of server added</returns>
          */
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public static List<ServerProfile> ImportServers(string serverInfos)
         {
             string[] serverInfoArray = serverInfos.Split(new string[] { "\r\n", "\r", "\n", " " }, StringSplitOptions.RemoveEmptyEntries);

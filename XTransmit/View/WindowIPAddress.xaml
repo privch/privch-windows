@@ -53,7 +53,7 @@
             <Grid Grid.Column="1"
                   Background="{DynamicResource MaterialDesignToolBarBackground}">
                 <ProgressBar Margin="10"
-                             Value="70"
+                             Value="75"
                              ToolTip="{StaticResource ip_stop_ping}"
                              IsIndeterminate="{Binding Path=IsProcessingPing}"
                              MouseLeftButtonDown="ProgressBar_MouseLeftButtonDown">

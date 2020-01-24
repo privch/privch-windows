@@ -10,7 +10,7 @@ namespace XTransmit.Model.Network
      * TODO - Start-Stop test
      * TODO - Use Task instead
      */
-    public class BandwidthMeter : IDisposable
+    internal class BandwidthMeter : IDisposable
     {
         private readonly Action<long[]> actionSpeedUpdated;
         private NetworkInterface adapter = null;
@@ -38,7 +38,6 @@ namespace XTransmit.Model.Network
             }
         }
 
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
         public void SetAdapter(NetworkInterface adapterNew)
         {
             adapter = adapterNew;

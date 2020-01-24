@@ -66,6 +66,11 @@ namespace XTransmit.Model
 
         public static void WriteFile(string pathConfigXml, Config config)
         {
+            if (config is null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
             FileUtil.XmlSerialize(pathConfigXml, config);
         }
     }

@@ -46,7 +46,6 @@
                               IsEnabled="{Binding Path=IsNotRunning}"
                               IsChecked="{Binding Path=Profile.IsReadResponse}"/>
 
-                    <!-- DataTrigger keeps changing the Foreground, and other properties maybe -->
                     <Button Foreground="{DynamicResource MaterialDesignBody}"
                             Command="{Binding Path=CommandTogglePlay}">
                         <Button.Style>
@@ -68,11 +67,24 @@
                 </ToolBar>
             </ToolBarTray>
 
-            <Grid Grid.Column="1" Background="{DynamicResource MaterialDesignToolBarBackground}">
+            <Grid Grid.Column="1"
+                  Background="{DynamicResource MaterialDesignToolBarBackground}">
                 <ProgressBar Margin="10, 0" 
-                             Style="{StaticResource MaterialDesignCircularProgressBar}"
-                             Value="{Binding Path=Progress.Value}"
-                             IsIndeterminate="{Binding Path=Progress.IsIndeterminate}"/>
+                             Value="75"
+                             IsIndeterminate="True">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar" BasedOn="{StaticResource MaterialDesignCircularProgressBar}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsNotRunning}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=IsNotRunning}" Value="True">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
             </Grid>
         </Grid>
 
@@ -131,7 +143,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- arguments -->
+            <!-- arguments. the UpdateSourceTrigger property is defaults to LostFocus -->
             <DataGrid Grid.Row="0" Margin="10"
                       GridLinesVisibility="Horizontal"
                       SelectionMode="Single"

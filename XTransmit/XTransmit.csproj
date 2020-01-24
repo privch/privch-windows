@@ -95,6 +95,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Control\InterfaceCtrl.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -122,6 +123,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control\ServerPoolCtrl.cs" />
+    <Compile Include="Control\TransmitCtrl.cs" />
     <Compile Include="Model\Config.cs" />
     <Compile Include="Model\Preference.cs" />
     <Compile Include="Model\Curl\CurlArgument.cs" />
@@ -149,7 +152,6 @@
     <Compile Include="Utility\RegexHelper.cs" />
     <Compile Include="Utility\SSManager.cs" />
     <Compile Include="Utility\TextUtil.cs" />
-    <Compile Include="Utility\TransmitControl.cs" />
     <Compile Include="ViewModel\AboutVModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\CurlVModel.cs" />

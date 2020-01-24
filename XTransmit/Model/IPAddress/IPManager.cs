@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ using XTransmit.Utility;
 namespace XTransmit.Model.IPAddress
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    public static class IPManager
+    internal static class IPManager
     {
         /**
          * TODO - Remove the locker
@@ -77,7 +78,6 @@ namespace XTransmit.Model.IPAddress
          * TODO - Test
          * </summary>
          */
-        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public static HashSet<string> Import(string pathTxtUtf8)
         {
             char[] separatorIPByte = new char[] { '.' };
@@ -122,8 +122,8 @@ namespace XTransmit.Model.IPAddress
                     int ipByte4From, ipByte4To;
                     try
                     {
-                        ipByte4From = int.Parse(ipByte4Range[0]);
-                        ipByte4To = int.Parse(ipByte4Range[1]);
+                        ipByte4From = int.Parse(ipByte4Range[0], CultureInfo.InvariantCulture);
+                        ipByte4To = int.Parse(ipByte4Range[1], CultureInfo.InvariantCulture);
                     }
                     catch { continue; }
                     if (ipByte4From < 0 || ipByte4To < ipByte4From)
@@ -136,7 +136,8 @@ namespace XTransmit.Model.IPAddress
                     {
                         try
                         {
-                            System.Net.IPAddress ip = System.Net.IPAddress.Parse(ipByte123 + ipByte4.ToString());
+                            System.Net.IPAddress ip = System.Net.IPAddress.Parse(
+                                ipByte123 + ipByte4.ToString(CultureInfo.InvariantCulture));
                             ipList.Add(ip.ToString());
                         }
                         catch { continue; }

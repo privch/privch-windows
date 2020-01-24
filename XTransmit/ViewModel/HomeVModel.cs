@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using XTransmit.Control;
 using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
@@ -20,7 +21,7 @@ namespace XTransmit.ViewModel
         public bool IsTransmitEnabled
         {
             get => App.GlobalConfig.IsTransmitEnabled;
-            set => App.EnableTransmit(value);
+            set => TransmitCtrl.EnableTransmit(value);
         }
 
         // progress
@@ -30,9 +31,6 @@ namespace XTransmit.ViewModel
         // table
         public UserControl ContentDisplay { get; private set; }
         public List<ContentTable> ContentList { get; private set; }
-
-        // curl window
-        private Window windowCurl = null;
 
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
         private static readonly string sr_server_title = (string)Application.Current.FindResource("server_title");
@@ -81,16 +79,9 @@ namespace XTransmit.ViewModel
             OnPropertyChanged(nameof(TransmitStatus));
         }
 
-        public void UpdateLockTransmit()
+        public void UpdateTransmitLock()
         {
             OnPropertyChanged(nameof(IsTransmitControllable));
-        }
-
-        public void AddServerByScanQRCode()
-        {
-            // TODO - Take care of the ContentTables list order
-            ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
-            serverViewModel.CommandAddServerQRCode.Execute(null);
         }
 
         //ProgressBar is showing in indeterminate mode
@@ -108,6 +99,7 @@ namespace XTransmit.ViewModel
                 OnPropertyChanged(nameof(Progress));
             }
         }
+
         public void RemoveTask(TaskView task)
         {
             if (TaskListOC.Contains(task))
@@ -120,6 +112,13 @@ namespace XTransmit.ViewModel
 
                 OnPropertyChanged(nameof(Progress));
             }
+        }
+
+        public void AddServerByScanQRCode()
+        {
+            // TODO - Take care of the ContentTables list order
+            ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
+            serverViewModel.CommandAddServerQRCode.Execute(null);
         }
 
 
@@ -157,25 +156,24 @@ namespace XTransmit.ViewModel
             ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
             serverViewModel.CommandSaveServer.Execute(null);
 
-            if (windowCurl == null || !windowCurl.IsLoaded)
+            // show curl
+            View.WindowCurl windowCurl = Application.Current.Windows.OfType<View.WindowCurl>().FirstOrDefault();
+            if (windowCurl == null)
             {
                 windowCurl = new View.WindowCurl();
+                windowCurl.Show();
             }
-
-            if (windowCurl.WindowState == WindowState.Minimized)
+            else
             {
-                windowCurl.WindowState = WindowState.Normal;
+                windowCurl.Activate();
             }
-
-            windowCurl.Show();
-            windowCurl.Activate();
         }
 
         // show setting
         public RelayCommand CommandShowSetting => new RelayCommand(ShowSetting);
         private void ShowSetting(object parameter)
         {
-            new View.DialogSetting().ShowDialog();
+            InterfaceCtrl.ShowSetting();
         }
 
         // show about

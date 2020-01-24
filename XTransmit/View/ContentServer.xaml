@@ -103,7 +103,8 @@
                 <DataGridTextColumn Width="*" Header="{StaticResource _added}" Binding="{Binding Path=TimeCreated}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <!-- Server no data -->
+        
+        <!-- Empty -->
         <Grid Grid.Row="1" Panel.ZIndex="1"
               VerticalAlignment="Center"
               HorizontalAlignment="Center">

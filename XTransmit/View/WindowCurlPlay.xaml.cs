@@ -10,6 +10,11 @@ namespace XTransmit.View
     {
         public WindowCurlPlay(SiteProfile siteProfile, Action<SiteProfile> actionSaveProfile)
         {
+            if (siteProfile is null)
+            {
+                throw new ArgumentNullException(nameof(siteProfile));
+            }
+
             InitializeComponent();
 
             Preference preference = App.GlobalPreference;

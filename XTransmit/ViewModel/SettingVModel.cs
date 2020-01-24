@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
@@ -60,7 +61,6 @@ namespace XTransmit.ViewModel
 
         public ItemView[] Status { get; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
         public SettingVModel()
         {
             Status = new ItemView[]
@@ -68,13 +68,13 @@ namespace XTransmit.ViewModel
                 new ItemView
                 {
                     Label = (string)Application.Current.FindResource("dialog_setting_status_proxy_port"),
-                    Text=App.GlobalConfig.SystemProxyPort.ToString(),
+                    Text=App.GlobalConfig.SystemProxyPort.ToString(CultureInfo.InvariantCulture),
                 },
 
                 new ItemView
                 {
                     Label = (string)Application.Current.FindResource("dialog_setting_status_ss_port"),
-                    Text = App.GlobalConfig.GlobalSocks5Port.ToString(),
+                    Text = App.GlobalConfig.GlobalSocks5Port.ToString(CultureInfo.InvariantCulture),
                 }
             };
         }

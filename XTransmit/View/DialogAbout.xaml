@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         x:Name="xWindow"
-        Style="{StaticResource WindowApp}"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
+        Style="{StaticResource WindowApp}"
         Title="{StaticResource dialog_about_title}">
     <Window.Resources>
         <ResourceDictionary>
@@ -30,7 +30,7 @@
                    Width="100"
                    Height="100"
                    Stretch="Fill"
-                   Source="/XTransmit.ico"/>
+                   Source="/Resources/Icon/XTransmit-On.ico"/>
 
             <StackPanel Grid.Column="1"
                         VerticalAlignment="Center"

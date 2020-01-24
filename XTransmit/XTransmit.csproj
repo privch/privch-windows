@@ -293,7 +293,7 @@
     <None Include="Resources\Binary\shadowsocks\cygwin1.dll.gz" />
     <None Include="Resources\Binary\shadowsocks\ss-local.exe.gz" />
     <None Include="Resources\Binary\privoxy\privoxy-config.txt" />
-    <None Include="Resources\Icon\XTransmit-On.ico" />
+    <Resource Include="Resources\Icon\XTransmit-On.ico" />
     <None Include="Resources\Icon\XTransmit-Off.ico" />
   </ItemGroup>
   <ItemGroup>

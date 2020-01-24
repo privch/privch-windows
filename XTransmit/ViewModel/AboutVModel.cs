@@ -11,8 +11,8 @@ namespace XTransmit.ViewModel
 {
     class AboutVModel : BaseViewModel
     {
-        public string Name { get; private set; }
-        public string Version { get; private set; }
+        public string Name { get; }
+        public string Version { get; }
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public ItemView[] OpensourceSoftware { get; }
@@ -56,6 +56,24 @@ namespace XTransmit.ViewModel
                 {
                     Label = "proxyctrl", Text = "Apache-2.0",
                     Uri = "https://www.apache.org/licenses/LICENSE-2.0"
+                },
+
+                new ItemView
+                {
+                    Label = "privoxy-windows", Text = "GPL 2.0",
+                    Uri = "https://github.com/xinlake/privoxy-windows/"
+                },
+
+                new ItemView
+                {
+                    Label = "shadowsocks-libev", Text = "LICENSE",
+                    Uri = "https://github.com/shadowsocks/shadowsocks-libev/blob/master/LICENSE"
+                },
+
+                new ItemView
+                {
+                    Label = "curl", Text = "LICENSE",
+                    Uri = "https://curl.haxx.se/docs/copyright.html"
                 },
             };
         }

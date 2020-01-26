@@ -1,3 +1,12 @@
+v0.5.5
+* Added server port info in the settings
+* Added a "replace old server" option in the settings, This option works when adding a server
+* Added separate progress indicators and controls for background tasks
+* Added stop action for ping detection for IP data
+* The main window visibility is now saved
+* Adjusted some UI text
+* Some optimize
+
 v0.5.4
 * Adjusted some UI text
 * Rename the data folder from "datas" to "data"

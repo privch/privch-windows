@@ -88,7 +88,7 @@
     <system:String x:Key="server_config_0_imported">No server(s) imported.</system:String>
     <system:String x:Key="server_config_x_added">server(s) added.</system:String>
     <system:String x:Key="server_ask_keep_info_title">Fetch server info</system:String>
-    <system:String x:Key="server_ask_keep_info_message">Keep the existing datas?</system:String>
+    <system:String x:Key="server_ask_keep_info_message">Keep existing data?</system:String>
 
     <!-- table network -->
     <system:String x:Key="netrowk_title">Network</system:String>
@@ -101,8 +101,8 @@
     <system:String x:Key="dialog_setting_response_timeout">Retrieve response timeout (second)</system:String>
     <system:String x:Key="dialog_setting_ping_timeout">Ping timeout (millisecond)</system:String>
     <system:String x:Key="dialog_setting_replace_old_server">Enable replacement of old server</system:String>
-    <system:String x:Key="dialog_setting_status_proxy_port">Proxy port</system:String>
-    <system:String x:Key="dialog_setting_status_ss_port">Shadowsocks port</system:String>
+    <system:String x:Key="dialog_setting_status_proxy_port">Http proxy port</system:String>
+    <system:String x:Key="dialog_setting_status_ss_port">Socks5 proxy port</system:String>
 
     <!-- dialog about -->
     <system:String x:Key="dialog_about_title">About XTransmit</system:String>
@@ -138,7 +138,7 @@
     <system:String x:Key="ua_no_data">No data available now</system:String>
     <system:String x:Key="ua_user_agent">User-Agent</system:String>
     <system:String x:Key="ua_copy_to_clipboard">Copy UserAgent to clipboard</system:String>
-    <system:String x:Key="ua_ask_save_changes">User-Agent datas has changes, Save?</system:String>
+    <system:String x:Key="ua_ask_save_changes">User-Agent data has been changed, Save?</system:String>
 
     <!-- window ip address -->
     <system:String x:Key="ip_title">IP Address</system:String>
@@ -148,7 +148,7 @@
     <system:String x:Key="ip_copy_table_name">Copy TableName to clipboard</system:String>
     <system:String x:Key="ip_delete_selected_table">Delete selected table</system:String>
     <system:String x:Key="ip_stop_ping">Click to stop</system:String>
-    <system:String x:Key="ip_ask_save_data">IP datas has changes, Save?</system:String>
+    <system:String x:Key="ip_ask_save_data">IP data has been changed, Save?</system:String>
 
     <!-- system tray -->
     <system:String x:Key="tray_enable_transmit">Enable XTransmit</system:String>

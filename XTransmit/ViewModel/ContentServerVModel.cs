@@ -421,12 +421,15 @@ namespace XTransmit.ViewModel
             ServerProfile server = new ServerProfile();
 
             new DialogServerConfig(server,
-                (bool result) =>
+                (bool resultOK) =>
                 {
-                    int added = AddServer(server);
-                    string notify = added > 0 ? $"{added} {sr_config_x_added}" : sr_config_exist;
+                    if (resultOK)
+                    {
+                        int added = AddServer(server);
+                        string notify = added > 0 ? $"{added} {sr_config_x_added}" : sr_config_exist;
 
-                    InterfaceCtrl.ShowHomeNotify(notify);
+                        InterfaceCtrl.ShowHomeNotify(notify);
+                    }
                 }).ShowDialog();
         }
 
@@ -438,12 +441,15 @@ namespace XTransmit.ViewModel
             ServerProfile serverProfile = serverView.GetvServerProfile().Copy();
 
             new DialogServerConfig(serverProfile,
-                (bool result) =>
+                (bool resultOK) =>
                 {
-                    int index = ServerViewListOC.IndexOf(serverView);
-                    if (index >= 0)
+                    if (resultOK)
                     {
-                        ServerViewListOC[index] = new ServerView(serverProfile);
+                        int index = ServerViewListOC.IndexOf(serverView);
+                        if (index >= 0)
+                        {
+                            ServerViewListOC[index] = new ServerView(serverProfile);
+                        }
                     }
                 }).ShowDialog();
         }

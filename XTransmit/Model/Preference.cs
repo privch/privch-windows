@@ -12,6 +12,7 @@ namespace XTransmit.Model
     [Serializable]
     public class Preference
     {
+        public bool IsDarkTheme { get; set; }
         public bool IsWindowHomeVisible { get; set; }
         public string ContentDisplay { get; set; }
 
@@ -29,6 +30,7 @@ namespace XTransmit.Model
          */
         public Preference()
         {
+            IsDarkTheme = true;
             IsWindowHomeVisible = true;
             ContentDisplay = "";
 

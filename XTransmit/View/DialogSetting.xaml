@@ -13,28 +13,11 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="DockPanel">
-                <Setter Property="LastChildFill" Value="True"/>
-            </Style>
-            <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="8"/>
-            </Style>
-            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignHeadlineTextBlock}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="8"/>
-            </Style>
-            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="Margin" Value="8" />
-            </Style>
-            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="8" />
-            </Style>
-            <Style TargetType="md:PackIcon">
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="Margin" Value="8" />
+            <Style x:Key="TextBlockSubtitle" 
+                   TargetType="TextBlock" 
+                   BasedOn="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                <Setter Property="Margin" Value="0, 0, 0, 10"/>
+                <Setter Property="Opacity" Value=".7"/>
             </Style>
         </ResourceDictionary>
     </Window.Resources>
@@ -45,84 +28,150 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <!-- It seems no other choice here, it's not easy to fill the view if using a container control here such as ItemsControl, ListView, ListBox -->
-        <StackPanel Grid.Column="0"
-                    Orientation="Vertical"
-                    HorizontalAlignment="Stretch" >
+        <Grid Grid.Column="0"
+              Margin="15, 10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <!-- ss timeout -->
-            <DockPanel>
-                <md:PackIcon DockPanel.Dock="Left"
+            <!-- Options, Lift side -->
+            <TextBlock Grid.Row="0"
+                       Style="{StaticResource TextBlockSubtitle}"
+                       Text="{StaticResource dialog_setting_subtitle_options}"/>
+            
+            <!-- It seems no other choice here, it's not easy to fill the view if using a container control here such as ItemsControl, ListView, ListBox -->
+            <StackPanel Grid.Row="1"
+                        Orientation="Vertical"
+                        HorizontalAlignment="Stretch" >
+                <StackPanel.Resources>
+                    <Style TargetType="DockPanel">
+                        <Setter Property="LastChildFill" Value="True"/>
+                    </Style>
+                    <Style TargetType="md:PackIcon">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="Margin" Value="0" />
+                    </Style>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="Margin" Value="10, 10, 0, 10" />
+                    </Style>
+                    <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="0, 10"/>
+                    </Style>
+                </StackPanel.Resources>
+
+                <!-- ss timeout -->
+                <DockPanel>
+                    <md:PackIcon DockPanel.Dock="Left"
                              Kind="Clock"/>
-                <TextBox DockPanel.Dock="Right"
+                    <TextBox DockPanel.Dock="Right"
                          md:HintAssist.Hint="{StaticResource dialog_setting_ss_timeout}"
                          Text="{Binding SSTimeouts}"/>
-            </DockPanel>
+                </DockPanel>
 
-            <!-- ipinfo timeout -->
-            <DockPanel>
-                <md:PackIcon DockPanel.Dock="Left"
+                <!-- ipinfo timeout -->
+                <DockPanel>
+                    <md:PackIcon DockPanel.Dock="Left"
                              Kind="Clock"/>
-                <TextBox DockPanel.Dock="Right"
+                    <TextBox DockPanel.Dock="Right"
                          md:HintAssist.Hint="{StaticResource dialog_setting_ipinfo_timeout}"
                          Text="{Binding IPInfoConnTimeout}"/>
-            </DockPanel>
+                </DockPanel>
 
-            <!-- ping timeout -->
-            <DockPanel>
-                <md:PackIcon DockPanel.Dock="Left"
+                <!-- fetch connection response timeout -->
+                <DockPanel>
+                    <md:PackIcon DockPanel.Dock="Left"
                              Kind="Clock"/>
-                <TextBox DockPanel.Dock="Right"
+                    <TextBox DockPanel.Dock="Right"
                          md:HintAssist.Hint="{StaticResource dialog_setting_response_timeout}"
                          Text="{Binding ResponseConnTimeout}"/>
-            </DockPanel>
+                </DockPanel>
 
-            <!-- ping timeout -->
-            <DockPanel>
-                <md:PackIcon DockPanel.Dock="Left"
+                <!-- ping timeout -->
+                <DockPanel>
+                    <md:PackIcon DockPanel.Dock="Left"
                              Kind="Clock"/>
-                <TextBox DockPanel.Dock="Right"
+                    <TextBox DockPanel.Dock="Right"
                          md:HintAssist.Hint="{StaticResource dialog_setting_ping_timeout}"
                          Text="{Binding PingTimeout}"/>
-            </DockPanel>
+                </DockPanel>
 
-            <!-- replace old data when importing new server -->
-            <CheckBox Content="{StaticResource dialog_setting_replace_old_server}"
+                <!-- replace old data when importing new server -->
+                <CheckBox Content="{StaticResource dialog_setting_replace_old_server}"
                       IsChecked="{Binding IsReplaceOldServer}"/>
-        </StackPanel>
+            </StackPanel>
+        </Grid>
 
-        <!-- Status, Right side =========================================================================== -->
-        <ItemsControl Grid.Column="1"
-                      ItemsSource="{Binding Status}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="x_status_c1"/>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="x_status_c2"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Margin="8"
-                                   Opacity=".7"
-                                   Style="{StaticResource MaterialDesignCaptionTextBlock}"
-                                   Text="{Binding Path=Label}"/>
+        <Grid Grid.Column="1"
+              Margin="15, 10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-                        <TextBox Grid.Column="1" Margin="8"                                
-                                 Opacity=".7"
-                                 MaxWidth="220"
-                                 TextWrapping="Wrap"
-                                 IsReadOnly="True"
-                                 Style="{StaticResource MaterialDesignTextBoxBase}"
-                                 Text="{Binding Path=Text}"/>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical"
-                                Grid.IsSharedSizeScope="True"
-                                HorizontalAlignment="Stretch" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
+            <!-- Customize, Top right -->
+            <TextBlock Grid.Row="0" 
+                       Style="{StaticResource TextBlockSubtitle}"
+                       Text="{StaticResource dialog_setting_subtitle_customize}"/>
+
+            <StackPanel Grid.Row="1"
+                        Orientation="Vertical">
+
+                <!-- theme, dark or light -->
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton VerticalAlignment="Center"
+                                  IsChecked="{Binding Path=IsDarkTheme}"/>
+                    <TextBlock VerticalAlignment="Center"
+                               Margin="10, 10, 0, 10"
+                               Text="{StaticResource dialog_setting_theme_dark}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Status, Lower right =========================================================================== -->
+            <TextBlock Grid.Row="2"
+                       Style="{StaticResource TextBlockSubtitle}"
+                       Text="{StaticResource dialog_setting_subtitle_status}"/>
+
+            <ItemsControl Grid.Row="3"
+                          ItemsSource="{Binding Status}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="x_status_c1"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="x_status_c2"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" 
+                                       Margin="0, 10"
+                                       VerticalAlignment="Center"
+                                       Opacity=".7"
+                                       Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                       Text="{Binding Path=Label}"/>
+
+                            <TextBox Grid.Column="1" 
+                                     Margin="10"                                
+                                     VerticalAlignment="Center"
+                                     Opacity=".7"
+                                     MaxWidth="220"
+                                     TextWrapping="Wrap"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource MaterialDesignTextBoxBase}"
+                                     Text="{Binding Path=Text}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"
+                                    Grid.IsSharedSizeScope="True"
+                                    HorizontalAlignment="Stretch" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </Grid>
     </Grid>
 </Window>

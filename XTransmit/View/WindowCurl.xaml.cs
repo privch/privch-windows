@@ -28,7 +28,6 @@ namespace XTransmit.View
         {
             // Turn off serverpool
             ServerPoolCtrl.StopServerPool();
-            InterfaceCtrl.UpdateTransmitLock();
 
             // Save window placement
             Preference preference = PreferenceManager.Global;

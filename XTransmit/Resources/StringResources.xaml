@@ -96,6 +96,9 @@
 
     <!-- dialog setting -->
     <system:String x:Key="dialog_setting_title">Settings</system:String>
+    <system:String x:Key="dialog_setting_subtitle_options">Options</system:String>
+    <system:String x:Key="dialog_setting_subtitle_customize">Customize</system:String>
+    <system:String x:Key="dialog_setting_subtitle_status">Status</system:String>
     <system:String x:Key="dialog_setting_ss_timeout">Default ss connection timeout (second)</system:String>
     <system:String x:Key="dialog_setting_ipinfo_timeout">Retrieve info timeout (seconds)</system:String>
     <system:String x:Key="dialog_setting_response_timeout">Retrieve response timeout (second)</system:String>
@@ -103,6 +106,7 @@
     <system:String x:Key="dialog_setting_replace_old_server">Enable replacement of old server</system:String>
     <system:String x:Key="dialog_setting_status_proxy_port">Http proxy port</system:String>
     <system:String x:Key="dialog_setting_status_ss_port">Socks5 proxy port</system:String>
+    <system:String x:Key="dialog_setting_theme_dark">Dark theme</system:String>
 
     <!-- dialog about -->
     <system:String x:Key="dialog_about_title">About XTransmit</system:String>

@@ -23,6 +23,7 @@ namespace XTransmit.Control
             }
 
             ConfigManager.IsServerPoolEnabled = true;
+            InterfaceCtrl.UpdateTransmitLock();
         }
 
         public static void StopServerPool()
@@ -45,6 +46,7 @@ namespace XTransmit.Control
             }
 
             ConfigManager.IsServerPoolEnabled = false;
+            InterfaceCtrl.UpdateTransmitLock();
         }
     }
 }

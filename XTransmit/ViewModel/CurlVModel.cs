@@ -29,7 +29,6 @@ namespace XTransmit.ViewModel
                     ServerPoolCtrl.StopServerPool();
                 }
 
-                InterfaceCtrl.UpdateTransmitLock();
                 OnPropertyChanged(nameof(ServerPoolStatus));
             }
         }

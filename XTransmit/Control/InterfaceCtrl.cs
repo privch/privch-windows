@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using MaterialDesignThemes.Wpf;
+using System;
+using System.Linq;
 using System.Windows;
 using XTransmit.View;
 using XTransmit.ViewModel;
@@ -19,6 +21,16 @@ namespace XTransmit.Control
             NotifyIcon.Dispose();
         }
 
+
+        public static void ModifyTheme(Action<ITheme> modificationAction)
+        {
+            PaletteHelper paletteHelper = new PaletteHelper();
+            ITheme theme = paletteHelper.GetTheme();
+
+            modificationAction?.Invoke(theme);
+
+            paletteHelper.SetTheme(theme);
+        }
 
         public static void ShowSetting()
         {

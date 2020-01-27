@@ -1,5 +1,9 @@
-﻿using System.Globalization;
+﻿using MaterialDesignThemes.Wpf;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Windows;
+using XTransmit.Control;
 using XTransmit.Model;
 using XTransmit.ViewModel.Element;
 
@@ -10,6 +14,7 @@ namespace XTransmit.ViewModel
      */
     class SettingVModel : BaseViewModel
     {
+        // options
         public int SSTimeouts
         {
             get => ConfigManager.Global.SSTimeout;
@@ -60,6 +65,19 @@ namespace XTransmit.ViewModel
             }
         }
 
+        //customize
+        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
+        public bool IsDarkTheme
+        {
+            get => PreferenceManager.Global.IsDarkTheme;
+            set
+            {
+                PreferenceManager.Global.IsDarkTheme = value;
+                InterfaceCtrl.ModifyTheme(theme => theme.SetBaseTheme(value ? Theme.Dark : Theme.Light));
+            }
+        }
+
+        // status
         public ItemView[] Status { get; }
 
         public SettingVModel()

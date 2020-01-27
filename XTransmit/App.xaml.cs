@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using MaterialDesignThemes.Wpf;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
@@ -139,6 +140,10 @@ namespace XTransmit
             InterfaceCtrl.Initialize();
             TransmitCtrl.StartServer();
 
+            // Init theme
+            InterfaceCtrl.ModifyTheme(theme => theme.SetBaseTheme(
+                PreferenceManager.Global.IsDarkTheme ? Theme.Dark : Theme.Light));
+            
             StartupUri = new System.Uri("View/WindowHome.xaml", System.UriKind.Relative);
             Exit += Application_Exit;
         }

@@ -63,7 +63,7 @@
                   IsReadOnly="True"
                   CanUserDeleteRows="True"
                   CanUserSortColumns="True"
-                  ItemsSource="{Binding Path=OCServerProfile}">
+                  ItemsSource="{Binding Path=ServerProfileOC}">
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" 
                               Command="{Binding Path=CommandSelectServer}"
@@ -112,7 +112,7 @@
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding OCServerProfile.Count}" Value="0">
+                            <DataTrigger Binding="{Binding ServerProfileOC.Count}" Value="0">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>

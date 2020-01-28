@@ -20,11 +20,11 @@
         <ToolBarTray Grid.Row="0" IsLocked="True">
             <ToolBar IsOverflowOpen="False">
                 <Button ToolTip="{StaticResource _save}" 
-                        Content="{md:PackIcon Kind=ContentSave, Size=24}"
+                        Content="{md:PackIcon Kind=ContentSave}"
                         Command="{Binding Path=CommandSaveData}"/>
 
                 <Button ToolTip="{StaticResource _reload}" 
-                        Content="{md:PackIcon Kind=Reload, Size=24}"
+                        Content="{md:PackIcon Kind=Reload}"
                         Command="{Binding Path=CommandReload}"/>
 
                 <Separator/>

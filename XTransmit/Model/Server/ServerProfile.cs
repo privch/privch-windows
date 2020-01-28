@@ -345,7 +345,6 @@ namespace XTransmit.Model.Server
 
         /** INotifyPropertyChanged =========================================
          */
-        //[NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {

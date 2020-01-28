@@ -27,7 +27,7 @@ namespace XTransmit.ViewModel
      */
     class ContentServerVModel : BaseViewModel
     {
-        public ObservableCollection<ServerProfile> OCServerProfile { get; private set; }
+        public ObservableCollection<ServerProfile> ServerProfileOC { get; private set; }
 
         // languages
         private static readonly string sr_yes = (string)Application.Current.FindResource("_yes");
@@ -52,7 +52,7 @@ namespace XTransmit.ViewModel
             ServerManager.Load(App.FileServerXml);
 
             // load servers and convert to ObservableCollection
-            OCServerProfile = new ObservableCollection<ServerProfile>(ServerManager.ServerList);
+            ServerProfileOC = new ObservableCollection<ServerProfile>(ServerManager.ServerList);
         }
 
         ~ContentServerVModel()
@@ -83,18 +83,18 @@ namespace XTransmit.ViewModel
             int added = 0;
             foreach (ServerProfile server in serverList)
             {
-                ServerProfile serverOld = OCServerProfile.FirstOrDefault(predicate: x => x.IsServerEqual(server));
+                ServerProfile serverOld = ServerProfileOC.FirstOrDefault(predicate: x => x.IsServerEqual(server));
                 if (serverOld == null)
                 {
-                    OCServerProfile.Add(server);
+                    ServerProfileOC.Add(server);
                     ++added;
                 }
                 else
                 {
                     if (ConfigManager.Global.IsReplaceOldServer)
                     {
-                        int i = OCServerProfile.IndexOf(serverOld);
-                        OCServerProfile[i] = server;
+                        int i = ServerProfileOC.IndexOf(serverOld);
+                        ServerProfileOC[i] = server;
                         ++added;
                     }
                 }
@@ -107,18 +107,18 @@ namespace XTransmit.ViewModel
         {
             int added = 0;
 
-            ServerProfile serverOld = OCServerProfile.FirstOrDefault(predicate: x => x.IsServerEqual(server));
+            ServerProfile serverOld = ServerProfileOC.FirstOrDefault(predicate: x => x.IsServerEqual(server));
             if (serverOld == null)
             {
-                OCServerProfile.Add(server);
+                ServerProfileOC.Add(server);
                 ++added;
             }
             else
             {
                 if (ConfigManager.Global.IsReplaceOldServer)
                 {
-                    int i = OCServerProfile.IndexOf(serverOld);
-                    OCServerProfile[i] = server;
+                    int i = ServerProfileOC.IndexOf(serverOld);
+                    ServerProfileOC[i] = server;
                     ++added;
                 }
             }
@@ -143,7 +143,7 @@ namespace XTransmit.ViewModel
         private void SaveServer(object parameter)
         {
             // convert to list and save
-            List<ServerProfile> profiles = new List<ServerProfile>(OCServerProfile);
+            List<ServerProfile> profiles = new List<ServerProfile>(ServerProfileOC);
             ServerManager.Save(profiles);
         }
 
@@ -187,7 +187,7 @@ namespace XTransmit.ViewModel
 
             await Task.Run(() =>
             {
-                for (int i = 0; i < OCServerProfile.Count; ++i)
+                for (int i = 0; i < ServerProfileOC.Count; ++i)
                 {
                     // isFetchInProcess is also use to cancel task
                     if (processing_fetch_info == false)
@@ -195,12 +195,12 @@ namespace XTransmit.ViewModel
                         break;
                     }
 
-                    OCServerProfile[i].UpdateIPInfo((bool)force);
-                    task.Progress100 = (i * 100 / OCServerProfile.Count) + 1;
+                    ServerProfileOC[i].UpdateIPInfo((bool)force);
+                    task.Progress100 = (i * 100 / ServerProfileOC.Count) + 1;
                 }
             }).ConfigureAwait(true);
 
-            ServerProfile serverSelected = OCServerProfile.FirstOrDefault(x => x.IsServerEqual(ConfigManager.Global.RemoteServer));
+            ServerProfile serverSelected = ServerProfileOC.FirstOrDefault(x => x.IsServerEqual(ConfigManager.Global.RemoteServer));
             if (serverSelected != null)
             {
                 ConfigManager.Global.RemoteServer = serverSelected;
@@ -227,7 +227,7 @@ namespace XTransmit.ViewModel
 
             await Task.Run(() =>
             {
-                for (int i = 0; i < OCServerProfile.Count; ++i)
+                for (int i = 0; i < ServerProfileOC.Count; ++i)
                 {
                     // isFetchInProcess is also use to cancel task
                     if (processing_fetch_response_time == false)
@@ -235,7 +235,7 @@ namespace XTransmit.ViewModel
                         break;
                     }
 
-                    ServerProfile server = OCServerProfile[i];
+                    ServerProfile server = ServerProfileOC[i];
                     if (ServerManager.ServerProcessMap.ContainsKey(server))
                     {
                         server.UpdateResponseTime();
@@ -251,7 +251,7 @@ namespace XTransmit.ViewModel
                         }
                     }
 
-                    task.Progress100 = (i * 100 / OCServerProfile.Count) + 1;
+                    task.Progress100 = (i * 100 / ServerProfileOC.Count) + 1;
                 }
             }).ConfigureAwait(true);
 
@@ -278,7 +278,7 @@ namespace XTransmit.ViewModel
             int timeout = ConfigManager.Global.PingTimeout;
             using (Ping ping = new Ping())
             {
-                for (int i = 0; i < OCServerProfile.Count; ++i)
+                for (int i = 0; i < ServerProfileOC.Count; ++i)
                 {
                     // isPingInProcess is also use to cancel task
                     if (processing_check_ping == false)
@@ -286,7 +286,7 @@ namespace XTransmit.ViewModel
                         break;
                     }
 
-                    ServerProfile server = OCServerProfile[i];
+                    ServerProfile server = ServerProfileOC[i];
                     try
                     {
                         PingReply reply = await ping.SendPingAsync(server.HostIP, timeout).ConfigureAwait(true);
@@ -297,7 +297,7 @@ namespace XTransmit.ViewModel
                         server.Ping = -1;
                     }
 
-                    task.Progress100 = (i * 100 / OCServerProfile.Count) + 1;
+                    task.Progress100 = (i * 100 / ServerProfileOC.Count) + 1;
                 }
             }
 
@@ -436,10 +436,10 @@ namespace XTransmit.ViewModel
                 {
                     if (resultOK)
                     {
-                        int i = OCServerProfile.IndexOf(serverOld);
+                        int i = ServerProfileOC.IndexOf(serverOld);
                         if (i >= 0)
                         {
-                            OCServerProfile[i] = serverNew;
+                            ServerProfileOC[i] = serverNew;
                         }
                     }
                 }).ShowDialog();
@@ -449,7 +449,7 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandDeleteServers => new RelayCommand(DeleteServers, CanDeleteServer);
         private bool CanDeleteServer(object serverSelected)
         {
-            return (OCServerProfile.Count > 0) && CanEditList(null);
+            return (ServerProfileOC.Count > 0) && CanEditList(null);
         }
         private void DeleteServers(object serversSelected)
         {
@@ -460,7 +460,7 @@ namespace XTransmit.ViewModel
 
             foreach (ServerProfile server in listServerProfile)
             {
-                OCServerProfile.Remove(server);
+                ServerProfileOC.Remove(server);
             }
         }
     }

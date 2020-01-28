@@ -61,8 +61,8 @@ namespace XTransmit.ViewModel
             contentTable.IsChecked = true;
             ContentDisplay = contentTable.Content;
 
-            // to trigge the control
-            IsTransmitEnabled = ConfigManager.Global.IsTransmitEnabled;
+            // init transmit control
+            TransmitCtrl.EnableTransmit(ConfigManager.Global.IsTransmitEnabled);
         }
 
         /** methods ====================================================================================================== 

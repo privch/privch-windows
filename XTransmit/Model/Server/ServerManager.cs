@@ -53,8 +53,8 @@ namespace XTransmit.Model.Server
 
             if (SSManager.Execute(server, listen) is Process process)
             {
-                ServerProcessMap.Add(server, process);
                 server.ListenPort = listen;
+                ServerProcessMap.Add(server, process);
                 return true;
             }
 

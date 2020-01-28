@@ -42,17 +42,15 @@
                 <Separator/>
 
                 <Button ToolTip="{StaticResource server_fetch_info}"
-                        Content="{md:PackIcon Kind=AddLocation,Size=24}"
+                        Content="{md:PackIcon Kind=AddLocation}"
                         Command="{Binding Path=CommandFetchInfo}"/>
 
-                <!--
                 <Button ToolTip="{StaticResource server_response_time}"
-                        Content="{md:PackIcon Kind=ServerNetwork,Size=24}"
+                        Content="{md:PackIcon Kind=ServerNetwork}"
                         Command="{Binding Path=CommandFetchResponseTime}"/>
-                -->
 
                 <Button ToolTip="{StaticResource server_ping_check}"
-                        Content="{md:PackIcon Kind=ChartAreaspline,Size=24}"
+                        Content="{md:PackIcon Kind=ChartAreaspline}"
                         Command="{Binding Path=CommandCheckPing}"/>
             </ToolBar>
         </ToolBarTray>
@@ -65,7 +63,7 @@
                   IsReadOnly="True"
                   CanUserDeleteRows="True"
                   CanUserSortColumns="True"
-                  ItemsSource="{Binding Path=ServerViewListOC}">
+                  ItemsSource="{Binding Path=OCServerProfile}">
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" 
                               Command="{Binding Path=CommandSelectServer}"
@@ -96,7 +94,7 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _server}" Binding="{Binding Path=FriendlyName}"/>
-                <!--<DataGridTextColumn Width="Auto" Header="{StaticResource _delay}" Binding="{Binding Path=ResponseTime}"/>-->
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _delay}" Binding="{Binding Path=ResponseTime}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _ping}" Binding="{Binding Path=Ping}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _host}" Binding="{Binding Path=HostIP}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _port}" Binding="{Binding Path=HostPort}"/>
@@ -114,7 +112,7 @@
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ServerViewListOC.Count}" Value="0">
+                            <DataTrigger Binding="{Binding OCServerProfile.Count}" Value="0">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>

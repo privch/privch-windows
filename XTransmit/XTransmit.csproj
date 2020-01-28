@@ -170,7 +170,6 @@
     <Compile Include="ViewModel\Element\ContentTable.cs" />
     <Compile Include="ViewModel\Element\Placement.cs" />
     <Compile Include="ViewModel\Element\ProgressView.cs" />
-    <Compile Include="ViewModel\Element\ServerView.cs" />
     <Compile Include="ViewModel\Element\TaskView.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -27,7 +27,7 @@ namespace XTransmit.ViewModel
      */
     class ContentServerVModel : BaseViewModel
     {
-        public ObservableCollection<ServerView> ServerViewListOC { get; private set; }
+        public ObservableCollection<ServerProfile> OCServerProfile { get; private set; }
 
         // languages
         private static readonly string sr_yes = (string)Application.Current.FindResource("_yes");
@@ -52,11 +52,7 @@ namespace XTransmit.ViewModel
             ServerManager.Load(App.FileServerXml);
 
             // load servers and convert to ObservableCollection
-            ServerViewListOC = new ObservableCollection<ServerView>();
-            foreach (ServerProfile server in ServerManager.ServerList)
-            {
-                ServerViewListOC.Add(new ServerView(server));
-            }
+            OCServerProfile = new ObservableCollection<ServerProfile>(ServerManager.ServerList);
         }
 
         ~ContentServerVModel()
@@ -87,18 +83,18 @@ namespace XTransmit.ViewModel
             int added = 0;
             foreach (ServerProfile server in serverList)
             {
-                ServerView serverView = ServerViewListOC.FirstOrDefault(predicate: x => x.GetvServerProfile().Equals(server));
-                if (serverView == null)
+                ServerProfile serverOld = OCServerProfile.FirstOrDefault(predicate: x => x.IsServerEqual(server));
+                if (serverOld == null)
                 {
-                    ServerViewListOC.Add(new ServerView(server));
+                    OCServerProfile.Add(server);
                     ++added;
                 }
                 else
                 {
                     if (ConfigManager.Global.IsReplaceOldServer)
                     {
-                        int i = ServerViewListOC.IndexOf(serverView);
-                        ServerViewListOC[i] = new ServerView(server);
+                        int i = OCServerProfile.IndexOf(serverOld);
+                        OCServerProfile[i] = server;
                         ++added;
                     }
                 }
@@ -111,18 +107,18 @@ namespace XTransmit.ViewModel
         {
             int added = 0;
 
-            ServerView serverView = ServerViewListOC.FirstOrDefault(predicate: x => x.GetvServerProfile().Equals(server));
-            if (serverView == null)
+            ServerProfile serverOld = OCServerProfile.FirstOrDefault(predicate: x => x.IsServerEqual(server));
+            if (serverOld == null)
             {
-                ServerViewListOC.Add(new ServerView(server));
+                OCServerProfile.Add(server);
                 ++added;
             }
             else
             {
                 if (ConfigManager.Global.IsReplaceOldServer)
                 {
-                    int i = ServerViewListOC.IndexOf(serverView);
-                    ServerViewListOC[i] = new ServerView(server);
+                    int i = OCServerProfile.IndexOf(serverOld);
+                    OCServerProfile[i] = server;
                     ++added;
                 }
             }
@@ -130,11 +126,11 @@ namespace XTransmit.ViewModel
             return added;
         }
 
-        private bool IsServerNotInUse(object serverNew)
+        private bool IsServerNotInUse(object parameter)
         {
-            if (serverNew is ServerView serverInfo)
+            if (parameter is ServerProfile server)
             {
-                if (!serverInfo.GetvServerProfile().Equals(ConfigManager.Global.RemoteServer))
+                if (!server.IsServerEqual(ConfigManager.Global.RemoteServer))
                 {
                     return true;
                 }
@@ -147,12 +143,7 @@ namespace XTransmit.ViewModel
         private void SaveServer(object parameter)
         {
             // convert to list and save
-            List<ServerProfile> profiles = new List<ServerProfile>();
-            foreach (ServerView serverView in ServerViewListOC)
-            {
-                profiles.Add(serverView.GetvServerProfile());
-            }
-
+            List<ServerProfile> profiles = new List<ServerProfile>(OCServerProfile);
             ServerManager.Save(profiles);
         }
 
@@ -196,7 +187,7 @@ namespace XTransmit.ViewModel
 
             await Task.Run(() =>
             {
-                for (int i = 0; i < ServerViewListOC.Count; ++i)
+                for (int i = 0; i < OCServerProfile.Count; ++i)
                 {
                     // isFetchInProcess is also use to cancel task
                     if (processing_fetch_info == false)
@@ -204,15 +195,15 @@ namespace XTransmit.ViewModel
                         break;
                     }
 
-                    ServerViewListOC[i].UpdateIPInfo((bool)force);
-                    task.Progress100 = (i * 100 / ServerViewListOC.Count) + 1;
+                    OCServerProfile[i].UpdateIPInfo((bool)force);
+                    task.Progress100 = (i * 100 / OCServerProfile.Count) + 1;
                 }
             }).ConfigureAwait(true);
 
-            ServerView serverSelected = ServerViewListOC.FirstOrDefault(x => x.GetvServerProfile().Equals(ConfigManager.Global.RemoteServer));
+            ServerProfile serverSelected = OCServerProfile.FirstOrDefault(x => x.IsServerEqual(ConfigManager.Global.RemoteServer));
             if (serverSelected != null)
             {
-                ConfigManager.Global.RemoteServer = serverSelected.GetvServerProfile();
+                ConfigManager.Global.RemoteServer = serverSelected;
                 InterfaceCtrl.UpdateHomeTransmitStatue();
             }
 
@@ -236,7 +227,7 @@ namespace XTransmit.ViewModel
 
             await Task.Run(() =>
             {
-                for (int i = 0; i < ServerViewListOC.Count; ++i)
+                for (int i = 0; i < OCServerProfile.Count; ++i)
                 {
                     // isFetchInProcess is also use to cancel task
                     if (processing_fetch_response_time == false)
@@ -244,23 +235,23 @@ namespace XTransmit.ViewModel
                         break;
                     }
 
-                    ServerView serverView = ServerViewListOC[i];
-                    if (ServerManager.ServerProcessMap.ContainsKey(serverView.GetvServerProfile()))
+                    ServerProfile server = OCServerProfile[i];
+                    if (ServerManager.ServerProcessMap.ContainsKey(server))
                     {
-                        serverView.UpdateResponseTime();
+                        server.UpdateResponseTime();
                     }
                     else
                     {
                         int listen = NetworkUtil.GetAvailablePort(10000);
                         if (listen > 0)
                         {
-                            ServerManager.Start(serverView.GetvServerProfile(), listen);
-                            serverView.UpdateResponseTime();
-                            ServerManager.Stop(serverView.GetvServerProfile());
+                            ServerManager.Start(server, listen);
+                            server.UpdateResponseTime();
+                            ServerManager.Stop(server);
                         }
                     }
 
-                    task.Progress100 = (i * 100 / ServerViewListOC.Count) + 1;
+                    task.Progress100 = (i * 100 / OCServerProfile.Count) + 1;
                 }
             }).ConfigureAwait(true);
 
@@ -287,7 +278,7 @@ namespace XTransmit.ViewModel
             int timeout = ConfigManager.Global.PingTimeout;
             using (Ping ping = new Ping())
             {
-                for (int i = 0; i < ServerViewListOC.Count; ++i)
+                for (int i = 0; i < OCServerProfile.Count; ++i)
                 {
                     // isPingInProcess is also use to cancel task
                     if (processing_check_ping == false)
@@ -295,18 +286,18 @@ namespace XTransmit.ViewModel
                         break;
                     }
 
-                    ServerView serverView = ServerViewListOC[i];
+                    ServerProfile server = OCServerProfile[i];
                     try
                     {
-                        PingReply reply = await ping.SendPingAsync(serverView.HostIP, timeout).ConfigureAwait(true);
-                        serverView.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
+                        PingReply reply = await ping.SendPingAsync(server.HostIP, timeout).ConfigureAwait(true);
+                        server.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                     }
                     catch (Exception)
                     {
-                        serverView.Ping = -1;
+                        server.Ping = -1;
                     }
 
-                    task.Progress100 = (i * 100 / ServerViewListOC.Count) + 1;
+                    task.Progress100 = (i * 100 / OCServerProfile.Count) + 1;
                 }
             }
 
@@ -317,12 +308,12 @@ namespace XTransmit.ViewModel
 
         // select server, not in use
         public RelayCommand CommandSelectServer => new RelayCommand(SelectServer, IsServerNotInUse);
-        private void SelectServer(object serverNew)
+        private void SelectServer(object parameter)
         {
-            if (serverNew is ServerView serverView)
+            if (parameter is ServerProfile server)
             {
                 // Set ServerProfile
-                TransmitCtrl.ChangeTransmitServer(serverView.GetvServerProfile());
+                TransmitCtrl.ChangeTransmitServer(server);
             }
         }
 
@@ -435,20 +426,20 @@ namespace XTransmit.ViewModel
 
         // edit server, not in use
         public RelayCommand CommandEditServer => new RelayCommand(EditServer, IsServerNotInUse);
-        private void EditServer(object serverSelected)
+        private void EditServer(object parameter)
         {
-            ServerView serverView = (ServerView)serverSelected;
-            ServerProfile serverProfile = serverView.GetvServerProfile().Copy();
+            ServerProfile serverOld = (ServerProfile)parameter;
+            ServerProfile serverNew = serverOld.Copy();
 
-            new DialogServerConfig(serverProfile,
+            new DialogServerConfig(serverNew,
                 (bool resultOK) =>
                 {
                     if (resultOK)
                     {
-                        int index = ServerViewListOC.IndexOf(serverView);
-                        if (index >= 0)
+                        int i = OCServerProfile.IndexOf(serverOld);
+                        if (i >= 0)
                         {
-                            ServerViewListOC[index] = new ServerView(serverProfile);
+                            OCServerProfile[i] = serverNew;
                         }
                     }
                 }).ShowDialog();
@@ -458,18 +449,18 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandDeleteServers => new RelayCommand(DeleteServers, CanDeleteServer);
         private bool CanDeleteServer(object serverSelected)
         {
-            return (ServerViewListOC.Count > 0) && CanEditList(null);
+            return (OCServerProfile.Count > 0) && CanEditList(null);
         }
         private void DeleteServers(object serversSelected)
         {
             /** https://stackoverflow.com/a/14852516
              */
             System.Collections.IList selected = serversSelected as System.Collections.IList;
-            List<ServerView> serverViewList = selected.Cast<ServerView>().ToList();
+            List<ServerProfile> listServerProfile = selected.Cast<ServerProfile>().ToList();
 
-            foreach (ServerView serverView in serverViewList)
+            foreach (ServerProfile server in listServerProfile)
             {
-                ServerViewListOC.Remove(serverView);
+                OCServerProfile.Remove(server);
             }
         }
     }

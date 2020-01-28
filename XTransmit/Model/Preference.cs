@@ -32,7 +32,7 @@ namespace XTransmit.Model
         {
             IsDarkTheme = true;
             IsWindowHomeVisible = true;
-            ContentDisplay = "";
+            ContentDisplay = null;
 
             double sw = SystemParameters.PrimaryScreenWidth;
             double sh = SystemParameters.PrimaryScreenHeight;

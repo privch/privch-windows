@@ -13,7 +13,7 @@ namespace XTransmit.ViewModel
 {
     public class ServerConfigVModel : BaseViewModel
     {
-        public ServerView ServerEdit { get; }
+        public ServerProfile ServerEdit { get; }
 
         public List<ItemView> ServerIPInfo { get; private set; }
 
@@ -39,7 +39,7 @@ namespace XTransmit.ViewModel
 
         public ServerConfigVModel(ServerProfile serverProfile, Action<bool> actionComplete)
         {
-            ServerEdit = new ServerView(serverProfile);
+            ServerEdit = serverProfile;
             ServerIPInfo = UpdateInfo();
 
             this.actionComplete = actionComplete;

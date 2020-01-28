@@ -1,3 +1,7 @@
+new
+* Added server response time detection to server list
+* Added light theme, you can switch the theme in Settings
+
 v0.5.5
 * Added server port info in the settings
 * Added a "replace old server" option in the settings, This option works when adding a server

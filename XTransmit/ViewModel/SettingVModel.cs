@@ -1,5 +1,4 @@
 ﻿using MaterialDesignThemes.Wpf;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Windows;
@@ -9,9 +8,6 @@ using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {
-    /** 
-     * TODO - Add custom options.
-     */
     class SettingVModel : BaseViewModel
     {
         // options

@@ -1,9 +1,11 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Windows;
 using XTransmit.Model.IPAddress;
 using XTransmit.Utility;
 
@@ -11,9 +13,10 @@ namespace XTransmit.Model.Server
 {
     [Serializable]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    public class ServerProfile
+    public class ServerProfile : INotifyPropertyChanged
     {
         // encrypt method
+        [NonSerialized]
         public static readonly string[] Ciphers =
         {
             "rc4-md5",
@@ -27,31 +30,155 @@ namespace XTransmit.Model.Server
             "salsa20",
         };
 
-        // server arguments
-        public string HostIP { get; set; }
-        public int HostPort { get; set; }
-        public string Encrypt { get; set; }
-        public string Password { get; set; }
-        public string Remarks { get; set; }
+        /** server arguments
+         */
+        public string HostIP
+        {
+            get => hostIp;
+            set
+            {
+                hostIp = value;
+                OnPropertyChanged(nameof(HostIP));
+            }
+        }
 
-        public bool PluginEnabled { get; set; }
-        public string PluginName { get; set; }
-        public string PluginOption { get; set; }
+        public int HostPort
+        {
+            get => hostPort;
+            set
+            {
+                hostPort = value;
+                OnPropertyChanged(nameof(HostPort));
+            }
+        }
 
-        // preference and info
-        public string FriendlyName { get; set; }
-        public string TimeCreated { get; set; }
+        public string Encrypt
+        {
+            get => encrypt;
+            set
+            {
+                encrypt = value;
+                OnPropertyChanged(nameof(Encrypt));
+            }
+        }
+
+        public string Password
+        {
+            get => password;
+            set
+            {
+                password = value;
+                OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        public string Remarks
+        {
+            get => remarks;
+            set
+            {
+                remarks = value;
+                OnPropertyChanged(nameof(Remarks));
+            }
+        }
+
+        public bool PluginEnabled
+        {
+            get => pluginEnabled;
+            set
+            {
+                pluginEnabled = value;
+                OnPropertyChanged(nameof(PluginEnabled));
+            }
+        }
+
+        public string PluginName
+        {
+            get => pluginName;
+            set
+            {
+                pluginName = value;
+                OnPropertyChanged(nameof(PluginName));
+            }
+        }
+        public string PluginOption
+        {
+            get => pluginOption;
+            set
+            {
+                pluginOption = value;
+                OnPropertyChanged(nameof(PluginOption));
+            }
+        }
+
+        /** preference and info
+         */
+        public string FriendlyName
+        {
+            get => friendlyName;
+            set
+            {
+                friendlyName = value;
+                OnPropertyChanged(nameof(FriendlyName));
+            }
+        }
+
+        public string TimeCreated { get; }
+
         public IPInfo IPData { get; set; }
 
-        // status
-        public int ListenPort { get; set; }
-        public string ResponseTime { get; set; } //seconds
-        public long Ping { get; set; } // less then 0 means timeout or unreachable
-
-        public ServerProfile Copy()
+        /** status
+         */
+        public int ListenPort
         {
-            return (ServerProfile)TextUtil.CopyBySerializer(this);
+            get => listenPort;
+            set
+            {
+                listenPort = value;
+                OnPropertyChanged(nameof(ListenPort));
+            }
         }
+
+        public string ResponseTime
+        {
+            get => responseTime;
+            set
+            {
+                responseTime = value;
+                OnPropertyChanged(nameof(ResponseTime));
+            }
+        }
+
+        //seconds, less then 0 means timeout or unreachable
+        public long Ping
+        {
+            get => ping;
+            set
+            {
+                ping = value;
+                OnPropertyChanged(nameof(Ping));
+            }
+        }
+
+        // values 
+        private string hostIp;
+        private int hostPort;
+        private string encrypt;
+        private string password;
+        private string remarks;
+
+        private bool pluginEnabled;
+        private string pluginName;
+        private string pluginOption;
+
+        private string friendlyName;
+
+        private int listenPort;
+        private string responseTime;
+        private long ping;
+
+        private static readonly string sr_timedout = (string)Application.Current.FindResource("timed_out");
+        private static readonly string sr_failed = (string)Application.Current.FindResource("_failed");
 
         /**<summary>
          * Must be called after the ConfigManager.Global loaded
@@ -76,6 +203,39 @@ namespace XTransmit.Model.Server
             ListenPort = -1;
             ResponseTime = "";
             Ping = 0;
+        }
+
+        public ServerProfile Copy()
+        {
+            return (ServerProfile)TextUtil.CopyBySerializer(this);
+        }
+
+        public bool IsServerEqual(ServerProfile serverNew)
+        {
+            if (serverNew != null)
+            {
+                return HostIP == serverNew.HostIP && HostPort == serverNew.HostPort;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void UpdateIPInfo(bool force)
+        {
+            if (IPData == null || force)
+            {
+                IPData = IPInfo.Fetch(HostIP);
+                SetFriendNameByIPData();
+                OnPropertyChanged(nameof(FriendlyName));
+            }
+        }
+
+        public void UpdateResponseTime()
+        {
+            CheckResponseTime();
+            OnPropertyChanged(nameof(ResponseTime));
         }
 
         public void SetFriendlyNameDefault()
@@ -119,17 +279,9 @@ namespace XTransmit.Model.Server
             }
         }
 
-        public void FetchIPData(bool focus)
-        {
-            if (IPData == null || focus)
-            {
-                IPData = IPInfo.Fetch(HostIP);
-            }
-        }
-
         // TODO - UA.
         // return seconds
-        public void CheckResponseTime()
+        private void CheckResponseTime()
         {
             if (ListenPort <= 0)
             {
@@ -153,11 +305,17 @@ namespace XTransmit.Model.Server
                     });
 
                 ResponseTime = process.StandardOutput.ReadToEnd();
+                double time = double.Parse(ResponseTime, CultureInfo.InvariantCulture);
+                if (time > timeout)
+                {
+                    ResponseTime = sr_timedout;
+                }
+
                 process.WaitForExit();
             }
             catch
             {
-                ResponseTime = "";
+                ResponseTime = sr_failed;
             }
             finally
             {
@@ -184,20 +342,14 @@ namespace XTransmit.Model.Server
             }
         }
 
-        /** Serializable ==================================================
-         */
-        public override int GetHashCode() => HostIP.GetHashCode() ^ HostPort;
 
-        public override bool Equals(object serverNew)
+        /** INotifyPropertyChanged =========================================
+         */
+        //[NonSerialized]
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
         {
-            if (serverNew is ServerProfile server)
-            {
-                return HostIP == server.HostIP && HostPort == server.HostPort;
-            }
-            else
-            {
-                return false;
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

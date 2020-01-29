@@ -94,6 +94,23 @@
                               Header="{StaticResource server_menu_delete}"
                               Command="{Binding Path=CommandDeleteServers}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
+
+                    <Separator/>
+
+                    <MenuItem Icon="{md:PackIcon Kind=AddLocation}"
+                              Header="{StaticResource server_fetch_info}"
+                              Command="{Binding Path=CommandSelFetchInfo}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
+
+                    <MenuItem Icon="{md:PackIcon Kind=ServerNetwork}"
+                              Header="{StaticResource server_check_response_time}"
+                              Command="{Binding Path=CommandSelCheckResponseTime}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
+
+                    <MenuItem Icon="{md:PackIcon Kind=ChartAreaspline}"
+                              Header="{StaticResource server_check_ping}"
+                              Command="{Binding Path=CommandSelCheckPing}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
 

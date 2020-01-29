@@ -128,7 +128,7 @@ namespace XTransmit.ViewModel
             }
         }
 
-        public void AddServerByClipboard()
+        public void AddServerFromClipboard()
         {
             // TODO - Take care of the ContentTables list order
             ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;

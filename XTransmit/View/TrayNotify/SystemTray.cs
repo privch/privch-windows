@@ -137,7 +137,7 @@ namespace XTransmit.View.TrayNotify
 
         private void MenuItem_AddServer_Clipboard(object sender, EventArgs e)
         {
-            InterfaceCtrl.AddServerByScanQRCode();
+            InterfaceCtrl.AddServerFromClipboard();
         }
 
         private void MenuItem_Setting(object sender, EventArgs e)

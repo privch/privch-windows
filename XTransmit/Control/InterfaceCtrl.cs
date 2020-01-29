@@ -102,12 +102,12 @@ namespace XTransmit.Control
             }
         }
 
-        public static void MenuItem_AddServer_Clipboard()
+        public static void AddServerFromClipboard()
         {
             if (Application.Current.MainWindow is WindowHome windowHome
                 && windowHome.DataContext is HomeVModel homeViewModel)
             {
-                homeViewModel.AddServerByClipboard();
+                homeViewModel.AddServerFromClipboard();
             }
         }
     }

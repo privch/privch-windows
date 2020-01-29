@@ -15,8 +15,10 @@
         </Grid.RowDefinitions>
 
         <!-- Toolbar -->
-        <ToolBarTray Grid.Row="0" IsLocked="True">
-            <ToolBar IsOverflowOpen="False" VerticalAlignment="Center">
+        <ToolBarTray Grid.Row="0" 
+                     IsLocked="True">
+            <ToolBar IsOverflowOpen="False" 
+                     VerticalAlignment="Center">
                 <Button ToolTip="{StaticResource _save}"
                         Content="{md:PackIcon Kind=ContentSave}"
                         Command="{Binding Path=CommandSaveServer}"/>
@@ -45,11 +47,11 @@
                         Content="{md:PackIcon Kind=AddLocation}"
                         Command="{Binding Path=CommandFetchInfo}"/>
 
-                <Button ToolTip="{StaticResource server_response_time}"
+                <Button ToolTip="{StaticResource server_check_response_time}"
                         Content="{md:PackIcon Kind=ServerNetwork}"
-                        Command="{Binding Path=CommandFetchResponseTime}"/>
+                        Command="{Binding Path=CommandCheckResponseTime}"/>
 
-                <Button ToolTip="{StaticResource server_ping_check}"
+                <Button ToolTip="{StaticResource server_check_ping}"
                         Content="{md:PackIcon Kind=ChartAreaspline}"
                         Command="{Binding Path=CommandCheckPing}"/>
             </ToolBar>
@@ -78,15 +80,18 @@
 
             <DataGrid.ContextMenu>
                 <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
-                    <MenuItem Icon="{md:PackIcon Kind=Check}" Header="{StaticResource server_menu_select}"
+                    <MenuItem Icon="{md:PackIcon Kind=Check}" 
+                              Header="{StaticResource server_menu_select}"
                               Command="{Binding Path=CommandSelectServer}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
 
-                    <MenuItem Icon="{md:PackIcon Kind=Edit}" Header="{StaticResource server_menu_edit}"
+                    <MenuItem Icon="{md:PackIcon Kind=Edit}"
+                              Header="{StaticResource server_menu_edit}"
                               Command="{Binding Path=CommandEditServer}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
 
-                    <MenuItem Icon="{md:PackIcon Kind=Delete}" Header="{StaticResource server_menu_delete}"
+                    <MenuItem Icon="{md:PackIcon Kind=Delete}"
+                              Header="{StaticResource server_menu_delete}"
                               Command="{Binding Path=CommandDeleteServers}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
                 </ContextMenu>
@@ -101,12 +106,12 @@
                 <DataGridTextColumn Width="*" Header="{StaticResource _added}" Binding="{Binding Path=TimeCreated}"/>
             </DataGrid.Columns>
         </DataGrid>
-        
+
         <!-- Empty -->
         <Grid Grid.Row="1" Panel.ZIndex="1"
               VerticalAlignment="Center"
               HorizontalAlignment="Center">
-            <TextBlock Margin="20" 
+            <TextBlock Margin="20"
                        Text="{StaticResource server_no_data}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">

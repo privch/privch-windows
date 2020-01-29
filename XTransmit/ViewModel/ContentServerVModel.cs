@@ -59,7 +59,7 @@ namespace XTransmit.ViewModel
         {
             // cancel tasks
             processing_fetch_info = false;
-            processing_fetch_response_time = false;
+            processing_check_response_time = false;
             processing_check_ping = false;
 
             // data changed ?
@@ -70,12 +70,12 @@ namespace XTransmit.ViewModel
         /** Commands =========================================================================================================
          */
         private volatile bool processing_fetch_info = false; // also use to cancel task
-        private volatile bool processing_fetch_response_time = false; // also use to cancel task
+        private volatile bool processing_check_response_time = false; // also use to cancel task
         private volatile bool processing_check_ping = false;  // also use to cancel task
 
         public bool CanEditList(object parameter)
         {
-            return !processing_fetch_info && !processing_fetch_response_time && !processing_check_ping;
+            return !processing_fetch_info && !processing_check_response_time && !processing_check_ping;
         }
 
         private int AddServer(List<ServerProfile> serverList)
@@ -213,15 +213,15 @@ namespace XTransmit.ViewModel
         }
 
         // response time
-        public RelayCommand CommandFetchResponseTime => new RelayCommand(FetchResponseTime, CanFetchResponseTime);
-        private bool CanFetchResponseTime(object parameter) => !processing_fetch_response_time;
-        private async void FetchResponseTime(object parameter)
+        public RelayCommand CommandCheckResponseTime => new RelayCommand(CheckResponseTime, CanCheckResponseTime);
+        private bool CanCheckResponseTime(object parameter) => !processing_check_response_time;
+        private async void CheckResponseTime(object parameter)
         {
-            processing_fetch_response_time = true;
+            processing_check_response_time = true;
             TaskView task = new TaskView
             {
                 Name = sr_task_check_response_time,
-                StopAction = () => { processing_fetch_response_time = false; }
+                StopAction = () => { processing_check_response_time = false; }
             };
             InterfaceCtrl.AddHomeTask(task);
 
@@ -230,7 +230,7 @@ namespace XTransmit.ViewModel
                 for (int i = 0; i < ServerProfileOC.Count; ++i)
                 {
                     // isFetchInProcess is also use to cancel task
-                    if (processing_fetch_response_time == false)
+                    if (processing_check_response_time == false)
                     {
                         break;
                     }
@@ -255,7 +255,7 @@ namespace XTransmit.ViewModel
                 }
             }).ConfigureAwait(true);
 
-            processing_fetch_response_time = false;
+            processing_check_response_time = false;
             InterfaceCtrl.RemoveHomeTask(task);
             CommandManager.InvalidateRequerySuggested();
         }
@@ -276,7 +276,7 @@ namespace XTransmit.ViewModel
             InterfaceCtrl.AddHomeTask(task);
 
             int timeout = ConfigManager.Global.PingTimeout;
-            using (Ping ping = new Ping())
+            using (Ping pingSender = new Ping())
             {
                 for (int i = 0; i < ServerProfileOC.Count; ++i)
                 {
@@ -289,7 +289,7 @@ namespace XTransmit.ViewModel
                     ServerProfile server = ServerProfileOC[i];
                     try
                     {
-                        PingReply reply = await ping.SendPingAsync(server.HostIP, timeout).ConfigureAwait(true);
+                        PingReply reply = await pingSender.SendPingAsync(server.HostIP, timeout).ConfigureAwait(true);
                         server.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                     }
                     catch (Exception)

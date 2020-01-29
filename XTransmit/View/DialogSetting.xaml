@@ -48,14 +48,17 @@
                     <Style TargetType="DockPanel">
                         <Setter Property="LastChildFill" Value="True"/>
                     </Style>
+                    
                     <Style TargetType="md:PackIcon">
-                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center"/>
                         <Setter Property="Margin" Value="0" />
                     </Style>
+                    
                     <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
-                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center"/>
                         <Setter Property="Margin" Value="10, 10, 0, 10" />
                     </Style>
+                    
                     <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
                         <Setter Property="VerticalAlignment" Value="Center"/>
                         <Setter Property="Margin" Value="0, 10"/>

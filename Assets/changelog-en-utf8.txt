@@ -1,6 +1,7 @@
 new
 * Added light theme, you can switch the theme in Settings
-* Added server response time detection to server list
+* Added checking server response time to server list
+* Added fetch information, checking response time, checking ping delay functions to the Server profile editing.
 
 v0.5.5
 * Added server port info in the settings

@@ -13,24 +13,41 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
             <Style TargetType="DockPanel">
                 <Setter Property="LastChildFill" Value="True"/>
             </Style>
-            <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="8"/>
-            </Style>
-            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="8"/>
-            </Style>
-            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="8"/>
-            </Style>
+
             <Style TargetType="md:PackIcon">
                 <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="8"/>
+                <Setter Property="Margin" Value="0"/>
+            </Style>
+
+            <Style x:Key="TextBlockRight"
+                   TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignCaptionTextBlock}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0, 10"/>
+            </Style>
+
+            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="10, 10, 0, 10"/>
+                <Setter Property="IsReadOnly" Value="True"/>
+            </Style>
+            <Style x:Key="TextBoxRight"
+                   TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="10, 10, 0, 10"/>
+            </Style>
+
+            <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="10, 10, 0, 10"/>
+            </Style>
+
+            <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0, 10"/>
             </Style>
         </ResourceDictionary>
     </Window.Resources>
@@ -43,12 +60,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Server, Left side ========================================================================== -->
         <StackPanel Grid.Column="0" Grid.Row="0"
+                    Margin="15, 10"
                     Orientation="Vertical"
                     HorizontalAlignment="Stretch" >
 
@@ -85,7 +101,7 @@
                              Kind="TextboxPassword"/>
                 <TextBox DockPanel.Dock="Right"
                          md:HintAssist.Hint="{StaticResource dialog_server_password}"
-                         Text="{Binding Path=ServerEdit.Password}" />
+                         Text="{Binding Path=ServerEdit.Password}"/>
             </DockPanel>
 
             <!-- encrypt -->
@@ -106,25 +122,33 @@
                          md:HintAssist.Hint="{StaticResource _remarks}"
                          Text="{Binding Path=ServerEdit.Remarks}"/>
             </DockPanel>
-        </StackPanel>
 
-        <!-- sip003 plugin -->
-        <CheckBox x:Name="xCheckBoxPluginEnabled" 
-                  Grid.Column="0" Grid.Row="1"
-                  Content="{StaticResource dialog_server_enable_sip003}"
-                  IsChecked="{Binding Path=ServerEdit.PluginEnabled}"/>
-        <StackPanel Grid.Column="0" Grid.Row="2"
-                    IsEnabled="{Binding ElementName=xCheckBoxPluginEnabled, Path=IsChecked}" >
-            <!-- plugin name -->
-            <TextBox md:HintAssist.Hint="{StaticResource dialog_server_plugin_name}"
-                     Text="{Binding Path=ServerEdit.PluginName}"/>
-            <!-- plugin option -->
-            <TextBox md:HintAssist.Hint="{StaticResource dialog_server_plugin_option}"
-                     Text="{Binding Path=ServerEdit.PluginOption}"/>
+            <!-- sip003 plugin -->
+            <CheckBox x:Name="xCheckBoxPluginEnabled"
+                      Content="{StaticResource dialog_server_enable_sip003}"
+                      IsChecked="{Binding Path=ServerEdit.PluginEnabled}"/>
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=ServerEdit.PluginEnabled}" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <!-- plugin name -->
+                <TextBox md:HintAssist.Hint="{StaticResource dialog_server_plugin_name}"
+                         Text="{Binding Path=ServerEdit.PluginName}"/>
+                <!-- plugin option -->
+                <TextBox md:HintAssist.Hint="{StaticResource dialog_server_plugin_option}"
+                         Text="{Binding Path=ServerEdit.PluginOption}"/>
+            </StackPanel>
         </StackPanel>
 
         <!-- Server info, Right side =========================================================================== -->
-        <ItemsControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
+        <ItemsControl Grid.Column="1" Grid.Row="0"
+                      Margin="15, 10"
                       ItemsSource="{Binding ServerIPInfo}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -133,17 +157,16 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="x_info_c1"/>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="x_info_c2"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Margin="8"
+                        <TextBlock Grid.Column="0"
                                    Opacity=".7"
-                                   Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                   Style="{StaticResource TextBlockRight}"
                                    Text="{Binding Path=Label}"/>
 
-                        <TextBox Grid.Column="1" Margin="8"
+                        <TextBox Grid.Column="1"
                                  Opacity=".7"
                                  MaxWidth="220"
                                  TextWrapping="Wrap"
-                                 IsReadOnly="True"
-                                 Style="{StaticResource MaterialDesignTextBoxBase}"
+                                 Style="{StaticResource TextBoxRight}"
                                  Text="{Binding Path=Text}"/>
                     </Grid>
                 </DataTemplate>
@@ -158,33 +181,58 @@
         </ItemsControl>
 
         <!-- Buttons, Bottom ============================================================================== -->
-        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    Margin="10"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <StackPanel.Resources>
+                <Style TargetType="Button" 
+                       BasedOn="{StaticResource MaterialDesignIconButton}">
+                    <Setter Property="Margin" Value="5, 0"/>
+                </Style>
+                <Style x:Key="ButtonConfirm" TargetType="Button" 
+                       BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                    <Setter Property="Margin" Value="10, 0"/>
+                </Style>
+            </StackPanel.Resources>
 
-            <Button Grid.Column="0" Margin="10"
-                    md:ButtonProgressAssist.Value="-1"
-                    md:ButtonProgressAssist.IsIndicatorVisible="True"
-                    md:ButtonProgressAssist.IsIndeterminate="{Binding Path=IsFetching}"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Content="{StaticResource _fetch}"
-                    Command="{Binding Path=CommandFetchData}"/>
+            <!-- actions -->
+            <Button ToolTip="{StaticResource server_fetch_info}"
+                    Content="{md:PackIcon Kind=AddLocation}"
+                    Command="{Binding Path=CommandFetchInfo}"/>
 
-            <Button Grid.Column="2" Margin="10"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
+            <Button ToolTip="{StaticResource server_check_response_time}"
+                    Content="{md:PackIcon Kind=ServerNetwork}"
+                    Command="{Binding Path=CommandCheckResponseTime}"/>
+
+            <Button ToolTip="{StaticResource server_check_ping}"
+                    Content="{md:PackIcon Kind=ChartAreaspline}"
+                    Command="{Binding Path=CommandCheckPing}"/>
+
+            <ProgressBar Margin="10, 0"
+                         Value="75"
+                         IsIndeterminate="{Binding Path=IsProcessing}">
+                <ProgressBar.Style>
+                    <Style TargetType="ProgressBar" BasedOn="{StaticResource MaterialDesignCircularProgressBar}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsProcessing}" Value="False">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ProgressBar.Style>
+            </ProgressBar>
+
+            <!-- confirm -->
+            <Button Style="{StaticResource ButtonConfirm}"
                     Content="{StaticResource _ok}"
                     Command="{Binding Path=CommandCloseOK}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
 
-            <Button Grid.Column="3" Margin="10"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
+            <Button Style="{StaticResource ButtonConfirm}"
                     Content="{StaticResource _cancel}"
                     Command="{Binding Path=CommandCloseCancel}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-        </Grid>
+        </StackPanel>
     </Grid>
 </Window>

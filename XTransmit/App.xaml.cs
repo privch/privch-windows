@@ -87,7 +87,7 @@ namespace XTransmit
             string dirData = "data";
             string dirBin = "binary";
 
-            // to avoid loading WindowHome on startup exceptions
+            // to avoid loading WindowHome on startup fails
             StartupUri = new System.Uri("View/WindowShutdown.xaml", System.UriKind.Relative);
 
             // single instance
@@ -99,9 +99,16 @@ namespace XTransmit
 
             // init directory
             PathCurrent = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-            try { Directory.CreateDirectory($@"{PathCurrent}\{dirData}"); }
+            try
+            {
+                Directory.CreateDirectory($@"{PathCurrent}\{dirData}");
+            }
             catch
             {
+                string title = (string)FindResource("app_name");
+                string message = (string)FindResource("app_init_fail");
+                new View.DialogPrompt(title, message).ShowDialog();
+
                 Shutdown();
                 return;
             }
@@ -118,15 +125,15 @@ namespace XTransmit
             FileServerXml = $@"{PathCurrent}\{dirData}\Servers.xml";
             FileCurlXml = $@"{PathCurrent}\{dirData}\Curl.xml";
 
-            // init binaries
+            // initialize binaries
             PrivoxyManager.KillRunning();
             SSManager.KillRunning();
             CurlManager.KillRunning();
             if (!PrivoxyManager.Prepare() || !SSManager.Prepare() || !CurlManager.Prepare())
             {
-                string app_name = (string)FindResource("app_name");
-                string app_error_binary = (string)FindResource("app_error_binary");
-                new View.DialogPrompt(app_name, app_error_binary).ShowDialog();
+                string title = (string)FindResource("app_name");
+                string message = (string)FindResource("app_init_fail");
+                new View.DialogPrompt(title, message).ShowDialog();
 
                 Shutdown();
                 return;
@@ -136,27 +143,32 @@ namespace XTransmit
             PreferenceManager.LoadFileOrDefault(FilePreferenceXml);
             ConfigManager.LoadFileOrDefault(FileConfigXml);
 
-            // TODO - Alert and exit if fail
+            // initialize interface and theme
             InterfaceCtrl.Initialize();
-            TransmitCtrl.StartServer();
-
-            // Init theme
             InterfaceCtrl.ModifyTheme(theme => theme.SetBaseTheme(
                 PreferenceManager.Global.IsDarkTheme ? Theme.Dark : Theme.Light));
-            
+
+            // initialize transmit
+            if (!TransmitCtrl.StartServer())
+            {
+                string title = (string)FindResource("app_name");
+                string message = (string)FindResource("app_service_fail");
+                new View.DialogPrompt(title, message).ShowDialog();
+            }
+
+            // done
             StartupUri = new System.Uri("View/WindowHome.xaml", System.UriKind.Relative);
             Exit += Application_Exit;
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
+            TransmitCtrl.StopServer();
             InterfaceCtrl.Uninit();
 
-            /** if there were other proxy servers running they should set system proxy again
-             */
+            // if there were other proxy servers running they should set system proxy again
             _ = NativeMethods.DisableProxy();
-            TransmitCtrl.StopServer();
-            SSManager.KillRunning(); // server pool
+            SSManager.KillRunning();
             CurlManager.KillRunning();
 
             PreferenceManager.WriteFile(FilePreferenceXml);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -16,8 +17,7 @@ namespace XTransmit.Model.Server
     public class ServerProfile : INotifyPropertyChanged
     {
         // encrypt method
-        [NonSerialized]
-        public static readonly string[] Ciphers =
+        public static List<string> Ciphers { get; } = new List<string>
         {
             "rc4-md5",
             "aes-128-gcm", "aes-192-gcm", "aes-256-gcm",
@@ -232,56 +232,9 @@ namespace XTransmit.Model.Server
             }
         }
 
-        public void UpdateResponseTime()
-        {
-            CheckResponseTime();
-            OnPropertyChanged(nameof(ResponseTime));
-        }
-
-        public void SetFriendlyNameDefault()
-        {
-            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostIP} - {HostPort}" : Remarks;
-        }
-
-        public void SetFriendNameByIPData()
-        {
-            if (IPData == null)
-            {
-                return;
-            }
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            if (!string.IsNullOrWhiteSpace(IPData.Country))
-            {
-                stringBuilder.Append(IPData.Country);
-            }
-
-            if (!string.IsNullOrWhiteSpace(IPData.Region))
-            {
-                stringBuilder.Append(" - " + IPData.Region);
-            }
-
-            if (!string.IsNullOrWhiteSpace(IPData.City))
-            {
-                stringBuilder.Append(" - " + IPData.City);
-            }
-
-            string friendlyName = stringBuilder.ToString();
-            if (!string.IsNullOrWhiteSpace(friendlyName))
-            {
-                if (friendlyName.StartsWith(" - ", StringComparison.Ordinal))
-                {
-                    friendlyName = friendlyName.Substring(3);
-                }
-
-                FriendlyName = friendlyName;
-            }
-        }
-
         // TODO - UA.
         // return seconds
-        private void CheckResponseTime()
+        public void UpdateResponseTime()
         {
             if (ListenPort <= 0)
             {
@@ -323,22 +276,60 @@ namespace XTransmit.Model.Server
             }
         }
 
-        // OO Programming
-        public void CheckPingDelay(Ping ping)
+        public void UpdatePing()
         {
-            if (ping == null)
+            using (Ping pingSender = new Ping())
+            {
+                try
+                {
+                    PingReply reply = pingSender.Send(HostIP, ConfigManager.Global.PingTimeout);
+                    Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
+                }
+                catch (Exception)
+                {
+                    Ping = -1;
+                }
+            }
+        }
+
+        public void SetFriendlyNameDefault()
+        {
+            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostIP} - {HostPort}" : Remarks;
+        }
+
+        public void SetFriendNameByIPData()
+        {
+            if (IPData == null)
             {
                 return;
             }
 
-            try
+            StringBuilder stringBuilder = new StringBuilder();
+
+            if (!string.IsNullOrWhiteSpace(IPData.Country))
             {
-                PingReply reply = ping.Send(HostIP, ConfigManager.Global.PingTimeout);
-                Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
+                stringBuilder.Append(IPData.Country);
             }
-            catch (Exception)
+
+            if (!string.IsNullOrWhiteSpace(IPData.Region))
             {
-                Ping = -1;
+                stringBuilder.Append(" - " + IPData.Region);
+            }
+
+            if (!string.IsNullOrWhiteSpace(IPData.City))
+            {
+                stringBuilder.Append(" - " + IPData.City);
+            }
+
+            string friendlyName = stringBuilder.ToString();
+            if (!string.IsNullOrWhiteSpace(friendlyName))
+            {
+                if (friendlyName.StartsWith(" - ", StringComparison.Ordinal))
+                {
+                    friendlyName = friendlyName.Substring(3);
+                }
+
+                FriendlyName = friendlyName;
             }
         }
 

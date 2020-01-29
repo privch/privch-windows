@@ -21,6 +21,7 @@
     <system:String x:Key="_download">Download</system:String>
     <system:String x:Key="_upload">Upload</system:String>
     <system:String x:Key="_fetch">Fetch</system:String>
+    <system:String x:Key="_check">Check</system:String>
     <system:String x:Key="_search">Search</system:String>
     
     <system:String x:Key="_server">Server</system:String>
@@ -60,7 +61,8 @@
     <system:String x:Key="app_author">XinLake</system:String>
     <system:String x:Key="app_email">xinlake@outlook.com</system:String>
     <system:String x:Key="app_opensource_software">Open source software</system:String>
-    <system:String x:Key="app_error_binary">Could not initialize the program files.</system:String>
+    <system:String x:Key="app_init_fail">Unable to initialize the program directories or files.</system:String>
+    <system:String x:Key="app_service_fail">Unable to start service</system:String>
 
     <!-- home -->
     <system:String x:Key="task_ping_server">Ping server</system:String>
@@ -74,15 +76,15 @@
     <system:String x:Key="server_title">Servers</system:String>
     <system:String x:Key="server_no_data">No data available now</system:String>
     <system:String x:Key="server_scan_qrcode">Scan QRCode</system:String>
-    <system:String x:Key="server_import_clipboard">Import From Clipboard</system:String>
-    <system:String x:Key="server_import_file">Import From File ...</system:String>
-    <system:String x:Key="server_manual_setting">Manual Setting</system:String>
+    <system:String x:Key="server_import_clipboard">Import from clipboard</system:String>
+    <system:String x:Key="server_import_file">Import from file ...</system:String>
+    <system:String x:Key="server_manual_setting">Manual setting ...</system:String>
     <system:String x:Key="server_fetch_info">Fetch server info ...</system:String>
-    <system:String x:Key="server_response_time">Response Time</system:String>
-    <system:String x:Key="server_ping_check">Ping Server</system:String>
+    <system:String x:Key="server_check_response_time">Check respond time</system:String>
+    <system:String x:Key="server_check_ping">Ping Server</system:String>
     <system:String x:Key="server_menu_select">Select (Double Click)</system:String>
     <system:String x:Key="server_menu_edit">Edit (E)</system:String>
-    <system:String x:Key="server_menu_delete">Delete Selection (Del)</system:String>
+    <system:String x:Key="server_menu_delete">Delete selection (Del)</system:String>
     <system:String x:Key="server_config_0_found">No server(s) found.</system:String>
     <system:String x:Key="server_config_exist">The server already exist.</system:String>
     <system:String x:Key="server_config_x_imported">server(s) imported.</system:String>

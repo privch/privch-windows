@@ -185,10 +185,10 @@
                           ShowsPreview="True"
                           HorizontalAlignment="Stretch" VerticalAlignment="Center"
                           Width="40" Height="6"/>
-            
+
             <!-- response -->
-            <DataGrid x:Name="xDataGridResponse" 
-                      Grid.Row="2" Margin="10"
+            <DataGrid Grid.Row="2" 
+                      Margin="10"
                       SelectionMode="Extended"
                       CanUserSortColumns="True"
                       IsReadOnly="True"
@@ -217,7 +217,7 @@
                                         Header="{StaticResource _response}" 
                                         Binding="{Binding Path=Response}"/>
                 </DataGrid.Columns>
-            </DataGrid>
+            </DataGrid>            
         </Grid>
     </Grid>
 </Window>

@@ -16,9 +16,9 @@ namespace XTransmit
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
      * TODO - Autorun, Add a shortcut to the user Startup menu
-     * TODO - Optimize readonly DataGrids, Use ListView, ListBox instead
      * 
      * NOTE
+     * Compares to DataGrid, ListView comes with auto width, double click, row sort and application command problems
      * EventHandler name use "_"
      */
     public partial class App : Application

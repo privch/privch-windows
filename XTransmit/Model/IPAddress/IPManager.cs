@@ -13,7 +13,7 @@ namespace XTransmit.Model.IPAddress
     internal static class IPManager
     {
         /**
-         * TODO - Remove the locker
+         * TODO - Remove unnecessary lockers
          * 
          * NOTE
          * If use List<IPProfile> it will cause an exception when the App exit 

@@ -29,9 +29,9 @@ namespace XTransmit.ViewModel
         public ProgressView Progress { get; private set; }
         public ObservableCollection<TaskView> TaskListOC { get; private set; }
 
-        // table
+        // tables
         public UserControl ContentDisplay { get; private set; }
-        public List<ContentTable> ContentList { get; private set; }
+        public List<ContentTable> ContentList { get; }
 
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
         private static readonly string sr_server_title = (string)Application.Current.FindResource("server_title");
@@ -116,8 +116,8 @@ namespace XTransmit.ViewModel
 
         public void AddServerByScanQRCode()
         {
-            // TODO - Take care of the ContentTables list order
-            ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
+            ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_server_title);
+            ContentServerVModel serverViewModel = (ContentServerVModel)contantTable.Content.DataContext;
             if (serverViewModel.CanEditList(null))
             {
                 serverViewModel.CommandAddServerQRCode.Execute(null);
@@ -130,8 +130,8 @@ namespace XTransmit.ViewModel
 
         public void AddServerFromClipboard()
         {
-            // TODO - Take care of the ContentTables list order
-            ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
+            ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_server_title);
+            ContentServerVModel serverViewModel = (ContentServerVModel)contantTable.Content.DataContext;
             if (serverViewModel.CanEditList(null))
             {
                 serverViewModel.CommandAddServerClipboard.Execute(null);
@@ -173,8 +173,9 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandShowCurl => new RelayCommand(ShowCurl);
         private void ShowCurl(object parameter)
         {
-            // TODO - Temporary
-            ContentServerVModel serverViewModel = (ContentServerVModel)ContentList[0].Content.DataContext;
+            // save data first
+            ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_server_title);
+            ContentServerVModel serverViewModel = (ContentServerVModel)contantTable.Content.DataContext;
             serverViewModel.CommandSaveServer.Execute(null);
 
             // show curl

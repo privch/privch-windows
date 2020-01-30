@@ -231,7 +231,6 @@ namespace XTransmit.Model.Server
             }
         }
 
-        // TODO - UA.
         // return seconds
         public void UpdateResponseTime()
         {
@@ -245,11 +244,13 @@ namespace XTransmit.Model.Server
             int timeout = ConfigManager.Global.SSTimeout;
             try
             {
+                // UA is "curl"
                 process = Process.Start(
                     new ProcessStartInfo
                     {
                         FileName = CurlManager.CurlExePath,
-                        Arguments = $"--silent --connect-timeout {timeout} --proxy \"socks5://127.0.0.1:{ListenPort}\" " + "-w \"%{time_total}\" -o NUL -s \"https://google.com\"",
+                        Arguments = $"--silent --connect-timeout {timeout} --proxy \"socks5://127.0.0.1:{ListenPort}\""
+                                    + " -w \"%{time_total}\" -o NUL -s \"https://google.com\"",
                         WorkingDirectory = App.PathCurl,
                         CreateNoWindow = true,
                         UseShellExecute = false,

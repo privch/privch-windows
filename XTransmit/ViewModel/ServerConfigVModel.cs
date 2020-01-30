@@ -47,7 +47,7 @@ namespace XTransmit.ViewModel
 
         private List<ItemView> UpdateServerInfo()
         {
-            // TODO - a little overhead
+            // a bit overhead
             return new List<ItemView>()
             {
                 new ItemView{Label = sr_created, Text = ServerEdit.TimeCreated},

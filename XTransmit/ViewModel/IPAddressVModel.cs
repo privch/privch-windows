@@ -9,8 +9,6 @@ using XTransmit.Model.IPAddress;
 namespace XTransmit.ViewModel
 {
     /**
-     * TODO - Confirm that ObservableCollection write data directly to the original list/array items,
-     *        and not the items copied form original list/array
      * TODO - Optimize or remove the ping check
      */
     class IPAddressVModel : BaseViewModel

@@ -60,6 +60,7 @@
     <system:String x:Key="app_name">XTransmit</system:String>
     <system:String x:Key="app_author">XinLake</system:String>
     <system:String x:Key="app_email">xinlake@outlook.com</system:String>
+    <system:String x:Key="app_useragent">XTransmit</system:String>
     <system:String x:Key="app_opensource_software">Open source software</system:String>
     <system:String x:Key="app_init_fail">Unable to initialize the program directories or files.</system:String>
     <system:String x:Key="app_service_fail">Unable to start service</system:String>

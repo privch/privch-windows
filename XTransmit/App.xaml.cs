@@ -175,11 +175,10 @@ namespace XTransmit
             ConfigManager.WriteFile(FileConfigXml);
         }
 
-        // Something wrong happen, Unexpercted, Abnormally
-        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        // Something wrong happen, Unexpercted, Abnormally (Not set)
+        private void Application_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            // TODO - Start another process for user to send feedback
-            //new View.DialogPrompt(app_name, e.Exception.Message).ShowDialog();
+            // Start another process to send feedback for user 
             Shutdown();
         }
     }

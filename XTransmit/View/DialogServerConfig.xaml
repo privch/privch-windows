@@ -13,42 +13,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <Style TargetType="DockPanel">
-                <Setter Property="LastChildFill" Value="True"/>
-            </Style>
-
-            <Style TargetType="md:PackIcon">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="0"/>
-            </Style>
-
-            <Style x:Key="TextBlockRight"
-                   TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignCaptionTextBlock}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="0, 10"/>
-            </Style>
-
-            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="10, 10, 0, 10"/>
-                <Setter Property="IsReadOnly" Value="True"/>
-            </Style>
-            <Style x:Key="TextBoxRight"
-                   TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="10, 10, 0, 10"/>
-            </Style>
-
-            <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="10, 10, 0, 10"/>
-            </Style>
-
-            <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="0, 10"/>
-            </Style>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -66,7 +30,32 @@
         <StackPanel Grid.Column="0" Grid.Row="0"
                     Margin="15, 10"
                     Orientation="Vertical"
-                    HorizontalAlignment="Stretch" >
+                    HorizontalAlignment="Stretch">
+            <StackPanel.Resources>
+                <Style TargetType="DockPanel">
+                    <Setter Property="LastChildFill" Value="True"/>
+                </Style>
+
+                <Style TargetType="md:PackIcon">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+
+                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="10, 10, 0, 10"/>
+                </Style>
+
+                <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="10, 10, 0, 10"/>
+                </Style>
+
+                <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="0, 10"/>
+                </Style>
+            </StackPanel.Resources>
 
             <!-- server(profile) name -->
             <DockPanel>
@@ -124,8 +113,7 @@
             </DockPanel>
 
             <!-- sip003 plugin -->
-            <CheckBox x:Name="xCheckBoxPluginEnabled"
-                      Content="{StaticResource dialog_server_enable_sip003}"
+            <CheckBox Content="{StaticResource dialog_server_enable_sip003}"
                       IsChecked="{Binding Path=ServerEdit.PluginEnabled}"/>
             <StackPanel Orientation="Vertical">
                 <StackPanel.Style>
@@ -149,7 +137,22 @@
         <!-- Server info, Right side =========================================================================== -->
         <ItemsControl Grid.Column="1" Grid.Row="0"
                       Margin="15, 10"
-                      ItemsSource="{Binding ServerIPInfo}">
+                      ItemsSource="{Binding ServerInfo}">
+            <ItemsControl.Resources>
+                <Style x:Key="TextBlockRight"
+                       TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignCaptionTextBlock}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="0, 10"/>
+                </Style>
+
+                <Style x:Key="TextBoxRight"
+                       TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="10, 10, 0, 10"/>
+                    <Setter Property="IsReadOnly" Value="True"/>
+                </Style>
+            </ItemsControl.Resources>
+
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -182,7 +185,7 @@
 
         <!-- Buttons, Bottom ============================================================================== -->
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                    Margin="10"
+                    Margin="10, 15, 10, 5"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
             <StackPanel.Resources>

@@ -22,14 +22,13 @@ using ZXing.QrCode;
 namespace XTransmit.ViewModel
 {
     /**
-     * TODO - Column display option
      * TODO - Optimize task cancellation
      */
     class ContentServerVModel : BaseViewModel
     {
         public ObservableCollection<ServerProfile> ServerProfileOC { get; private set; }
 
-        // languages
+        // language
         private static readonly string sr_yes = (string)Application.Current.FindResource("_yes");
         private static readonly string sr_no = (string)Application.Current.FindResource("_no");
         private static readonly string sr_cancel = (string)Application.Current.FindResource("_cancel");
@@ -147,7 +146,7 @@ namespace XTransmit.ViewModel
             ServerManager.Save(profiles);
         }
 
-        // ipinfo
+        // fetch ipinfo
         public RelayCommand CommandFetchInfo => new RelayCommand(FetchInfo, CanFetchInfo);
         private bool CanFetchInfo(object parameter) => !processing_fetch_info;
         private async void FetchInfo(object parameter)
@@ -217,6 +216,7 @@ namespace XTransmit.ViewModel
             CommandManager.InvalidateRequerySuggested();
         }
 
+        // fetch ipinfo for selected server
         public RelayCommand CommandSelFetchInfo => new RelayCommand(SelFetchInfo, CanSelFetchInfo);
         private bool CanSelFetchInfo(object parameter)
         {
@@ -256,7 +256,7 @@ namespace XTransmit.ViewModel
             CommandManager.InvalidateRequerySuggested();
         }
 
-        // response time
+        // check response time
         public RelayCommand CommandCheckResponseTime => new RelayCommand(CheckResponseTime, CanCheckResponseTime);
         private bool CanCheckResponseTime(object parameter) => !processing_check_response_time;
         private async void CheckResponseTime(object parameter)
@@ -307,6 +307,7 @@ namespace XTransmit.ViewModel
             CommandManager.InvalidateRequerySuggested();
         }
 
+        // check response for selected server
         public RelayCommand CommandSelCheckResponseTime => new RelayCommand(SelCheckResponseTime, CanSelCheckResponseTime);
         private bool CanSelCheckResponseTime(object parameter)
         {
@@ -353,7 +354,7 @@ namespace XTransmit.ViewModel
             CommandManager.InvalidateRequerySuggested();
         }
 
-        // ping
+        // check ping
         public RelayCommand CommandCheckPing => new RelayCommand(CheckPing, CanCheckPing);
         private bool CanCheckPing(object parameter) => !processing_check_ping;
 
@@ -402,6 +403,7 @@ namespace XTransmit.ViewModel
             CommandManager.InvalidateRequerySuggested();
         }
 
+        // check pin for selected server
         public RelayCommand CommandSelCheckPing => new RelayCommand(SelCheckPing, CanSelCheckPing);
         private bool CanSelCheckPing(object parameter)
         {
@@ -436,7 +438,7 @@ namespace XTransmit.ViewModel
         }
 
         // select server, not in use
-        public RelayCommand CommandSelectServer => new RelayCommand(SelectServer, IsServerNotInUse);
+        public RelayCommand CommandSetServer => new RelayCommand(SelectServer, IsServerNotInUse);
         private void SelectServer(object parameter)
         {
             if (parameter is ServerProfile server)
@@ -447,7 +449,6 @@ namespace XTransmit.ViewModel
         }
 
         // add server by scan qrcode
-        // TODO Fix - Some QRCode can not be recognized
         public RelayCommand CommandAddServerQRCode => new RelayCommand(AddServerQRCode, CanEditList);
         private void AddServerQRCode(object parameter)
         {

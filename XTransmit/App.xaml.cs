@@ -178,7 +178,7 @@ namespace XTransmit
         // Something wrong happen, Unexpercted, Abnormally
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            // TODO - Startup another process for user to send feedback
+            // TODO - Start another process for user to send feedback
             //new View.DialogPrompt(app_name, e.Exception.Message).ShowDialog();
             Shutdown();
         }

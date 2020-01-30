@@ -68,7 +68,7 @@
                   ItemsSource="{Binding Path=ServerProfileOC}">
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" 
-                              Command="{Binding Path=CommandSelectServer}"
+                              Command="{Binding Path=CommandSetServer}"
                               CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}"/>
                 <KeyBinding Key="E"
                             Command="{Binding Path=CommandEditServer}"
@@ -82,7 +82,7 @@
                 <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
                     <MenuItem Icon="{md:PackIcon Kind=Check}" 
                               Header="{StaticResource server_menu_select}"
-                              Command="{Binding Path=CommandSelectServer}"
+                              Command="{Binding Path=CommandSetServer}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
 
                     <MenuItem Icon="{md:PackIcon Kind=Edit}"
@@ -95,7 +95,7 @@
                               Command="{Binding Path=CommandDeleteServers}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
 
-                    <Separator/>
+                    <Separator Margin="10, 0"/>
 
                     <MenuItem Icon="{md:PackIcon Kind=AddLocation}"
                               Header="{StaticResource server_fetch_info}"

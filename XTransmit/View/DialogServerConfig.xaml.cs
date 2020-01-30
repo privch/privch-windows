@@ -13,9 +13,9 @@ namespace XTransmit.View
         {
             InitializeComponent();
 
-            Preference preference = PreferenceManager.Global;
-            Left = preference.WindowServerConfig.X;
-            Top = preference.WindowServerConfig.Y;
+            Preference global = PreferenceManager.Global;
+            Left = global.WindowServerConfig.X;
+            Top = global.WindowServerConfig.Y;
 
             // set viewmodel
             DataContext = new ServerConfigVModel(serverProfile, actionComplete);
@@ -24,10 +24,10 @@ namespace XTransmit.View
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            // Save window placement
-            Preference preference = PreferenceManager.Global;
-            preference.WindowServerConfig.X = Left;
-            preference.WindowServerConfig.Y = Top;
+            // save window placement
+            Preference global = PreferenceManager.Global;
+            global.WindowServerConfig.X = Left;
+            global.WindowServerConfig.Y = Top;
         }
     }
 }

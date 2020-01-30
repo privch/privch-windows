@@ -15,11 +15,13 @@ namespace XTransmit.ViewModel
     {
         public ServerProfile ServerEdit { get; }
 
-        public List<ItemView> ServerIPInfo { get; private set; }
+        public List<ItemView> ServerInfo { get; private set; }
 
         public bool IsProcessing
         {
-            get => processing_fetch_info || processing_check_response_time || processing_check_ping;
+            get => processing_fetch_info
+                || processing_check_response_time
+                || processing_check_ping;
         }
 
         // post action
@@ -38,12 +40,12 @@ namespace XTransmit.ViewModel
         public ServerConfigVModel(ServerProfile serverProfile, Action<bool> actionComplete)
         {
             ServerEdit = serverProfile;
-            ServerIPInfo = UpdateInfoView();
+            ServerInfo = UpdateServerInfo();
 
             this.actionComplete = actionComplete;
         }
 
-        private List<ItemView> UpdateInfoView()
+        private List<ItemView> UpdateServerInfo()
         {
             // TODO - a little overhead
             return new List<ItemView>()
@@ -56,9 +58,10 @@ namespace XTransmit.ViewModel
                 new ItemView{Label = "Region", Text = ServerEdit.IPData?.Region ?? sr_not_availabe},
                 new ItemView{Label = "City", Text = ServerEdit.IPData?.City ?? sr_not_availabe},
                 new ItemView{Label = "Location", Text = ServerEdit.IPData?.Location ?? sr_not_availabe},
-                new ItemView{Label = "Org", Text = ServerEdit.IPData?.Organization ?? sr_not_availabe},
+                new ItemView{Label = "Organization", Text = ServerEdit.IPData?.Organization ?? sr_not_availabe},
                 new ItemView{Label = "Postal", Text = ServerEdit.IPData?.Postal ?? sr_not_availabe},
-                //new ItemInfo{Label = "Host Name", Text = ServerInfoData.vServerProfile.IPData?.hostname ?? sr_not_availabe},
+                new ItemView{Label = "Hostname", Text = ServerEdit.IPData?.Hostname ?? sr_not_availabe},
+                new ItemView{Label = "Timezone", Text = ServerEdit.IPData.Timezone ?? sr_not_availabe},
             };
         }
 
@@ -82,16 +85,16 @@ namespace XTransmit.ViewModel
                 ServerEdit.UpdateIPInfo(true);
             }).ConfigureAwait(true);
 
-            ServerIPInfo = UpdateInfoView();
-            OnPropertyChanged(nameof(ServerIPInfo));
+            // update the data to the view
+            ServerInfo = UpdateServerInfo();
+            OnPropertyChanged(nameof(ServerInfo));
 
             processing_fetch_info = false;
             OnPropertyChanged(nameof(IsProcessing));
             CommandManager.InvalidateRequerySuggested();
         }
 
-
-        // response time
+        // check response time
         public RelayCommand CommandCheckResponseTime => new RelayCommand(CheckResponseTime, CanCheckResponseTime);
         private bool CanCheckResponseTime(object parameter) => !processing_check_response_time;
         private async void CheckResponseTime(object parameter)
@@ -110,15 +113,16 @@ namespace XTransmit.ViewModel
                 }
             }).ConfigureAwait(true);
 
-            ServerIPInfo = UpdateInfoView();
-            OnPropertyChanged(nameof(ServerIPInfo));
+            // update the data to the view
+            ServerInfo = UpdateServerInfo();
+            OnPropertyChanged(nameof(ServerInfo));
 
             processing_check_response_time = false;
             OnPropertyChanged(nameof(IsProcessing));
             CommandManager.InvalidateRequerySuggested();
         }
 
-        // ping 
+        // check ping 
         public RelayCommand CommandCheckPing => new RelayCommand(CheckPing, CanCheckPing);
         private bool CanCheckPing(object parameter) => !processing_check_ping;
         private async void CheckPing(object parameter)
@@ -131,8 +135,9 @@ namespace XTransmit.ViewModel
                 ServerEdit.UpdatePing();
             }).ConfigureAwait(true);
 
-            ServerIPInfo = UpdateInfoView();
-            OnPropertyChanged(nameof(ServerIPInfo));
+            // update the data to the view
+            ServerInfo = UpdateServerInfo();
+            OnPropertyChanged(nameof(ServerInfo));
 
             processing_check_ping = false;
             OnPropertyChanged(nameof(IsProcessing));
@@ -146,16 +151,24 @@ namespace XTransmit.ViewModel
         {
             Window window = (Window)parameter;
 
+            /** check values
+             */
             Match matchIP = Regex.Match(ServerEdit.HostIP, RegexHelper.IPv4AddressRegex);
             if (!matchIP.Success)
             {
                 new View.DialogPrompt(sr_title, sr_invalid_ip).ShowDialog();
                 return;
             }
+
             if (ServerEdit.HostPort < 1 || ServerEdit.HostPort > 65535)
             {
                 new View.DialogPrompt(sr_title, sr_invalid_port).ShowDialog();
                 return;
+            }
+
+            if (string.IsNullOrWhiteSpace(ServerEdit.FriendlyName))
+            {
+                ServerEdit.SetFriendlyNameDefault();
             }
 
             actionComplete?.Invoke(true);

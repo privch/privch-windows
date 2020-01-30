@@ -228,7 +228,6 @@ namespace XTransmit.Model.Server
             {
                 IPData = IPInfo.Fetch(HostIP);
                 SetFriendNameByIPData();
-                OnPropertyChanged(nameof(FriendlyName));
             }
         }
 

@@ -11,7 +11,8 @@ namespace XTransmit.ViewModel
 {
     class AboutVModel : BaseViewModel
     {
-        public string Name { get; }
+        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
+        public string Name => App.Name;
         public string Version { get; }
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
@@ -21,7 +22,7 @@ namespace XTransmit.ViewModel
         [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         public AboutVModel()
         {
-            Name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+            // Name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
             try
             {

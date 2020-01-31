@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Windows;
 using XTransmit.Control;
 using XTransmit.Model;
+using XTransmit.Utility;
 using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
@@ -61,7 +62,28 @@ namespace XTransmit.ViewModel
             }
         }
 
-        //customize
+        // autorun
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+        public bool IsAutorun
+        {
+            get => ConfigManager.Global.IsAutorun;
+            set
+            {
+                if (value)
+                {
+                    SystemUtil.CreateUserStartupShortcut();
+                }
+                else
+                {
+                    SystemUtil.DeleteUserStartupShortcuts();
+                }
+
+                ConfigManager.Global.IsAutorun = value;
+                OnPropertyChanged(nameof(IsAutorun));
+            }
+        }
+
+        // theme
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public bool IsDarkTheme
         {

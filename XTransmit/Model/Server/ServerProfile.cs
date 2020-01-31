@@ -251,7 +251,7 @@ namespace XTransmit.Model.Server
                         FileName = CurlManager.CurlExePath,
                         Arguments = $"--silent --connect-timeout {timeout} --proxy \"socks5://127.0.0.1:{ListenPort}\""
                                     + " -w \"%{time_total}\" -o NUL -s \"https://google.com\"",
-                        WorkingDirectory = App.PathCurl,
+                        WorkingDirectory = App.DirectoryCurl,
                         CreateNoWindow = true,
                         UseShellExecute = false,
                         RedirectStandardOutput = true,

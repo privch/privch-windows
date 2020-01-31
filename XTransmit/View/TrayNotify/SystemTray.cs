@@ -11,7 +11,6 @@ namespace XTransmit.View.TrayNotify
         private readonly System.Windows.Forms.NotifyIcon notifyIcon;
         private readonly System.Windows.Forms.MenuItem menuitemEnableTransmit;
 
-        private static readonly string sr_app_name = (string)Application.Current.FindResource("app_name");
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
 
         [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
@@ -75,7 +74,7 @@ namespace XTransmit.View.TrayNotify
         {
             if (string.IsNullOrWhiteSpace(title))
             {
-                title = sr_app_name;
+                title = App.Name;
             }
 
             notifyIcon.BalloonTipTitle = title;
@@ -128,6 +127,10 @@ namespace XTransmit.View.TrayNotify
         {
             TransmitCtrl.EnableTransmit(!ConfigManager.Global.IsTransmitEnabled);
             menuitemEnableTransmit.Checked = ConfigManager.Global.IsTransmitEnabled;
+
+            // update interface
+            InterfaceCtrl.UpdateHomeTransmitStatue();
+            InterfaceCtrl.NotifyIcon.UpdateIcon();
         }
 
         private void MenuItem_AddServer_ScanQRCode(object sender, EventArgs e)

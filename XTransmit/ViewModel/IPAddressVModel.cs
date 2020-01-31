@@ -102,7 +102,7 @@ namespace XTransmit.ViewModel
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
-                InitialDirectory = App.PathCurrent,
+                InitialDirectory = App.DirectoryApplication,
                 DefaultExt = "txt",
                 Filter = "Text File|*.txt",
                 AddExtension = true

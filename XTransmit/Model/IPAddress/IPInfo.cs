@@ -88,7 +88,7 @@ namespace XTransmit.Model.IPAddress
                     {
                         FileName = Utility.CurlManager.CurlExePath,
                         Arguments = $"--silent --connect-timeout {timeout} --header \"Accept: application/json\" ipinfo.io/{ip}",
-                        WorkingDirectory = App.PathCurl,
+                        WorkingDirectory = App.DirectoryCurl,
                         CreateNoWindow = true,
                         UseShellExecute = false,
                         RedirectStandardOutput = true,

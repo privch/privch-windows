@@ -9,7 +9,7 @@ namespace XTransmit.Utility
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class SSManager
     {
-        private static string SSExePath => $@"{App.PathShadowsocks}\{ss_local_exe_name}";
+        private static string SSExePath => $@"{App.DirectoryShadowsocks}\{ss_local_exe_name}";
 
         /** shadowsocks-libev 3.3.4
          */
@@ -63,18 +63,18 @@ namespace XTransmit.Utility
         public static bool Prepare()
         {
             // create directories and sub directories
-            try { System.IO.Directory.CreateDirectory(App.PathShadowsocks); }
+            try { System.IO.Directory.CreateDirectory(App.DirectoryShadowsocks); }
             catch { return false; }
 
             // check files
             object[][] checks =
             {
-                new object[] { $@"{App.PathShadowsocks}\{cygev_4_dll_name}", cygev_4_dll_md5, Properties.Resources.cygev_4_dll_gz },
-                new object[] { $@"{App.PathShadowsocks}\{cyggcc_s_seh_1_dll_name}", cyggcc_s_seh_1_dll_md5, Properties.Resources.cyggcc_s_seh_1_dll_gz },
-                new object[] { $@"{App.PathShadowsocks}\{cygmbedcrypto_3_dll_name}", cygmbedcrypto_3_dll_md5, Properties.Resources.cygmbedcrypto_3_dll_gz },
-                new object[] { $@"{App.PathShadowsocks}\{cygpcre_1_dll_name}", cygpcre_1_dll_md5, Properties.Resources.cygpcre_1_dll_gz },
-                new object[] { $@"{App.PathShadowsocks}\{cygsodium_23_dll_name}", cygsodium_23_dll_md5, Properties.Resources.cygsodium_23_dll_gz },
-                new object[] { $@"{App.PathShadowsocks}\{cygwin1_dll_name}", cygwin1_dll_md5, Properties.Resources.cygwin1_dll_gz },
+                new object[] { $@"{App.DirectoryShadowsocks}\{cygev_4_dll_name}", cygev_4_dll_md5, Properties.Resources.cygev_4_dll_gz },
+                new object[] { $@"{App.DirectoryShadowsocks}\{cyggcc_s_seh_1_dll_name}", cyggcc_s_seh_1_dll_md5, Properties.Resources.cyggcc_s_seh_1_dll_gz },
+                new object[] { $@"{App.DirectoryShadowsocks}\{cygmbedcrypto_3_dll_name}", cygmbedcrypto_3_dll_md5, Properties.Resources.cygmbedcrypto_3_dll_gz },
+                new object[] { $@"{App.DirectoryShadowsocks}\{cygpcre_1_dll_name}", cygpcre_1_dll_md5, Properties.Resources.cygpcre_1_dll_gz },
+                new object[] { $@"{App.DirectoryShadowsocks}\{cygsodium_23_dll_name}", cygsodium_23_dll_md5, Properties.Resources.cygsodium_23_dll_gz },
+                new object[] { $@"{App.DirectoryShadowsocks}\{cygwin1_dll_name}", cygwin1_dll_md5, Properties.Resources.cygwin1_dll_gz },
                 new object[] { SSExePath, ss_local_exe_md5, Properties.Resources.ss_local_exe_gz },
             };
 
@@ -106,7 +106,7 @@ namespace XTransmit.Utility
                     {
                         FileName = SSExePath,
                         Arguments = arguments,
-                        WorkingDirectory = App.PathShadowsocks,
+                        WorkingDirectory = App.DirectoryShadowsocks,
                         CreateNoWindow = true,
                         UseShellExecute = false,
                         LoadUserProfile = false,

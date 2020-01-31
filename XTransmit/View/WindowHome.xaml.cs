@@ -36,7 +36,7 @@ namespace XTransmit.View
             // save preference
             HomeVModel viewModel = (HomeVModel)DataContext;
             Preference preference = PreferenceManager.Global;
-            preference.ContentDisplay = viewModel.GetCurrentContent();
+            preference.HomeContentDisplay = viewModel.GetCurrentContent();
 
             // window placement
             preference.WindowHome.X = Left;

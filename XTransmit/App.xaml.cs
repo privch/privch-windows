@@ -15,7 +15,6 @@ namespace XTransmit
      * TODO - Add support for Remote Http Proxy, SSR, V2Ray ...
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
-     * TODO - Autorun, Add a shortcut to the user Startup menu
      * 
      * NOTE
      * Compares to DataGrid, ListView comes with auto width, double click, row sort and application command problems
@@ -23,11 +22,14 @@ namespace XTransmit
      */
     public partial class App : Application
     {
-        public static string PathCurrent { get; private set; }
-        public static string PathPrivoxy { get; private set; }
-        public static string PathShadowsocks { get; private set; }
-        public static string PathCurl { get; private set; }
+        public static string Name { get; private set; }
 
+        public static string DirectoryApplication { get; private set; }
+        public static string DirectoryPrivoxy { get; private set; }
+        public static string DirectoryShadowsocks { get; private set; }
+        public static string DirectoryCurl { get; private set; }
+
+        public static string FileApplication { get; private set; }
         public static string FilePreferenceXml { get; private set; }
         public static string FileConfigXml { get; private set; }
         public static string FileIPAddressXml { get; private set; }
@@ -98,14 +100,18 @@ namespace XTransmit
             }
 
             // init directory
-            PathCurrent = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            Name = (string)Current.FindResource("app_name");
+
+            FileApplication = System.Reflection.Assembly.GetEntryAssembly().Location;
+            DirectoryApplication = Path.GetDirectoryName(FileApplication);
+            
             try
             {
-                Directory.CreateDirectory($@"{PathCurrent}\{dirData}");
+                Directory.CreateDirectory($@"{DirectoryApplication}\{dirData}");
             }
             catch
             {
-                string title = (string)FindResource("app_name");
+                string title = Name;
                 string message = (string)FindResource("app_init_fail");
                 new View.DialogPrompt(title, message).ShowDialog();
 
@@ -113,17 +119,17 @@ namespace XTransmit
                 return;
             }
 
-            PathPrivoxy = $@"{PathCurrent}\{dirBin}\privoxy";
-            PathShadowsocks = $@"{PathCurrent}\{dirBin}\shadowsocks";
-            PathCurl = $@"{PathCurrent}\{dirBin}\curl";
+            DirectoryPrivoxy = $@"{DirectoryApplication}\{dirBin}\privoxy";
+            DirectoryShadowsocks = $@"{DirectoryApplication}\{dirBin}\shadowsocks";
+            DirectoryCurl = $@"{DirectoryApplication}\{dirBin}\curl";
 
-            FilePreferenceXml = $@"{PathCurrent}\{dirData}\Preference.xml";
-            FileConfigXml = $@"{PathCurrent}\{dirData}\Config.xml";
-            FileIPAddressXml = $@"{PathCurrent}\{dirData}\IPAddress.xml"; //china ip optimized
-            FileUserAgentXml = $@"{PathCurrent}\{dirData}\UserAgent.xml";
+            FilePreferenceXml = $@"{DirectoryApplication}\{dirData}\Preference.xml";
+            FileConfigXml = $@"{DirectoryApplication}\{dirData}\Config.xml";
+            FileIPAddressXml = $@"{DirectoryApplication}\{dirData}\IPAddress.xml"; //china ip optimized
+            FileUserAgentXml = $@"{DirectoryApplication}\{dirData}\UserAgent.xml";
 
-            FileServerXml = $@"{PathCurrent}\{dirData}\Servers.xml";
-            FileCurlXml = $@"{PathCurrent}\{dirData}\Curl.xml";
+            FileServerXml = $@"{DirectoryApplication}\{dirData}\Servers.xml";
+            FileCurlXml = $@"{DirectoryApplication}\{dirData}\Curl.xml";
 
             // initialize binaries
             PrivoxyManager.KillRunning();
@@ -131,7 +137,7 @@ namespace XTransmit
             CurlManager.KillRunning();
             if (!PrivoxyManager.Prepare() || !SSManager.Prepare() || !CurlManager.Prepare())
             {
-                string title = (string)FindResource("app_name");
+                string title = Name;
                 string message = (string)FindResource("app_init_fail");
                 new View.DialogPrompt(title, message).ShowDialog();
 
@@ -143,18 +149,23 @@ namespace XTransmit
             PreferenceManager.LoadFileOrDefault(FilePreferenceXml);
             ConfigManager.LoadFileOrDefault(FileConfigXml);
 
+            // initialize transmit
+            if (!TransmitCtrl.StartServer())
+            {
+                string title = Name;
+                string message = (string)FindResource("app_service_fail");
+                new View.DialogPrompt(title, message).ShowDialog();
+
+                Shutdown();
+                return;
+            }
+
+            TransmitCtrl.EnableTransmit(ConfigManager.Global.IsTransmitEnabled);
+
             // initialize interface and theme
             InterfaceCtrl.Initialize();
             InterfaceCtrl.ModifyTheme(theme => theme.SetBaseTheme(
                 PreferenceManager.Global.IsDarkTheme ? Theme.Dark : Theme.Light));
-
-            // initialize transmit
-            if (!TransmitCtrl.StartServer())
-            {
-                string title = (string)FindResource("app_name");
-                string message = (string)FindResource("app_service_fail");
-                new View.DialogPrompt(title, message).ShowDialog();
-            }
 
             // done
             StartupUri = new System.Uri("View/WindowHome.xaml", System.UriKind.Relative);
@@ -173,6 +184,16 @@ namespace XTransmit
 
             PreferenceManager.WriteFile(FilePreferenceXml);
             ConfigManager.WriteFile(FileConfigXml);
+
+            // fix autorun status. reduce startup time
+            if (ConfigManager.Global.IsAutorun)
+            {
+                SystemUtil.CreateUserStartupShortcut();
+            }
+            else
+            {
+                SystemUtil.DeleteUserStartupShortcuts();
+            }
         }
 
         // Something wrong happen, Unexpercted, Abnormally (Not set)

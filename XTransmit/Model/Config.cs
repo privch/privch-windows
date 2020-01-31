@@ -11,6 +11,8 @@ namespace XTransmit.Model
     [Serializable]
     public class Config
     {
+        public bool IsAutorun { get; set; }
+
         // transmit
         public bool IsTransmitEnabled { get; set; }
         public int SystemProxyPort { get; set; }
@@ -23,12 +25,13 @@ namespace XTransmit.Model
         public int ResponseConnTimeout { get; set; } //not used
         public int PingTimeout { get; set; } //ms
 
+        // server
         public bool IsReplaceOldServer { get; set; }
-
-        public string NetworkAdapter { get; set; }
-
+        
         public Config()
         {
+            IsAutorun = true;
+
             IsTransmitEnabled = false;
             SystemProxyPort = 0;
             GlobalSocks5Port = 0;
@@ -40,7 +43,6 @@ namespace XTransmit.Model
             PingTimeout = 3000;
 
             IsReplaceOldServer = false;
-            NetworkAdapter = null;
         }
     }
 

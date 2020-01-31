@@ -22,7 +22,14 @@ namespace XTransmit.ViewModel
         public bool IsTransmitEnabled
         {
             get => ConfigManager.Global.IsTransmitEnabled;
-            set => TransmitCtrl.EnableTransmit(value);
+            set
+            {
+                TransmitCtrl.EnableTransmit(value);
+
+                // update interface
+                InterfaceCtrl.UpdateHomeTransmitStatue();
+                InterfaceCtrl.NotifyIcon.UpdateIcon();
+            }
         }
 
         // progress
@@ -52,7 +59,7 @@ namespace XTransmit.ViewModel
                 new ContentTable(sr_network_title, new View.ContentNetwork()),
             };
 
-            ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.Title == PreferenceManager.Global.ContentDisplay);
+            ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.Title == PreferenceManager.Global.HomeContentDisplay);
             if (contentTable == null)
             {
                 contentTable = ContentList[0];
@@ -60,9 +67,6 @@ namespace XTransmit.ViewModel
 
             contentTable.IsChecked = true;
             ContentDisplay = contentTable.Content;
-
-            // init transmit control
-            TransmitCtrl.EnableTransmit(ConfigManager.Global.IsTransmitEnabled);
         }
 
         /** methods ====================================================================================================== 

@@ -16,7 +16,7 @@ namespace XTransmit.Utility
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public static class PrivoxyManager
     {
-        public static readonly string PathPrivoxyExe = $@"{App.PathPrivoxy}\{privoxy_exe_name}";
+        public static readonly string PathPrivoxyExe = $@"{App.DirectoryPrivoxy}\{privoxy_exe_name}";
         private static Process process_privoxy = null;
 
         /** privoxy-windows 3.0.28
@@ -45,7 +45,7 @@ namespace XTransmit.Utility
                             process.WaitForExit();
                         }
                     }
-                    catch (Exception) { }
+                    catch { }
 
                     process.Dispose();
                 }
@@ -55,8 +55,8 @@ namespace XTransmit.Utility
         public static bool Prepare()
         {
             // create directories and sub directories
-            try { System.IO.Directory.CreateDirectory(App.PathPrivoxy); }
-            catch (Exception) { return false; }
+            try { System.IO.Directory.CreateDirectory(App.DirectoryPrivoxy); }
+            catch { return false; }
 
             // check files
             if (!FileUtil.CheckMD5(PathPrivoxyExe, privoxy_exe_md5))
@@ -72,7 +72,7 @@ namespace XTransmit.Utility
 
         public static bool Start(int portPrivoxy, int portShadowsocks)
         {
-            string config_path = $@"{App.PathPrivoxy}\{privoxy_config_txt_name}";
+            string config_path = $@"{App.DirectoryPrivoxy}\{privoxy_config_txt_name}";
             string config_text = Properties.Resources.privoxy_config_txt;
 
             config_text = config_text.Replace("PORT_PRIVOXY", portPrivoxy.ToString(CultureInfo.InvariantCulture));
@@ -91,7 +91,7 @@ namespace XTransmit.Utility
                     {
                         FileName = PathPrivoxyExe,
                         Arguments = config_path,
-                        WorkingDirectory = App.PathPrivoxy,
+                        WorkingDirectory = App.DirectoryPrivoxy,
                         UseShellExecute = false,
                         CreateNoWindow = true,
                         //LoadUserProfile = false,

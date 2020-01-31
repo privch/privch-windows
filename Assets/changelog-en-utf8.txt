@@ -1,8 +1,9 @@
 new
-* Updat native components to the static link version, no need to install runtime library now
+* Update native components to the static link version, no need to install runtime library now
+* Added auto-run feature, you can turn it on or off in settings
 * Added light theme, you can switch the theme in settings
-* Added checking server response time function to server list
-* Added support for  separated information acquisition and detection to server list
+* Added checking server response time function to the server list
+* Added support for  separated information acquisition and detection to the server list
 * Added fetch information, checking response time, checking ping delay functions to the server profile editing.
 
 v0.5.5

@@ -69,14 +69,11 @@ namespace XTransmit.Control
                     ConfigManager.Global.IsTransmitEnabled = false;
                 }
             }
-
-            InterfaceCtrl.UpdateHomeTransmitStatue();
-            InterfaceCtrl.NotifyIcon.UpdateIcon();
         }
 
         public static void ChangeTransmitServer(ServerProfile serverProfile)
         {
-            if (ConfigManager.Global.RemoteServer == null || !ConfigManager.Global.RemoteServer.Equals(serverProfile))
+            if (ConfigManager.Global.RemoteServer == null || !ConfigManager.Global.RemoteServer.IsServerEqual(serverProfile))
             {
                 ServerManager.Stop(ConfigManager.Global.RemoteServer);
                 ServerManager.Start(serverProfile, ConfigManager.Global.GlobalSocks5Port);

@@ -123,14 +123,25 @@
 
             <StackPanel Grid.Row="1"
                         Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="10, 10, 0, 10"/>
+                    </Style>
+                </StackPanel.Resources>
 
                 <!-- theme, dark or light -->
                 <StackPanel Orientation="Horizontal">
                     <ToggleButton VerticalAlignment="Center"
                                   IsChecked="{Binding Path=IsDarkTheme}"/>
-                    <TextBlock VerticalAlignment="Center"
-                               Margin="10, 10, 0, 10"
-                               Text="{StaticResource dialog_setting_theme_dark}"/>
+                    <TextBlock Text="{StaticResource dialog_setting_theme_dark}"/>
+                </StackPanel>
+
+                <!-- autorun -->
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton VerticalAlignment="Center"
+                                  IsChecked="{Binding Path=IsAutorun}"/>
+                    <TextBlock Text="{StaticResource dialog_setting_autorun}"/>
                 </StackPanel>
             </StackPanel>
 
@@ -140,23 +151,27 @@
                        Text="{StaticResource dialog_setting_subtitle_status}"/>
 
             <ItemsControl Grid.Row="3"
+                          Padding="10, 0"
+                          BorderThickness="1"
+                          BorderBrush="{DynamicResource MaterialDesignDivider}"
                           ItemsSource="{Binding Status}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="x_status_c1"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="x_status_c2"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" 
-                                       Margin="0, 10"
+                                       Margin="0, 10, 10, 10"
                                        VerticalAlignment="Center"
                                        Opacity=".7"
                                        Style="{StaticResource MaterialDesignCaptionTextBlock}"
                                        Text="{Binding Path=Label}"/>
 
-                            <TextBox Grid.Column="1" 
-                                     Margin="10"                                
+                            <TextBox Grid.Column="2" 
+                                     Margin="0, 10"                                
                                      VerticalAlignment="Center"
                                      Opacity=".7"
                                      MaxWidth="220"

@@ -19,7 +19,7 @@
 
             <!-- Window -->
             <Style x:Key="WindowApp" TargetType="Window">
-                <Setter Property="FontFamily" Value="{md:MaterialDesignFont}"/>
+                <Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}"/>
                 <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}"/>
                 <Setter Property="TextElement.FontWeight" Value="Regular"/>

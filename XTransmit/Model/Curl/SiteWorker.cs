@@ -139,7 +139,7 @@ namespace XTransmit.Model.Curl
                     {
                         FileName = CurlManager.CurlExePath,
                         Arguments = arguments,
-                        WorkingDirectory = App.PathCurl,
+                        WorkingDirectory = App.DirectoryCurl,
                         CreateNoWindow = true,
                         UseShellExecute = false,
                         RedirectStandardOutput = readReponse,

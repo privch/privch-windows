@@ -14,7 +14,9 @@ namespace XTransmit.Model
     {
         public bool IsDarkTheme { get; set; }
         public bool IsWindowHomeVisible { get; set; }
-        public string ContentDisplay { get; set; }
+
+        public string HomeContentDisplay { get; set; }
+        public string NetworkAdapter { get; set; }
 
         public Placement WindowHome { get; set; }
         public Placement WindowSetting { get; set; }
@@ -32,7 +34,9 @@ namespace XTransmit.Model
         {
             IsDarkTheme = true;
             IsWindowHomeVisible = true;
-            ContentDisplay = null;
+
+            HomeContentDisplay = null;
+            NetworkAdapter = null;
 
             double sw = SystemParameters.PrimaryScreenWidth;
             double sh = SystemParameters.PrimaryScreenHeight;

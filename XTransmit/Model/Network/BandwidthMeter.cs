@@ -7,7 +7,6 @@ using System.Threading;
 namespace XTransmit.Model.Network
 {
     /**
-     * TODO - Start-Stop test
      * TODO - Use Task instead
      */
     internal class BandwidthMeter : IDisposable

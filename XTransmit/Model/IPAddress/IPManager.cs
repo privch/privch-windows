@@ -73,11 +73,7 @@ namespace XTransmit.Model.IPAddress
             return (md5Data != null && md5File != null) ? !md5File.SequenceEqual(md5Data) : true;
         }
 
-        /**<summary>
-         * Read ip data from file.
-         * TODO - Test
-         * </summary>
-         */
+        // import ip from file.
         public static HashSet<string> Import(string pathTxtUtf8)
         {
             char[] separatorIPByte = new char[] { '.' };
@@ -140,7 +136,10 @@ namespace XTransmit.Model.IPAddress
                                 ipByte123 + ipByte4.ToString(CultureInfo.InvariantCulture));
                             ipList.Add(ip.ToString());
                         }
-                        catch { continue; }
+                        catch
+                        {
+                            continue;
+                        }
                     }
                 }
                 else // one ip
@@ -150,7 +149,10 @@ namespace XTransmit.Model.IPAddress
                         System.Net.IPAddress ip = System.Net.IPAddress.Parse(ipLine);
                         ipList.Add(ip.ToString());
                     }
-                    catch { continue; }
+                    catch
+                    {
+                        continue;
+                    }
                 }
             }
 

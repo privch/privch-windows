@@ -15,6 +15,8 @@ namespace XTransmit
      * TODO - Add support for Remote Http Proxy, SSR, V2Ray ...
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
+     * TODO - Use Task instead BackgroundWorker
+     * TODO - Move the X-CURL feature to new process
      * 
      * NOTE
      * Compares to DataGrid, ListView comes with auto width, double click, row sort and application command problems

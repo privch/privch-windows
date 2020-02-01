@@ -6,9 +6,6 @@ using System.Threading;
 
 namespace XTransmit.Model.Network
 {
-    /**
-     * TODO - Use Task instead
-     */
     internal class BandwidthMeter : IDisposable
     {
         private readonly Action<long[]> actionSpeedUpdated;
@@ -44,6 +41,11 @@ namespace XTransmit.Model.Network
             IPInterfaceStatistics statistic = adapter.GetIPStatistics();
             adapterBytesReceived = statistic.BytesReceived;
             adapterBytesSent = statistic.BytesSent;
+        }
+
+        public void Start2()
+        {
+
         }
 
         public void Start()
@@ -97,7 +99,10 @@ namespace XTransmit.Model.Network
                     adapterBytesSent = statistic.BytesSent;
                     bgWork.ReportProgress(0, userState: values);
                 }
-                catch (Exception) { continue; }
+                catch (Exception)
+                {
+                    continue;
+                }
             }
         }
 

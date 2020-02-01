@@ -41,7 +41,6 @@ namespace XTransmit.ViewModel
 
         public CurlVModel()
         {
-            // TODO - Async
             // load IPAddress and UserAgent data
             IPManager.Load(App.FileIPAddressXml);
             UAManager.Load(App.FileUserAgentXml);

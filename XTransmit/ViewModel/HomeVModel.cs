@@ -13,7 +13,7 @@ namespace XTransmit.ViewModel
     public class HomeVModel : BaseViewModel
     {
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public string TransmitStatus => ConfigManager.Global.RemoteServer?.FriendlyName ?? sr_server_not_set;
+        public string TransmitStatus => ConfigManager.RemoteServer?.FriendlyName ?? sr_server_not_set;
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public bool IsTransmitControllable => !ConfigManager.IsServerPoolEnabled;

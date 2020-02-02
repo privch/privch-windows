@@ -48,8 +48,6 @@ namespace XTransmit.ViewModel
 
         public ContentServerVModel()
         {
-            ServerManager.Load(App.FileServerXml);
-
             // load servers and convert to ObservableCollection
             ServerProfileOC = new ObservableCollection<ServerProfile>(ServerManager.ServerList);
             /* later
@@ -136,7 +134,7 @@ namespace XTransmit.ViewModel
         {
             if (parameter is ServerProfile server)
             {
-                if (!server.IsServerEqual(ConfigManager.Global.RemoteServer))
+                if (!server.IsServerEqual(ConfigManager.RemoteServer))
                 {
                     return true;
                 }
@@ -210,10 +208,10 @@ namespace XTransmit.ViewModel
             }).ConfigureAwait(true);
 
             // also update interface
-            ServerProfile serverSelected = ServerProfileOC.FirstOrDefault(x => x.IsServerEqual(ConfigManager.Global.RemoteServer));
+            ServerProfile serverSelected = ServerProfileOC.FirstOrDefault(x => x.IsServerEqual(ConfigManager.RemoteServer));
             if (serverSelected != null)
             {
-                ConfigManager.Global.RemoteServer = serverSelected;
+                ConfigManager.RemoteServer = serverSelected;
                 InterfaceCtrl.UpdateHomeTransmitStatue();
             }
 
@@ -251,9 +249,9 @@ namespace XTransmit.ViewModel
             }).ConfigureAwait(true);
 
             // also update interface
-            if (server.IsServerEqual(ConfigManager.Global.RemoteServer))
+            if (server.IsServerEqual(ConfigManager.RemoteServer))
             {
-                ConfigManager.Global.RemoteServer = server;
+                ConfigManager.RemoteServer = server;
                 InterfaceCtrl.UpdateHomeTransmitStatue();
             }
 

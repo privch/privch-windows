@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using XTransmit.Model.Server;
 using XTransmit.Utility;
 
@@ -17,7 +18,7 @@ namespace XTransmit.Model
         public bool IsTransmitEnabled { get; set; }
         public int SystemProxyPort { get; set; }
         public int GlobalSocks5Port { get; set; }
-        public ServerProfile RemoteServer { get; set; }
+        public string RemoteServerID { get; set; }
 
         // timeouts 
         public int SSTimeout { get; set; }
@@ -35,7 +36,7 @@ namespace XTransmit.Model
             IsTransmitEnabled = false;
             SystemProxyPort = 0;
             GlobalSocks5Port = 0;
-            RemoteServer = null;
+            RemoteServerID = null;
 
             SSTimeout = 5;
             IPInfoConnTimeout = 6;
@@ -51,6 +52,7 @@ namespace XTransmit.Model
         public static Config Global;
 
         //status
+        public static ServerProfile RemoteServer = null;
         public static bool IsServerPoolEnabled = false;
 
         /**<summary>
@@ -63,6 +65,10 @@ namespace XTransmit.Model
             if (FileUtil.XmlDeserialize(pathConfigXml, typeof(Config)) is Config config)
             {
                 Global = config;
+
+                // restore status
+                RemoteServer = ServerManager.ServerList.FirstOrDefault(
+                    server => server.GetID() == config.RemoteServerID);
             }
             else
             {
@@ -72,6 +78,9 @@ namespace XTransmit.Model
 
         public static void WriteFile(string pathConfigXml)
         {
+            // save status
+            Global.RemoteServerID = RemoteServer.GetID();
+
             FileUtil.XmlSerialize(pathConfigXml, Global);
         }
     }

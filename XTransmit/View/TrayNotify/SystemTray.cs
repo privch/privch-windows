@@ -100,9 +100,9 @@ namespace XTransmit.View.TrayNotify
          */
         private void NotifyIcon_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (ConfigManager.Global.RemoteServer != null)
+            if (ConfigManager.RemoteServer != null)
             {
-                notifyIcon.Text = ConfigManager.Global.RemoteServer.FriendlyName;
+                notifyIcon.Text = ConfigManager.RemoteServer.FriendlyName;
             }
             else
             {

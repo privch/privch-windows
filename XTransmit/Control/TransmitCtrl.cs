@@ -39,9 +39,9 @@ namespace XTransmit.Control
                 return false;
             }
 
-            if (config.RemoteServer != null)
+            if (ConfigManager.RemoteServer != null)
             {
-                return ServerManager.Start(config.RemoteServer, config.GlobalSocks5Port);
+                return ServerManager.Start(ConfigManager.RemoteServer, config.GlobalSocks5Port);
             }
 
             return true;
@@ -50,7 +50,7 @@ namespace XTransmit.Control
         public static void StopServer()
         {
             PrivoxyManager.Stop();
-            ServerManager.Stop(ConfigManager.Global.RemoteServer);
+            ServerManager.Stop(ConfigManager.RemoteServer);
         }
 
         public static void EnableTransmit(bool enable)
@@ -73,12 +73,12 @@ namespace XTransmit.Control
 
         public static void ChangeTransmitServer(ServerProfile serverProfile)
         {
-            if (ConfigManager.Global.RemoteServer == null || !ConfigManager.Global.RemoteServer.IsServerEqual(serverProfile))
+            if (ConfigManager.RemoteServer == null || !ConfigManager.RemoteServer.IsServerEqual(serverProfile))
             {
-                ServerManager.Stop(ConfigManager.Global.RemoteServer);
+                ServerManager.Stop(ConfigManager.RemoteServer);
                 ServerManager.Start(serverProfile, ConfigManager.Global.GlobalSocks5Port);
 
-                ConfigManager.Global.RemoteServer = serverProfile;
+                ConfigManager.RemoteServer = serverProfile;
                 InterfaceCtrl.UpdateHomeTransmitStatue();
             }
         }

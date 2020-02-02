@@ -29,9 +29,9 @@ namespace XTransmit.Control
         public static void StopServerPool()
         {
             // exclude the transmit server
-            if (ConfigManager.Global.IsTransmitEnabled)
+            if (ConfigManager.RemoteServer != null)
             {
-                ServerManager.ServerList.Remove(ConfigManager.Global.RemoteServer);
+                ServerManager.ServerList.Remove(ConfigManager.RemoteServer);
             }
 
             foreach (ServerProfile server in ServerManager.ServerList)
@@ -40,9 +40,9 @@ namespace XTransmit.Control
             }
 
             // restore
-            if (ConfigManager.Global.IsTransmitEnabled)
+            if (ConfigManager.RemoteServer != null)
             {
-                ServerManager.ServerList.Add(ConfigManager.Global.RemoteServer);
+                ServerManager.ServerList.Add(ConfigManager.RemoteServer);
             }
 
             ConfigManager.IsServerPoolEnabled = false;

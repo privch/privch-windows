@@ -205,6 +205,11 @@ namespace XTransmit.Model.Server
             Ping = 0;
         }
 
+        public string GetID()
+        {
+            return $"{hostIp}:{hostPort}";
+        }
+
         public ServerProfile Copy()
         {
             return (ServerProfile)TextUtil.CopyBySerializer(this);

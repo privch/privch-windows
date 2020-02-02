@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows;
 using XTransmit.Control;
 using XTransmit.Model;
+using XTransmit.Model.Server;
 using XTransmit.Utility;
 
 namespace XTransmit
@@ -16,7 +17,6 @@ namespace XTransmit
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
      * TODO - Use Task instead BackgroundWorker
-     * TODO - Don't save RemoteServer object so it can easy indicate listen status
      * 
      * NOTE
      * Compares to DataGrid, ListView comes with "*" column width, double click, row sort and application command problems
@@ -148,6 +148,7 @@ namespace XTransmit
             }
 
             // load data
+            ServerManager.Load(FileServerXml);
             PreferenceManager.LoadFileOrDefault(FilePreferenceXml);
             ConfigManager.LoadFileOrDefault(FileConfigXml);
 

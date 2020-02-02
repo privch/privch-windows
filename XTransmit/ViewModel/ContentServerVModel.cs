@@ -395,7 +395,7 @@ namespace XTransmit.ViewModel
                         PingReply reply = await pingSender.SendPingAsync(server.HostIP, timeout).ConfigureAwait(true);
                         server.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                     }
-                    catch (Exception)
+                    catch
                     {
                         server.Ping = -1;
                     }

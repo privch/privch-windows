@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using XTransmit.Model;
 using XTransmit.Model.Server;
@@ -9,7 +8,7 @@ namespace XTransmit.Utility
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class SSManager
     {
-        private static string SSExePath => $@"{App.DirectoryShadowsocks}\{ss_local_exe_name}";
+        private static readonly string SSExePath = $@"{App.DirectoryShadowsocks}\{ss_local_exe_name}";
 
         /** shadowsocks-libev 3.3.4
          */
@@ -53,7 +52,7 @@ namespace XTransmit.Utility
                             process.WaitForExit();
                         }
                     }
-                    catch (Exception) { }
+                    catch { }
 
                     process.Dispose();
                 }
@@ -63,8 +62,14 @@ namespace XTransmit.Utility
         public static bool Prepare()
         {
             // create directories and sub directories
-            try { System.IO.Directory.CreateDirectory(App.DirectoryShadowsocks); }
-            catch { return false; }
+            try
+            {
+                System.IO.Directory.CreateDirectory(App.DirectoryShadowsocks);
+            }
+            catch
+            {
+                return false;
+            }
 
             // check files
             object[][] checks =
@@ -131,7 +136,7 @@ namespace XTransmit.Utility
                 process.Kill();
                 process.WaitForExit();
             }
-            catch (Exception) { }
+            catch { }
             finally
             {
                 /** The dispose method calls the Close method

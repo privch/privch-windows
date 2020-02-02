@@ -16,7 +16,6 @@ namespace XTransmit
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
      * TODO - Use Task instead BackgroundWorker
-     * TODO - Let X-CURL hold the play window
      * TODO - Don't save RemoteServer object so it can easy indicate listen status
      * 
      * NOTE

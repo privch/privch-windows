@@ -49,7 +49,7 @@ namespace XTransmit.Utility
                     md5Value = md5.ComputeHash(fileStream);
                     fileStream.Close();
                 }
-                catch (Exception)
+                catch
                 {
                     return null;
                 }
@@ -72,7 +72,7 @@ namespace XTransmit.Utility
                 fileStream.Write(buffer, 0, buffer.Length);
                 fileStream.Close();
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
@@ -97,7 +97,7 @@ namespace XTransmit.Utility
 
                 swXml.Close();
             }
-            catch (Exception) { }
+            catch { }
             finally
             {
                 swXml?.Dispose();
@@ -119,7 +119,7 @@ namespace XTransmit.Utility
                 xmlReader.Close();
                 fsXml.Close();
             }
-            catch (Exception) { }
+            catch { }
             finally
             {
                 xmlReader?.Dispose();
@@ -154,7 +154,7 @@ namespace XTransmit.Utility
                 gzStream.Close();
                 fileStream.Close();
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }

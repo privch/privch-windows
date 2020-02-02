@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
@@ -14,7 +13,7 @@ namespace XTransmit.Utility
         'config.txt'). If no config_file is found, Privoxy will fail to start.
      */
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    public static class PrivoxyManager
+    internal static class PrivoxyManager
     {
         public static readonly string PathPrivoxyExe = $@"{App.DirectoryPrivoxy}\{privoxy_exe_name}";
         private static Process process_privoxy = null;
@@ -55,8 +54,14 @@ namespace XTransmit.Utility
         public static bool Prepare()
         {
             // create directories and sub directories
-            try { System.IO.Directory.CreateDirectory(App.DirectoryPrivoxy); }
-            catch { return false; }
+            try
+            {
+                System.IO.Directory.CreateDirectory(App.DirectoryPrivoxy);
+            }
+            catch
+            {
+                return false;
+            }
 
             // check files
             if (!FileUtil.CheckMD5(PathPrivoxyExe, privoxy_exe_md5))
@@ -119,7 +124,7 @@ namespace XTransmit.Utility
                 process_privoxy.Kill();
                 process_privoxy.WaitForExit();
             }
-            catch (Exception) { }
+            catch { }
 
             // it calls the Close method
             process_privoxy.Dispose();

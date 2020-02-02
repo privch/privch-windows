@@ -123,7 +123,7 @@ namespace XTransmit.Model.Server
                     Encoding.UTF8.GetString(
                         Convert.FromBase64String(base64.PadRight(base64.Length + (4 - (base64.Length % 4)) % 4, '='))));
             }
-            catch (Exception)
+            catch
             {
                 return null;
             }
@@ -201,7 +201,7 @@ namespace XTransmit.Model.Server
                         userInfo = Encoding.UTF8.GetString(
                             Convert.FromBase64String(base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '=')));
                     }
-                    catch (Exception)
+                    catch
                     {
                         continue;
                     }

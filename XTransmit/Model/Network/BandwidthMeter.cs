@@ -99,7 +99,7 @@ namespace XTransmit.Model.Network
                     adapterBytesSent = statistic.BytesSent;
                     bgWork.ReportProgress(0, userState: values);
                 }
-                catch (Exception)
+                catch
                 {
                     continue;
                 }

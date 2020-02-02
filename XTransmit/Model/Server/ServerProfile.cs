@@ -285,7 +285,7 @@ namespace XTransmit.Model.Server
                     PingReply reply = pingSender.Send(HostIP, ConfigManager.Global.PingTimeout);
                     Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                 }
-                catch (Exception)
+                catch
                 {
                     Ping = -1;
                 }

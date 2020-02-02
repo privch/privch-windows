@@ -3,8 +3,10 @@ new
 * Added auto-run feature, you can turn it on or off in settings
 * Added light theme, you can switch the theme in settings
 * Added checking server response time function to the server list
-* Added support for  separated information acquisition and detection to the server list
+* Added support for separated information acquisition and detection to the server list
+* Added active server indication to the server list 
 * Added fetch information, checking response time, checking ping delay functions to the server profile editing.
+* Added task prompt when closing the XCURL window
 
 v0.5.5
 * Added server port info in settings

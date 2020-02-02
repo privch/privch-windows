@@ -129,9 +129,10 @@
     <system:String x:Key="dialog_server_plugin_name">Plugin Name</system:String>
     <system:String x:Key="dialog_server_plugin_option">Plugin Option / Parameter</system:String>
 
-    <!-- table curl -->
+    <!-- window curl content, curl play -->
     <system:String x:Key="curl_title">X-CURL</system:String>
     <system:String x:Key="curl_no_data">No data available now</system:String>
+    <system:String x:Key="curl_close_play_running">It seems that some tasks are still running, Close window anyway?</system:String>
     <system:String x:Key="curl_profile_title">Profile Title</system:String>
     <system:String x:Key="curl_play_times">Play Times</system:String>
     <system:String x:Key="curl_read_response">Read Response</system:String>

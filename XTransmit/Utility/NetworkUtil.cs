@@ -25,7 +25,7 @@ namespace XTransmit.Utility
             {
                 networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
             }
-            catch (Exception)
+            catch
             {
                 networkInterfaces = null;
             }

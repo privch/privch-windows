@@ -1,13 +1,12 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace XTransmit.Utility
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    public static class CurlManager
+    internal static class CurlManager
     {
-        public static string CurlExePath => $@"{App.DirectoryCurl}\{curl_exe_name}";
+        public static readonly string CurlExePath = $@"{App.DirectoryCurl}\{curl_exe_name}";
 
         /** curl-win64-mingw 7.68.0
          */
@@ -39,7 +38,7 @@ namespace XTransmit.Utility
                             process.WaitForExit();
                         }
                     }
-                    catch (Exception) { }
+                    catch { }
 
                     process.Dispose();
                 }
@@ -49,11 +48,17 @@ namespace XTransmit.Utility
         public static bool Prepare()
         {
             // create directories and sub directories
-            try { System.IO.Directory.CreateDirectory(App.DirectoryCurl); }
-            catch (Exception) { return false; }
+            try
+            {
+                System.IO.Directory.CreateDirectory(App.DirectoryCurl);
+            }
+            catch
+            {
+                return false;
+            }
 
             // check files
-            object[][] checks = 
+            object[][] checks =
             {
                 new object[] { CurlExePath, curl_exe_md5, Properties.Resources.curl_exe_gz },
                 new object[] { $@"{App.DirectoryCurl}\{libcurl_x64_dll_name}", libcurl_x64_dll_md5, Properties.Resources.libcurl_x64_dll_gz },

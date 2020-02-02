@@ -28,7 +28,7 @@ namespace XTransmit.ViewModel
             {
                 Version = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
             }
-            catch (Exception)
+            catch
             {
                 Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
@@ -61,8 +61,8 @@ namespace XTransmit.ViewModel
 
                 new ItemView
                 {
-                    Label = "privoxy-windows", Text = "GPL 2.0",
-                    Uri = "https://github.com/xinlake/privoxy-windows/"
+                    Label = "privoxy", Text = "LICENSE",
+                    Uri = "https://www.privoxy.org/user-manual/copyright.html"
                 },
 
                 new ItemView

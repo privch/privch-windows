@@ -64,10 +64,14 @@ namespace XTransmit.Model.Curl
         public void StopBgWork()
         {
             if (bgWork == null)
+            {
                 return;
+            }
 
             if (bgWork.IsBusy)
+            {
                 bgWork.CancelAsync();
+            }
 
             bgWork.DoWork -= BWDoWork;
             bgWork.ProgressChanged -= BWProgressChanged;

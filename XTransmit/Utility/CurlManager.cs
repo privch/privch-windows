@@ -11,8 +11,8 @@ namespace XTransmit.Utility
 
         /** curl-win64-mingw 7.68.0
          */
-        private const string curl_exe_name = "curl-x.exe"; // name "curl-x.exe" is for process control
-        private const string curl_exe_process = "curl-x";
+        private const string curl_exe_name = "xt-curl.exe"; // name "curl-x.exe" is for process control
+        private const string curl_exe_process = "xt-curl";
         private const string curl_exe_md5 = "ED3506CA9DC52F0044035F7555EA8FF7";
 
         private const string libcurl_x64_dll_name = "libcurl-x64.dll";

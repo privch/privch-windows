@@ -52,6 +52,13 @@ namespace XTransmit.ViewModel
 
             // load servers and convert to ObservableCollection
             ServerProfileOC = new ObservableCollection<ServerProfile>(ServerManager.ServerList);
+            /* later
+            if (ServerProfileOC.FirstOrDefault(server => server.IsServerEqual(ConfigManager.Global.RemoteServer))
+                is ServerProfile currentServer)
+            {
+                currentServer.ListenPort = ConfigManager.Global.RemoteServer.ListenPort;
+            }
+            */
         }
 
         ~ContentServerVModel()

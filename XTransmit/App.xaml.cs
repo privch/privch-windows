@@ -16,11 +16,12 @@ namespace XTransmit
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
      * TODO - Use Task instead BackgroundWorker
-     * TODO - Move the X-CURL feature to new process
+     * TODO - Let X-CURL hold the play window
+     * TODO - Don't save RemoteServer object so it can easy indicate listen status
      * 
      * NOTE
-     * Compares to DataGrid, ListView comes with auto width, double click, row sort and application command problems
-     * EventHandler name use "_"
+     * Compares to DataGrid, ListView comes with "*" column width, double click, row sort and application command problems
+     * EventHandler name accept "_"
      */
     public partial class App : Application
     {
@@ -181,6 +182,7 @@ namespace XTransmit
 
             // if there were other proxy servers running they should set system proxy again
             _ = NativeMethods.DisableProxy();
+            PrivoxyManager.KillRunning(); // not important
             SSManager.KillRunning();
             CurlManager.KillRunning();
 

@@ -187,6 +187,7 @@
     <Compile Include="ViewModel\ServerConfigVModel.cs" />
     <Compile Include="ViewModel\SettingVModel.cs" />
     <Compile Include="ViewModel\UserAgentVModel.cs" />
+    <Compile Include="ViewModel\Element\CutoffConverter.cs" />
     <Compile Include="ViewModel\Element\ItemView.cs" />
     <Compile Include="ViewModel\Element\ContentTable.cs" />
     <Compile Include="ViewModel\Element\Placement.cs" />

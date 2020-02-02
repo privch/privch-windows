@@ -31,8 +31,8 @@ namespace XTransmit.Utility
         private const string cygwin1_dll_name = "cygwin1.dll";
         private const string cygwin1_dll_md5 = "476090DABDE7721FFA2BFD1C011DC6DE";
 
-        private const string ss_local_exe_name = "ss-local-x.exe"; // name ss-local-x.exe is for process control
-        private const string ss_local_exe_process = "ss-local-x";
+        private const string ss_local_exe_name = "xt-ss-local.exe"; // name ss-local-x.exe is for process control
+        private const string ss_local_exe_process = "xt-ss-local";
         private const string ss_local_exe_md5 = "CB9B8D4C913304A531C07C65734CE53F";
 
         public static void KillRunning()

@@ -21,8 +21,8 @@ namespace XTransmit.Utility
 
         /** privoxy-windows 3.0.28
          */
-        private const string privoxy_exe_name = "privoxy.exe";
-        private const string privoxy_exe_process = "privoxy";
+        private const string privoxy_exe_name = "xt-privoxy.exe";
+        private const string privoxy_exe_process = "xt-privoxy";
         private const string privoxy_exe_md5 = "3CF46F77B0917F08374E23EE59F7187F";
 
         private const string privoxy_config_txt_name = "privoxy-config.txt";

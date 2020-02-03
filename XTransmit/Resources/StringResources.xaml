@@ -80,7 +80,7 @@
     <system:String x:Key="server_import_clipboard">Import from clipboard</system:String>
     <system:String x:Key="server_import_file">Import from file ...</system:String>
     <system:String x:Key="server_manual_setting">Manual setting ...</system:String>
-    <system:String x:Key="server_fetch_info">Fetch server info ...</system:String>
+    <system:String x:Key="server_fetch_info">Fetch server info</system:String>
     <system:String x:Key="server_check_response_time">Check respond time</system:String>
     <system:String x:Key="server_check_ping">Ping Server</system:String>
     <system:String x:Key="server_menu_select">Select (Double Click)</system:String>

@@ -84,16 +84,10 @@ namespace XTransmit.View.TrayNotify
 
         public void UpdateIcon()
         {
-            if (ConfigManager.IsServerPoolEnabled)
-            {
-                // TODO - ServerPool Icon
-            }
-            else
-            {
-                notifyIcon.Icon = ConfigManager.Global.IsTransmitEnabled ?
-                    Properties.Resources.xtransmit_on :
-                    Properties.Resources.xtransmit_off;
-            }
+            // ServerPool status are showing in the server list
+            notifyIcon.Icon = ConfigManager.Global.IsTransmitEnabled ?
+                Properties.Resources.xtransmit_on :
+                Properties.Resources.xtransmit_off;
         }
 
         /** NotifyIcon Handlers ==================================================================================

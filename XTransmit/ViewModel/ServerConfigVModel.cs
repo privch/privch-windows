@@ -29,7 +29,7 @@ namespace XTransmit.ViewModel
 
         // language
         private static readonly string sr_created = (string)Application.Current.FindResource("_created");
-        private static readonly string sr_respond_time = (string)Application.Current.FindResource("respond_time");
+        private static readonly string sr_respond_time = (string)Application.Current.FindResource("response_time");
         private static readonly string sr_ping = (string)Application.Current.FindResource("_ping");
 
         private static readonly string sr_title = (string)Application.Current.FindResource("dialog_server_title");

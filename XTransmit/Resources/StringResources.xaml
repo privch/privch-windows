@@ -51,7 +51,7 @@
 
     <system:String x:Key="invalid_ip">Invalid IP Address</system:String>
     <system:String x:Key="invalid_port">Invalid Port Number</system:String>
-    <system:String x:Key="respond_time">Respond Time</system:String>
+    <system:String x:Key="response_time">Response Time</system:String>
     <system:String x:Key="not_availabe">Not Availabe</system:String>
     <system:String x:Key="timed_out">Timed Out</system:String>
     <system:String x:Key="clear_all">Clear All</system:String>
@@ -81,8 +81,8 @@
     <system:String x:Key="server_import_file">Import from file ...</system:String>
     <system:String x:Key="server_manual_setting">Manual setting ...</system:String>
     <system:String x:Key="server_fetch_info">Fetch server info</system:String>
-    <system:String x:Key="server_check_response_time">Check respond time</system:String>
-    <system:String x:Key="server_check_ping">Ping Server</system:String>
+    <system:String x:Key="server_check_response_time">Check response time</system:String>
+    <system:String x:Key="server_check_ping">Ping server</system:String>
     <system:String x:Key="server_menu_select">Select (Double Click)</system:String>
     <system:String x:Key="server_menu_edit">Edit (E)</system:String>
     <system:String x:Key="server_menu_delete">Delete selection (Del)</system:String>

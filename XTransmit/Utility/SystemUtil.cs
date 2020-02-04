@@ -7,9 +7,10 @@ namespace XTransmit.Utility
 {
     internal static class SystemUtil
     {
-        public static void CreateUserStartupShortcut()
+        // 33 ms
+        public static void CheckOrCreateUserStartupShortcut()
         {
-            if(FindUserStartupShortcuts(App.FileApplication).Count > 0)
+            if (FindUserStartupShortcuts(App.FileApplication).Count > 0)
             {
                 return;
             }
@@ -32,7 +33,7 @@ namespace XTransmit.Utility
         public static void DeleteUserStartupShortcuts()
         {
             List<string> shortcuts = FindUserStartupShortcuts(App.FileApplication);
-            foreach(string shortcut in shortcuts)
+            foreach (string shortcut in shortcuts)
             {
                 System.IO.File.Delete(shortcut);
             }
@@ -48,7 +49,7 @@ namespace XTransmit.Utility
             {
                 string shortcutTargetPath = GetShortcutTargetPath(shortcut.FullName);
 
-                if (shortcutTargetPath.EndsWith(targetPath, 
+                if (shortcutTargetPath.EndsWith(targetPath,
                     StringComparison.InvariantCultureIgnoreCase))
                 {
                     result.Add(shortcut.FullName);
@@ -58,6 +59,7 @@ namespace XTransmit.Utility
             return result;
         }
 
+        // 8 ms
         public static string GetShortcutTargetPath(string shortcutFile)
         {
             string pathOnly = Path.GetDirectoryName(shortcutFile);

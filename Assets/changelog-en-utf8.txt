@@ -1,4 +1,4 @@
-new
+v0.6.0
 * Update native components to the static link version, no need to install runtime library now
 * Added auto-run feature, you can turn it on or off in settings
 * Added light theme, you can switch the theme in settings

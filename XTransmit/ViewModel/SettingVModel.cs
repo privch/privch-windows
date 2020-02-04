@@ -71,7 +71,7 @@ namespace XTransmit.ViewModel
             {
                 if (value)
                 {
-                    SystemUtil.CreateUserStartupShortcut();
+                    SystemUtil.CheckOrCreateUserStartupShortcut();
                 }
                 else
                 {

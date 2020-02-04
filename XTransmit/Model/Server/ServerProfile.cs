@@ -123,7 +123,8 @@ namespace XTransmit.Model.Server
             }
         }
 
-        public string TimeCreated { get; }
+        // deserializer need to set this property
+        public string TimeCreated { get; set; }
 
         public IPInfo IPData { get; set; }
 

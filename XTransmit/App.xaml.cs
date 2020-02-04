@@ -192,7 +192,7 @@ namespace XTransmit
             // fix autorun status. reduce startup time
             if (ConfigManager.Global.IsAutorun)
             {
-                SystemUtil.CreateUserStartupShortcut();
+                SystemUtil.CheckOrCreateUserStartupShortcut();
             }
             else
             {
@@ -200,7 +200,7 @@ namespace XTransmit
             }
         }
 
-        // Something wrong happen, Unexpercted, Abnormally (Not set)
+        // Something wrong happen, Unexpercted, Abnormally. Not set yet
         private void Application_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             // Start another process to send feedback for user 

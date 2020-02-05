@@ -79,7 +79,7 @@ namespace XTransmit.Model
         public static void WriteFile(string pathConfigXml)
         {
             // save status
-            Global.RemoteServerID = RemoteServer.GetID();
+            Global.RemoteServerID = RemoteServer?.GetID();
 
             FileUtil.XmlSerialize(pathConfigXml, Global);
         }

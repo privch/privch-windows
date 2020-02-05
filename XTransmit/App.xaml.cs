@@ -106,7 +106,7 @@ namespace XTransmit
 
             FileApplication = System.Reflection.Assembly.GetEntryAssembly().Location;
             DirectoryApplication = Path.GetDirectoryName(FileApplication);
-            
+
             try
             {
                 Directory.CreateDirectory($@"{DirectoryApplication}\{dirData}");

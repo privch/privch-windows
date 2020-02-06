@@ -154,13 +154,13 @@
   <data name="ss_local_exe_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Binary\shadowsocks\ss-local.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="v2ctl_exe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="v2ctl_exe_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Binary\v2ray\v2ctl.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="v2ray_config" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Binary\v2ray\v2ray-config.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="v2ray_config_json" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Binary\v2ray\v2ray-config.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="v2ray_exe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="v2ray_exe_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Binary\v2ray\v2ray.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="xtransmit_off" type="System.Resources.ResXFileRef, System.Windows.Forms">

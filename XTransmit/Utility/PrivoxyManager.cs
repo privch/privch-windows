@@ -25,6 +25,8 @@ namespace XTransmit.Utility
         private const string privoxy_exe_md5 = "3CF46F77B0917F08374E23EE59F7187F";
 
         private const string privoxy_config_txt_name = "privoxy-config.txt";
+        private const string config_port_listen = "PORT-LISTEN";
+        private const string config_port_forward_socks5 = "PORT-FORWARD-SOCKS5";
 
         public static void KillRunning()
         {
@@ -80,8 +82,8 @@ namespace XTransmit.Utility
             string config_path = $@"{App.DirectoryPrivoxy}\{privoxy_config_txt_name}";
             string config_text = Properties.Resources.privoxy_config_txt;
 
-            config_text = config_text.Replace("PORT_PRIVOXY", portPrivoxy.ToString(CultureInfo.InvariantCulture));
-            config_text = config_text.Replace("PORT_SSLOCAL", portShadowsocks.ToString(CultureInfo.InvariantCulture));
+            config_text = config_text.Replace(config_port_listen, portPrivoxy.ToString(CultureInfo.InvariantCulture));
+            config_text = config_text.Replace(config_port_forward_socks5, portShadowsocks.ToString(CultureInfo.InvariantCulture));
 
             if (!FileUtil.WriteUTF8(config_path, config_text))
             {

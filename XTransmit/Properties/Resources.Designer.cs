@@ -151,13 +151,7 @@ namespace XTransmit.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to listen-address 127.0.0.1:PORT_PRIVOXY
-        ///toggle 0
-        ///forward-socks5 / 127.0.0.1:PORT_SSLOCAL .
-        ///max-client-connections 2048
-        ///activity-animation 0
-        ///show-on-task-bar 0
-        ///hide-console.
+        ///   Looks up a localized string of provixy-config.txt
         /// </summary>
         internal static string privoxy_config_txt {
             get {
@@ -188,29 +182,28 @@ namespace XTransmit.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] v2ctl_exe {
+        internal static byte[] v2ctl_exe_gz {
             get {
-                object obj = ResourceManager.GetObject("v2ctl_exe", resourceCulture);
+                object obj = ResourceManager.GetObject("v2ctl_exe_gz", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar of v2ray-config.json
+        /// </summary>
+        internal static string v2ray_config_json {
+            get {
+                return ResourceManager.GetString("v2ray_config_json", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] v2ray_config {
+        internal static byte[] v2ray_exe_gz {
             get {
-                object obj = ResourceManager.GetObject("v2ray_config", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] v2ray_exe {
-            get {
-                object obj = ResourceManager.GetObject("v2ray_exe", resourceCulture);
+                object obj = ResourceManager.GetObject("v2ray_exe_gz", resourceCulture);
                 return ((byte[])(obj));
             }
         }

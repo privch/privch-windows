@@ -17,6 +17,8 @@ namespace XTransmit
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
      * TODO - Use Task instead BackgroundWorker
+     * TODO - git update-index --assume-unchanged/--no-assume-unchanged BINARY-FILES
+     * TODO - BaseBinaryCtrl Class
      * 
      * NOTE
      * Compares to DataGrid, ListView comes with "*" column width, double click, row sort and application command problems
@@ -29,6 +31,7 @@ namespace XTransmit
         public static string DirectoryApplication { get; private set; }
         public static string DirectoryPrivoxy { get; private set; }
         public static string DirectoryShadowsocks { get; private set; }
+        public static string DirectoryV2Ray { get; private set; }
         public static string DirectoryCurl { get; private set; }
 
         public static string FileApplication { get; private set; }
@@ -123,6 +126,7 @@ namespace XTransmit
 
             DirectoryPrivoxy = $@"{DirectoryApplication}\{dirBin}\privoxy";
             DirectoryShadowsocks = $@"{DirectoryApplication}\{dirBin}\shadowsocks";
+            DirectoryV2Ray = $@"{DirectoryApplication}\{dirBin}\v2ray";
             DirectoryCurl = $@"{DirectoryApplication}\{dirBin}\curl";
 
             FilePreferenceXml = $@"{DirectoryApplication}\{dirData}\Preference.xml";
@@ -136,8 +140,12 @@ namespace XTransmit
             // initialize binaries
             PrivoxyManager.KillRunning();
             SSManager.KillRunning();
+            V2RayCtrl.KillRunning();
             CurlManager.KillRunning();
-            if (!PrivoxyManager.Prepare() || !SSManager.Prepare() || !CurlManager.Prepare())
+            if (!PrivoxyManager.Prepare()
+                || !SSManager.Prepare()
+                || !V2RayCtrl.Prepare()
+                || !CurlManager.Prepare())
             {
                 string title = Name;
                 string message = (string)FindResource("app_init_fail");
@@ -184,6 +192,7 @@ namespace XTransmit
             _ = NativeMethods.DisableProxy();
             PrivoxyManager.KillRunning(); // not important
             SSManager.KillRunning();
+            V2RayCtrl.KillRunning();
             CurlManager.KillRunning();
 
             PreferenceManager.WriteFile(FilePreferenceXml);

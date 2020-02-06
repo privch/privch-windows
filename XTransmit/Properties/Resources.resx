@@ -154,6 +154,15 @@
   <data name="ss_local_exe_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Binary\shadowsocks\ss-local.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="v2ctl_exe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Binary\v2ray\v2ctl.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="v2ray_config" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Binary\v2ray\v2ray-config.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="v2ray_exe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Binary\v2ray\v2ray.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="xtransmit_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon\XTransmit-Off.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

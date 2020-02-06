@@ -186,6 +186,36 @@ namespace XTransmit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] v2ctl_exe {
+            get {
+                object obj = ResourceManager.GetObject("v2ctl_exe", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] v2ray_config {
+            get {
+                object obj = ResourceManager.GetObject("v2ray_config", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] v2ray_exe {
+            get {
+                object obj = ResourceManager.GetObject("v2ray_exe", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon xtransmit_off {

@@ -21,7 +21,6 @@ namespace XTransmit.Control
             NotifyIcon.Dispose();
         }
 
-
         public static void ModifyTheme(Action<ITheme> modificationAction)
         {
             PaletteHelper paletteHelper = new PaletteHelper();

@@ -1,26 +1,43 @@
 $ErrorActionPreference = "Stop"
 $7z = "D:\[Knight]\7-Zip\Console\x64\7za.exe"
 
+function CompressAndDelete {
+    Param ([string]$path, [string[]]$files)
+    
+    Set-Location -Path $path
+
+    foreach($file in $files) {
+        if (Test-Path -Path ".\$file") {
+            Get-FileHash .\$file -Algorithm MD5 | Format-List
+            & $7z a -tgzip "$file.gz" $file
+            Remove-Item $file
+        }
+    }
+}
+
 
 #curl 7.68.0
-Set-Location -Path "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\curl"
+$path = "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\curl"
 $files = 
     "curl.exe",
     "curl-ca-bundle.crt",
     "libcurl-x64.dll",
     "cygpcre-1.dll"
+    
+CompressAndDelete -path $path -files $files
 
-foreach($file in $files) {
-    if (Test-Path -Path ".\$file") {
-        Get-FileHash .\$file -Algorithm MD5 | Format-List
-        & $7z a -tgzip "$file.gz" $file
-        Remove-Item $file
-    }
-}
+
+#v2ray 4.22.1
+$path = "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\v2ray"
+$files = 
+    "v2ctl.exe",
+    "v2ray.exe"
+
+CompressAndDelete -path $path -files $files
 
 
 #shadowsocks 3.3.4
-Set-Location -Path "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\shadowsocks"
+$path = "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\shadowsocks"
 $files = 
     "cygev-4.dll",
     "cyggcc_s-seh-1.dll",
@@ -30,27 +47,16 @@ $files =
     "cygwin1.dll",
     "ss-local.exe"
 
-foreach($file in $files) {
-    if (Test-Path -Path ".\$file") {
-        Get-FileHash .\$file -Algorithm MD5 | Format-List
-        & $7z a -tgzip "$file.gz" $file
-        Remove-Item $file
-    }
-}
+CompressAndDelete -path $path -files $files
 
 
 #privoxy 3.0.28
-Set-Location -Path "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\privoxy"
+$path = "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\privoxy"
 $files = 
     "privoxy.exe"
-
-foreach($file in $files) {
-    if (Test-Path -Path ".\$file") {
-        Get-FileHash .\$file -Algorithm MD5 | Format-List
-        & $7z a -tgzip "$file.gz" $file
-        Remove-Item $file
-    }
-}
+    
+CompressAndDelete -path $path -files $files
 
 
+#done
 Read-Host "Complete. Press any key to close...";

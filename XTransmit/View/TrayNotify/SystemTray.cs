@@ -17,8 +17,8 @@ namespace XTransmit.View.TrayNotify
         public SystemTray()
         {
             string enable_transmit = (string)Application.Current.FindResource("tray_enable_transmit");
-            string scan_qrcode = (string)Application.Current.FindResource("server_scan_qrcode");
-            string import_clipboard = (string)Application.Current.FindResource("server_import_clipboard");
+            string scan_qrcode = (string)Application.Current.FindResource("add_server_qrcode");
+            string import_clipboard = (string)Application.Current.FindResource("add_server_clipboard");
             string setting = (string)Application.Current.FindResource("_settings");
             string exit = (string)Application.Current.FindResource("_exit");
 

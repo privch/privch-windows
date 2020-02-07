@@ -139,7 +139,7 @@
     <Compile Include="Model\UserAgent\UAProfile.cs" />
     <Compile Include="Model\UserAgent\UAManager.cs" />
     <Compile Include="Model\Server\ServerManager.cs" />
-    <Compile Include="Model\Server\ServerProfile.cs" />
+    <Compile Include="Model\Server\Shadowsocks.cs" />
     <Compile Include="Model\Server\V2Ray.cs" />
     <Compile Include="Utility\CurlManager.cs" />
     <Compile Include="Utility\FileUtil.cs" />
@@ -155,7 +155,7 @@
     <Compile Include="ViewModel\ContentV2RayVModel.cs" />
     <Compile Include="ViewModel\CurlVModel.cs" />
     <Compile Include="ViewModel\ContentNetworkVModel.cs" />
-    <Compile Include="ViewModel\ContentServerVModel.cs" />
+    <Compile Include="ViewModel\ContentShadowsocksVModel.cs" />
     <Compile Include="ViewModel\CurlPlayVModel.cs" />
     <Compile Include="ViewModel\DialogActionVModel.cs" />
     <Compile Include="ViewModel\DialogEditVModel.cs" />
@@ -182,8 +182,8 @@
     <Compile Include="View\ContentNetwork.xaml.cs">
       <DependentUpon>ContentNetwork.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ContentServer.xaml.cs">
-      <DependentUpon>ContentServer.xaml</DependentUpon>
+    <Compile Include="View\ContentShadowsocks.xaml.cs">
+      <DependentUpon>ContentShadowsocks.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DialogAbout.xaml.cs">
       <DependentUpon>DialogAbout.xaml</DependentUpon>
@@ -197,8 +197,8 @@
     <Compile Include="View\DialogPrompt.xaml.cs">
       <DependentUpon>DialogPrompt.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DialogServerConfig.xaml.cs">
-      <DependentUpon>DialogServerConfig.xaml</DependentUpon>
+    <Compile Include="View\DialogShadowsocksConfig.xaml.cs">
+      <DependentUpon>DialogShadowsocksConfig.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DialogSetting.xaml.cs">
       <DependentUpon>DialogSetting.xaml</DependentUpon>
@@ -237,7 +237,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\ContentServer.xaml">
+    <Page Include="View\ContentShadowsocks.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -257,7 +257,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DialogServerConfig.xaml">
+    <Page Include="View\DialogShadowsocksConfig.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

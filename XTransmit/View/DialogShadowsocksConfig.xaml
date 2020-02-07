@@ -1,11 +1,11 @@
-﻿<Window x:Class="XTransmit.View.DialogServerConfig"
+﻿<Window x:Class="XTransmit.View.DialogShadowsocksConfig"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
         Style="{StaticResource WindowApp}"
-        Title="{StaticResource dialog_server_title}">
+        Title="{StaticResource dialog_shadowsocks_title}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -62,7 +62,7 @@
                 <md:PackIcon DockPanel.Dock="Left" 
                              Kind="Web" />
                 <TextBox DockPanel.Dock="Right" 
-                         md:HintAssist.Hint="{StaticResource dialog_server_friendly_name}"
+                         md:HintAssist.Hint="{StaticResource dialog_shadowsocks_friendly_name}"
                          Text="{Binding Path=ServerEdit.FriendlyName}"/>
             </DockPanel>
 
@@ -71,8 +71,8 @@
                 <md:PackIcon DockPanel.Dock="Left" 
                              Kind="IpNetwork"/>
                 <TextBox DockPanel.Dock="Right"
-                         md:HintAssist.Hint="{StaticResource dialog_server_host}"
-                         Text="{Binding Path=ServerEdit.HostIP}"/>
+                         md:HintAssist.Hint="{StaticResource dialog_shadowsocks_host}"
+                         Text="{Binding Path=ServerEdit.HostAddress}"/>
             </DockPanel>
 
             <!-- port -->
@@ -89,7 +89,7 @@
                 <md:PackIcon DockPanel.Dock="Left" 
                              Kind="TextboxPassword"/>
                 <TextBox DockPanel.Dock="Right"
-                         md:HintAssist.Hint="{StaticResource dialog_server_password}"
+                         md:HintAssist.Hint="{StaticResource dialog_shadowsocks_password}"
                          Text="{Binding Path=ServerEdit.Password}"/>
             </DockPanel>
 
@@ -98,7 +98,7 @@
                 <md:PackIcon DockPanel.Dock="Left" 
                              Kind="Security"/>
                 <ComboBox DockPanel.Dock="Right"
-                          md:HintAssist.Hint="{StaticResource dialog_server_encrypt}"
+                          md:HintAssist.Hint="{StaticResource dialog_shadowsocks_encrypt}"
                           ItemsSource="{Binding Path=ServerEdit.Ciphers}"
                           SelectedItem="{Binding Path=ServerEdit.Encrypt}"/>
             </DockPanel>
@@ -113,7 +113,7 @@
             </DockPanel>
 
             <!-- sip003 plugin -->
-            <CheckBox Content="{StaticResource dialog_server_enable_sip003}"
+            <CheckBox Content="{StaticResource dialog_shadowsocks_enable_sip003}"
                       IsChecked="{Binding Path=ServerEdit.PluginEnabled}"/>
             <StackPanel Orientation="Vertical">
                 <StackPanel.Style>
@@ -126,10 +126,10 @@
                     </Style>
                 </StackPanel.Style>
                 <!-- plugin name -->
-                <TextBox md:HintAssist.Hint="{StaticResource dialog_server_plugin_name}"
+                <TextBox md:HintAssist.Hint="{StaticResource dialog_shadowsocks_plugin_name}"
                          Text="{Binding Path=ServerEdit.PluginName}"/>
                 <!-- plugin option -->
-                <TextBox md:HintAssist.Hint="{StaticResource dialog_server_plugin_option}"
+                <TextBox md:HintAssist.Hint="{StaticResource dialog_shadowsocks_plugin_option}"
                          Text="{Binding Path=ServerEdit.PluginOption}"/>
             </StackPanel>
         </StackPanel>

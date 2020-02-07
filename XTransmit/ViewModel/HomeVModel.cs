@@ -41,7 +41,7 @@ namespace XTransmit.ViewModel
         public List<ContentTable> ContentList { get; }
 
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
-        private static readonly string sr_server_title = (string)Application.Current.FindResource("server_title");
+        private static readonly string sr_server_title = (string)Application.Current.FindResource("shadowsocks_title");
         private static readonly string sr_network_title = (string)Application.Current.FindResource("netrowk_title");
         private static readonly string sr_task_running = (string)Application.Current.FindResource("home_x_task_running");
         private static readonly string sr_cant_add_server = (string)Application.Current.FindResource("home_cant_add_server");
@@ -55,7 +55,7 @@ namespace XTransmit.ViewModel
             // init content list and display
             ContentList = new List<ContentTable>
             {
-                new ContentTable(sr_server_title, new View.ContentServer()),
+                new ContentTable(sr_server_title, new View.ContentShadowsocks()),
                 new ContentTable(sr_network_title, new View.ContentNetwork()),
             };
 
@@ -121,7 +121,7 @@ namespace XTransmit.ViewModel
         public void AddServerByScanQRCode()
         {
             ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_server_title);
-            ContentServerVModel serverViewModel = (ContentServerVModel)contantTable.Content.DataContext;
+            ContentShadowsocksVModel serverViewModel = (ContentShadowsocksVModel)contantTable.Content.DataContext;
             if (serverViewModel.CanEditList(null))
             {
                 serverViewModel.CommandAddServerQRCode.Execute(null);
@@ -135,7 +135,7 @@ namespace XTransmit.ViewModel
         public void AddServerFromClipboard()
         {
             ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_server_title);
-            ContentServerVModel serverViewModel = (ContentServerVModel)contantTable.Content.DataContext;
+            ContentShadowsocksVModel serverViewModel = (ContentShadowsocksVModel)contantTable.Content.DataContext;
             if (serverViewModel.CanEditList(null))
             {
                 serverViewModel.CommandAddServerClipboard.Execute(null);
@@ -179,7 +179,7 @@ namespace XTransmit.ViewModel
         {
             // save data first
             ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_server_title);
-            ContentServerVModel serverViewModel = (ContentServerVModel)contantTable.Content.DataContext;
+            ContentShadowsocksVModel serverViewModel = (ContentShadowsocksVModel)contantTable.Content.DataContext;
             serverViewModel.CommandSaveServer.Execute(null);
 
             // show curl

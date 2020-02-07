@@ -13,7 +13,7 @@ namespace XTransmit.ViewModel
 {
     public class ServerConfigVModel : BaseViewModel
     {
-        public ServerProfile ServerEdit { get; }
+        public Shadowsocks ServerEdit { get; }
 
         public List<ItemView> ServerInfo { get; private set; }
 
@@ -32,12 +32,12 @@ namespace XTransmit.ViewModel
         private static readonly string sr_respond_time = (string)Application.Current.FindResource("response_time");
         private static readonly string sr_ping = (string)Application.Current.FindResource("_ping");
 
-        private static readonly string sr_title = (string)Application.Current.FindResource("dialog_server_title");
+        private static readonly string sr_title = (string)Application.Current.FindResource("dialog_shadowsocks_title");
         private static readonly string sr_not_availabe = (string)Application.Current.FindResource("not_availabe");
         private static readonly string sr_invalid_ip = (string)Application.Current.FindResource("invalid_ip");
         private static readonly string sr_invalid_port = (string)Application.Current.FindResource("invalid_port");
 
-        public ServerConfigVModel(ServerProfile serverProfile, Action<bool> actionComplete)
+        public ServerConfigVModel(Shadowsocks serverProfile, Action<bool> actionComplete)
         {
             ServerEdit = serverProfile;
             ServerInfo = UpdateServerInfo();
@@ -61,7 +61,7 @@ namespace XTransmit.ViewModel
                 new ItemView{Label = "Organization", Text = ServerEdit.IPData?.Organization ?? sr_not_availabe},
                 new ItemView{Label = "Postal", Text = ServerEdit.IPData?.Postal ?? sr_not_availabe},
                 new ItemView{Label = "Hostname", Text = ServerEdit.IPData?.Hostname ?? sr_not_availabe},
-                new ItemView{Label = "Timezone", Text = ServerEdit.IPData.Timezone ?? sr_not_availabe},
+                new ItemView{Label = "Timezone", Text = ServerEdit.IPData?.Timezone ?? sr_not_availabe},
             };
         }
 
@@ -153,7 +153,7 @@ namespace XTransmit.ViewModel
 
             /** check values
              */
-            Match matchIP = Regex.Match(ServerEdit.HostIP, RegexHelper.IPv4AddressRegex);
+            Match matchIP = Regex.Match(ServerEdit.HostAddress, RegexHelper.IPv4AddressRegex);
             if (!matchIP.Success)
             {
                 new View.DialogPrompt(sr_title, sr_invalid_ip).ShowDialog();

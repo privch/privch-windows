@@ -66,33 +66,36 @@
     <system:String x:Key="app_service_fail">Unable to start service</system:String>
 
     <!-- home -->
-    <system:String x:Key="task_ping_server">Ping server</system:String>
-    <system:String x:Key="task_fetch_info">Fetch server info</system:String>
-    <system:String x:Key="task_check_response_time">Check response time</system:String>
     <system:String x:Key="home_server_not_set">Server Not Set</system:String>
     <system:String x:Key="home_x_task_running">task(s) running</system:String>
     <system:String x:Key="home_cant_add_server">Can not add server yet.</system:String>
     
-    <!-- table shadowsocks -->
-    <system:String x:Key="server_title">Servers</system:String>
-    <system:String x:Key="server_no_data">No data available now</system:String>
-    <system:String x:Key="server_scan_qrcode">Scan QRCode</system:String>
-    <system:String x:Key="server_import_clipboard">Import from clipboard</system:String>
-    <system:String x:Key="server_import_file">Import from file ...</system:String>
-    <system:String x:Key="server_manual_setting">Manual setting ...</system:String>
+    <system:String x:Key="task_ping_server">Ping server</system:String>
+    <system:String x:Key="task_fetch_info">Fetch server info</system:String>
+    <system:String x:Key="task_check_response_time">Check response time</system:String>
+    
+    <system:String x:Key="add_server_qrcode">Scan QRCode</system:String>
+    <system:String x:Key="add_server_clipboard">Import from clipboard</system:String>
+    <system:String x:Key="add_server_file">Import from file ...</system:String>
+    <system:String x:Key="add_server_create">Manual setting ...</system:String>
+    
+    <system:String x:Key="add_server_not_found">No server found.</system:String>
+    <system:String x:Key="add_server_already_exist">The server already exist.</system:String>
+    <system:String x:Key="add_server_x_imported">server(s) imported.</system:String>
+    <system:String x:Key="add_server_not_imported">No server imported.</system:String>
+    <system:String x:Key="add_server_x_added">server(s) added.</system:String>
+    
     <system:String x:Key="server_fetch_info">Fetch server info</system:String>
+    <system:String x:Key="server_fetch_ask_force">Keep existing data?</system:String>
     <system:String x:Key="server_check_response_time">Check response time</system:String>
     <system:String x:Key="server_check_ping">Ping server</system:String>
-    <system:String x:Key="server_menu_select">Select (Double Click)</system:String>
+    <system:String x:Key="server_menu_select">Select (Double click)</system:String>
     <system:String x:Key="server_menu_edit">Edit (E)</system:String>
     <system:String x:Key="server_menu_delete">Delete selection (Del)</system:String>
-    <system:String x:Key="server_config_0_found">No server(s) found.</system:String>
-    <system:String x:Key="server_config_exist">The server already exist.</system:String>
-    <system:String x:Key="server_config_x_imported">server(s) imported.</system:String>
-    <system:String x:Key="server_config_0_imported">No server(s) imported.</system:String>
-    <system:String x:Key="server_config_x_added">server(s) added.</system:String>
-    <system:String x:Key="server_ask_keep_info_title">Fetch server info</system:String>
-    <system:String x:Key="server_ask_keep_info_message">Keep existing data?</system:String>
+    
+    <!-- table shadowsocks -->
+    <system:String x:Key="shadowsocks_title">Shadowsocks</system:String>
+    <system:String x:Key="shadowsocks_no_data">No data available now</system:String>
 
     <!-- table v2ray -->
     <system:String x:Key="v2ray_title">V2Ray</system:String>
@@ -122,16 +125,16 @@
     <!-- dialog about -->
     <system:String x:Key="dialog_about_title">About XTransmit</system:String>
 
-    <!-- dialog server config -->
-    <system:String x:Key="dialog_server_title">Server Config</system:String>
-    <system:String x:Key="dialog_server_friendly_name">Friendly Name</system:String>
-    <system:String x:Key="dialog_server_timeout">Timeout (Seconds)</system:String>
-    <system:String x:Key="dialog_server_host">Host name or IP address</system:String>
-    <system:String x:Key="dialog_server_password">Password</system:String>
-    <system:String x:Key="dialog_server_encrypt">Encrypt Method</system:String>
-    <system:String x:Key="dialog_server_enable_sip003">Enable SIP003 Plugin (Experimental)</system:String>
-    <system:String x:Key="dialog_server_plugin_name">Plugin Name</system:String>
-    <system:String x:Key="dialog_server_plugin_option">Plugin Option / Parameter</system:String>
+    <!-- dialog shadowsocks config -->
+    <system:String x:Key="dialog_shadowsocks_title">Shadowsocks Config</system:String>
+    <system:String x:Key="dialog_shadowsocks_friendly_name">Friendly Name</system:String>
+    <system:String x:Key="dialog_shadowsocks_timeout">Timeout (Seconds)</system:String>
+    <system:String x:Key="dialog_shadowsocks_host">IP address</system:String>
+    <system:String x:Key="dialog_shadowsocks_password">Password</system:String>
+    <system:String x:Key="dialog_shadowsocks_encrypt">Encrypt Method</system:String>
+    <system:String x:Key="dialog_shadowsocks_enable_sip003">Enable SIP003 Plugin (Experimental)</system:String>
+    <system:String x:Key="dialog_shadowsocks_plugin_name">Plugin Name</system:String>
+    <system:String x:Key="dialog_shadowsocks_plugin_option">Plugin Option / Parameter</system:String>
 
     <!-- window curl content, curl play -->
     <system:String x:Key="curl_title">X-CURL</system:String>

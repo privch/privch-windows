@@ -14,8 +14,9 @@ namespace XTransmit.Model.Server
 {
     [Serializable]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    public class ServerProfile : INotifyPropertyChanged
+    public class Shadowsocks : INotifyPropertyChanged
     {
+        #region public-static
         // encrypt method
         public static List<string> Ciphers { get; } = new List<string>
         {
@@ -29,16 +30,16 @@ namespace XTransmit.Model.Server
             "xchacha20-ietf-poly1305",
             "salsa20",
         };
+        #endregion public-static
 
-        /** server arguments
-         */
-        public string HostIP
+        #region properties-and-serializable
+        public string HostAddress
         {
-            get => hostIp;
+            get => hostAddress;
             set
             {
-                hostIp = value;
-                OnPropertyChanged(nameof(HostIP));
+                hostAddress = value;
+                OnPropertyChanged(nameof(HostAddress));
             }
         }
 
@@ -160,9 +161,10 @@ namespace XTransmit.Model.Server
                 OnPropertyChanged(nameof(Ping));
             }
         }
+        #endregion properties-and-serializable
 
         // values 
-        private string hostIp;
+        private string hostAddress;
         private int hostPort;
         private string encrypt;
         private string password;
@@ -185,9 +187,9 @@ namespace XTransmit.Model.Server
          * Must be called after the ConfigManager.Global loaded
          * </summary> 
          */
-        public ServerProfile()
+        public Shadowsocks()
         {
-            HostIP = "";
+            HostAddress = "";
             HostPort = 0;
             Encrypt = "chacha20-ietf-poly1305";
             Password = "";
@@ -208,19 +210,19 @@ namespace XTransmit.Model.Server
 
         public string GetID()
         {
-            return $"{hostIp}:{hostPort}";
+            return $"{hostAddress}:{hostPort}";
         }
 
-        public ServerProfile Copy()
+        public Shadowsocks Copy()
         {
-            return (ServerProfile)TextUtil.CopyBySerializer(this);
+            return (Shadowsocks)TextUtil.CopyBySerializer(this);
         }
 
-        public bool IsServerEqual(ServerProfile serverNew)
+        public bool IsServerEqual(Shadowsocks serverNew)
         {
             if (serverNew != null)
             {
-                return HostIP == serverNew.HostIP && HostPort == serverNew.HostPort;
+                return HostAddress == serverNew.HostAddress && HostPort == serverNew.HostPort;
             }
             else
             {
@@ -232,7 +234,7 @@ namespace XTransmit.Model.Server
         {
             if (IPData == null || force)
             {
-                IPData = IPInfo.Fetch(HostIP);
+                IPData = IPInfo.Fetch(HostAddress);
                 SetFriendNameByIPData();
             }
         }
@@ -288,7 +290,7 @@ namespace XTransmit.Model.Server
             {
                 try
                 {
-                    PingReply reply = pingSender.Send(HostIP, ConfigManager.Global.PingTimeout);
+                    PingReply reply = pingSender.Send(HostAddress, ConfigManager.Global.PingTimeout);
                     Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                 }
                 catch
@@ -300,7 +302,7 @@ namespace XTransmit.Model.Server
 
         public void SetFriendlyNameDefault()
         {
-            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostIP} - {HostPort}" : Remarks;
+            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostAddress} - {HostPort}" : Remarks;
         }
 
         public void SetFriendNameByIPData()
@@ -340,7 +342,7 @@ namespace XTransmit.Model.Server
         }
 
 
-        /** INotifyPropertyChanged =========================================
+        /** INotifyPropertyChanged ==================================================
          */
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

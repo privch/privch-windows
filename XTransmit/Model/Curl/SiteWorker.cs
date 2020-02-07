@@ -85,7 +85,7 @@ namespace XTransmit.Model.Curl
             // fake client
             if (fakeClient != null)
             {
-                ServerProfile server = ServerManager.GerRendom();
+                Shadowsocks server = ServerManager.GerRendom();
                 if (server != null)
                 {
                     arguments = arguments.Replace(fakeClient.Replace, $"socks5://127.0.0.1:{server.ListenPort}");

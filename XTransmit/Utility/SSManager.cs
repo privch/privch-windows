@@ -98,10 +98,10 @@ namespace XTransmit.Utility
             return true;
         }
 
-        public static Process Execute(ServerProfile server, int listen)
+        public static Process Execute(Shadowsocks server, int listen)
         {
             int timeout = ConfigManager.Global.SSTimeout;
-            string arguments = $"-s {server.HostIP} -p {server.HostPort} -l {listen} -k {server.Password} -m {server.Encrypt} -t {timeout}";
+            string arguments = $"-s {server.HostAddress} -p {server.HostPort} -l {listen} -k {server.Password} -m {server.Encrypt} -t {timeout}";
 
             Process process = null;
             try

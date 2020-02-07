@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace XTransmit.Model.Server
 {
     [Serializable]
-    internal class V2Ray
+    public class V2Ray
     {
         /** Protocol VMess 
          */
@@ -124,7 +124,7 @@ namespace XTransmit.Model.Server
 
             public string network = "tcp";
             public string security = "none";
-            public TLS tlsSettings;
+            public TLS tlsSettings = null;
             public string tcpSettings = null; // not implement
             public string kcpSettings = null; // not implement
             public WebSocket wsSettings = null;

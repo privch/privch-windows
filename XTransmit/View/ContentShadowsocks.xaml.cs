@@ -3,12 +3,12 @@ using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
-    public partial class ContentServer : UserControl
+    public partial class ContentShadowsocks : UserControl
     {
-        public ContentServer()
+        public ContentShadowsocks()
         {
             InitializeComponent();
-            DataContext = new ContentServerVModel();
+            DataContext = new ContentShadowsocksVModel();
         }
     }
 }

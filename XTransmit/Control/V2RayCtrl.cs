@@ -82,7 +82,7 @@ namespace XTransmit.Control
             return true;
         }
 
-        public static bool Start(ServerProfile server, int listen)
+        public static bool Start(Shadowsocks server, int listen)
         {
             string config_path = $@"{App.DirectoryV2Ray}\{v2ray_config_json_name}";
             string config_text = Properties.Resources.v2ray_config_json;

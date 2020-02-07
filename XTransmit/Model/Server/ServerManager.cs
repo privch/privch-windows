@@ -15,8 +15,8 @@ namespace XTransmit.Model.Server
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class ServerManager
     {
-        public static readonly Dictionary<ServerProfile, Process> ServerProcessMap = new Dictionary<ServerProfile, Process>();
-        public static List<ServerProfile> ServerList { get; private set; }
+        public static readonly Dictionary<Shadowsocks, Process> ServerProcessMap = new Dictionary<Shadowsocks, Process>();
+        public static List<Shadowsocks> ServerList { get; private set; }
 
         private static string ServerXmlPath;
         private static readonly Random RandGen = new Random();
@@ -25,26 +25,26 @@ namespace XTransmit.Model.Server
         // Init server list by deserialize xml file
         public static void Load(string pathServerXml)
         {
-            if (FileUtil.XmlDeserialize(pathServerXml, typeof(List<ServerProfile>)) is List<ServerProfile> listServer)
+            if (FileUtil.XmlDeserialize(pathServerXml, typeof(List<Shadowsocks>)) is List<Shadowsocks> listServer)
             {
                 ServerList = listServer;
             }
             else
             {
-                ServerList = new List<ServerProfile>();
+                ServerList = new List<Shadowsocks>();
             }
 
             ServerXmlPath = pathServerXml;
         }
 
-        public static void Save(List<ServerProfile> listServerProfile)
+        public static void Save(List<Shadowsocks> listServerProfile)
         {
             FileUtil.XmlSerialize(ServerXmlPath, listServerProfile);
             ServerList = listServerProfile;
         }
 
         // TODO - Server type (SS, V2Ray ...)
-        public static bool Start(ServerProfile server, int listen)
+        public static bool Start(Shadowsocks server, int listen)
         {
             if (ServerProcessMap.ContainsKey(server))
             {
@@ -61,7 +61,7 @@ namespace XTransmit.Model.Server
             return false;
         }
 
-        public static void Stop(ServerProfile server)
+        public static void Stop(Shadowsocks server)
         {
             // server is null at the first time running
             if (server != null && ServerProcessMap.ContainsKey(server))
@@ -75,7 +75,7 @@ namespace XTransmit.Model.Server
         }
 
         // Server Pool 
-        public static ServerProfile GerRendom()
+        public static Shadowsocks GerRendom()
         {
             lock (locker)
             {
@@ -100,7 +100,7 @@ namespace XTransmit.Model.Server
          * Reference code: github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
          */
         [SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
-        public static ServerProfile ParseLegacyServer(string ssUrl)
+        public static Shadowsocks ParseLegacyServer(string ssUrl)
         {
             var match = UrlFinder.Match(ssUrl);
             if (!match.Success)
@@ -108,7 +108,7 @@ namespace XTransmit.Model.Server
                 return null;
             }
 
-            ServerProfile serverProfile = new ServerProfile();
+            Shadowsocks serverProfile = new Shadowsocks();
             var base64 = match.Groups["base64"].Value.TrimEnd('/');
             var tag = match.Groups["tag"].Value;
             if (!string.IsNullOrEmpty(tag))
@@ -144,7 +144,7 @@ namespace XTransmit.Model.Server
 
             serverProfile.Encrypt = details.Groups["method"].Value;
             serverProfile.Password = details.Groups["password"].Value;
-            serverProfile.HostIP = details.Groups["hostname"].Value;
+            serverProfile.HostAddress = details.Groups["hostname"].Value;
 
             serverProfile.SetFriendlyNameDefault();
             return serverProfile;
@@ -155,11 +155,11 @@ namespace XTransmit.Model.Server
          * </summary>
          * <returns>Return number of server added</returns>
          */
-        public static List<ServerProfile> ImportServers(string serverInfos)
+        public static List<Shadowsocks> ImportServers(string serverInfos)
         {
             string[] serverInfoArray = serverInfos.Split(new string[] { "\r\n", "\r", "\n", " " }, StringSplitOptions.RemoveEmptyEntries);
 
-            List<ServerProfile> serverList = new List<ServerProfile>();
+            List<Shadowsocks> serverList = new List<Shadowsocks>();
             foreach (string serverInfo in serverInfoArray)
             {
                 string serverUrl = serverInfo.Trim();
@@ -168,7 +168,7 @@ namespace XTransmit.Model.Server
                     continue;
                 }
 
-                ServerProfile serverProfile = ParseLegacyServer(serverUrl);
+                Shadowsocks serverProfile = ParseLegacyServer(serverUrl);
                 if (serverProfile != null)   //legacy
                 {
                     serverList.Add(serverProfile);
@@ -185,9 +185,9 @@ namespace XTransmit.Model.Server
                         continue;
                     }
 
-                    serverProfile = new ServerProfile
+                    serverProfile = new Shadowsocks
                     {
-                        HostIP = parsedUrl.IdnHost,
+                        HostAddress = parsedUrl.IdnHost,
                         HostPort = parsedUrl.Port,
                         Remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped)
                     };

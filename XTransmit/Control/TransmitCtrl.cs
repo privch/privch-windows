@@ -71,7 +71,7 @@ namespace XTransmit.Control
             }
         }
 
-        public static void ChangeTransmitServer(ServerProfile serverProfile)
+        public static void ChangeTransmitServer(Shadowsocks serverProfile)
         {
             if (ConfigManager.RemoteServer == null || !ConfigManager.RemoteServer.IsServerEqual(serverProfile))
             {

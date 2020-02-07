@@ -13,7 +13,7 @@ namespace XTransmit.Control
                 return;
             }
 
-            foreach (ServerProfile server in ServerManager.ServerList)
+            foreach (Shadowsocks server in ServerManager.ServerList)
             {
                 int listen = NetworkUtil.GetAvailablePort(2000);
                 if (listen > 0)
@@ -34,7 +34,7 @@ namespace XTransmit.Control
                 ServerManager.ServerList.Remove(ConfigManager.RemoteServer);
             }
 
-            foreach (ServerProfile server in ServerManager.ServerList)
+            foreach (Shadowsocks server in ServerManager.ServerList)
             {
                 ServerManager.Stop(server);
             }

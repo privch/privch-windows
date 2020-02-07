@@ -24,35 +24,35 @@ namespace XTransmit.ViewModel
     /**
      * TODO - Optimize task cancellation
      */
-    class ContentServerVModel : BaseViewModel
+    class ContentShadowsocksVModel : BaseViewModel
     {
-        public ObservableCollection<ServerProfile> ServerProfileOC { get; private set; }
+        public ObservableCollection<Shadowsocks> ServerProfileOC { get; private set; }
 
         // language
         private static readonly string sr_yes = (string)Application.Current.FindResource("_yes");
         private static readonly string sr_no = (string)Application.Current.FindResource("_no");
         private static readonly string sr_cancel = (string)Application.Current.FindResource("_cancel");
 
-        private static readonly string sr_task_ping_server = (string)Application.Current.FindResource("task_ping_server");
         private static readonly string sr_task_fetch_info = (string)Application.Current.FindResource("task_fetch_info");
+        private static readonly string sr_task_ping_server = (string)Application.Current.FindResource("task_ping_server");
         private static readonly string sr_task_check_response_time = (string)Application.Current.FindResource("task_check_response_time");
 
-        private static readonly string sr_config_0_found = (string)Application.Current.FindResource("server_config_0_found");
-        private static readonly string sr_config_exist = (string)Application.Current.FindResource("server_config_exist");
-        private static readonly string sr_config_x_imported = (string)Application.Current.FindResource("server_config_x_imported");
-        private static readonly string sr_config_0_imported = (string)Application.Current.FindResource("server_config_0_imported");
-        private static readonly string sr_config_x_added = (string)Application.Current.FindResource("server_config_x_added");
+        private static readonly string sr_config_not_found = (string)Application.Current.FindResource("add_server_not_found");
+        private static readonly string sr_config_already_exist = (string)Application.Current.FindResource("add_server_already_exist");
+        private static readonly string sr_config_x_imported = (string)Application.Current.FindResource("add_server_x_imported");
+        private static readonly string sr_config_none_imported = (string)Application.Current.FindResource("add_server_not_imported");
+        private static readonly string sr_config_x_added = (string)Application.Current.FindResource("add_server_x_added");
 
-        private static readonly string sr_ask_keep_info_title = (string)Application.Current.FindResource("server_ask_keep_info_title");
-        private static readonly string sr_ask_keep_info_message = (string)Application.Current.FindResource("server_ask_keep_info_message");
+        private static readonly string sr_fetch_ask_focus_title = (string)Application.Current.FindResource("shadowsocks_title");
+        private static readonly string sr_fetch_ask_focus_message = (string)Application.Current.FindResource("server_fetch_ask_force");
 
-        public ContentServerVModel()
+        public ContentShadowsocksVModel()
         {
             // load servers and convert to ObservableCollection
-            ServerProfileOC = new ObservableCollection<ServerProfile>(ServerManager.ServerList);
+            ServerProfileOC = new ObservableCollection<Shadowsocks>(ServerManager.ServerList);
         }
 
-        ~ContentServerVModel()
+        ~ContentShadowsocksVModel()
         {
             // cancel tasks
             processing_fetch_info = false;
@@ -75,12 +75,12 @@ namespace XTransmit.ViewModel
             return !processing_fetch_info && !processing_check_response_time && !processing_check_ping;
         }
 
-        private int AddServer(List<ServerProfile> serverList)
+        private int AddServer(List<Shadowsocks> serverList)
         {
             int added = 0;
-            foreach (ServerProfile server in serverList)
+            foreach (Shadowsocks server in serverList)
             {
-                ServerProfile serverOld = ServerProfileOC.FirstOrDefault(predicate: x => x.IsServerEqual(server));
+                Shadowsocks serverOld = ServerProfileOC.FirstOrDefault(predicate: x => x.IsServerEqual(server));
                 if (serverOld == null)
                 {
                     ServerProfileOC.Add(server);
@@ -100,11 +100,11 @@ namespace XTransmit.ViewModel
             return added;
         }
 
-        private int AddServer(ServerProfile server)
+        private int AddServer(Shadowsocks server)
         {
             int added = 0;
 
-            ServerProfile serverOld = ServerProfileOC.FirstOrDefault(predicate: x => x.IsServerEqual(server));
+            Shadowsocks serverOld = ServerProfileOC.FirstOrDefault(predicate: x => x.IsServerEqual(server));
             if (serverOld == null)
             {
                 ServerProfileOC.Add(server);
@@ -125,7 +125,7 @@ namespace XTransmit.ViewModel
 
         private bool IsServerNotInUse(object parameter)
         {
-            if (parameter is ServerProfile server)
+            if (parameter is Shadowsocks server)
             {
                 if (!server.IsServerEqual(ConfigManager.RemoteServer))
                 {
@@ -140,7 +140,7 @@ namespace XTransmit.ViewModel
         private void SaveServer(object parameter)
         {
             // convert to list and save
-            List<ServerProfile> profiles = new List<ServerProfile>(ServerProfileOC);
+            List<Shadowsocks> profiles = new List<Shadowsocks>(ServerProfileOC);
             ServerManager.Save(profiles);
         }
 
@@ -168,7 +168,7 @@ namespace XTransmit.ViewModel
                     null
                 },
             };
-            DialogAction dialog = new DialogAction(sr_ask_keep_info_title, sr_ask_keep_info_message, actions);
+            DialogAction dialog = new DialogAction(sr_fetch_ask_focus_title, sr_fetch_ask_focus_message, actions);
             dialog.ShowDialog();
             if (force == null)
             {
@@ -201,7 +201,7 @@ namespace XTransmit.ViewModel
             }).ConfigureAwait(true);
 
             // also update interface
-            ServerProfile serverSelected = ServerProfileOC.FirstOrDefault(x => x.IsServerEqual(ConfigManager.RemoteServer));
+            Shadowsocks serverSelected = ServerProfileOC.FirstOrDefault(x => x.IsServerEqual(ConfigManager.RemoteServer));
             if (serverSelected != null)
             {
                 ConfigManager.RemoteServer = serverSelected;
@@ -218,12 +218,12 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandSelFetchInfo => new RelayCommand(SelFetchInfo, CanSelFetchInfo);
         private bool CanSelFetchInfo(object parameter)
         {
-            return processing_fetch_info == false && parameter is ServerProfile;
+            return processing_fetch_info == false && parameter is Shadowsocks;
         }
 
         private async void SelFetchInfo(object parameter)
         {
-            ServerProfile server = (ServerProfile)parameter;
+            Shadowsocks server = (Shadowsocks)parameter;
 
             // add task
             processing_fetch_info = true;
@@ -279,7 +279,7 @@ namespace XTransmit.ViewModel
                         break;
                     }
 
-                    ServerProfile server = ServerProfileOC[i];
+                    Shadowsocks server = ServerProfileOC[i];
                     if (ServerManager.ServerProcessMap.ContainsKey(server))
                     {
                         server.UpdateResponseTime();
@@ -309,12 +309,12 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandSelCheckResponseTime => new RelayCommand(SelCheckResponseTime, CanSelCheckResponseTime);
         private bool CanSelCheckResponseTime(object parameter)
         {
-            return !processing_check_response_time && parameter is ServerProfile;
+            return !processing_check_response_time && parameter is Shadowsocks;
         }
 
         private async void SelCheckResponseTime(object parameter)
         {
-            ServerProfile server = (ServerProfile)parameter;
+            Shadowsocks server = (Shadowsocks)parameter;
 
             // add task
             processing_check_response_time = true;
@@ -380,10 +380,10 @@ namespace XTransmit.ViewModel
                         break;
                     }
 
-                    ServerProfile server = ServerProfileOC[i];
+                    Shadowsocks server = ServerProfileOC[i];
                     try
                     {
-                        PingReply reply = await pingSender.SendPingAsync(server.HostIP, timeout).ConfigureAwait(true);
+                        PingReply reply = await pingSender.SendPingAsync(server.HostAddress, timeout).ConfigureAwait(true);
                         server.Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                     }
                     catch
@@ -405,13 +405,13 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandSelCheckPing => new RelayCommand(SelCheckPing, CanSelCheckPing);
         private bool CanSelCheckPing(object parameter)
         {
-            return !processing_check_ping && parameter is ServerProfile;
+            return !processing_check_ping && parameter is Shadowsocks;
         }
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private async void SelCheckPing(object parameter)
         {
-            ServerProfile server = (ServerProfile)parameter;
+            Shadowsocks server = (Shadowsocks)parameter;
 
             // add task
             processing_check_ping = true;
@@ -439,9 +439,9 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandSetServer => new RelayCommand(SelectServer, IsServerNotInUse);
         private void SelectServer(object parameter)
         {
-            if (parameter is ServerProfile server)
+            if (parameter is Shadowsocks server)
             {
-                // Set ServerProfile
+                // Set Server
                 TransmitCtrl.ChangeTransmitServer(server);
             }
         }
@@ -465,16 +465,16 @@ namespace XTransmit.ViewModel
             Result result = reader.decode(bitmap);
             if (result == null || string.IsNullOrWhiteSpace(result.Text))
             {
-                InterfaceCtrl.ShowHomeNotify(sr_config_0_found);
-                InterfaceCtrl.NotifyIcon.ShowMessage(sr_config_0_found);
+                InterfaceCtrl.ShowHomeNotify(sr_config_not_found);
+                InterfaceCtrl.NotifyIcon.ShowMessage(sr_config_not_found);
                 return;
             }
 
-            List<ServerProfile> serverList = ServerManager.ImportServers(result.Text);
+            List<Shadowsocks> serverList = ServerManager.ImportServers(result.Text);
             if (serverList.Count > 0)
             {
                 int added = AddServer(serverList);
-                string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_exist;
+                string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_already_exist;
 
                 if (Application.Current.MainWindow.IsActive)
                 {
@@ -489,11 +489,11 @@ namespace XTransmit.ViewModel
             {
                 if (Application.Current.MainWindow.IsActive)
                 {
-                    InterfaceCtrl.ShowHomeNotify(sr_config_0_imported);
+                    InterfaceCtrl.ShowHomeNotify(sr_config_none_imported);
                 }
                 else
                 {
-                    InterfaceCtrl.NotifyIcon.ShowMessage(sr_config_0_imported);
+                    InterfaceCtrl.NotifyIcon.ShowMessage(sr_config_none_imported);
                 }
             }
         }
@@ -502,11 +502,11 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandAddServerClipboard => new RelayCommand(AddServerClipboard, CanEditList);
         private void AddServerClipboard(object parameter)
         {
-            List<ServerProfile> serverList = ServerManager.ImportServers(Clipboard.GetText(TextDataFormat.Text));
+            List<Shadowsocks> serverList = ServerManager.ImportServers(Clipboard.GetText(TextDataFormat.Text));
             if (serverList.Count > 0)
             {
                 int added = AddServer(serverList);
-                string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_exist;
+                string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_already_exist;
 
                 if (Application.Current.MainWindow.IsActive)
                 {
@@ -521,11 +521,11 @@ namespace XTransmit.ViewModel
             {
                 if (Application.Current.MainWindow.IsActive)
                 {
-                    InterfaceCtrl.ShowHomeNotify(sr_config_0_imported);
+                    InterfaceCtrl.ShowHomeNotify(sr_config_none_imported);
                 }
                 else
                 {
-                    InterfaceCtrl.NotifyIcon.ShowMessage(sr_config_0_imported);
+                    InterfaceCtrl.NotifyIcon.ShowMessage(sr_config_none_imported);
                 }
             }
         }
@@ -545,17 +545,17 @@ namespace XTransmit.ViewModel
             bool? open = openFileDialog.ShowDialog();
             if (open != true) return;
 
-            List<ServerProfile> serverList = ServerManager.ImportServers(openFileDialog.FileName);
+            List<Shadowsocks> serverList = ServerManager.ImportServers(openFileDialog.FileName);
             if (serverList.Count > 0)
             {
                 int added = AddServer(serverList);
-                string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_exist;
+                string notify = added > 0 ? $"{added} {sr_config_x_imported}" : sr_config_already_exist;
 
                 InterfaceCtrl.ShowHomeNotify(notify);
             }
             else
             {
-                InterfaceCtrl.ShowHomeNotify(sr_config_0_imported);
+                InterfaceCtrl.ShowHomeNotify(sr_config_none_imported);
             }
         }
 
@@ -563,15 +563,15 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandAddServerNew => new RelayCommand(AddServerNew, CanEditList);
         private void AddServerNew(object parameter)
         {
-            ServerProfile server = new ServerProfile();
+            Shadowsocks server = new Shadowsocks();
 
-            new DialogServerConfig(server,
+            new DialogShadowsocksConfig(server,
                 (bool resultOK) =>
                 {
                     if (resultOK)
                     {
                         int added = AddServer(server);
-                        string notify = added > 0 ? $"{added} {sr_config_x_added}" : sr_config_exist;
+                        string notify = added > 0 ? $"{added} {sr_config_x_added}" : sr_config_already_exist;
 
                         InterfaceCtrl.ShowHomeNotify(notify);
                     }
@@ -582,10 +582,10 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandEditServer => new RelayCommand(EditServer, IsServerNotInUse);
         private void EditServer(object parameter)
         {
-            ServerProfile serverOld = (ServerProfile)parameter;
-            ServerProfile serverNew = serverOld.Copy();
+            Shadowsocks serverOld = (Shadowsocks)parameter;
+            Shadowsocks serverNew = serverOld.Copy();
 
-            new DialogServerConfig(serverNew,
+            new DialogShadowsocksConfig(serverNew,
                 (bool resultOK) =>
                 {
                     if (resultOK)
@@ -610,9 +610,9 @@ namespace XTransmit.ViewModel
             /** https://stackoverflow.com/a/14852516
              */
             System.Collections.IList selected = serversSelected as System.Collections.IList;
-            List<ServerProfile> listServerProfile = selected.Cast<ServerProfile>().ToList();
+            List<Shadowsocks> listServerProfile = selected.Cast<Shadowsocks>().ToList();
 
-            foreach (ServerProfile server in listServerProfile)
+            foreach (Shadowsocks server in listServerProfile)
             {
                 ServerProfileOC.Remove(server);
             }

@@ -26,19 +26,19 @@
 
                 <Separator/>
 
-                <Button ToolTip="{StaticResource server_scan_qrcode}"
+                <Button ToolTip="{StaticResource add_server_qrcode}"
                         Content="{md:PackIcon Kind=QrcodeScan}"
                         Command="{Binding Path=CommandAddServerQRCode}"/>
 
-                <Button ToolTip="{StaticResource server_import_clipboard}" 
+                <Button ToolTip="{StaticResource add_server_clipboard}" 
                         Content="{md:PackIcon Kind=ClipboardTextOutline}" 
                         Command="{Binding Path=CommandAddServerClipboard}"/>
 
-                <Button ToolTip="{StaticResource server_import_file}" 
+                <Button ToolTip="{StaticResource add_server_file}" 
                         Content="{md:PackIcon Kind=FileDocumentBox}"
                         Command="{Binding Path=CommandAddServerFile}"/>
 
-                <Button ToolTip="{StaticResource server_manual_setting}" 
+                <Button ToolTip="{StaticResource add_server_create}" 
                         Content="{md:PackIcon Kind=AddCircle}" 
                         Command="{Binding Path=CommandAddServerNew}"/>
 
@@ -134,7 +134,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _delay}" Binding="{Binding Path=ResponseTime}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _ping}" Binding="{Binding Path=Ping}"/>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource _host}" Binding="{Binding Path=HostIP}"/>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _host}" Binding="{Binding Path=HostAddress}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _port}" Binding="{Binding Path=HostPort}"/>
                 <DataGridTextColumn Width="*" Header="{StaticResource _added}" Binding="{Binding Path=TimeCreated}"/>
             </DataGrid.Columns>
@@ -145,7 +145,7 @@
               VerticalAlignment="Center"
               HorizontalAlignment="Center">
             <TextBlock Margin="20"
-                       Text="{StaticResource server_no_data}">
+                       Text="{StaticResource shadowsocks_no_data}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Collapsed"/>

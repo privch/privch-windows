@@ -7,9 +7,9 @@ using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
-    public partial class DialogServerConfig : Window
+    public partial class DialogShadowsocksConfig : Window
     {
-        public DialogServerConfig(ServerProfile serverProfile, Action<bool> actionComplete)
+        public DialogShadowsocksConfig(Shadowsocks serverProfile, Action<bool> actionComplete)
         {
             InitializeComponent();
 

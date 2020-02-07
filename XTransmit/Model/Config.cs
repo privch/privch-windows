@@ -52,7 +52,7 @@ namespace XTransmit.Model
         public static Config Global;
 
         //status
-        public static ServerProfile RemoteServer = null;
+        public static Shadowsocks RemoteServer = null;
         public static bool IsServerPoolEnabled = false;
 
         /**<summary>

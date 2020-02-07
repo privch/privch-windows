@@ -38,18 +38,7 @@
 
   // List of outbound proxy configurations.
   "outbounds": [
-    {
-      // Tag of the outbound. May be used for routing.
-      "tag": "agentout",
-
-      // Protocol name of the outbound proxy.
-      "protocol": "vmess",
-
-
-      "mux": {
-        "enabled": true
-      }
-    }
+    OUTBOUNDS
   ],
 
   // Dns settings for domain resolution.

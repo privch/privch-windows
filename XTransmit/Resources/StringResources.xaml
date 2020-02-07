@@ -73,7 +73,7 @@
     <system:String x:Key="home_x_task_running">task(s) running</system:String>
     <system:String x:Key="home_cant_add_server">Can not add server yet.</system:String>
     
-    <!-- table server -->
+    <!-- table shadowsocks -->
     <system:String x:Key="server_title">Servers</system:String>
     <system:String x:Key="server_no_data">No data available now</system:String>
     <system:String x:Key="server_scan_qrcode">Scan QRCode</system:String>
@@ -94,6 +94,10 @@
     <system:String x:Key="server_ask_keep_info_title">Fetch server info</system:String>
     <system:String x:Key="server_ask_keep_info_message">Keep existing data?</system:String>
 
+    <!-- table v2ray -->
+    <system:String x:Key="v2ray_title">V2Ray</system:String>
+    <system:String x:Key="v2ray_no_data">No V2Ray server now</system:String>
+    
     <!-- table network -->
     <system:String x:Key="netrowk_title">Network</system:String>
     <system:String x:Key="network_interface">Network Interface</system:String>

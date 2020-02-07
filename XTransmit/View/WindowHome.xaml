@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <!-- Top -->
-        <Grid Grid.Row="0" Margin="0, 10, 0, 0">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -27,9 +27,10 @@
             <Grid.Resources>
                 <Style x:Key="RadioButtonToolbar"
                        TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
+                    <Setter Property="MinHeight" Value="45"/>
                     <Setter Property="Margin" Value="0"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
                     <Setter Property="GroupName" Value="xGroupContentSwitch"/>
                 </Style>
             </Grid.Resources>

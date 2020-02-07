@@ -117,10 +117,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Control\InterfaceCtrl.cs" />
-    <Compile Include="Control\ServerPoolCtrl.cs" />
     <Compile Include="Control\TransmitCtrl.cs" />
     <Compile Include="Control\V2RayCtrl.cs" />
+    <Compile Include="Control\ServerPoolCtrl.cs" />
+    <Compile Include="Control\InterfaceCtrl.cs" />
     <Compile Include="Model\Config.cs" />
     <Compile Include="Model\Preference.cs" />
     <Compile Include="Model\Curl\CurlArgument.cs" />
@@ -140,6 +140,7 @@
     <Compile Include="Model\UserAgent\UAManager.cs" />
     <Compile Include="Model\Server\ServerManager.cs" />
     <Compile Include="Model\Server\ServerProfile.cs" />
+    <Compile Include="Model\Server\V2Ray.cs" />
     <Compile Include="Utility\CurlManager.cs" />
     <Compile Include="Utility\FileUtil.cs" />
     <Compile Include="Utility\NativeMethods.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Utility\TextUtil.cs" />
     <Compile Include="ViewModel\AboutVModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\ContentV2RayVModel.cs" />
     <Compile Include="ViewModel\CurlVModel.cs" />
     <Compile Include="ViewModel\ContentNetworkVModel.cs" />
     <Compile Include="ViewModel\ContentServerVModel.cs" />
@@ -171,6 +173,9 @@
     <Compile Include="ViewModel\Element\TaskView.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="View\ContentV2Ray.xaml.cs">
+      <DependentUpon>ContentV2Ray.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\WindowCurl.xaml.cs">
       <DependentUpon>WindowCurl.xaml</DependentUpon>
     </Compile>
@@ -219,6 +224,10 @@
     <Page Include="Resources\StringResources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ContentV2Ray.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\WindowCurl.xaml">
       <Generator>MSBuild:Compile</Generator>

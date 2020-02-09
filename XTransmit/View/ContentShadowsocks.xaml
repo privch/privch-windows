@@ -40,21 +40,21 @@
 
                 <Button ToolTip="{StaticResource add_server_create}" 
                         Content="{md:PackIcon Kind=AddCircle}" 
-                        Command="{Binding Path=CommandAddServerNew}"/>
+                        Command="{Binding Path=CommandAddServerCreate}"/>
 
                 <Separator/>
 
                 <Button ToolTip="{StaticResource server_fetch_info}"
                         Content="{md:PackIcon Kind=AddLocation}"
-                        Command="{Binding Path=CommandFetchInfo}"/>
+                        Command="{Binding Path=CommandFetchInfoAll}"/>
 
                 <Button ToolTip="{StaticResource server_check_response_time}"
                         Content="{md:PackIcon Kind=ServerNetwork}"
-                        Command="{Binding Path=CommandCheckResponseTime}"/>
+                        Command="{Binding Path=CommandCheckResponseAll}"/>
 
                 <Button ToolTip="{StaticResource server_check_ping}"
                         Content="{md:PackIcon Kind=ChartAreaspline}"
-                        Command="{Binding Path=CommandCheckPing}"/>
+                        Command="{Binding Path=CommandCheckPingAll}"/>
             </ToolBar>
         </ToolBarTray>
 
@@ -66,14 +66,14 @@
                   IsReadOnly="True"
                   CanUserDeleteRows="True"
                   CanUserSortColumns="True"
-                  ItemsSource="{Binding Path=ServerProfileOC}">
+                  ItemsSource="{Binding Path=ShadowsocksOC}">
             <DataGrid.Resources>
                 <element:CutoffConverter x:Key="Listening" Cutoff="0"/>
             </DataGrid.Resources>
-            
+
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" 
-                              Command="{Binding Path=CommandSetServer}"
+                              Command="{Binding Path=CommandChangeServer}"
                               CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}"/>
                 <KeyBinding Key="E"
                             Command="{Binding Path=CommandEditServer}"
@@ -87,7 +87,7 @@
                 <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
                     <MenuItem Icon="{md:PackIcon Kind=Check}" 
                               Header="{StaticResource server_menu_select}"
-                              Command="{Binding Path=CommandSetServer}"
+                              Command="{Binding Path=CommandChangeServer}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
 
                     <MenuItem Icon="{md:PackIcon Kind=Edit}"
@@ -104,23 +104,23 @@
 
                     <MenuItem Icon="{md:PackIcon Kind=AddLocation}"
                               Header="{StaticResource server_fetch_info}"
-                              Command="{Binding Path=CommandSelFetchInfo}"
+                              Command="{Binding Path=CommandFetchInfoSelected}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
 
                     <MenuItem Icon="{md:PackIcon Kind=ServerNetwork}"
                               Header="{StaticResource server_check_response_time}"
-                              Command="{Binding Path=CommandSelCheckResponseTime}"
+                              Command="{Binding Path=CommandCheckResponseSelected}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
 
                     <MenuItem Icon="{md:PackIcon Kind=ChartAreaspline}"
                               Header="{StaticResource server_check_ping}"
-                              Command="{Binding Path=CommandSelCheckPing}"
+                              Command="{Binding Path=CommandCheckPingSelected}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource _server}" Binding="{Binding Path=FriendlyName}">
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _name}" Binding="{Binding Path=FriendlyName}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell" BasedOn="{StaticResource MaterialDesignDataGridCell}">
                             <Style.Triggers>
@@ -133,10 +133,10 @@
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _delay}" Binding="{Binding Path=ResponseTime}"/>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource _ping}" Binding="{Binding Path=Ping}"/>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _ping}" Binding="{Binding Path=PingDelay}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _host}" Binding="{Binding Path=HostAddress}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _port}" Binding="{Binding Path=HostPort}"/>
-                <DataGridTextColumn Width="*" Header="{StaticResource _added}" Binding="{Binding Path=TimeCreated}"/>
+                <DataGridTextColumn Width="*" Header="{StaticResource _modified}" Binding="{Binding Path=Modified}"/>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -150,7 +150,7 @@
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ServerProfileOC.Count}" Value="0">
+                            <DataTrigger Binding="{Binding Path=ShadowsocksOC.Count}" Value="0">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>

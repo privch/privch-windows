@@ -93,6 +93,7 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <None Include="App.config" />
+    <Compile Include="Model\Server\IServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -135,12 +136,18 @@
     <Compile Include="Model\Network\BandwidthInfo.cs" />
     <Compile Include="Model\IPAddress\IPProfile.cs" />
     <Compile Include="Model\IPAddress\IPManager.cs" />
-    <Compile Include="Model\IPAddress\IPInfo.cs" />
+    <Compile Include="Model\IPAddress\IPInformation.cs" />
+    <Compile Include="Model\IPAddress\IPInfoIO.cs" />
     <Compile Include="Model\UserAgent\UAProfile.cs" />
     <Compile Include="Model\UserAgent\UAManager.cs" />
     <Compile Include="Model\Server\ServerManager.cs" />
     <Compile Include="Model\Server\Shadowsocks.cs" />
-    <Compile Include="Model\Server\V2Ray.cs" />
+    <Compile Include="Model\V2Ray\V2RayServer.cs" />
+    <Compile Include="Model\V2Ray\UrlVMess.cs" />
+    <Compile Include="Model\V2Ray\VMess.cs" />
+    <Compile Include="Model\V2Ray\Mux.cs" />
+    <Compile Include="Model\V2Ray\Outbound.cs" />
+    <Compile Include="Model\V2Ray\Transport.cs" />
     <Compile Include="Utility\CurlManager.cs" />
     <Compile Include="Utility\FileUtil.cs" />
     <Compile Include="Utility\NativeMethods.cs" />
@@ -159,6 +166,7 @@
     <Compile Include="ViewModel\CurlPlayVModel.cs" />
     <Compile Include="ViewModel\DialogActionVModel.cs" />
     <Compile Include="ViewModel\DialogEditVModel.cs" />
+    <Compile Include="ViewModel\Element\BaseServerVModel.cs" />
     <Compile Include="ViewModel\HomeVModel.cs" />
     <Compile Include="ViewModel\IPAddressVModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />

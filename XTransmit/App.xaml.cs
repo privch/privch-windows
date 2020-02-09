@@ -21,7 +21,7 @@ namespace XTransmit
      * TODO - BaseBinaryCtrl Class
      * 
      * NOTE
-     * Compares to DataGrid, ListView comes with "*" column width, double click, row sort and application command problems
+     * Compared to DataGrid, ListView comes with "*" column width, double click, row sort and application command problems
      * EventHandler name accept "_"
      */
     public partial class App : Application
@@ -40,7 +40,8 @@ namespace XTransmit
         public static string FileIPAddressXml { get; private set; }
         public static string FileUserAgentXml { get; private set; }
 
-        public static string FileServerXml { get; private set; }
+        public static string FileShadowsocksXml { get; private set; }
+        public static string FileV2RayXml { get; private set; }
         public static string FileCurlXml { get; private set; }
 
 
@@ -134,7 +135,8 @@ namespace XTransmit
             FileIPAddressXml = $@"{DirectoryApplication}\{dirData}\IPAddress.xml"; //china ip optimized
             FileUserAgentXml = $@"{DirectoryApplication}\{dirData}\UserAgent.xml";
 
-            FileServerXml = $@"{DirectoryApplication}\{dirData}\Servers.xml";
+            FileShadowsocksXml = $@"{DirectoryApplication}\{dirData}\ServerShadowsocks.xml";
+            FileV2RayXml = $@"{DirectoryApplication}\{dirData}\ServerV2Ray.xml";
             FileCurlXml = $@"{DirectoryApplication}\{dirData}\Curl.xml";
 
             // initialize binaries
@@ -156,7 +158,7 @@ namespace XTransmit
             }
 
             // load data
-            ServerManager.Load(FileServerXml);
+            ServerManager.Load(FileShadowsocksXml, FileV2RayXml);
             PreferenceManager.LoadFileOrDefault(FilePreferenceXml);
             ConfigManager.LoadFileOrDefault(FileConfigXml);
 

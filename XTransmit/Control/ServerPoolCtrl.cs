@@ -8,12 +8,12 @@ namespace XTransmit.Control
     {
         public static void StartServerPool()
         {
-            if (ServerManager.ServerList.Count < 1)
+            if (ServerManager.ShadowsocksList.Count < 1)
             {
                 return;
             }
 
-            foreach (Shadowsocks server in ServerManager.ServerList)
+            foreach (Shadowsocks server in ServerManager.ShadowsocksList)
             {
                 int listen = NetworkUtil.GetAvailablePort(2000);
                 if (listen > 0)
@@ -31,10 +31,10 @@ namespace XTransmit.Control
             // exclude the transmit server
             if (ConfigManager.RemoteServer != null)
             {
-                ServerManager.ServerList.Remove(ConfigManager.RemoteServer);
+                ServerManager.ShadowsocksList.Remove(ConfigManager.RemoteServer);
             }
 
-            foreach (Shadowsocks server in ServerManager.ServerList)
+            foreach (Shadowsocks server in ServerManager.ShadowsocksList)
             {
                 ServerManager.Stop(server);
             }
@@ -42,7 +42,7 @@ namespace XTransmit.Control
             // restore
             if (ConfigManager.RemoteServer != null)
             {
-                ServerManager.ServerList.Add(ConfigManager.RemoteServer);
+                ServerManager.ShadowsocksList.Add(ConfigManager.RemoteServer);
             }
 
             ConfigManager.IsServerPoolEnabled = false;

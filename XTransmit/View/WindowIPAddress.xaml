@@ -81,7 +81,7 @@
                   ItemsSource="{Binding Path=IPListOC}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="IP Address" Width="Auto" Binding="{Binding Path=IP}"/>
-                <DataGridTextColumn Header="Ping" Width="Auto" Binding="{Binding Path=Ping}"/>
+                <DataGridTextColumn Header="Ping" Width="Auto" Binding="{Binding Path=PingDelay}"/>
                 <DataGridTextColumn Header="Remarks" Width="*" Binding="{Binding Path=Remarks}"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>

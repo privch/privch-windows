@@ -14,9 +14,9 @@ namespace XTransmit.Model.Server
 {
     [Serializable]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    public class Shadowsocks : INotifyPropertyChanged
+    public class Shadowsocks : IServer, INotifyPropertyChanged
     {
-        #region public-static
+        #region Public-Static
         // encrypt method
         public static List<string> Ciphers { get; } = new List<string>
         {
@@ -30,9 +30,10 @@ namespace XTransmit.Model.Server
             "xchacha20-ietf-poly1305",
             "salsa20",
         };
-        #endregion public-static
+        #endregion
 
-        #region properties-and-serializable
+        // deserializer need to set property
+        #region Properties(Serializable)
         public string HostAddress
         {
             get => hostAddress;
@@ -124,10 +125,18 @@ namespace XTransmit.Model.Server
             }
         }
 
-        // deserializer need to set this property
-        public string TimeCreated { get; set; }
+        // update value after edit
+        public string Modified
+        {
+            get => modified;
+            set
+            {
+                modified = value;
+                OnPropertyChanged(nameof(Modified));
+            }
+        }
 
-        public IPInfo IPData { get; set; }
+        public IPInformation IPInfo { get; set; }
 
         /** status
          */
@@ -152,16 +161,16 @@ namespace XTransmit.Model.Server
         }
 
         //seconds, less then 0 means timeout or unreachable
-        public long Ping
+        public long PingDelay
         {
-            get => ping;
+            get => pingDelay;
             set
             {
-                ping = value;
-                OnPropertyChanged(nameof(Ping));
+                pingDelay = value;
+                OnPropertyChanged(nameof(PingDelay));
             }
         }
-        #endregion properties-and-serializable
+        #endregion 
 
         // values 
         private string hostAddress;
@@ -175,10 +184,11 @@ namespace XTransmit.Model.Server
         private string pluginOption;
 
         private string friendlyName;
+        private string modified;
 
         private int listenPort;
         private string responseTime;
-        private long ping;
+        private long pingDelay;
 
         private static readonly string sr_timedout = (string)Application.Current.FindResource("timed_out");
         private static readonly string sr_failed = (string)Application.Current.FindResource("_failed");
@@ -189,28 +199,23 @@ namespace XTransmit.Model.Server
          */
         public Shadowsocks()
         {
-            HostAddress = "";
-            HostPort = 0;
-            Encrypt = "chacha20-ietf-poly1305";
-            Password = "";
-            Remarks = "";
+            hostAddress = "";
+            hostPort = 0;
+            encrypt = "chacha20-ietf-poly1305";
+            password = "";
+            remarks = "";
 
-            PluginEnabled = false;
-            PluginName = "";
-            PluginOption = "";
+            pluginEnabled = false;
+            pluginName = "";
+            pluginOption = "";
 
-            FriendlyName = "";
-            TimeCreated = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-            IPData = null;
+            friendlyName = "";
+            modified = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            IPInfo = null;
 
-            ListenPort = -1;
-            ResponseTime = "";
-            Ping = 0;
-        }
-
-        public string GetID()
-        {
-            return $"{hostAddress}:{hostPort}";
+            listenPort = -1;
+            responseTime = "";
+            pingDelay = 0;
         }
 
         public Shadowsocks Copy()
@@ -218,11 +223,11 @@ namespace XTransmit.Model.Server
             return (Shadowsocks)TextUtil.CopyBySerializer(this);
         }
 
-        public bool IsServerEqual(Shadowsocks serverNew)
+        public bool IsServerEqual(object server)
         {
-            if (serverNew != null)
+            if (server is Shadowsocks shadowsocks)
             {
-                return HostAddress == serverNew.HostAddress && HostPort == serverNew.HostPort;
+                return HostAddress == shadowsocks.HostAddress && HostPort == shadowsocks.HostPort;
             }
             else
             {
@@ -230,17 +235,64 @@ namespace XTransmit.Model.Server
             }
         }
 
+        public void SetFriendlyNameDefault()
+        {
+            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostAddress} - {HostPort}" : Remarks;
+        }
+
+        public void SetFriendNameByIPInfo()
+        {
+            if (IPInfo == null)
+            {
+                return;
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            if (!string.IsNullOrWhiteSpace(IPInfo.Country))
+            {
+                stringBuilder.Append(IPInfo.Country);
+            }
+
+            if (!string.IsNullOrWhiteSpace(IPInfo.Region))
+            {
+                stringBuilder.Append(" - " + IPInfo.Region);
+            }
+
+            if (!string.IsNullOrWhiteSpace(IPInfo.City))
+            {
+                stringBuilder.Append(" - " + IPInfo.City);
+            }
+
+            string friendlyName = stringBuilder.ToString();
+            if (!string.IsNullOrWhiteSpace(friendlyName))
+            {
+                if (friendlyName.StartsWith(" - ", StringComparison.Ordinal))
+                {
+                    friendlyName = friendlyName.Substring(3);
+                }
+
+                FriendlyName = friendlyName;
+            }
+        }
+
+        #region IServer
+        public string GetID()
+        {
+            return $"{hostAddress}:{hostPort}";
+        }
+
         public void UpdateIPInfo(bool force)
         {
-            if (IPData == null || force)
+            if (IPInfo == null || force)
             {
-                IPData = IPInfo.Fetch(HostAddress);
-                SetFriendNameByIPData();
+                IPInfo = IPInformation.Fetch(HostAddress);
+                SetFriendNameByIPInfo();
             }
         }
 
         // return seconds
-        public void UpdateResponseTime()
+        public void UpdateResponse()
         {
             if (ListenPort <= 0)
             {
@@ -291,63 +343,22 @@ namespace XTransmit.Model.Server
                 try
                 {
                     PingReply reply = pingSender.Send(HostAddress, ConfigManager.Global.PingTimeout);
-                    Ping = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
+                    PingDelay = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                 }
                 catch
                 {
-                    Ping = -1;
+                    PingDelay = -1;
                 }
             }
         }
+        #endregion IServer
 
-        public void SetFriendlyNameDefault()
-        {
-            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostAddress} - {HostPort}" : Remarks;
-        }
-
-        public void SetFriendNameByIPData()
-        {
-            if (IPData == null)
-            {
-                return;
-            }
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            if (!string.IsNullOrWhiteSpace(IPData.Country))
-            {
-                stringBuilder.Append(IPData.Country);
-            }
-
-            if (!string.IsNullOrWhiteSpace(IPData.Region))
-            {
-                stringBuilder.Append(" - " + IPData.Region);
-            }
-
-            if (!string.IsNullOrWhiteSpace(IPData.City))
-            {
-                stringBuilder.Append(" - " + IPData.City);
-            }
-
-            string friendlyName = stringBuilder.ToString();
-            if (!string.IsNullOrWhiteSpace(friendlyName))
-            {
-                if (friendlyName.StartsWith(" - ", StringComparison.Ordinal))
-                {
-                    friendlyName = friendlyName.Substring(3);
-                }
-
-                FriendlyName = friendlyName;
-            }
-        }
-
-
-        /** INotifyPropertyChanged ==================================================
-         */
+        #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
 }

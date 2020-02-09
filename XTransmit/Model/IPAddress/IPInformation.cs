@@ -2,58 +2,13 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace XTransmit.Model.IPAddress
 {
-    [DataContract(Name = "IPInfoIO")]
-    public class IPInfoIO : IExtensibleDataObject
-    {
-        private ExtensionDataObject extensionDataObjectValue;
-        public ExtensionDataObject ExtensionData
-        {
-            get
-            {
-                return extensionDataObjectValue;
-            }
-            set
-            {
-                extensionDataObjectValue = value;
-            }
-        }
-
-        [DataMember(Name = "ip")]
-        internal string ip = null;
-
-        [DataMember(Name = "hostname")]
-        internal string hostname = null;
-
-        [DataMember(Name = "city")]
-        internal string city = null;
-
-        [DataMember(Name = "region")]
-        internal string region = null;
-
-        [DataMember(Name = "country")]
-        internal string country = null;
-
-        [DataMember(Name = "loc")]
-        internal string location = null;
-
-        [DataMember(Name = "org")]
-        internal string organization = null;
-
-        [DataMember(Name = "postal")]
-        internal string postal = null;
-
-        [DataMember(Name = "timezone")]
-        internal string timezone = null;
-    }
-
     [Serializable]
-    public class IPInfo
+    public class IPInformation
     {
         public string IP { get; set; }
         public string Hostname { get; set; }
@@ -66,15 +21,15 @@ namespace XTransmit.Model.IPAddress
         public string Timezone { get; set; }
 
         // Copy by serializer
-        public IPInfo Copy() => (IPInfo)Utility.TextUtil.CopyBySerializer(this);
+        public IPInformation Copy() => (IPInformation)Utility.TextUtil.CopyBySerializer(this);
 
         /**<summary>
          * Fetch data from https://ipinfo.io and read to a IPInfo object.
-         * TODO - UA, Proxy Parameter.
          * </summary>
+         * TODO - UA, Proxy Parameter.
          */
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        public static IPInfo Fetch(string ip)
+        public static IPInformation Fetch(string ip)
         {
             int timeout = ConfigManager.Global.IPInfoConnTimeout;
 
@@ -107,7 +62,7 @@ namespace XTransmit.Model.IPAddress
         }
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        private static IPInfo ReadToObject(string json)
+        private static IPInformation ReadToObject(string json)
         {
             if (string.IsNullOrWhiteSpace(json))
             {
@@ -132,7 +87,7 @@ namespace XTransmit.Model.IPAddress
                 msJson.Dispose();
             }
 
-            return new IPInfo()
+            return new IPInformation()
             {
                 IP = ipinfoio.ip,
                 Hostname = ipinfoio.hostname,
@@ -152,7 +107,7 @@ namespace XTransmit.Model.IPAddress
 
         public override bool Equals(object objectNew)
         {
-            if (objectNew is IPInfo ipinfo)
+            if (objectNew is IPInformation ipinfo)
             {
                 return IP == ipinfo.IP;
             }

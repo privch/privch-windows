@@ -67,7 +67,7 @@ namespace XTransmit.Model
                 Global = config;
 
                 // restore status
-                RemoteServer = ServerManager.ServerList.FirstOrDefault(
+                RemoteServer = ServerManager.ShadowsocksList.FirstOrDefault(
                     server => server.GetID() == config.RemoteServerID);
             }
             else

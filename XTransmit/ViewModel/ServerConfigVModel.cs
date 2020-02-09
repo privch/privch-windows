@@ -28,7 +28,7 @@ namespace XTransmit.ViewModel
         private readonly Action<bool> actionComplete;
 
         // language
-        private static readonly string sr_created = (string)Application.Current.FindResource("_created");
+        private static readonly string sr_modified = (string)Application.Current.FindResource("_modified");
         private static readonly string sr_respond_time = (string)Application.Current.FindResource("response_time");
         private static readonly string sr_ping = (string)Application.Current.FindResource("_ping");
 
@@ -50,18 +50,18 @@ namespace XTransmit.ViewModel
             // a bit overhead
             return new List<ItemView>()
             {
-                new ItemView{Label = sr_created, Text = ServerEdit.TimeCreated},
+                new ItemView{Label = sr_modified, Text = ServerEdit.Modified},
                 new ItemView{Label = sr_respond_time, Text = ServerEdit.ResponseTime},
-                new ItemView{Label = sr_ping, Text = ServerEdit.Ping.ToString(CultureInfo.InvariantCulture)},
+                new ItemView{Label = sr_ping, Text = ServerEdit.PingDelay.ToString(CultureInfo.InvariantCulture)},
 
-                new ItemView{Label = "Country", Text = ServerEdit.IPData?.Country ?? sr_not_availabe},
-                new ItemView{Label = "Region", Text = ServerEdit.IPData?.Region ?? sr_not_availabe},
-                new ItemView{Label = "City", Text = ServerEdit.IPData?.City ?? sr_not_availabe},
-                new ItemView{Label = "Location", Text = ServerEdit.IPData?.Location ?? sr_not_availabe},
-                new ItemView{Label = "Organization", Text = ServerEdit.IPData?.Organization ?? sr_not_availabe},
-                new ItemView{Label = "Postal", Text = ServerEdit.IPData?.Postal ?? sr_not_availabe},
-                new ItemView{Label = "Hostname", Text = ServerEdit.IPData?.Hostname ?? sr_not_availabe},
-                new ItemView{Label = "Timezone", Text = ServerEdit.IPData?.Timezone ?? sr_not_availabe},
+                new ItemView{Label = "Country", Text = ServerEdit.IPInfo?.Country ?? sr_not_availabe},
+                new ItemView{Label = "Region", Text = ServerEdit.IPInfo?.Region ?? sr_not_availabe},
+                new ItemView{Label = "City", Text = ServerEdit.IPInfo?.City ?? sr_not_availabe},
+                new ItemView{Label = "Location", Text = ServerEdit.IPInfo?.Location ?? sr_not_availabe},
+                new ItemView{Label = "Organization", Text = ServerEdit.IPInfo?.Organization ?? sr_not_availabe},
+                new ItemView{Label = "Postal", Text = ServerEdit.IPInfo?.Postal ?? sr_not_availabe},
+                new ItemView{Label = "Hostname", Text = ServerEdit.IPInfo?.Hostname ?? sr_not_availabe},
+                new ItemView{Label = "Timezone", Text = ServerEdit.IPInfo?.Timezone ?? sr_not_availabe},
             };
         }
 
@@ -108,7 +108,7 @@ namespace XTransmit.ViewModel
                 if (listen > 0)
                 {
                     ServerManager.Start(ServerEdit, listen);
-                    ServerEdit.UpdateResponseTime();
+                    ServerEdit.UpdateResponse();
                     ServerManager.Stop(ServerEdit);
                 }
             }).ConfigureAwait(true);

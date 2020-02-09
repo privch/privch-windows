@@ -2,75 +2,109 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using XTransmit.Model.V2Ray;
 using XTransmit.Utility;
 
 namespace XTransmit.Model.Server
 {
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+    /**
+     * TODO - Optimize server pool
+     */
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class ServerManager
     {
-        public static readonly Dictionary<Shadowsocks, Process> ServerProcessMap = new Dictionary<Shadowsocks, Process>();
-        public static List<Shadowsocks> ServerList { get; private set; }
+        public static readonly Dictionary<string, Process> ServerProcessMap = new Dictionary<string, Process>();
 
-        private static string ServerXmlPath;
+        public static List<Shadowsocks> ShadowsocksList;
+        public static List<V2RayServer> V2RayList;
+
         private static readonly Random RandGen = new Random();
         private static readonly object locker = new object();
 
+        private static string pathShadowsocksXml;
+        private static string pathV2RayXml;
+
         // Init server list by deserialize xml file
-        public static void Load(string pathServerXml)
+        public static void Load(string pathShadowsocksXml, string pathV2RayXml)
         {
-            if (FileUtil.XmlDeserialize(pathServerXml, typeof(List<Shadowsocks>)) is List<Shadowsocks> listServer)
+            // load shadowsocks
+            if (FileUtil.XmlDeserialize(pathShadowsocksXml, typeof(List<Shadowsocks>)) is List<Shadowsocks> listShadowsocks)
             {
-                ServerList = listServer;
+                ShadowsocksList = listShadowsocks;
             }
             else
             {
-                ServerList = new List<Shadowsocks>();
+                ShadowsocksList = new List<Shadowsocks>();
             }
 
-            ServerXmlPath = pathServerXml;
+            // load v2ray
+            if (FileUtil.XmlDeserialize(pathV2RayXml, typeof(List<V2RayServer>)) is List<V2RayServer> listV2Ray)
+            {
+                V2RayList = listV2Ray;
+            }
+            else
+            {
+                V2RayList = new List<V2RayServer>();
+            }
+
+            ServerManager.pathShadowsocksXml = pathShadowsocksXml;
+            ServerManager.pathV2RayXml = pathV2RayXml;
         }
 
-        public static void Save(List<Shadowsocks> listServerProfile)
+        public static void Save(List<Shadowsocks> listShadowsocks)
         {
-            FileUtil.XmlSerialize(ServerXmlPath, listServerProfile);
-            ServerList = listServerProfile;
+            FileUtil.XmlSerialize(pathShadowsocksXml, listShadowsocks);
+            ShadowsocksList = listShadowsocks;
+        }
+
+        public static void Save(List<V2RayServer> listV2Ray)
+        {
+            List<V2RayServer> asdfsdaf = listV2Ray.Cast<V2RayServer>().ToList();
+            FileUtil.XmlSerialize(pathV2RayXml, asdfsdaf);
+            V2RayList = listV2Ray;
         }
 
         // TODO - Server type (SS, V2Ray ...)
-        public static bool Start(Shadowsocks server, int listen)
+        public static bool Start(IServer server, int listen)
         {
-            if (ServerProcessMap.ContainsKey(server))
+            if (ServerProcessMap.ContainsKey(server.GetID()))
             {
                 return true;
             }
 
-            if (SSManager.Execute(server, listen) is Process process)
+            if (server is Shadowsocks shadowsocks)
             {
-                server.ListenPort = listen;
-                ServerProcessMap.Add(server, process);
-                return true;
+                if (SSManager.Execute(shadowsocks, listen) is Process process)
+                {
+                    shadowsocks.ListenPort = listen;
+                    ServerProcessMap.Add(shadowsocks.GetID(), process);
+                    return true;
+                }
             }
 
             return false;
         }
 
-        public static void Stop(Shadowsocks server)
+        public static void Stop(IServer server)
         {
             // server is null at the first time running
-            if (server != null && ServerProcessMap.ContainsKey(server))
+            if (server == null)
             {
-                Process process = ServerProcessMap[server];
+                return;
+            }
+
+            if (ServerProcessMap.ContainsKey(server.GetID()))
+            {
+                Process process = ServerProcessMap[server.GetID()];
                 SSManager.Exit(process);
 
                 server.ListenPort = -1;
-                ServerProcessMap.Remove(server);
+                ServerProcessMap.Remove(server.GetID());
             }
         }
 
@@ -82,11 +116,13 @@ namespace XTransmit.Model.Server
                 if (ServerProcessMap.Count > 1)
                 {
                     int index = RandGen.Next(0, ServerProcessMap.Count - 1);
-                    return ServerProcessMap.Keys.ElementAt(index);
+                    string id = ServerProcessMap.Keys.ElementAt(index);
+                    return ShadowsocksList.FirstOrDefault(server => server.GetID() == id);
                 }
                 else if (ServerProcessMap.Count > 0)
                 {
-                    return ServerProcessMap.Keys.ElementAt(0);
+                    string id = ServerProcessMap.Keys.ElementAt(0);
+                    return ShadowsocksList.FirstOrDefault(server => server.GetID() == id);
                 }
                 else
                 {
@@ -99,7 +135,7 @@ namespace XTransmit.Model.Server
          * start with "ss://". 
          * Reference code: github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
          */
-        [SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
         public static Shadowsocks ParseLegacyServer(string ssUrl)
         {
             var match = UrlFinder.Match(ssUrl);

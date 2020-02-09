@@ -1,5 +1,5 @@
 ﻿using XTransmit.Model;
-using XTransmit.Model.Server;
+using XTransmit.Model.SS;
 using XTransmit.Utility;
 
 namespace XTransmit.Control

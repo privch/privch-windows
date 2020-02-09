@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Windows;
+using XTransmit.Control;
 using XTransmit.Model.IPAddress;
-using XTransmit.Model.Server;
+using XTransmit.Model.SS;
 using XTransmit.Model.UserAgent;
-using XTransmit.Utility;
 
 namespace XTransmit.Model.Curl
 {
@@ -141,7 +141,7 @@ namespace XTransmit.Model.Curl
                 process = Process.Start(
                     new ProcessStartInfo
                     {
-                        FileName = CurlManager.CurlExePath,
+                        FileName = ProcCurl.CurlExePath,
                         Arguments = arguments,
                         WorkingDirectory = App.DirectoryCurl,
                         CreateNoWindow = true,

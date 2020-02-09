@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using XTransmit.Model;
-using XTransmit.Model.Server;
 using XTransmit.Model.V2Ray;
 using XTransmit.ViewModel.Element;
 
@@ -23,7 +22,7 @@ namespace XTransmit.ViewModel
         {
             // load servers and convert to ObservableCollection
             V2RayOC = new ObservableCollection<V2RayServer>(ServerManager.V2RayList);
-            Servers = V2RayOC.Cast<IServer>();
+            Servers = V2RayOC.Cast<BaseServer>();
         }
 
         ~ContentV2RayVModel()

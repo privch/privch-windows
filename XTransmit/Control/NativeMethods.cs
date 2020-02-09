@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Runtime.InteropServices;
 
-namespace XTransmit.Utility
+namespace XTransmit.Control
 {
     public static class NativeMethods
     {

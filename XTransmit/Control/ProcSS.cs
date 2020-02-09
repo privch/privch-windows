@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using XTransmit.Model;
-using XTransmit.Model.Server;
+using XTransmit.Model.SS;
+using XTransmit.Utility;
 
-namespace XTransmit.Utility
+namespace XTransmit.Control
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    internal static class SSManager
+    internal static class ProcSS
     {
         private static readonly string SSExePath = $@"{App.DirectoryShadowsocks}\{ss_local_exe_name}";
 

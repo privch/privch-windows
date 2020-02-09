@@ -2,13 +2,13 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using XTransmit.Model;
-using XTransmit.Model.Server;
+using XTransmit.Model.SS;
 using XTransmit.Utility;
 
 namespace XTransmit.Control
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    class V2RayCtrl
+    class ProcV2Ray
     {
         /** v2ray-core 4.22.1
          */

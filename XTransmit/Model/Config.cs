@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using XTransmit.Model.Server;
+using XTransmit.Model.SS;
 using XTransmit.Utility;
 
 namespace XTransmit.Model
@@ -28,7 +28,7 @@ namespace XTransmit.Model
 
         // server
         public bool IsReplaceOldServer { get; set; }
-        
+
         public Config()
         {
             IsAutorun = true;

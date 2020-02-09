@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using XTransmit.Utility;
 
-namespace XTransmit.Utility
+namespace XTransmit.Control
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    internal static class CurlManager
+    internal static class ProcCurl
     {
         public static readonly string CurlExePath = $@"{App.DirectoryCurl}\{curl_exe_name}";
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using XTransmit.Model;
-using XTransmit.Model.Server;
+using XTransmit.Model.SS;
 using XTransmit.Utility;
 
 namespace XTransmit.Control
@@ -34,7 +34,7 @@ namespace XTransmit.Control
                 portInUse.Add(config.GlobalSocks5Port);
             }
 
-            if (!PrivoxyManager.Start(config.SystemProxyPort, config.GlobalSocks5Port))
+            if (!ProcPrivoxy.Start(config.SystemProxyPort, config.GlobalSocks5Port))
             {
                 return false;
             }
@@ -49,7 +49,7 @@ namespace XTransmit.Control
 
         public static void StopServer()
         {
-            PrivoxyManager.Stop();
+            ProcPrivoxy.Stop();
             ServerManager.Stop(ConfigManager.RemoteServer);
         }
 

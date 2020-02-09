@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using XTransmit.Utility;
 
-namespace XTransmit.Utility
+namespace XTransmit.Control
 {
     /** Notes:
         privoxy[--help][--version][--no - daemon][--pidfile PIDFILE][--user USER
@@ -13,7 +14,7 @@ namespace XTransmit.Utility
         'config.txt'). If no config_file is found, Privoxy will fail to start.
      */
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    internal static class PrivoxyManager
+    internal static class ProcPrivoxy
     {
         public static readonly string PathPrivoxyExe = $@"{App.DirectoryPrivoxy}\{privoxy_exe_name}";
         private static Process process_privoxy = null;

@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Input;
 using XTransmit.Control;
 using XTransmit.Model;
-using XTransmit.Model.Server;
 using XTransmit.Utility;
 using XTransmit.View;
 
@@ -16,7 +15,7 @@ namespace XTransmit.ViewModel.Element
 {
     internal abstract class BaseServerVModel : INotifyPropertyChanged
     {
-        protected IEnumerable<IServer> Servers;
+        protected IEnumerable<BaseServer> Servers;
 
         // status, also use to cancel task
         protected volatile bool processing_fetch_info = false;
@@ -34,7 +33,7 @@ namespace XTransmit.ViewModel.Element
 
         private static readonly string sr_fetch_ask_focus_title = (string)Application.Current.FindResource("server_fetch_info");
         private static readonly string sr_fetch_ask_focus_message = (string)Application.Current.FindResource("server_fetch_ask_force");
-        
+
 
         public bool CanEditList(object parameter)
         {
@@ -76,7 +75,7 @@ namespace XTransmit.ViewModel.Element
             // run
             await Task.Run(() =>
             {
-                IEnumerator<IServer> enumerator = Servers.GetEnumerator();
+                IEnumerator<BaseServer> enumerator = Servers.GetEnumerator();
                 int count = Servers.Count();
                 int complete = 0;
 
@@ -110,12 +109,12 @@ namespace XTransmit.ViewModel.Element
 
         private bool CanFetchInfoSelected(object parameter)
         {
-            return processing_fetch_info == false && parameter is IServer;
+            return processing_fetch_info == false && parameter is BaseServer;
         }
 
         private async void FetchInfoSelected(object parameter)
         {
-            IServer server = (IServer)parameter;
+            BaseServer server = (BaseServer)parameter;
 
             // add task
             processing_fetch_info = true;
@@ -164,7 +163,7 @@ namespace XTransmit.ViewModel.Element
             // run
             await Task.Run(() =>
             {
-                IEnumerator<IServer> enumerator = Servers.GetEnumerator();
+                IEnumerator<BaseServer> enumerator = Servers.GetEnumerator();
                 int count = Servers.Count();
                 int complete = 0;
 
@@ -177,10 +176,10 @@ namespace XTransmit.ViewModel.Element
                         break;
                     }
 
-                    IServer server = enumerator.Current;
+                    BaseServer server = enumerator.Current;
                     if (ServerManager.ServerProcessMap.ContainsKey(server.GetID()))
                     {
-                        server.UpdateResponse();
+                        server.UpdateResponseTime();
                     }
                     else
                     {
@@ -188,7 +187,7 @@ namespace XTransmit.ViewModel.Element
                         if (listen > 0)
                         {
                             ServerManager.Start(server, listen);
-                            server.UpdateResponse();
+                            server.UpdateResponseTime();
                             ServerManager.Stop(server);
                         }
                     }
@@ -208,12 +207,12 @@ namespace XTransmit.ViewModel.Element
 
         private bool CanCheckResponseSelected(object parameter)
         {
-            return !processing_check_response && parameter is IServer;
+            return !processing_check_response && parameter is BaseServer;
         }
 
         private async void CheckResponseSelected(object parameter)
         {
-            IServer server = (IServer)parameter;
+            BaseServer server = (BaseServer)parameter;
 
             // add task
             processing_check_response = true;
@@ -229,7 +228,7 @@ namespace XTransmit.ViewModel.Element
             {
                 if (ServerManager.ServerProcessMap.ContainsKey(server.GetID()))
                 {
-                    server.UpdateResponse();
+                    server.UpdateResponseTime();
                 }
                 else
                 {
@@ -237,7 +236,7 @@ namespace XTransmit.ViewModel.Element
                     if (listen > 0)
                     {
                         ServerManager.Start(server, listen);
-                        server.UpdateResponse();
+                        server.UpdateResponseTime();
                         ServerManager.Stop(server);
                     }
                 }
@@ -272,7 +271,7 @@ namespace XTransmit.ViewModel.Element
             InterfaceCtrl.AddHomeTask(task);
 
             // run
-            IEnumerator<IServer> enumerator = Servers.GetEnumerator();
+            IEnumerator<BaseServer> enumerator = Servers.GetEnumerator();
             int timeout = ConfigManager.Global.PingTimeout;
 
             using (Ping pingSender = new Ping())
@@ -289,7 +288,7 @@ namespace XTransmit.ViewModel.Element
                         break;
                     }
 
-                    IServer server = enumerator.Current;
+                    BaseServer server = enumerator.Current;
                     try
                     {
                         PingReply reply = await pingSender.SendPingAsync(server.HostAddress, timeout).ConfigureAwait(true);
@@ -315,13 +314,13 @@ namespace XTransmit.ViewModel.Element
 
         private bool CanCheckPingSelected(object parameter)
         {
-            return !processing_check_ping && parameter is IServer;
+            return !processing_check_ping && parameter is BaseServer;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private async void CheckPingSelected(object parameter)
         {
-            IServer server = (IServer)parameter;
+            BaseServer server = (BaseServer)parameter;
 
             // add task
             processing_check_ping = true;
@@ -335,7 +334,7 @@ namespace XTransmit.ViewModel.Element
             // run
             await Task.Run(() =>
             {
-                server.UpdatePing();
+                server.UpdatePingDelay();
                 task.Progress100 = 100;
             }).ConfigureAwait(true);
 

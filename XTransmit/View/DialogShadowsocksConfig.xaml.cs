@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using XTransmit.Model;
-using XTransmit.Model.Server;
+using XTransmit.Model.SS;
 using XTransmit.ViewModel;
 
 namespace XTransmit.View

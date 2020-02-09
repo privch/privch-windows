@@ -1,37 +1,19 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Windows;
+using XTransmit.Control;
 using XTransmit.Model.IPAddress;
-using XTransmit.Utility;
 
-namespace XTransmit.Model.Server
+namespace XTransmit.Model
 {
     [Serializable]
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    public class Shadowsocks : IServer, INotifyPropertyChanged
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+    public abstract class BaseServer : INotifyPropertyChanged
     {
-        #region Public-Static
-        // encrypt method
-        public static List<string> Ciphers { get; } = new List<string>
-        {
-            "rc4-md5",
-            "aes-128-gcm", "aes-192-gcm", "aes-256-gcm",
-            "aes-128-cfb", "aes-192-cfb", "aes-256-cfb",
-            "aes-128-ctr", "aes-192-ctr", "aes-256-ctr",
-            "bf-cfb",
-            "camellia-128-cfb", "camellia-192-cfb", "camellia-256-cfb",
-            "chacha20", "chacha20-ietf", "chacha20-ietf-poly1305",
-            "xchacha20-ietf-poly1305",
-            "salsa20",
-        };
-        #endregion
-
         // deserializer need to set property
         #region Properties(Serializable)
         public string HostAddress
@@ -51,65 +33,6 @@ namespace XTransmit.Model.Server
             {
                 hostPort = value;
                 OnPropertyChanged(nameof(HostPort));
-            }
-        }
-
-        public string Encrypt
-        {
-            get => encrypt;
-            set
-            {
-                encrypt = value;
-                OnPropertyChanged(nameof(Encrypt));
-            }
-        }
-
-        public string Password
-        {
-            get => password;
-            set
-            {
-                password = value;
-                OnPropertyChanged(nameof(Password));
-            }
-        }
-
-        public string Remarks
-        {
-            get => remarks;
-            set
-            {
-                remarks = value;
-                OnPropertyChanged(nameof(Remarks));
-            }
-        }
-
-        public bool PluginEnabled
-        {
-            get => pluginEnabled;
-            set
-            {
-                pluginEnabled = value;
-                OnPropertyChanged(nameof(PluginEnabled));
-            }
-        }
-
-        public string PluginName
-        {
-            get => pluginName;
-            set
-            {
-                pluginName = value;
-                OnPropertyChanged(nameof(PluginName));
-            }
-        }
-        public string PluginOption
-        {
-            get => pluginOption;
-            set
-            {
-                pluginOption = value;
-                OnPropertyChanged(nameof(PluginOption));
             }
         }
 
@@ -136,10 +59,6 @@ namespace XTransmit.Model.Server
             }
         }
 
-        public IPInformation IPInfo { get; set; }
-
-        /** status
-         */
         public int ListenPort
         {
             get => listenPort;
@@ -170,18 +89,14 @@ namespace XTransmit.Model.Server
                 OnPropertyChanged(nameof(PingDelay));
             }
         }
-        #endregion 
+
+        public IPInformation IPInfo { get; set; }
+        #endregion
+
 
         // values 
         private string hostAddress;
         private int hostPort;
-        private string encrypt;
-        private string password;
-        private string remarks;
-
-        private bool pluginEnabled;
-        private string pluginName;
-        private string pluginOption;
 
         private string friendlyName;
         private string modified;
@@ -190,54 +105,40 @@ namespace XTransmit.Model.Server
         private string responseTime;
         private long pingDelay;
 
+        // language strings
         private static readonly string sr_timedout = (string)Application.Current.FindResource("timed_out");
         private static readonly string sr_failed = (string)Application.Current.FindResource("_failed");
 
-        /**<summary>
-         * Must be called after the ConfigManager.Global loaded
-         * </summary> 
-         */
-        public Shadowsocks()
+
+        public BaseServer()
         {
-            hostAddress = "";
-            hostPort = 0;
-            encrypt = "chacha20-ietf-poly1305";
-            password = "";
-            remarks = "";
+            hostAddress = string.Empty;
+            hostPort = -1;
 
-            pluginEnabled = false;
-            pluginName = "";
-            pluginOption = "";
-
-            friendlyName = "";
+            friendlyName = string.Empty;
             modified = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
             IPInfo = null;
 
             listenPort = -1;
-            responseTime = "";
+            responseTime = string.Empty;
             pingDelay = 0;
         }
 
-        public Shadowsocks Copy()
+        public string GetID()
         {
-            return (Shadowsocks)TextUtil.CopyBySerializer(this);
+            return $"{hostAddress}:{hostPort}";
         }
 
         public bool IsServerEqual(object server)
         {
-            if (server is Shadowsocks shadowsocks)
+            if (server is BaseServer baseServer)
             {
-                return HostAddress == shadowsocks.HostAddress && HostPort == shadowsocks.HostPort;
+                return HostAddress == baseServer.HostAddress && HostPort == baseServer.HostPort;
             }
             else
             {
                 return false;
             }
-        }
-
-        public void SetFriendlyNameDefault()
-        {
-            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostAddress} - {HostPort}" : Remarks;
         }
 
         public void SetFriendNameByIPInfo()
@@ -276,12 +177,6 @@ namespace XTransmit.Model.Server
             }
         }
 
-        #region IServer
-        public string GetID()
-        {
-            return $"{hostAddress}:{hostPort}";
-        }
-
         public void UpdateIPInfo(bool force)
         {
             if (IPInfo == null || force)
@@ -292,7 +187,7 @@ namespace XTransmit.Model.Server
         }
 
         // return seconds
-        public void UpdateResponse()
+        public void UpdateResponseTime()
         {
             if (ListenPort <= 0)
             {
@@ -308,7 +203,7 @@ namespace XTransmit.Model.Server
                 process = Process.Start(
                     new ProcessStartInfo
                     {
-                        FileName = CurlManager.CurlExePath,
+                        FileName = ProcCurl.CurlExePath,
                         Arguments = $"--silent --connect-timeout {timeout} --proxy \"socks5://127.0.0.1:{ListenPort}\""
                                     + " -w \"%{time_total}\" -o NUL -s \"https://google.com\"",
                         WorkingDirectory = App.DirectoryCurl,
@@ -336,7 +231,7 @@ namespace XTransmit.Model.Server
             }
         }
 
-        public void UpdatePing()
+        public void UpdatePingDelay()
         {
             using (Ping pingSender = new Ping())
             {
@@ -351,7 +246,7 @@ namespace XTransmit.Model.Server
                 }
             }
         }
-        #endregion IServer
+
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

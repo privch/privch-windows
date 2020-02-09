@@ -93,7 +93,6 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <None Include="App.config" />
-    <Compile Include="Model\Server\IServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -118,12 +117,18 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control\ProcPrivoxy.cs" />
+    <Compile Include="Control\ProcSS.cs" />
+    <Compile Include="Control\ProcCurl.cs" />
+    <Compile Include="Control\ProcV2Ray.cs" />
+    <Compile Include="Control\NativeMethods.cs" />
     <Compile Include="Control\TransmitCtrl.cs" />
-    <Compile Include="Control\V2RayCtrl.cs" />
     <Compile Include="Control\ServerPoolCtrl.cs" />
     <Compile Include="Control\InterfaceCtrl.cs" />
+    <Compile Include="Model\BaseServer.cs" />
     <Compile Include="Model\Config.cs" />
     <Compile Include="Model\Preference.cs" />
+    <Compile Include="Model\ServerManager.cs" />
     <Compile Include="Model\Curl\CurlArgument.cs" />
     <Compile Include="Model\Curl\CurlResponse.cs" />
     <Compile Include="Model\Curl\SiteManager.cs" />
@@ -140,21 +145,17 @@
     <Compile Include="Model\IPAddress\IPInfoIO.cs" />
     <Compile Include="Model\UserAgent\UAProfile.cs" />
     <Compile Include="Model\UserAgent\UAManager.cs" />
-    <Compile Include="Model\Server\ServerManager.cs" />
-    <Compile Include="Model\Server\Shadowsocks.cs" />
+    <Compile Include="Model\SS\Shadowsocks.cs" />
     <Compile Include="Model\V2Ray\V2RayServer.cs" />
     <Compile Include="Model\V2Ray\UrlVMess.cs" />
     <Compile Include="Model\V2Ray\VMess.cs" />
     <Compile Include="Model\V2Ray\Mux.cs" />
     <Compile Include="Model\V2Ray\Outbound.cs" />
     <Compile Include="Model\V2Ray\Transport.cs" />
-    <Compile Include="Utility\CurlManager.cs" />
     <Compile Include="Utility\FileUtil.cs" />
-    <Compile Include="Utility\NativeMethods.cs" />
     <Compile Include="Utility\NetworkUtil.cs" />
-    <Compile Include="Utility\PrivoxyManager.cs" />
+    <Compile Include="Utility\QRCode.cs" />
     <Compile Include="Utility\RegexHelper.cs" />
-    <Compile Include="Utility\SSManager.cs" />
     <Compile Include="Utility\SystemUtil.cs" />
     <Compile Include="Utility\TextUtil.cs" />
     <Compile Include="ViewModel\AboutVModel.cs" />

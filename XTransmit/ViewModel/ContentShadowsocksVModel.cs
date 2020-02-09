@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows;
 using XTransmit.Control;
 using XTransmit.Model;
-using XTransmit.Model.Server;
+using XTransmit.Model.SS;
 using XTransmit.View;
 using XTransmit.ViewModel.Element;
 using ZXing;
@@ -29,7 +29,7 @@ namespace XTransmit.ViewModel
         {
             // load servers and convert to ObservableCollection
             ShadowsocksOC = new ObservableCollection<Shadowsocks>(ServerManager.ShadowsocksList);
-            Servers = ShadowsocksOC.Cast<IServer>();
+            Servers = ShadowsocksOC.Cast<BaseServer>();
         }
 
         ~ContentShadowsocksVModel()
@@ -149,7 +149,7 @@ namespace XTransmit.ViewModel
                 return;
             }
 
-            List<Shadowsocks> serverList = ServerManager.ImportServers(result.Text);
+            List<Shadowsocks> serverList = Shadowsocks.ImportServers(result.Text);
             if (serverList.Count > 0)
             {
                 AddServer(serverList, out int added, out int updated);
@@ -190,7 +190,7 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandAddServerClipboard => new RelayCommand(AddServerClipboard, CanEditList);
         private void AddServerClipboard(object parameter)
         {
-            List<Shadowsocks> serverList = ServerManager.ImportServers(Clipboard.GetText(TextDataFormat.Text));
+            List<Shadowsocks> serverList = Shadowsocks.ImportServers(Clipboard.GetText(TextDataFormat.Text));
             if (serverList.Count > 0)
             {
                 AddServer(serverList, out int added, out int updated);
@@ -228,7 +228,7 @@ namespace XTransmit.ViewModel
             bool? open = openFileDialog.ShowDialog();
             if (open != true) return;
 
-            List<Shadowsocks> serverList = ServerManager.ImportServers(openFileDialog.FileName);
+            List<Shadowsocks> serverList = Shadowsocks.ImportServers(openFileDialog.FileName);
             if (serverList.Count > 0)
             {
                 AddServer(serverList, out int added, out int updated);

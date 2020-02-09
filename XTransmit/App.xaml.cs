@@ -5,7 +5,6 @@ using System.IO;
 using System.Windows;
 using XTransmit.Control;
 using XTransmit.Model;
-using XTransmit.Model.Server;
 using XTransmit.Utility;
 
 namespace XTransmit
@@ -140,14 +139,14 @@ namespace XTransmit
             FileCurlXml = $@"{DirectoryApplication}\{dirData}\Curl.xml";
 
             // initialize binaries
-            PrivoxyManager.KillRunning();
-            SSManager.KillRunning();
-            V2RayCtrl.KillRunning();
-            CurlManager.KillRunning();
-            if (!PrivoxyManager.Prepare()
-                || !SSManager.Prepare()
-                || !V2RayCtrl.Prepare()
-                || !CurlManager.Prepare())
+            ProcPrivoxy.KillRunning();
+            ProcSS.KillRunning();
+            ProcV2Ray.KillRunning();
+            ProcCurl.KillRunning();
+            if (!ProcPrivoxy.Prepare()
+                || !ProcSS.Prepare()
+                || !ProcV2Ray.Prepare()
+                || !ProcCurl.Prepare())
             {
                 string title = Name;
                 string message = (string)FindResource("app_init_fail");
@@ -192,10 +191,10 @@ namespace XTransmit
 
             // if there were other proxy servers running they should set system proxy again
             _ = NativeMethods.DisableProxy();
-            PrivoxyManager.KillRunning(); // not important
-            SSManager.KillRunning();
-            V2RayCtrl.KillRunning();
-            CurlManager.KillRunning();
+            ProcPrivoxy.KillRunning(); // not important
+            ProcSS.KillRunning();
+            ProcV2Ray.KillRunning();
+            ProcCurl.KillRunning();
 
             PreferenceManager.WriteFile(FilePreferenceXml);
             ConfigManager.WriteFile(FileConfigXml);

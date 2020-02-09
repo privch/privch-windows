@@ -1,137 +1,134 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using XTransmit.Model.V2Ray;
 using XTransmit.Utility;
 
-namespace XTransmit.Model.Server
+namespace XTransmit.Model.SS
 {
-    /**
-     * TODO - Optimize server pool
-     */
+    [Serializable]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-    internal static class ServerManager
+    public class Shadowsocks : BaseServer
     {
-        public static readonly Dictionary<string, Process> ServerProcessMap = new Dictionary<string, Process>();
-
-        public static List<Shadowsocks> ShadowsocksList;
-        public static List<V2RayServer> V2RayList;
-
-        private static readonly Random RandGen = new Random();
-        private static readonly object locker = new object();
-
-        private static string pathShadowsocksXml;
-        private static string pathV2RayXml;
-
-        // Init server list by deserialize xml file
-        public static void Load(string pathShadowsocksXml, string pathV2RayXml)
+        #region Public-Static
+        // encrypt method
+        public static List<string> Ciphers { get; } = new List<string>
         {
-            // load shadowsocks
-            if (FileUtil.XmlDeserialize(pathShadowsocksXml, typeof(List<Shadowsocks>)) is List<Shadowsocks> listShadowsocks)
-            {
-                ShadowsocksList = listShadowsocks;
-            }
-            else
-            {
-                ShadowsocksList = new List<Shadowsocks>();
-            }
+            "rc4-md5",
+            "aes-128-gcm", "aes-192-gcm", "aes-256-gcm",
+            "aes-128-cfb", "aes-192-cfb", "aes-256-cfb",
+            "aes-128-ctr", "aes-192-ctr", "aes-256-ctr",
+            "bf-cfb",
+            "camellia-128-cfb", "camellia-192-cfb", "camellia-256-cfb",
+            "chacha20", "chacha20-ietf", "chacha20-ietf-poly1305",
+            "xchacha20-ietf-poly1305",
+            "salsa20",
+        };
+        #endregion
 
-            // load v2ray
-            if (FileUtil.XmlDeserialize(pathV2RayXml, typeof(List<V2RayServer>)) is List<V2RayServer> listV2Ray)
-            {
-                V2RayList = listV2Ray;
-            }
-            else
-            {
-                V2RayList = new List<V2RayServer>();
-            }
-
-            ServerManager.pathShadowsocksXml = pathShadowsocksXml;
-            ServerManager.pathV2RayXml = pathV2RayXml;
-        }
-
-        public static void Save(List<Shadowsocks> listShadowsocks)
+        // deserializer need to set property
+        #region Properties(Serializable)
+        public string Encrypt
         {
-            FileUtil.XmlSerialize(pathShadowsocksXml, listShadowsocks);
-            ShadowsocksList = listShadowsocks;
-        }
-
-        public static void Save(List<V2RayServer> listV2Ray)
-        {
-            List<V2RayServer> asdfsdaf = listV2Ray.Cast<V2RayServer>().ToList();
-            FileUtil.XmlSerialize(pathV2RayXml, asdfsdaf);
-            V2RayList = listV2Ray;
-        }
-
-        // TODO - Server type (SS, V2Ray ...)
-        public static bool Start(IServer server, int listen)
-        {
-            if (ServerProcessMap.ContainsKey(server.GetID()))
+            get => encrypt;
+            set
             {
-                return true;
-            }
-
-            if (server is Shadowsocks shadowsocks)
-            {
-                if (SSManager.Execute(shadowsocks, listen) is Process process)
-                {
-                    shadowsocks.ListenPort = listen;
-                    ServerProcessMap.Add(shadowsocks.GetID(), process);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public static void Stop(IServer server)
-        {
-            // server is null at the first time running
-            if (server == null)
-            {
-                return;
-            }
-
-            if (ServerProcessMap.ContainsKey(server.GetID()))
-            {
-                Process process = ServerProcessMap[server.GetID()];
-                SSManager.Exit(process);
-
-                server.ListenPort = -1;
-                ServerProcessMap.Remove(server.GetID());
+                encrypt = value;
+                OnPropertyChanged(nameof(Encrypt));
             }
         }
 
-        // Server Pool 
-        public static Shadowsocks GerRendom()
+        public string Password
         {
-            lock (locker)
+            get => password;
+            set
             {
-                if (ServerProcessMap.Count > 1)
-                {
-                    int index = RandGen.Next(0, ServerProcessMap.Count - 1);
-                    string id = ServerProcessMap.Keys.ElementAt(index);
-                    return ShadowsocksList.FirstOrDefault(server => server.GetID() == id);
-                }
-                else if (ServerProcessMap.Count > 0)
-                {
-                    string id = ServerProcessMap.Keys.ElementAt(0);
-                    return ShadowsocksList.FirstOrDefault(server => server.GetID() == id);
-                }
-                else
-                {
-                    return null;
-                }
+                password = value;
+                OnPropertyChanged(nameof(Password));
             }
         }
 
-        /** Import ---------------------------------------------------------------------------------------
+        public string Remarks
+        {
+            get => remarks;
+            set
+            {
+                remarks = value;
+                OnPropertyChanged(nameof(Remarks));
+            }
+        }
+
+        public bool PluginEnabled
+        {
+            get => pluginEnabled;
+            set
+            {
+                pluginEnabled = value;
+                OnPropertyChanged(nameof(PluginEnabled));
+            }
+        }
+
+        public string PluginName
+        {
+            get => pluginName;
+            set
+            {
+                pluginName = value;
+                OnPropertyChanged(nameof(PluginName));
+            }
+        }
+        public string PluginOption
+        {
+            get => pluginOption;
+            set
+            {
+                pluginOption = value;
+                OnPropertyChanged(nameof(PluginOption));
+            }
+        }
+        #endregion 
+
+        // values 
+        private string encrypt;
+        private string password;
+        private string remarks;
+
+        private bool pluginEnabled;
+        private string pluginName;
+        private string pluginOption;
+
+        // call after the ConfigManager.Global has been loaded
+        public Shadowsocks()
+        {
+            encrypt = "chacha20-ietf-poly1305";
+            password = string.Empty;
+            remarks = string.Empty;
+
+            pluginEnabled = false;
+            pluginName = string.Empty;
+            pluginOption = string.Empty;
+        }
+
+        public Shadowsocks Copy()
+        {
+            return (Shadowsocks)TextUtil.CopyBySerializer(this);
+        }
+
+        public void SetFriendlyNameDefault()
+        {
+            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostAddress} - {HostPort}" : Remarks;
+        }
+
+
+        #region Fectory
+        private static readonly Regex
+            UrlFinder = new Regex(@"ss://(?<base64>[A-Za-z0-9+-/=_]+)(?:#(?<tag>\S+))?", RegexOptions.IgnoreCase),
+            DetailsParser = new Regex(@"^((?<method>.+?):(?<password>.*)@(?<hostname>.+?):(?<port>\d+?))$", RegexOptions.IgnoreCase);
+
+        /**
          * start with "ss://". 
          * Reference code: github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
          */
@@ -270,11 +267,6 @@ namespace XTransmit.Model.Server
 
             return serverList;
         }
-
-        #region ParseLegacyServer
-        public static readonly Regex
-            UrlFinder = new Regex(@"ss://(?<base64>[A-Za-z0-9+-/=_]+)(?:#(?<tag>\S+))?", RegexOptions.IgnoreCase),
-            DetailsParser = new Regex(@"^((?<method>.+?):(?<password>.*)@(?<hostname>.+?):(?<port>\d+?))$", RegexOptions.IgnoreCase);
-        #endregion ParseLegacyServer
+        #endregion
     }
 }

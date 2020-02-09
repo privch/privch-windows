@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using XTransmit.Control;
 
 namespace XTransmit.Model.IPAddress
 {
@@ -41,7 +42,7 @@ namespace XTransmit.Model.IPAddress
                 process = Process.Start(
                     new ProcessStartInfo
                     {
-                        FileName = Utility.CurlManager.CurlExePath,
+                        FileName = ProcCurl.CurlExePath,
                         Arguments = $"--silent --connect-timeout {timeout} --header \"Accept: application/json\" ipinfo.io/{ip}",
                         WorkingDirectory = App.DirectoryCurl,
                         CreateNoWindow = true,

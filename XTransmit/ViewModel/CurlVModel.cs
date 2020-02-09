@@ -7,7 +7,6 @@ using XTransmit.Control;
 using XTransmit.Model;
 using XTransmit.Model.Curl;
 using XTransmit.Model.IPAddress;
-using XTransmit.Model.Server;
 using XTransmit.Model.UserAgent;
 using XTransmit.View;
 
@@ -34,7 +33,7 @@ namespace XTransmit.ViewModel
         }
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public string ServerPoolStatus => ConfigManager.IsServerPoolEnabled ? 
+        public string ServerPoolStatus => ConfigManager.IsServerPoolEnabled ?
             $"{ServerManager.ServerProcessMap.Count}" : null;
 
         public ObservableCollection<SiteProfile> SiteListOC { get; private set; }

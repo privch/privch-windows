@@ -5,7 +5,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using XTransmit.Model.Server;
+using XTransmit.Model;
+using XTransmit.Model.SS;
 using XTransmit.Utility;
 using XTransmit.ViewModel.Element;
 
@@ -108,7 +109,7 @@ namespace XTransmit.ViewModel
                 if (listen > 0)
                 {
                     ServerManager.Start(ServerEdit, listen);
-                    ServerEdit.UpdateResponse();
+                    ServerEdit.UpdateResponseTime();
                     ServerManager.Stop(ServerEdit);
                 }
             }).ConfigureAwait(true);
@@ -132,7 +133,7 @@ namespace XTransmit.ViewModel
 
             await Task.Run(() =>
             {
-                ServerEdit.UpdatePing();
+                ServerEdit.UpdatePingDelay();
             }).ConfigureAwait(true);
 
             // update the data to the view

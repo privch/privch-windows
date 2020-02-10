@@ -177,7 +177,7 @@ namespace XTransmit.ViewModel.Element
                     }
 
                     BaseServer server = enumerator.Current;
-                    if (ServerManager.ServerProcessMap.ContainsKey(server.GetID()))
+                    if (ServerManager.ServerProcessMap.ContainsKey(server.GetId()))
                     {
                         server.UpdateResponseTime();
                     }
@@ -226,7 +226,7 @@ namespace XTransmit.ViewModel.Element
             // run
             await Task.Run(() =>
             {
-                if (ServerManager.ServerProcessMap.ContainsKey(server.GetID()))
+                if (ServerManager.ServerProcessMap.ContainsKey(server.GetId()))
                 {
                     server.UpdateResponseTime();
                 }

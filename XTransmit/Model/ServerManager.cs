@@ -69,7 +69,7 @@ namespace XTransmit.Model
         // TODO - Server type (SS, V2Ray ...)
         public static bool Start(BaseServer server, int listen)
         {
-            if (ServerProcessMap.ContainsKey(server.GetID()))
+            if (ServerProcessMap.ContainsKey(server.GetId()))
             {
                 return true;
             }
@@ -79,7 +79,7 @@ namespace XTransmit.Model
                 if (ProcSS.Execute(shadowsocks, listen) is Process process)
                 {
                     shadowsocks.ListenPort = listen;
-                    ServerProcessMap.Add(shadowsocks.GetID(), process);
+                    ServerProcessMap.Add(shadowsocks.GetId(), process);
                     return true;
                 }
             }
@@ -95,13 +95,13 @@ namespace XTransmit.Model
                 return;
             }
 
-            if (ServerProcessMap.ContainsKey(server.GetID()))
+            if (ServerProcessMap.ContainsKey(server.GetId()))
             {
-                Process process = ServerProcessMap[server.GetID()];
+                Process process = ServerProcessMap[server.GetId()];
                 ProcSS.Exit(process);
 
                 server.ListenPort = -1;
-                ServerProcessMap.Remove(server.GetID());
+                ServerProcessMap.Remove(server.GetId());
             }
         }
 
@@ -114,12 +114,12 @@ namespace XTransmit.Model
                 {
                     int index = RandGen.Next(0, ServerProcessMap.Count - 1);
                     string id = ServerProcessMap.Keys.ElementAt(index);
-                    return ShadowsocksList.FirstOrDefault(server => server.GetID() == id);
+                    return ShadowsocksList.FirstOrDefault(server => server.GetId() == id);
                 }
                 else if (ServerProcessMap.Count > 0)
                 {
                     string id = ServerProcessMap.Keys.ElementAt(0);
-                    return ShadowsocksList.FirstOrDefault(server => server.GetID() == id);
+                    return ShadowsocksList.FirstOrDefault(server => server.GetId() == id);
                 }
                 else
                 {

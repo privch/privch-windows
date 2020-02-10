@@ -1,15 +1,15 @@
 ﻿using System.Windows.Controls;
+using XTransmit.Model.SS;
+using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
-    /// <summary>
-    /// Interaction logic for ServerConfigShadowsocks.xaml
-    /// </summary>
     public partial class ServerConfigShadowsocks : UserControl
     {
-        public ServerConfigShadowsocks()
+        public ServerConfigShadowsocks(Shadowsocks server)
         {
             InitializeComponent();
+            DataContext = new ServerConfigShadowsocksVModel(server);
         }
     }
 }

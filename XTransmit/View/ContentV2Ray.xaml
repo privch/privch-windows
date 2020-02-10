@@ -132,11 +132,11 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource _delay}" Binding="{Binding Path=ResponseTime}"/>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource _response}" Binding="{Binding Path=ResponseTime}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _ping}" Binding="{Binding Path=PingDelay}"/>
                 <DataGridTextColumn Width="Auto" Header="{StaticResource _protocol}" Binding="{Binding Path=Protocol}"/>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource _host}" Binding="{Binding Path=HostAddress}"/>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource _port}" Binding="{Binding Path=HostPort}"/>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource host_address}" Binding="{Binding Path=HostAddress}"/>
+                <DataGridTextColumn Width="Auto" Header="{StaticResource host_port}" Binding="{Binding Path=HostPort}"/>
                 <DataGridTextColumn Width="*" Header="{StaticResource _modified}" Binding="{Binding Path=Modified}"/>
             </DataGrid.Columns>
         </DataGrid>

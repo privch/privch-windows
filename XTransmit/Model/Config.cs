@@ -68,7 +68,7 @@ namespace XTransmit.Model
 
                 // restore status
                 RemoteServer = ServerManager.ShadowsocksList.FirstOrDefault(
-                    server => server.GetID() == config.RemoteServerID);
+                    server => server.GetId() == config.RemoteServerID);
             }
             else
             {
@@ -79,7 +79,7 @@ namespace XTransmit.Model
         public static void WriteFile(string pathConfigXml)
         {
             // save status
-            Global.RemoteServerID = RemoteServer?.GetID();
+            Global.RemoteServerID = RemoteServer?.GetId();
 
             FileUtil.XmlSerialize(pathConfigXml, Global);
         }

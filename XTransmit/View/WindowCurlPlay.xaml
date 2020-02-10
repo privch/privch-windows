@@ -128,7 +128,7 @@
                                  Text="{Binding Path=Profile.Title, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBox md:HintAssist.Hint="{StaticResource curl_website_url}" 
                                  Text="{Binding Path=Profile.Website, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBox md:HintAssist.Hint="{StaticResource _updated}" 
+                        <TextBox md:HintAssist.Hint="{StaticResource _modified}" 
                                  Text="{Binding Path=Profile.TimeUpdated, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </Expander>

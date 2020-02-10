@@ -6,6 +6,7 @@ using XTransmit.Control;
 using XTransmit.Model;
 using XTransmit.Model.V2Ray;
 using XTransmit.Utility;
+using XTransmit.View;
 using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
@@ -247,10 +248,10 @@ namespace XTransmit.ViewModel
         // add server by manual config
         public RelayCommand CommandAddServerCreate => new RelayCommand(AddServerCreate, CanEditList);
         private void AddServerCreate(object parameter)
-        { /*
-            V2RayServer server = new V2RayServer();
+        {
+            V2RayVMess server = new V2RayVMess();
 
-            new DialogShadowsocksConfig(server,
+            new ServerConfigDialog(server,
                 (bool resultOK) =>
                 {
                     if (resultOK)
@@ -269,17 +270,17 @@ namespace XTransmit.ViewModel
 
                         InterfaceCtrl.ShowHomeNotify(notify);
                     }
-                }).ShowDialog();*/
+                }).ShowDialog();
         }
 
         // edit server
         public RelayCommand CommandEditServer => new RelayCommand(EditServer, IsServerFree);
         private void EditServer(object parameter)
-        {/*
-            V2RayServer serverOld = (V2RayServer)parameter;
-            V2RayServer serverNew = serverOld.Copy();
+        {
+            V2RayVMess serverOld = (V2RayVMess)parameter;
+            V2RayVMess serverNew = serverOld.Copy();
 
-            new DialogShadowsocksConfig(serverNew,
+            new ServerConfigDialog(serverNew,
                 (bool resultOK) =>
                 {
                     if (resultOK)
@@ -291,7 +292,6 @@ namespace XTransmit.ViewModel
                         }
                     }
                 }).ShowDialog();
-                */
         }
 
         // delete selected server(s)

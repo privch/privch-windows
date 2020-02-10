@@ -81,16 +81,6 @@ namespace XTransmit.Model.V2Ray
                 OnPropertyChanged(nameof(Path));
             }
         }
-
-        public string Remarks
-        {
-            get => remarks;
-            set
-            {
-                remarks = value;
-                OnPropertyChanged(nameof(Remarks));
-            }
-        }
         #endregion
 
         // values 
@@ -101,19 +91,22 @@ namespace XTransmit.Model.V2Ray
         private string host;
         private string tls;
         private string path;
-        private string remarks;
 
+        public V2RayVMess()
+        {
+            id = string.Empty;
+            alterId = string.Empty;
+            network = string.Empty;
+            type = string.Empty;
+            host = string.Empty;
+            tls = string.Empty;
+            path = string.Empty;
+        }
 
         public V2RayVMess Copy()
         {
             return (V2RayVMess)TextUtil.CopyBySerializer(this);
         }
-
-        public void SetFriendlyNameDefault()
-        {
-            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostAddress} - {HostPort}" : Remarks;
-        }
-
 
         #region Import
         public static List<V2RayVMess> ImportServers(string vmessBase64List)

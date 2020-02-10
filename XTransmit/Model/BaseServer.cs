@@ -36,6 +36,16 @@ namespace XTransmit.Model
             }
         }
 
+        public string Remarks
+        {
+            get => remarks;
+            set
+            {
+                remarks = value;
+                OnPropertyChanged(nameof(Remarks));
+            }
+        }
+
         /** preference and info
          */
         public string FriendlyName
@@ -97,6 +107,7 @@ namespace XTransmit.Model
         // values 
         private string hostAddress;
         private int hostPort;
+        private string remarks;
 
         private string friendlyName;
         private string modified;
@@ -114,6 +125,7 @@ namespace XTransmit.Model
         {
             hostAddress = string.Empty;
             hostPort = -1;
+            remarks = string.Empty;
 
             friendlyName = string.Empty;
             modified = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
@@ -124,7 +136,7 @@ namespace XTransmit.Model
             pingDelay = 0;
         }
 
-        public string GetID()
+        public string GetId()
         {
             return $"{hostAddress}:{hostPort}";
         }
@@ -139,6 +151,11 @@ namespace XTransmit.Model
             {
                 return false;
             }
+        }
+
+        public void SetFriendlyNameDefault()
+        {
+            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostAddress} - {HostPort}" : Remarks;
         }
 
         public void SetFriendNameByIPInfo()

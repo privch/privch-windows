@@ -169,8 +169,8 @@
     <Compile Include="ViewModel\ContentServerBaseVModel.cs" />
     <Compile Include="ViewModel\HomeVModel.cs" />
     <Compile Include="ViewModel\IPAddressVModel.cs" />
-    <Compile Include="ViewModel\ServerConfigShdowsocks.cs" />
-    <Compile Include="ViewModel\ServerConfigV2Ray.cs" />
+    <Compile Include="ViewModel\ServerConfigShadowsocksVModel.cs" />
+    <Compile Include="ViewModel\ServerConfigV2RayVModel.cs" />
     <Compile Include="ViewModel\ServerConfigVModel.cs" />
     <Compile Include="ViewModel\SettingVModel.cs" />
     <Compile Include="ViewModel\UserAgentVModel.cs" />

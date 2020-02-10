@@ -1,28 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
+using XTransmit.Model.V2Ray;
+using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
-    /// <summary>
-    /// Interaction logic for ServerConfigV2Ray.xaml
-    /// </summary>
     public partial class ServerConfigV2Ray : UserControl
     {
-        public ServerConfigV2Ray()
+        public ServerConfigV2Ray(V2RayVMess server)
         {
             InitializeComponent();
+            DataContext = new ServerConfigV2RayVModel(server);
         }
     }
 }

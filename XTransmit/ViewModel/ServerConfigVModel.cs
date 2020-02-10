@@ -4,9 +4,9 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using XTransmit.Model;
-using XTransmit.Model.SS;
 using XTransmit.Utility;
 using XTransmit.ViewModel.Element;
 
@@ -14,34 +14,50 @@ namespace XTransmit.ViewModel
 {
     public class ServerConfigVModel : BaseViewModel
     {
-        public Shadowsocks ServerEdit { get; }
-
         public List<ItemView> ServerInfo { get; private set; }
+
+        public UserControl ContentDisplay { get; private set; }
 
         public bool IsProcessing
         {
             get => processing_fetch_info
-                || processing_check_response_time
+                || processing_check_response
                 || processing_check_ping;
         }
 
-        // post action
+        private readonly BaseServer serverBase;
         private readonly Action<bool> actionComplete;
 
         // language
+        private readonly string promptTitle;
+
         private static readonly string sr_modified = (string)Application.Current.FindResource("_modified");
         private static readonly string sr_respond_time = (string)Application.Current.FindResource("response_time");
         private static readonly string sr_ping = (string)Application.Current.FindResource("_ping");
 
-        private static readonly string sr_title = (string)Application.Current.FindResource("dialog_shadowsocks_title");
         private static readonly string sr_not_availabe = (string)Application.Current.FindResource("not_availabe");
         private static readonly string sr_invalid_ip = (string)Application.Current.FindResource("invalid_ip");
         private static readonly string sr_invalid_port = (string)Application.Current.FindResource("invalid_port");
 
-        public ServerConfigVModel(Shadowsocks serverProfile, Action<bool> actionComplete)
+        public ServerConfigVModel(BaseServer server, Action<bool> actionComplete)
         {
-            ServerEdit = serverProfile;
+            serverBase = server;
             ServerInfo = UpdateServerInfo();
+
+            if (server is Model.SS.Shadowsocks)
+            {
+                ContentDisplay = new View.ServerConfigShadowsocks(server as Model.SS.Shadowsocks);
+                promptTitle = (string)Application.Current.FindResource("dialog_server_shadowsocks");
+            }
+            else if (server is Model.V2Ray.V2RayVMess)
+            {
+                ContentDisplay = new View.ServerConfigV2Ray(server as Model.V2Ray.V2RayVMess);
+                promptTitle = (string)Application.Current.FindResource("dialog_server_v2ray");
+            }
+            else
+            {
+                throw new ArgumentException(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            }
 
             this.actionComplete = actionComplete;
         }
@@ -51,18 +67,18 @@ namespace XTransmit.ViewModel
             // a bit overhead
             return new List<ItemView>()
             {
-                new ItemView{Label = sr_modified, Text = ServerEdit.Modified},
-                new ItemView{Label = sr_respond_time, Text = ServerEdit.ResponseTime},
-                new ItemView{Label = sr_ping, Text = ServerEdit.PingDelay.ToString(CultureInfo.InvariantCulture)},
+                new ItemView{Label = sr_modified, Text = serverBase.Modified},
+                new ItemView{Label = sr_respond_time, Text = serverBase.ResponseTime},
+                new ItemView{Label = sr_ping, Text = serverBase.PingDelay.ToString(CultureInfo.InvariantCulture)},
 
-                new ItemView{Label = "Country", Text = ServerEdit.IPInfo?.Country ?? sr_not_availabe},
-                new ItemView{Label = "Region", Text = ServerEdit.IPInfo?.Region ?? sr_not_availabe},
-                new ItemView{Label = "City", Text = ServerEdit.IPInfo?.City ?? sr_not_availabe},
-                new ItemView{Label = "Location", Text = ServerEdit.IPInfo?.Location ?? sr_not_availabe},
-                new ItemView{Label = "Organization", Text = ServerEdit.IPInfo?.Organization ?? sr_not_availabe},
-                new ItemView{Label = "Postal", Text = ServerEdit.IPInfo?.Postal ?? sr_not_availabe},
-                new ItemView{Label = "Hostname", Text = ServerEdit.IPInfo?.Hostname ?? sr_not_availabe},
-                new ItemView{Label = "Timezone", Text = ServerEdit.IPInfo?.Timezone ?? sr_not_availabe},
+                new ItemView{Label = "Country", Text = serverBase.IPInfo?.Country ?? sr_not_availabe},
+                new ItemView{Label = "Region", Text = serverBase.IPInfo?.Region ?? sr_not_availabe},
+                new ItemView{Label = "City", Text = serverBase.IPInfo?.City ?? sr_not_availabe},
+                new ItemView{Label = "Location", Text = serverBase.IPInfo?.Location ?? sr_not_availabe},
+                new ItemView{Label = "Organization", Text = serverBase.IPInfo?.Organization ?? sr_not_availabe},
+                new ItemView{Label = "Postal", Text = serverBase.IPInfo?.Postal ?? sr_not_availabe},
+                new ItemView{Label = "Hostname", Text = serverBase.IPInfo?.Hostname ?? sr_not_availabe},
+                new ItemView{Label = "Timezone", Text = serverBase.IPInfo?.Timezone ?? sr_not_availabe},
             };
         }
 
@@ -70,7 +86,7 @@ namespace XTransmit.ViewModel
         /** Commands ======================================================================================================
          */
         private volatile bool processing_fetch_info = false; // also use to cancel task
-        private volatile bool processing_check_response_time = false; // also use to cancel task
+        private volatile bool processing_check_response = false; // also use to cancel task
         private volatile bool processing_check_ping = false;  // also use to cancel task
 
         // fetch ipinfo
@@ -83,7 +99,7 @@ namespace XTransmit.ViewModel
 
             await Task.Run(() =>
             {
-                ServerEdit.UpdateIPInfo(true);
+                serverBase.UpdateIPInfo(true);
             }).ConfigureAwait(true);
 
             // update the data to the view
@@ -97,10 +113,10 @@ namespace XTransmit.ViewModel
 
         // check response time
         public RelayCommand CommandCheckResponseTime => new RelayCommand(CheckResponseTime, CanCheckResponseTime);
-        private bool CanCheckResponseTime(object parameter) => !processing_check_response_time;
+        private bool CanCheckResponseTime(object parameter) => !processing_check_response;
         private async void CheckResponseTime(object parameter)
         {
-            processing_check_response_time = true;
+            processing_check_response = true;
             OnPropertyChanged(nameof(IsProcessing));
 
             await Task.Run(() =>
@@ -108,9 +124,9 @@ namespace XTransmit.ViewModel
                 int listen = NetworkUtil.GetAvailablePort(10000);
                 if (listen > 0)
                 {
-                    ServerManager.Start(ServerEdit, listen);
-                    ServerEdit.UpdateResponseTime();
-                    ServerManager.Stop(ServerEdit);
+                    ServerManager.Start(serverBase, listen);
+                    serverBase.UpdateResponseTime();
+                    ServerManager.Stop(serverBase);
                 }
             }).ConfigureAwait(true);
 
@@ -118,7 +134,7 @@ namespace XTransmit.ViewModel
             ServerInfo = UpdateServerInfo();
             OnPropertyChanged(nameof(ServerInfo));
 
-            processing_check_response_time = false;
+            processing_check_response = false;
             OnPropertyChanged(nameof(IsProcessing));
             CommandManager.InvalidateRequerySuggested();
         }
@@ -133,7 +149,7 @@ namespace XTransmit.ViewModel
 
             await Task.Run(() =>
             {
-                ServerEdit.UpdatePingDelay();
+                serverBase.UpdatePingDelay();
             }).ConfigureAwait(true);
 
             // update the data to the view
@@ -154,22 +170,25 @@ namespace XTransmit.ViewModel
 
             /** check values
              */
-            Match matchIP = Regex.Match(ServerEdit.HostAddress, RegexHelper.IPv4AddressRegex);
-            if (!matchIP.Success)
+            if (serverBase is Model.SS.Shadowsocks)
             {
-                new View.DialogPrompt(sr_title, sr_invalid_ip).ShowDialog();
+                Match matchIP = Regex.Match(serverBase.HostAddress, RegexHelper.IPv4AddressRegex);
+                if (!matchIP.Success)
+                {
+                    new View.DialogPrompt(promptTitle, sr_invalid_ip).ShowDialog();
+                    return;
+                }
+            }
+
+            if (serverBase.HostPort < 1 || serverBase.HostPort > 65535)
+            {
+                new View.DialogPrompt(promptTitle, sr_invalid_port).ShowDialog();
                 return;
             }
 
-            if (ServerEdit.HostPort < 1 || ServerEdit.HostPort > 65535)
+            if (string.IsNullOrWhiteSpace(serverBase.FriendlyName))
             {
-                new View.DialogPrompt(sr_title, sr_invalid_port).ShowDialog();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(ServerEdit.FriendlyName))
-            {
-                ServerEdit.SetFriendlyNameDefault();
+                serverBase.SetFriendlyNameDefault();
             }
 
             actionComplete?.Invoke(true);

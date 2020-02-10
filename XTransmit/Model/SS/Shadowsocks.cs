@@ -51,16 +51,6 @@ namespace XTransmit.Model.SS
             }
         }
 
-        public string Remarks
-        {
-            get => remarks;
-            set
-            {
-                remarks = value;
-                OnPropertyChanged(nameof(Remarks));
-            }
-        }
-
         public bool PluginEnabled
         {
             get => pluginEnabled;
@@ -94,7 +84,6 @@ namespace XTransmit.Model.SS
         // values 
         private string encrypt;
         private string password;
-        private string remarks;
 
         private bool pluginEnabled;
         private string pluginName;
@@ -105,7 +94,6 @@ namespace XTransmit.Model.SS
         {
             encrypt = "chacha20-ietf-poly1305";
             password = string.Empty;
-            remarks = string.Empty;
 
             pluginEnabled = false;
             pluginName = string.Empty;
@@ -116,12 +104,6 @@ namespace XTransmit.Model.SS
         {
             return (Shadowsocks)TextUtil.CopyBySerializer(this);
         }
-
-        public void SetFriendlyNameDefault()
-        {
-            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostAddress} - {HostPort}" : Remarks;
-        }
-
 
         #region Import
         private static readonly Regex
@@ -142,7 +124,7 @@ namespace XTransmit.Model.SS
 
             // split items
             string[] ssBaseItems = ssBase64List.Split(
-                new string[] { "\r\n", "\r", "\n", " " }, 
+                new string[] { "\r\n", "\r", "\n", " " },
                 StringSplitOptions.RemoveEmptyEntries);
 
             // parse items

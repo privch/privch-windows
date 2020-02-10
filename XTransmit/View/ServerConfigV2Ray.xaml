@@ -1,12 +1,136 @@
 ﻿<UserControl x:Class="XTransmit.View.ServerConfigV2Ray"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:XTransmit.View"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <StackPanel Orientation="Vertical"
+                HorizontalAlignment="Stretch">
+        <StackPanel.Resources>
+            <Style TargetType="DockPanel">
+                <Setter Property="LastChildFill"
+                        Value="True" />
+            </Style>
+
+            <Style TargetType="md:PackIcon">
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="Margin"
+                        Value="0" />
+            </Style>
+
+            <Style TargetType="TextBox"
+                   BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="Margin"
+                        Value="10, 10, 0, 10" />
+            </Style>
+
+            <Style TargetType="ComboBox"
+                   BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="Margin"
+                        Value="10, 10, 0, 10" />
+            </Style>
+
+            <Style TargetType="CheckBox"
+                   BasedOn="{StaticResource MaterialDesignCheckBox}">
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="Margin"
+                        Value="0, 10" />
+            </Style>
+        </StackPanel.Resources>
+
+        <!-- friendly name -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="Web" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource dialog_server_friendly_name}"
+                     Text="{Binding Path=ServerEdit.FriendlyName}" />
+        </DockPanel>
+
+        <!-- address -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="IpNetwork" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource host_address}"
+                     Text="{Binding Path=ServerEdit.HostAddress}" />
+        </DockPanel>
+
+        <!-- port -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="Passport" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource host_port}"
+                     Text="{Binding Path=ServerEdit.HostPort}" />
+        </DockPanel>
+
+        <!-- protocol -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="Protocol" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource _protocol}"
+                     Text="{Binding Path=ServerEdit.Protocol, Mode=OneWay}" />
+        </DockPanel>
+
+        <!-- id -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="Identifier" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource _id}"
+                     Text="{Binding Path=ServerEdit.Id}" />
+        </DockPanel>
+
+        <!-- alter id -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="Identifier" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource _alterid}"
+                     Text="{Binding Path=ServerEdit.AlterId}" />
+        </DockPanel>
+
+        <!-- network -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="NetworkRouter" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource _netowrk}"
+                     Text="{Binding Path=ServerEdit.Network}" />
+        </DockPanel>
+
+        <!-- path -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="FolderNetwork" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource _path}"
+                     Text="{Binding Path=ServerEdit.Path}" />
+        </DockPanel>
+
+        <!-- tls -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="FileCertificate" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource _tls}"
+                     Text="{Binding Path=ServerEdit.Tls}" />
+        </DockPanel>
+
+        <!-- remarks -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="NoteText" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource _remarks}"
+                     Text="{Binding Path=ServerEdit.Remarks}" />
+        </DockPanel>
+    </StackPanel>
 </UserControl>

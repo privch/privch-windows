@@ -23,7 +23,7 @@ namespace XTransmit.View
             Width = preference.WindowCurl.W;
             Height = preference.WindowCurl.H;
 
-            DataContext = new CurlVModel();
+            DataContext = new CurlContentVModel();
             Closing += WindowCurl_Closing;
         }
 

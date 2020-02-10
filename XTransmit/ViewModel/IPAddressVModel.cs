@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using System.Windows;
 using XTransmit.Model;
 using XTransmit.Model.IPAddress;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {

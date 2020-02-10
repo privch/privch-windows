@@ -3,7 +3,7 @@
 namespace XTransmit.Model.V2Ray
 {
     [DataContract(Name = "VMessUri")]
-    internal class VMessUri : IExtensibleDataObject
+    public class VMessUri : IExtensibleDataObject
     {
         private ExtensionDataObject extensionDataObjectValue;
         public ExtensionDataObject ExtensionData

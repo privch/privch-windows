@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using XTransmit.Model.Curl;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {

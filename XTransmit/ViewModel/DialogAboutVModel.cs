@@ -9,7 +9,7 @@ using XTransmit.ViewModel.Element;
  */
 namespace XTransmit.ViewModel
 {
-    class AboutVModel : BaseViewModel
+    class DialogAboutVModel : BaseViewModel
     {
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public string Name => App.Name;
@@ -20,7 +20,7 @@ namespace XTransmit.ViewModel
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
-        public AboutVModel()
+        public DialogAboutVModel()
         {
             // Name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 

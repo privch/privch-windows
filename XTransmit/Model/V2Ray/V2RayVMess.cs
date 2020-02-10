@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using XTransmit.Utility;
 
@@ -114,9 +115,34 @@ namespace XTransmit.Model.V2Ray
         }
 
 
-        #region Fectory
+        #region Import
+        public static List<V2RayVMess> ImportServers(string vmessBase64List)
+        {
+            List<V2RayVMess> serverList = new List<V2RayVMess>();
+            if (string.IsNullOrWhiteSpace(vmessBase64List))
+            {
+                return serverList;
+            }
+
+            // split items
+            string[] vmessBase64Items = vmessBase64List.Split(
+                new string[] { "\r\n", "\r", "\n", " " },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            // deserialize items
+            foreach(string vmessBase64 in vmessBase64Items)
+            {
+                if (FromVMessBase64(vmessBase64.Trim()) is V2RayVMess server)
+                {
+                    serverList.Add(server);
+                }
+            }
+
+            return serverList;
+        }
+
         // start with vmess://
-        public static V2RayVMess FromQRCode(string vmessBase64)
+        public static V2RayVMess FromVMessBase64(string vmessBase64)
         {
             if (string.IsNullOrWhiteSpace(vmessBase64) ||
                 !vmessBase64.StartsWith("vmess://", StringComparison.OrdinalIgnoreCase))
@@ -143,6 +169,7 @@ namespace XTransmit.Model.V2Ray
                 {
                     HostAddress = vmessUri.address,
                     HostPort = vmessUri.port,
+                    FriendlyName = $"{vmessUri.address} - {vmessUri.port}",
 
                     Id = vmessUri.id,
                     AlterId = vmessUri.alterId,

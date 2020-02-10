@@ -123,85 +123,38 @@ namespace XTransmit.Model.SS
         }
 
 
-        #region Fectory
+        #region Import
         private static readonly Regex
             UrlFinder = new Regex(@"ss://(?<base64>[A-Za-z0-9+-/=_]+)(?:#(?<tag>\S+))?", RegexOptions.IgnoreCase),
             DetailsParser = new Regex(@"^((?<method>.+?):(?<password>.*)@(?<hostname>.+?):(?<port>\d+?))$", RegexOptions.IgnoreCase);
 
-        /**
-         * start with "ss://". 
-         * Reference code: github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
-         */
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
-        public static Shadowsocks ParseLegacyServer(string ssUri)
-        {
-            var match = UrlFinder.Match(ssUri);
-            if (!match.Success)
-            {
-                return null;
-            }
-
-            Shadowsocks serverProfile = new Shadowsocks();
-            var base64 = match.Groups["base64"].Value.TrimEnd('/');
-            var tag = match.Groups["tag"].Value;
-            if (!string.IsNullOrEmpty(tag))
-            {
-                serverProfile.Remarks = HttpUtility.UrlDecode(tag, Encoding.UTF8);
-            }
-
-            Match details;
-            try
-            {
-                details = DetailsParser.Match(
-                    Encoding.UTF8.GetString(
-                        Convert.FromBase64String(base64.PadRight(base64.Length + (4 - (base64.Length % 4)) % 4, '='))));
-            }
-            catch
-            {
-                return null;
-            }
-
-            if (!details.Success)
-            {
-                return null;
-            }
-
-            try
-            {
-                serverProfile.HostPort = int.Parse(details.Groups["port"].Value, CultureInfo.InvariantCulture);
-            }
-            catch
-            {
-                return null;
-            }
-
-            serverProfile.Encrypt = details.Groups["method"].Value;
-            serverProfile.Password = details.Groups["password"].Value;
-            serverProfile.HostAddress = details.Groups["hostname"].Value;
-
-            serverProfile.SetFriendlyNameDefault();
-            return serverProfile;
-        }
-
         /**<summary>
-         * The "serverInfo" will be splited by "\r\n", "\r", "\n", " "
+         * Split ssBase64List by "\r\n", "\r", "\n", " "
          * </summary>
-         * <returns>Return number of server added</returns>
          */
-        public static List<Shadowsocks> ImportServers(string serverInfos)
+        public static List<Shadowsocks> ImportServers(string ssBase64List)
         {
-            string[] serverInfoArray = serverInfos.Split(new string[] { "\r\n", "\r", "\n", " " }, StringSplitOptions.RemoveEmptyEntries);
-
             List<Shadowsocks> serverList = new List<Shadowsocks>();
-            foreach (string serverInfo in serverInfoArray)
+            if (string.IsNullOrWhiteSpace(ssBase64List))
             {
-                string serverUrl = serverInfo.Trim();
-                if (!serverUrl.StartsWith("ss://", StringComparison.InvariantCultureIgnoreCase))
+                return serverList;
+            }
+
+            // split items
+            string[] ssBaseItems = ssBase64List.Split(
+                new string[] { "\r\n", "\r", "\n", " " }, 
+                StringSplitOptions.RemoveEmptyEntries);
+
+            // parse items
+            foreach (string ssBase64Item in ssBaseItems)
+            {
+                string ssBase64 = ssBase64Item.Trim();
+                if (!ssBase64.StartsWith("ss://", StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
 
-                Shadowsocks serverProfile = ParseLegacyServer(serverUrl);
+                Shadowsocks serverProfile = ParseLegacyServer(ssBase64);
                 if (serverProfile != null)   //legacy
                 {
                     serverList.Add(serverProfile);
@@ -211,7 +164,7 @@ namespace XTransmit.Model.SS
                     Uri parsedUrl;
                     try
                     {
-                        parsedUrl = new Uri(serverUrl);
+                        parsedUrl = new Uri(ssBase64);
                     }
                     catch (UriFormatException)
                     {
@@ -266,6 +219,60 @@ namespace XTransmit.Model.SS
             }
 
             return serverList;
+        }
+
+        /**
+         * start with "ss://". 
+         * Reference code: github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
+         */
+        public static Shadowsocks ParseLegacyServer(string ssBase64)
+        {
+            var match = UrlFinder.Match(ssBase64);
+            if (!match.Success)
+            {
+                return null;
+            }
+
+            Shadowsocks server = new Shadowsocks();
+            var base64 = match.Groups["base64"].Value.TrimEnd('/');
+            var tag = match.Groups["tag"].Value;
+            if (!string.IsNullOrEmpty(tag))
+            {
+                server.Remarks = HttpUtility.UrlDecode(tag, Encoding.UTF8);
+            }
+
+            Match details;
+            try
+            {
+                details = DetailsParser.Match(
+                    Encoding.UTF8.GetString(
+                        Convert.FromBase64String(base64.PadRight(base64.Length + (4 - (base64.Length % 4)) % 4, '='))));
+            }
+            catch
+            {
+                return null;
+            }
+
+            if (!details.Success)
+            {
+                return null;
+            }
+
+            try
+            {
+                server.HostPort = int.Parse(details.Groups["port"].Value, CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return null;
+            }
+
+            server.Encrypt = details.Groups["method"].Value;
+            server.Password = details.Groups["password"].Value;
+            server.HostAddress = details.Groups["hostname"].Value;
+
+            server.SetFriendlyNameDefault();
+            return server;
         }
         #endregion
     }

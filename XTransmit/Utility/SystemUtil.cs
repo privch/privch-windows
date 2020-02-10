@@ -50,7 +50,7 @@ namespace XTransmit.Utility
                 string shortcutTargetPath = GetShortcutTargetPath(shortcut.FullName);
 
                 if (shortcutTargetPath.EndsWith(targetPath,
-                    StringComparison.InvariantCultureIgnoreCase))
+                    StringComparison.OrdinalIgnoreCase))
                 {
                     result.Add(shortcut.FullName);
                 }

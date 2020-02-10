@@ -1,4 +1,5 @@
 ﻿using System;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {

@@ -9,10 +9,11 @@ using XTransmit.Model.Curl;
 using XTransmit.Model.IPAddress;
 using XTransmit.Model.UserAgent;
 using XTransmit.View;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {
-    public class CurlVModel : BaseViewModel
+    public class CurlContentVModel : BaseViewModel
     {
         public bool IsServerPoolEnabled
         {
@@ -38,7 +39,7 @@ namespace XTransmit.ViewModel
 
         public ObservableCollection<SiteProfile> SiteListOC { get; private set; }
 
-        public CurlVModel()
+        public CurlContentVModel()
         {
             // load IPAddress and UserAgent data
             IPManager.Load(App.FileIPAddressXml);

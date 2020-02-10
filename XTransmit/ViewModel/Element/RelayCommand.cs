@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Input;
 
-namespace XTransmit.ViewModel
+namespace XTransmit.ViewModel.Element
 {
     /**
      * msdn.microsoft.com/en-us/magazine/dd419663.aspx?f=255&MSPPError=-2147217396#id0090030

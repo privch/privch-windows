@@ -158,22 +158,24 @@
     <Compile Include="Utility\RegexHelper.cs" />
     <Compile Include="Utility\SystemUtil.cs" />
     <Compile Include="Utility\TextUtil.cs" />
-    <Compile Include="ViewModel\AboutVModel.cs" />
-    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\DialogAboutVModel.cs" />
     <Compile Include="ViewModel\ContentV2RayVModel.cs" />
-    <Compile Include="ViewModel\CurlVModel.cs" />
+    <Compile Include="ViewModel\CurlContentVModel.cs" />
     <Compile Include="ViewModel\ContentNetworkVModel.cs" />
     <Compile Include="ViewModel\ContentShadowsocksVModel.cs" />
     <Compile Include="ViewModel\CurlPlayVModel.cs" />
     <Compile Include="ViewModel\DialogActionVModel.cs" />
     <Compile Include="ViewModel\DialogEditVModel.cs" />
-    <Compile Include="ViewModel\Element\BaseServerVModel.cs" />
+    <Compile Include="ViewModel\ContentServerBaseVModel.cs" />
     <Compile Include="ViewModel\HomeVModel.cs" />
     <Compile Include="ViewModel\IPAddressVModel.cs" />
-    <Compile Include="ViewModel\RelayCommand.cs" />
+    <Compile Include="ViewModel\ServerConfigShdowsocks.cs" />
+    <Compile Include="ViewModel\ServerConfigV2Ray.cs" />
     <Compile Include="ViewModel\ServerConfigVModel.cs" />
     <Compile Include="ViewModel\SettingVModel.cs" />
     <Compile Include="ViewModel\UserAgentVModel.cs" />
+    <Compile Include="ViewModel\Element\BaseViewModel.cs" />
+    <Compile Include="ViewModel\Element\RelayCommand.cs" />
     <Compile Include="ViewModel\Element\CutoffConverter.cs" />
     <Compile Include="ViewModel\Element\ItemView.cs" />
     <Compile Include="ViewModel\Element\ContentTable.cs" />
@@ -182,17 +184,23 @@
     <Compile Include="ViewModel\Element\TaskView.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="View\ContentShadowsocks.xaml.cs">
+      <DependentUpon>ContentShadowsocks.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ContentV2Ray.xaml.cs">
       <DependentUpon>ContentV2Ray.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\WindowCurl.xaml.cs">
-      <DependentUpon>WindowCurl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ContentNetwork.xaml.cs">
       <DependentUpon>ContentNetwork.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ContentShadowsocks.xaml.cs">
-      <DependentUpon>ContentShadowsocks.xaml</DependentUpon>
+    <Compile Include="View\ServerConfigDialog.xaml.cs">
+      <DependentUpon>ServerConfigDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ServerConfigShadowsocks.xaml.cs">
+      <DependentUpon>ServerConfigShadowsocks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ServerConfigV2Ray.xaml.cs">
+      <DependentUpon>ServerConfigV2Ray.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DialogAbout.xaml.cs">
       <DependentUpon>DialogAbout.xaml</DependentUpon>
@@ -206,31 +214,35 @@
     <Compile Include="View\DialogPrompt.xaml.cs">
       <DependentUpon>DialogPrompt.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DialogShadowsocksConfig.xaml.cs">
-      <DependentUpon>DialogShadowsocksConfig.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\DialogSetting.xaml.cs">
       <DependentUpon>DialogSetting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TrayNotify\SystemTray.cs" />
+    <Compile Include="View\WindowCurlContent.xaml.cs">
+      <DependentUpon>WindowCurlContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\WindowCurlPlay.xaml.cs">
       <DependentUpon>WindowCurlPlay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\WindowHome.xaml.cs">
-      <DependentUpon>WindowHome.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\WindowIPAddress.xaml.cs">
       <DependentUpon>WindowIPAddress.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WindowShutdown.xaml.cs">
-      <DependentUpon>WindowShutdown.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\WindowUserAgent.xaml.cs">
       <DependentUpon>WindowUserAgent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WindowHome.xaml.cs">
+      <DependentUpon>WindowHome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WindowShutdown.xaml.cs">
+      <DependentUpon>WindowShutdown.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TrayNotify\SystemTray.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Resources\StringResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ContentShadowsocks.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -238,15 +250,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WindowCurl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="View\ContentNetwork.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\ContentShadowsocks.xaml">
+    <Page Include="View\ServerConfigDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ServerConfigShadowsocks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ServerConfigV2Ray.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WindowCurlContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WindowCurlPlay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -266,19 +290,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DialogShadowsocksConfig.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="View\DialogSetting.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\WindowCurlPlay.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\WindowHome.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -286,13 +298,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\WindowShutdown.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\WindowUserAgent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WindowHome.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WindowShutdown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

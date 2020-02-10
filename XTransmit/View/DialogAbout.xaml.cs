@@ -14,7 +14,7 @@ namespace XTransmit.View
             Left = preference.WindowAbout.X;
             Top = preference.WindowAbout.Y;
 
-            DataContext = new AboutVModel();
+            DataContext = new DialogAboutVModel();
             Closing += DialogAbout_Closing;
         }
 

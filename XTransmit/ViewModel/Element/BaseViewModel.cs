@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace XTransmit.ViewModel
+namespace XTransmit.ViewModel.Element
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {

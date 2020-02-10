@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using XTransmit.Model.UserAgent;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {

@@ -199,6 +199,8 @@ namespace XTransmit.ViewModel
 
         // add server by import file
         public RelayCommand CommandAddServerFile => new RelayCommand(AddServerFile, CanEditList);
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void AddServerFile(object parameter)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
@@ -209,10 +211,21 @@ namespace XTransmit.ViewModel
                 AddExtension = true
             };
 
-            bool? open = openFileDialog.ShowDialog();
-            if (open != true) return;
+            string fileContent = null;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    fileContent = System.IO.File.ReadAllText(openFileDialog.FileName);
+                }
+                catch { }
+            }
+            if (string.IsNullOrWhiteSpace(fileContent))
+            {
+                return;
+            }
 
-            List<Shadowsocks> serverList = Shadowsocks.ImportServers(openFileDialog.FileName);
+            List<Shadowsocks> serverList = Shadowsocks.ImportServers(fileContent);
             if (serverList.Count > 0)
             {
                 AddServer(serverList, out int added, out int updated);

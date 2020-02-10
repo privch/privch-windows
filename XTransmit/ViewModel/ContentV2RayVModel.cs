@@ -130,12 +130,9 @@ namespace XTransmit.ViewModel
                 return;
             }
 
-            V2RayVMess.FromQRCode(result.Text);
-/*
-            List<V2RayServer> serverList = ServerManager.ImportServers(result.Text);
-            if (serverList.Count > 0)
+            if (V2RayVMess.FromVMessBase64(result.Text) is V2RayVMess server)
             {
-                AddServer(serverList, out int added, out int updated);
+                AddServer(server, out int added, out int updated);
 
                 string notify;
                 if (ConfigManager.Global.IsReplaceOldServer)
@@ -166,14 +163,14 @@ namespace XTransmit.ViewModel
                 {
                     InterfaceCtrl.NotifyIcon.ShowMessage(sr_server_not_found);
                 }
-            }*/
+            }
         }
 
         // add server by import clipboard
         public RelayCommand CommandAddServerClipboard => new RelayCommand(AddServerClipboard, CanEditList);
         private void AddServerClipboard(object parameter)
-        {/*
-            List<V2RayServer> serverList = ServerManager.ImportServers(Clipboard.GetText(TextDataFormat.Text));
+        {
+            List<V2RayVMess> serverList = V2RayVMess.ImportServers(Clipboard.GetText(TextDataFormat.Text));
             if (serverList.Count > 0)
             {
                 AddServer(serverList, out int added, out int updated);
@@ -193,13 +190,15 @@ namespace XTransmit.ViewModel
             else
             {
                 InterfaceCtrl.ShowHomeNotify(sr_server_not_found);
-            }*/
+            }
         }
 
         // add server by import file
         public RelayCommand CommandAddServerFile => new RelayCommand(AddServerFile, CanEditList);
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void AddServerFile(object parameter)
-        {/*
+        {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 InitialDirectory = App.DirectoryApplication,
@@ -208,10 +207,21 @@ namespace XTransmit.ViewModel
                 AddExtension = true
             };
 
-            bool? open = openFileDialog.ShowDialog();
-            if (open != true) return;
+            string fileContent = null;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    fileContent = System.IO.File.ReadAllText(openFileDialog.FileName);
+                }
+                catch { }
+            }
+            if (string.IsNullOrWhiteSpace(fileContent))
+            {
+                return;
+            }
 
-            List<V2RayServer> serverList = ServerManager.ImportServers(openFileDialog.FileName);
+            List<V2RayVMess> serverList = V2RayVMess.ImportServers(fileContent);
             if (serverList.Count > 0)
             {
                 AddServer(serverList, out int added, out int updated);
@@ -231,7 +241,7 @@ namespace XTransmit.ViewModel
             else
             {
                 InterfaceCtrl.ShowHomeNotify(sr_server_not_found);
-            }*/
+            }
         }
 
         // add server by manual config

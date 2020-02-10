@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {

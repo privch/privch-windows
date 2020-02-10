@@ -10,6 +10,7 @@ using System.Windows.Media;
 using XTransmit.Model;
 using XTransmit.Model.Network;
 using XTransmit.Utility;
+using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {
@@ -84,7 +85,7 @@ namespace XTransmit.ViewModel
                 }
             };
 
-            ChartXFormatter = value => new DateTime((long)(value * TimeSpan.FromHours(1).Ticks)).ToString("HH:mm:ss", 
+            ChartXFormatter = value => new DateTime((long)(value * TimeSpan.FromHours(1).Ticks)).ToString("HH:mm:ss",
                 CultureInfo.InvariantCulture);
             ChartYFormatter = value => $"{TextUtil.GetBytesReadable((long)value)}/s";
 

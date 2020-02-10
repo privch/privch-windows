@@ -2,8 +2,8 @@
 
 namespace XTransmit.Model.V2Ray
 {
-    [DataContract(Name = "URL-VMess")]
-    internal class UrlVMess : IExtensibleDataObject
+    [DataContract(Name = "VMessUri")]
+    internal class VMessUri : IExtensibleDataObject
     {
         private ExtensionDataObject extensionDataObjectValue;
         public ExtensionDataObject ExtensionData
@@ -22,7 +22,7 @@ namespace XTransmit.Model.V2Ray
         internal string ps = null;
 
         [DataMember(Name = "add")]
-        internal string addres = null;
+        internal string address = null;
 
         [DataMember(Name = "port")]
         internal int port = -1;
@@ -34,7 +34,7 @@ namespace XTransmit.Model.V2Ray
         internal string alterId = null;
 
         [DataMember(Name = "net")]
-        internal string netwrok = null;
+        internal string network = null;
 
         [DataMember(Name = "type")]
         internal string type = null;
@@ -44,5 +44,8 @@ namespace XTransmit.Model.V2Ray
 
         [DataMember(Name = "tls")]
         internal string tls = null;
+
+        [DataMember(Name = "path")]
+        internal string path = null;
     }
 }

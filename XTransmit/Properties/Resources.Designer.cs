@@ -149,7 +149,7 @@ namespace XTransmit.Properties {
                 return ((byte[])(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string of provixy-config.txt
         /// </summary>
@@ -188,7 +188,7 @@ namespace XTransmit.Properties {
                 return ((byte[])(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar of v2ray-config.json
         /// </summary>

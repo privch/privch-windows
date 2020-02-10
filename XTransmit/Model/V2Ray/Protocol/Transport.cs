@@ -1,4 +1,4 @@
-﻿namespace XTransmit.Model.V2Ray
+﻿namespace XTransmit.Model.V2Ray.Protocol
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1812", Justification = "<Pending>")]
     internal class Transport

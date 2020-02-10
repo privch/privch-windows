@@ -1,4 +1,4 @@
-﻿namespace XTransmit.Model.V2Ray
+﻿namespace XTransmit.Model.V2Ray.Protocol
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1812", Justification = "<Pending>")]
     internal class Outbound
@@ -14,11 +14,11 @@
             "VMess",
         };
 
-        internal string tag = null;        
+        internal string tag = null;
         internal string sendThrough = "0.0.0.0"; // not implement
-        internal string protocol = null;        
+        internal string protocol = null;
         internal object settings = null; // protocol implement
-        internal Transport.StreamSettings streamSettings = null;        
+        internal Transport.StreamSettings streamSettings = null;
         internal string proxySettings = null; // not implement
         internal Mux mux = null;
     }

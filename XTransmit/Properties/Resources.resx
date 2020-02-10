@@ -158,7 +158,7 @@
     <value>..\Resources\Binary\v2ray\v2ctl.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="v2ray_config_json" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Binary\v2ray\v2ray-config.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>..\Resources\Binary\v2ray\v2ray-config.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="v2ray_exe_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Binary\v2ray\v2ray.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

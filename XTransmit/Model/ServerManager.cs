@@ -18,7 +18,7 @@ namespace XTransmit.Model
         public static readonly Dictionary<string, Process> ServerProcessMap = new Dictionary<string, Process>();
 
         public static List<Shadowsocks> ShadowsocksList;
-        public static List<V2RayServer> V2RayList;
+        public static List<V2RayVMess> V2RayList;
 
         private static readonly Random RandGen = new Random();
         private static readonly object locker = new object();
@@ -40,13 +40,13 @@ namespace XTransmit.Model
             }
 
             // load v2ray
-            if (FileUtil.XmlDeserialize(pathV2RayXml, typeof(List<V2RayServer>)) is List<V2RayServer> listV2Ray)
+            if (FileUtil.XmlDeserialize(pathV2RayXml, typeof(List<V2RayVMess>)) is List<V2RayVMess> listV2Ray)
             {
                 V2RayList = listV2Ray;
             }
             else
             {
-                V2RayList = new List<V2RayServer>();
+                V2RayList = new List<V2RayVMess>();
             }
 
             ServerManager.pathShadowsocksXml = pathShadowsocksXml;
@@ -59,9 +59,9 @@ namespace XTransmit.Model
             ShadowsocksList = listShadowsocks;
         }
 
-        public static void Save(List<V2RayServer> listV2Ray)
+        public static void Save(List<V2RayVMess> listV2Ray)
         {
-            List<V2RayServer> asdfsdaf = listV2Ray.Cast<V2RayServer>().ToList();
+            List<V2RayVMess> asdfsdaf = listV2Ray.Cast<V2RayVMess>().ToList();
             FileUtil.XmlSerialize(pathV2RayXml, asdfsdaf);
             V2RayList = listV2Ray;
         }

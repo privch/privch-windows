@@ -2,15 +2,17 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using XTransmit.Control;
 using XTransmit.Model;
 using XTransmit.Model.V2Ray;
+using XTransmit.Utility;
 using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {
     class ContentV2RayVModel : BaseServerVModel
     {
-        public ObservableCollection<V2RayServer> V2RayOC { get; private set; }
+        public ObservableCollection<V2RayVMess> V2RayOC { get; private set; }
 
         // language
         private static readonly string sr_server_not_found = (string)Application.Current.FindResource("add_server_not_found");
@@ -21,7 +23,7 @@ namespace XTransmit.ViewModel
         public ContentV2RayVModel()
         {
             // load servers and convert to ObservableCollection
-            V2RayOC = new ObservableCollection<V2RayServer>(ServerManager.V2RayList);
+            V2RayOC = new ObservableCollection<V2RayVMess>(ServerManager.V2RayList);
             Servers = V2RayOC.Cast<BaseServer>();
         }
 
@@ -36,14 +38,14 @@ namespace XTransmit.ViewModel
         }
 
 
-        private void AddServer(List<V2RayServer> serverList, out int added, out int updated)
+        private void AddServer(List<V2RayVMess> serverList, out int added, out int updated)
         {
             added = 0;
             updated = 0;
 
-            foreach (V2RayServer server in serverList)
+            foreach (V2RayVMess server in serverList)
             {
-                V2RayServer serverOld = V2RayOC.FirstOrDefault(predicate: x => x.IsServerEqual(server));
+                V2RayVMess serverOld = V2RayOC.FirstOrDefault(predicate: x => x.IsServerEqual(server));
                 if (serverOld == null)
                 {
                     V2RayOC.Add(server);
@@ -61,12 +63,12 @@ namespace XTransmit.ViewModel
             }
         }
 
-        private void AddServer(V2RayServer server, out int added, out int updated)
+        private void AddServer(V2RayVMess server, out int added, out int updated)
         {
             added = 0;
             updated = 0;
 
-            V2RayServer serverOld = V2RayOC.FirstOrDefault(predicate: x => x.IsServerEqual(server));
+            V2RayVMess serverOld = V2RayOC.FirstOrDefault(predicate: x => x.IsServerEqual(server));
             if (serverOld == null)
             {
                 V2RayOC.Add(server);
@@ -85,7 +87,7 @@ namespace XTransmit.ViewModel
 
         private bool IsServerFree(object parameter)
         {
-            if (parameter is V2RayServer server)
+            if (parameter is V2RayVMess server)
             {
                 if (!server.IsServerEqual(ConfigManager.RemoteServer))
                 {
@@ -102,7 +104,7 @@ namespace XTransmit.ViewModel
         private void SaveServer(object parameter)
         {
             // convert to list and save
-            List<V2RayServer> profiles = new List<V2RayServer>(V2RayOC);
+            List<V2RayVMess> profiles = new List<V2RayVMess>(V2RayOC);
             ServerManager.Save(profiles);
         }
 
@@ -119,20 +121,8 @@ namespace XTransmit.ViewModel
         // add server by scan qrcode
         public RelayCommand CommandAddServerQRCode => new RelayCommand(AddServerQRCode, CanEditList);
         private void AddServerQRCode(object parameter)
-        {/*
-            // copy screen
-            Bitmap bitmapScreen = new Bitmap((int)SystemParameters.PrimaryScreenWidth, (int)SystemParameters.PrimaryScreenHeight, PixelFormat.Format32bppArgb);
-            using (Graphics graphics = Graphics.FromImage(bitmapScreen))
-            {
-                graphics.CopyFromScreen(0, 0, 0, 0, bitmapScreen.Size, CopyPixelOperation.SourceCopy);
-            }
-
-            BitmapLuminanceSource sourceScreen = new BitmapLuminanceSource(bitmapScreen);
-            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(sourceScreen));
-            bitmapScreen.Dispose();
-
-            QRCodeReader reader = new QRCodeReader();
-            Result result = reader.decode(bitmap);
+        {
+            ZXing.Result result = QRCode.DecodeScreen();
             if (result == null || string.IsNullOrWhiteSpace(result.Text))
             {
                 InterfaceCtrl.ShowHomeNotify(sr_server_not_found);
@@ -140,6 +130,8 @@ namespace XTransmit.ViewModel
                 return;
             }
 
+            V2RayVMess.FromQRCode(result.Text);
+/*
             List<V2RayServer> serverList = ServerManager.ImportServers(result.Text);
             if (serverList.Count > 0)
             {
@@ -303,9 +295,9 @@ namespace XTransmit.ViewModel
             /** https://stackoverflow.com/a/14852516
              */
             System.Collections.IList selected = serversSelected as System.Collections.IList;
-            List<V2RayServer> listServerProfile = selected.Cast<V2RayServer>().ToList();
+            List<V2RayVMess> listServerProfile = selected.Cast<V2RayVMess>().ToList();
 
-            foreach (V2RayServer server in listServerProfile)
+            foreach (V2RayVMess server in listServerProfile)
             {
                 V2RayOC.Remove(server);
             }

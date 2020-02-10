@@ -146,12 +146,12 @@
     <Compile Include="Model\UserAgent\UAProfile.cs" />
     <Compile Include="Model\UserAgent\UAManager.cs" />
     <Compile Include="Model\SS\Shadowsocks.cs" />
-    <Compile Include="Model\V2Ray\V2RayServer.cs" />
-    <Compile Include="Model\V2Ray\UrlVMess.cs" />
-    <Compile Include="Model\V2Ray\VMess.cs" />
-    <Compile Include="Model\V2Ray\Mux.cs" />
-    <Compile Include="Model\V2Ray\Outbound.cs" />
-    <Compile Include="Model\V2Ray\Transport.cs" />
+    <Compile Include="Model\V2Ray\V2RayVMess.cs" />
+    <Compile Include="Model\V2Ray\VMessUri.cs" />
+    <Compile Include="Model\V2Ray\Protocol\VMess.cs" />
+    <Compile Include="Model\V2Ray\Protocol\Mux.cs" />
+    <Compile Include="Model\V2Ray\Protocol\Outbound.cs" />
+    <Compile Include="Model\V2Ray\Protocol\Transport.cs" />
     <Compile Include="Utility\FileUtil.cs" />
     <Compile Include="Utility\NetworkUtil.cs" />
     <Compile Include="Utility\QRCode.cs" />
@@ -309,7 +309,7 @@
     <None Include="Resources\Binary\shadowsocks\ss-local.exe.gz" />
     <None Include="Resources\Binary\privoxy\privoxy-config.txt" />
     <None Include="Resources\Binary\v2ray\v2ctl.exe.gz" />
-    <None Include="Resources\Binary\v2ray\v2ray-config.json" />
+    <None Include="Resources\Binary\v2ray\v2ray-config.txt" />
     <None Include="Resources\Binary\v2ray\v2ray.exe.gz" />
     <None Include="Resources\Icon\XTransmit-Off.ico" />
     <Resource Include="Resources\Icon\XTransmit-On.ico" />
@@ -330,5 +330,6 @@
       <Version>0.16.5</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

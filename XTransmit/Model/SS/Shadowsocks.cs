@@ -133,9 +133,9 @@ namespace XTransmit.Model.SS
          * Reference code: github.com/shadowsocks/shadowsocks-windows/raw/master/shadowsocks-csharp/Model/Server.cs
          */
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
-        public static Shadowsocks ParseLegacyServer(string ssUrl)
+        public static Shadowsocks ParseLegacyServer(string ssUri)
         {
-            var match = UrlFinder.Match(ssUrl);
+            var match = UrlFinder.Match(ssUri);
             if (!match.Success)
             {
                 return null;

@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using XTransmit.Control;
+using XTransmit.Utility;
 
 namespace XTransmit.Model.IPAddress
 {
@@ -59,47 +60,23 @@ namespace XTransmit.Model.IPAddress
                 process?.Dispose();
             }
 
-            return ReadToObject(response);
-        }
-
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        private static IPInformation ReadToObject(string json)
-        {
-            if (string.IsNullOrWhiteSpace(json))
+            if (TextUtil.JsonDeserialize(response, typeof(IPInfoIO)) is IPInfoIO ipinfoio)
             {
-                return null;
+                return new IPInformation()
+                {
+                    IP = ipinfoio.ip,
+                    Hostname = ipinfoio.hostname,
+                    City = ipinfoio.city,
+                    Region = ipinfoio.region,
+                    Country = ipinfoio.country,
+                    Location = ipinfoio.location,
+                    Organization = ipinfoio.organization,
+                    Postal = ipinfoio.postal,
+                    Timezone = ipinfoio.timezone,
+                };
             }
 
-            IPInfoIO ipinfoio = null;
-            MemoryStream msJson = new MemoryStream(Encoding.UTF8.GetBytes(json));
-
-            try
-            {
-                DataContractJsonSerializer deserializer = new DataContractJsonSerializer(typeof(IPInfoIO));
-                ipinfoio = deserializer.ReadObject(msJson) as IPInfoIO;
-            }
-            catch
-            {
-                return null;
-            }
-            finally
-            {
-                msJson.Close(); // caused ca2202, why ? 
-                msJson.Dispose();
-            }
-
-            return new IPInformation()
-            {
-                IP = ipinfoio.ip,
-                Hostname = ipinfoio.hostname,
-                City = ipinfoio.city,
-                Region = ipinfoio.region,
-                Country = ipinfoio.country,
-                Location = ipinfoio.location,
-                Organization = ipinfoio.organization,
-                Postal = ipinfoio.postal,
-                Timezone = ipinfoio.timezone,
-            };
+            return null;
         }
 
         /** Serializable ==================================================

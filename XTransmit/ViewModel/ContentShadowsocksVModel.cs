@@ -1,17 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows;
 using XTransmit.Control;
 using XTransmit.Model;
 using XTransmit.Model.SS;
+using XTransmit.Utility;
 using XTransmit.View;
 using XTransmit.ViewModel.Element;
-using ZXing;
-using ZXing.Common;
-using ZXing.QrCode;
 
 namespace XTransmit.ViewModel
 {
@@ -129,19 +125,7 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandAddServerQRCode => new RelayCommand(AddServerQRCode, CanEditList);
         private void AddServerQRCode(object parameter)
         {
-            // copy screen
-            Bitmap bitmapScreen = new Bitmap((int)SystemParameters.PrimaryScreenWidth, (int)SystemParameters.PrimaryScreenHeight, PixelFormat.Format32bppArgb);
-            using (Graphics graphics = Graphics.FromImage(bitmapScreen))
-            {
-                graphics.CopyFromScreen(0, 0, 0, 0, bitmapScreen.Size, CopyPixelOperation.SourceCopy);
-            }
-
-            BitmapLuminanceSource sourceScreen = new BitmapLuminanceSource(bitmapScreen);
-            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(sourceScreen));
-            bitmapScreen.Dispose();
-
-            QRCodeReader reader = new QRCodeReader();
-            Result result = reader.decode(bitmap);
+            ZXing.Result result = QRCode.DecodeScreen();
             if (result == null || string.IsNullOrWhiteSpace(result.Text))
             {
                 InterfaceCtrl.ShowHomeNotify(sr_server_not_found);

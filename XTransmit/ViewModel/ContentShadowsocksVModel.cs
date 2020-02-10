@@ -254,7 +254,7 @@ namespace XTransmit.ViewModel
         {
             Shadowsocks server = new Shadowsocks();
 
-            new DialogShadowsocksConfig(server,
+            new ServerConfigDialog(server,
                 (bool resultOK) =>
                 {
                     if (resultOK)
@@ -283,7 +283,7 @@ namespace XTransmit.ViewModel
             Shadowsocks serverOld = (Shadowsocks)parameter;
             Shadowsocks serverNew = serverOld.Copy();
 
-            new DialogShadowsocksConfig(serverNew,
+            new ServerConfigDialog(serverNew,
                 (bool resultOK) =>
                 {
                     if (resultOK)

@@ -7,15 +7,15 @@ using XTransmit.ViewModel;
 
 namespace XTransmit.View
 {
-    public partial class DialogShadowsocksConfig : Window
+    public partial class ServerConfigDialog : Window
     {
-        public DialogShadowsocksConfig(Shadowsocks serverProfile, Action<bool> actionComplete)
+        public ServerConfigDialog(Shadowsocks serverProfile, Action<bool> actionComplete)
         {
             InitializeComponent();
 
-            Preference global = PreferenceManager.Global;
-            Left = global.WindowServerConfig.X;
-            Top = global.WindowServerConfig.Y;
+            Preference preference = PreferenceManager.Global;
+            Left = preference.WindowServerConfig.X;
+            Top = preference.WindowServerConfig.Y;
 
             // set viewmodel
             DataContext = new ServerConfigVModel(serverProfile, actionComplete);
@@ -25,9 +25,9 @@ namespace XTransmit.View
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             // save window placement
-            Preference global = PreferenceManager.Global;
-            global.WindowServerConfig.X = Left;
-            global.WindowServerConfig.Y = Top;
+            Preference preference = PreferenceManager.Global;
+            preference.WindowServerConfig.X = Left;
+            preference.WindowServerConfig.Y = Top;
         }
     }
 }

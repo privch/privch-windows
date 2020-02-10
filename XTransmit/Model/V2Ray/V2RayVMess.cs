@@ -111,7 +111,7 @@ namespace XTransmit.Model.V2Ray
 
         public void SetFriendlyNameDefault()
         {
-            FriendlyName = $"{HostAddress} - {HostPort}";
+            FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostAddress} - {HostPort}" : Remarks;
         }
 
 
@@ -130,7 +130,7 @@ namespace XTransmit.Model.V2Ray
                 StringSplitOptions.RemoveEmptyEntries);
 
             // deserialize items
-            foreach(string vmessBase64 in vmessBase64Items)
+            foreach (string vmessBase64 in vmessBase64Items)
             {
                 if (FromVMessBase64(vmessBase64.Trim()) is V2RayVMess server)
                 {
@@ -165,11 +165,10 @@ namespace XTransmit.Model.V2Ray
             // deserialize to VMessUri
             if (TextUtil.JsonDeserialize(vmessJson, typeof(VMessUri)) is VMessUri vmessUri)
             {
-                return new V2RayVMess
+                V2RayVMess server = new V2RayVMess
                 {
                     HostAddress = vmessUri.address,
                     HostPort = vmessUri.port,
-                    FriendlyName = $"{vmessUri.address} - {vmessUri.port}",
 
                     Id = vmessUri.id,
                     AlterId = vmessUri.alterId,
@@ -180,25 +179,9 @@ namespace XTransmit.Model.V2Ray
                     Path = vmessUri.path,
                     Remarks = vmessUri.ps,
                 };
-            }
 
-            return null;
-        }
-
-        // create form standard vmess protocol json string: "vnext": [...]
-        public static V2RayVMess FromVMessProtocol(string json)
-        {
-            if (TextUtil.JsonDeserialize(json, typeof(Protocol.VMess)) is Protocol.VMess vmess)
-            {
-                if (vmess.vnext != null && vmess.vnext.Length > 0)
-                {
-                    return new V2RayVMess
-                    {
-                        HostAddress = vmess.vnext[0].address,
-                        HostPort = vmess.vnext[0].port,
-                        FriendlyName = $"{vmess.vnext[0].address} - {vmess.vnext[0].port}",
-                    };
-                }
+                server.SetFriendlyNameDefault();
+                return server;
             }
 
             return null;

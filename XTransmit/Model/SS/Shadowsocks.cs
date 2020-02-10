@@ -154,10 +154,10 @@ namespace XTransmit.Model.SS
                     continue;
                 }
 
-                Shadowsocks serverProfile = ParseLegacyServer(ssBase64);
-                if (serverProfile != null)   //legacy
+                Shadowsocks server = ParseLegacyServer(ssBase64);
+                if (server != null)   //legacy
                 {
-                    serverList.Add(serverProfile);
+                    serverList.Add(server);
                 }
                 else   //SIP002
                 {
@@ -171,7 +171,7 @@ namespace XTransmit.Model.SS
                         continue;
                     }
 
-                    serverProfile = new Shadowsocks
+                    server = new Shadowsocks
                     {
                         HostAddress = parsedUrl.IdnHost,
                         HostPort = parsedUrl.Port,
@@ -198,23 +198,23 @@ namespace XTransmit.Model.SS
                         continue;
                     }
 
-                    serverProfile.Encrypt = userInfoParts[0];
-                    serverProfile.Password = userInfoParts[1];
+                    server.Encrypt = userInfoParts[0];
+                    server.Password = userInfoParts[1];
 
                     // plugin
                     NameValueCollection queryParameters = HttpUtility.ParseQueryString(parsedUrl.Query);
                     string[] pluginParts = HttpUtility.UrlDecode(queryParameters["plugin"] ?? "").Split(new[] { ';' }, 2);
                     if (pluginParts.Length > 0)
                     {
-                        serverProfile.PluginName = pluginParts[0] ?? "";
+                        server.PluginName = pluginParts[0] ?? "";
                     }
                     if (pluginParts.Length > 1)
                     {
-                        serverProfile.PluginOption = pluginParts[1] ?? "";
+                        server.PluginOption = pluginParts[1] ?? "";
                     }
 
-                    serverProfile.SetFriendlyNameDefault();
-                    serverList.Add(serverProfile);
+                    server.SetFriendlyNameDefault();
+                    serverList.Add(server);
                 }
             }
 

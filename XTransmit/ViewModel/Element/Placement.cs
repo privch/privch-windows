@@ -40,8 +40,8 @@ namespace XTransmit.ViewModel.Element
         public double W
         {
             get => vw;
-            set 
-            { 
+            set
+            {
                 vw = value;
                 if (vw < 1 || vw >= SystemParameters.PrimaryScreenWidth)
                 {
@@ -56,7 +56,7 @@ namespace XTransmit.ViewModel.Element
             set
             {
                 vh = value;
-                if (vh <1 || vh>= SystemParameters.PrimaryScreenHeight)
+                if (vh < 1 || vh >= SystemParameters.PrimaryScreenHeight)
                 {
                     vh = SystemParameters.PrimaryScreenHeight / 2;
                 }

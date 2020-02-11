@@ -12,12 +12,12 @@ namespace XTransmit
     /**
      * TODO - English, Chinese language
      * TODO - Check memory leak, stream close, object dispose.
-     * TODO - Add support for Remote Http Proxy, SSR, V2Ray ...
+     * TODO - Add support for Remote Http Proxy, Trojan ...
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
      * TODO - Use Task instead BackgroundWorker
      * TODO - git update-index --assume-unchanged/--no-assume-unchanged BINARY-FILES
-     * TODO - BaseBinaryCtrl Class
+     * TODO - BaseProcCtrl Class
      * 
      * NOTE
      * System.Text.Json don't support System.Runtime.Serialization [DataContract], [DataMember]

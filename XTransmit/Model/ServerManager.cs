@@ -66,7 +66,6 @@ namespace XTransmit.Model
             V2RayList = listV2Ray;
         }
 
-        // TODO - Server type (SS, V2Ray ...)
         public static bool Start(BaseServer server, int listen)
         {
             if (ServerProcessMap.ContainsKey(server.GetId()))

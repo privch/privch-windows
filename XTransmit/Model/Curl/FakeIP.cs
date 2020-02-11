@@ -56,7 +56,7 @@ namespace XTransmit.Model.Curl
             {
                 return null;
             }
-            
+
             return new FakeIP()
             {
                 Replace = fakeMatch.Value,

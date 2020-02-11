@@ -39,7 +39,7 @@ namespace XTransmit.Model.Curl
 
             PlayTimes = 1;
             DelayMin = 0; //no delay
-            DelayMax = 0; 
+            DelayMax = 0;
 
             IsReadResponse = true;
             ArgumentList = new List<CurlArgument>();

@@ -42,7 +42,7 @@ namespace XTransmit.View.TrayNotify
             contextMenu.MenuItems.Add(menuitemEnableTransmit);
             contextMenu.MenuItems.Add("-");
             contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(scan_qrcode, MenuItem_AddServer_ScanQRCode));
-            contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(import_clipboard, MenuItem_AddServer_Clipboard));
+            //contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(import_clipboard, MenuItem_AddServer_Clipboard));
             contextMenu.MenuItems.Add("-");
             contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(setting, MenuItem_Setting));
             contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(exit, MenuItem_Exit));

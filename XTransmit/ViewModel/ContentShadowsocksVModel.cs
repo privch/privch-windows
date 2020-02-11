@@ -125,15 +125,21 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandAddServerQRCode => new RelayCommand(AddServerQRCode, CanEditList);
         private void AddServerQRCode(object parameter)
         {
-            ZXing.Result result = QRCode.DecodeScreen();
-            if (result == null || string.IsNullOrWhiteSpace(result.Text))
+            string ssBase64 = parameter as string;
+            if (string.IsNullOrWhiteSpace(ssBase64))
             {
-                InterfaceCtrl.ShowHomeNotify(sr_server_not_found);
-                InterfaceCtrl.NotifyIcon.ShowMessage(sr_server_not_found);
-                return;
+                ZXing.Result result = QRCode.DecodeScreen();
+                if (result == null || string.IsNullOrWhiteSpace(result.Text))
+                {
+                    InterfaceCtrl.ShowHomeNotify(sr_server_not_found);
+                    InterfaceCtrl.NotifyIcon.ShowMessage(sr_server_not_found);
+                    return;
+                }
+
+                ssBase64 = result.Text;
             }
 
-            List<Shadowsocks> serverList = Shadowsocks.ImportServers(result.Text);
+            List<Shadowsocks> serverList = Shadowsocks.ImportServers(ssBase64);
             if (serverList.Count > 0)
             {
                 AddServer(serverList, out int added, out int updated);

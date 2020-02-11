@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using XTransmit.Control;
 using XTransmit.Model;
+using XTransmit.Utility;
 using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
@@ -40,7 +42,9 @@ namespace XTransmit.ViewModel
         public UserControl ContentDisplay { get; private set; }
         public List<ContentTable> ContentList { get; }
 
+        // language
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
+        private static readonly string sr_server_not_found = (string)Application.Current.FindResource("add_server_not_found");
         private static readonly string sr_shadowsocks_title = (string)Application.Current.FindResource("shadowsocks_title");
         private static readonly string sr_v2ray_title = (string)Application.Current.FindResource("v2ray_title");
         private static readonly string sr_network_title = (string)Application.Current.FindResource("netrowk_title");
@@ -122,25 +126,50 @@ namespace XTransmit.ViewModel
 
         public void AddServerByScanQRCode()
         {
-            ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_shadowsocks_title);
-            ContentShadowsocksVModel serverViewModel = (ContentShadowsocksVModel)contantTable.Content.DataContext;
-            if (serverViewModel.CanEditList(null))
+            ZXing.Result result = QRCode.DecodeScreen();
+            if (result == null || string.IsNullOrWhiteSpace(result.Text))
             {
-                serverViewModel.CommandAddServerQRCode.Execute(null);
+                InterfaceCtrl.ShowHomeNotify(sr_server_not_found);
+                InterfaceCtrl.NotifyIcon.ShowMessage(sr_server_not_found);
+                return;
             }
-            else
+
+            if (result.Text.StartsWith("ss://", StringComparison.OrdinalIgnoreCase))
             {
-                InterfaceCtrl.NotifyIcon.ShowMessage(sr_cant_add_server);
+                ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_shadowsocks_title);
+                ContentShadowsocksVModel contentShadowsocks = (ContentShadowsocksVModel)contantTable.Content.DataContext;
+                if (contentShadowsocks.CanEditList(null))
+                {
+                    contentShadowsocks.CommandAddServerQRCode.Execute(result.Text);
+                }
+                else
+                {
+                    InterfaceCtrl.NotifyIcon.ShowMessage(sr_cant_add_server);
+                }
+            }
+            else if (result.Text.StartsWith("vmess://", StringComparison.OrdinalIgnoreCase))
+            {
+                ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_v2ray_title);
+                ContentV2RayVModel contentV2Ray = (ContentV2RayVModel)contantTable.Content.DataContext;
+                if (contentV2Ray.CanEditList(null))
+                {
+                    contentV2Ray.CommandAddServerQRCode.Execute(result.Text);
+                }
+                else
+                {
+                    InterfaceCtrl.NotifyIcon.ShowMessage(sr_cant_add_server);
+                }
             }
         }
 
+        // not used
         public void AddServerFromClipboard()
         {
             ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_shadowsocks_title);
-            ContentShadowsocksVModel serverViewModel = (ContentShadowsocksVModel)contantTable.Content.DataContext;
-            if (serverViewModel.CanEditList(null))
+            ContentShadowsocksVModel contentShadowsocks = (ContentShadowsocksVModel)contantTable.Content.DataContext;
+            if (contentShadowsocks.CanEditList(null))
             {
-                serverViewModel.CommandAddServerClipboard.Execute(null);
+                contentShadowsocks.CommandAddServerClipboard.Execute(null);
             }
             else
             {
@@ -181,8 +210,8 @@ namespace XTransmit.ViewModel
         {
             // save data first
             ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_shadowsocks_title);
-            ContentShadowsocksVModel serverViewModel = (ContentShadowsocksVModel)contantTable.Content.DataContext;
-            serverViewModel.CommandSaveServer.Execute(null);
+            ContentShadowsocksVModel contentShadowsocks = (ContentShadowsocksVModel)contantTable.Content.DataContext;
+            contentShadowsocks.CommandSaveServer.Execute(null);
 
             // show curl
             View.WindowCurl windowCurl = Application.Current.Windows.OfType<View.WindowCurl>().FirstOrDefault();

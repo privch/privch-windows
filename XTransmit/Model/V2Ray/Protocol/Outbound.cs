@@ -1,7 +1,7 @@
 ﻿namespace XTransmit.Model.V2Ray.Protocol
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1812", Justification = "<Pending>")]
-    internal class Outbound
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class Outbound
     {
         public static readonly string[] Protocols = {
             "Blackhole",
@@ -14,12 +14,18 @@
             "VMess",
         };
 
-        internal string tag = null;
-        internal string sendThrough = "0.0.0.0"; // not implement
-        internal string protocol = null;
-        internal object settings = null; // protocol implement
-        internal Transport.StreamSettings streamSettings = null;
-        internal string proxySettings = null; // not implement
-        internal Mux mux = null;
+        public string tag { get; set; } = null;
+
+        public string sendThrough { get; set; } = "0.0.0.0"; // not implement
+
+        public string protocol { get; set; } = null;
+
+        public VMess settings { get; set; } = null; // protocol implement
+
+        public Transport.StreamSettings streamSettings { get; set; } = null;
+
+        public string proxySettings { get; set; } = null; // not implement
+
+        public Mux mux { get; set; } = null;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
 using XTransmit.Model;
+using XTransmit.Model.Setting;
 using XTransmit.ViewModel;
 
 namespace XTransmit.View
@@ -11,7 +12,7 @@ namespace XTransmit.View
         {
             InitializeComponent();
 
-            Preference preference = PreferenceManager.Global;
+            Preference preference = SettingManager.Appearance;
             Left = preference.WindowHome.X;
             Top = preference.WindowHome.Y;
             Width = preference.WindowHome.W;
@@ -35,7 +36,7 @@ namespace XTransmit.View
 
             // save preference
             HomeVModel viewModel = (HomeVModel)DataContext;
-            Preference preference = PreferenceManager.Global;
+            Preference preference = SettingManager.Appearance;
             preference.HomeContentDisplay = viewModel.GetCurrentContent();
 
             // window placement

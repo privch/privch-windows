@@ -3,21 +3,8 @@
 namespace XTransmit.Model.V2Ray
 {
     [DataContract(Name = "VMessUri")]
-    public class VMessUri : IExtensibleDataObject
+    public class VMessUri
     {
-        private ExtensionDataObject extensionDataObjectValue;
-        public ExtensionDataObject ExtensionData
-        {
-            get
-            {
-                return extensionDataObjectValue;
-            }
-            set
-            {
-                extensionDataObjectValue = value;
-            }
-        }
-
         [DataMember(Name = "ps")]
         internal string ps = null;
 
@@ -31,7 +18,7 @@ namespace XTransmit.Model.V2Ray
         internal string id = null;
 
         [DataMember(Name = "aid")]
-        internal string alterId = null;
+        internal int alterId = 0;
 
         [DataMember(Name = "net")]
         internal string network = null;

@@ -85,7 +85,7 @@
                          Kind="Identifier" />
             <TextBox DockPanel.Dock="Right"
                      md:HintAssist.Hint="{StaticResource _id}"
-                     Text="{Binding Path=ServerEdit.Id}" />
+                     Text="{Binding Path=ServerEdit.Identify}" />
         </DockPanel>
 
         <!-- alter id -->
@@ -104,6 +104,24 @@
             <TextBox DockPanel.Dock="Right"
                      md:HintAssist.Hint="{StaticResource _netowrk}"
                      Text="{Binding Path=ServerEdit.Network}" />
+        </DockPanel>
+
+        <!-- type -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="MergeType" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource _type}"
+                     Text="{Binding Path=ServerEdit.Type}" />
+        </DockPanel>
+
+        <!-- host -->
+        <DockPanel>
+            <md:PackIcon DockPanel.Dock="Left"
+                         Kind="Server" />
+            <TextBox DockPanel.Dock="Right"
+                     md:HintAssist.Hint="{StaticResource _host}"
+                     Text="{Binding Path=ServerEdit.Host}" />
         </DockPanel>
 
         <!-- path -->

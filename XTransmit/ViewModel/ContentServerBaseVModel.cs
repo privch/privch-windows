@@ -272,7 +272,7 @@ namespace XTransmit.ViewModel.Element
 
             // run
             IEnumerator<BaseServer> enumerator = Servers.GetEnumerator();
-            int timeout = ConfigManager.Global.PingTimeout;
+            int timeout = SettingManager.Configuration.PingTimeout;
 
             using (Ping pingSender = new Ping())
             {

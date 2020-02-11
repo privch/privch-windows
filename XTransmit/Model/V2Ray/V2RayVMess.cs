@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 using XTransmit.Utility;
 
 namespace XTransmit.Model.V2Ray
@@ -12,17 +13,17 @@ namespace XTransmit.Model.V2Ray
         #region Properties(Serializable)
         public string Protocol { get; } = "VMess";
 
-        public string Id
+        public string Identify
         {
-            get => id;
+            get => identify;
             set
             {
-                id = value;
-                OnPropertyChanged(nameof(Id));
+                identify = value;
+                OnPropertyChanged(nameof(Identify));
             }
         }
 
-        public string AlterId
+        public int AlterId
         {
             get => alterId;
             set
@@ -84,8 +85,8 @@ namespace XTransmit.Model.V2Ray
         #endregion
 
         // values 
-        private string id;
-        private string alterId;
+        private string identify;
+        private int alterId;
         private string network;
         private string type;
         private string host;
@@ -94,8 +95,8 @@ namespace XTransmit.Model.V2Ray
 
         public V2RayVMess()
         {
-            id = string.Empty;
-            alterId = string.Empty;
+            identify = string.Empty;
+            alterId = 0; // recommand value is 4, default value is 0
             network = string.Empty;
             type = string.Empty;
             host = string.Empty;
@@ -163,7 +164,7 @@ namespace XTransmit.Model.V2Ray
                     HostAddress = vmessUri.address,
                     HostPort = vmessUri.port,
 
-                    Id = vmessUri.id,
+                    Identify = vmessUri.id,
                     AlterId = vmessUri.alterId,
                     Network = vmessUri.network,
                     Type = vmessUri.type,
@@ -180,5 +181,61 @@ namespace XTransmit.Model.V2Ray
             return null;
         }
         #endregion
+
+        public static string ToJson(V2RayVMess server)
+        {
+            if (server == null)
+            {
+                return null;
+            }
+
+            Protocol.Outbound outbound = new Protocol.Outbound
+            {
+                protocol = "vmess",
+
+                settings = new Protocol.VMess
+                {
+                    vnext = new Protocol.VMess.VServer[]
+                    {
+                        new Protocol.VMess.VServer
+                        {
+                            address = server.HostAddress,
+                            port = server.HostPort,
+                            users = new Protocol.VMess.VUser[]
+                            {
+                                new Protocol.VMess.VUser
+                                {
+                                    id = server.identify,
+                                    alterId = server.alterId,
+                                }
+                            }
+                        }
+                    }
+                },
+
+                streamSettings = new Protocol.Transport.StreamSettings
+                {
+                    network = server.network,
+                    security = server.tls,
+                    wsSettings = new Protocol.Transport.WebSocket
+                    {
+                        path = server.host,
+                    }
+                },
+
+                mux = new Protocol.Mux
+                {
+                    enabled = true,
+                },
+            };
+
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                IgnoreNullValues = true,
+                WriteIndented = true,
+            };
+            string json = JsonSerializer.Serialize(outbound, typeof(Protocol.Outbound), options);
+            return json;
+        }
     }
 }

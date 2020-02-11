@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using XTransmit.Model;
-using XTransmit.Model.SS;
+using XTransmit.Model.Setting;
 using XTransmit.Utility;
 
 namespace XTransmit.Control
@@ -9,7 +9,7 @@ namespace XTransmit.Control
     {
         public static bool StartServer()
         {
-            Config config = ConfigManager.Global;
+            Config config = SettingManager.Configuration;
             List<int> portInUse = NetworkUtil.GetPortInUse(2000);
 
             // proxy port
@@ -39,9 +39,9 @@ namespace XTransmit.Control
                 return false;
             }
 
-            if (ConfigManager.RemoteServer != null)
+            if (SettingManager.RemoteServer != null)
             {
-                return ServerManager.Start(ConfigManager.RemoteServer, config.GlobalSocks5Port);
+                return ServerManager.Start(SettingManager.RemoteServer, config.GlobalSocks5Port);
             }
 
             return true;
@@ -50,35 +50,35 @@ namespace XTransmit.Control
         public static void StopServer()
         {
             ProcPrivoxy.Stop();
-            ServerManager.Stop(ConfigManager.RemoteServer);
+            ServerManager.Stop(SettingManager.RemoteServer);
         }
 
         public static void EnableTransmit(bool enable)
         {
             if (enable)
             {
-                if (NativeMethods.EnableProxy($"127.0.0.1:{ConfigManager.Global.SystemProxyPort}", NativeMethods.Bypass) != 0)
+                if (NativeMethods.EnableProxy($"127.0.0.1:{SettingManager.Configuration.SystemProxyPort}", NativeMethods.Bypass) != 0)
                 {
-                    ConfigManager.Global.IsTransmitEnabled = true;
+                    SettingManager.Configuration.IsTransmitEnabled = true;
                 }
             }
             else
             {
                 if (NativeMethods.DisableProxy() != 0)
                 {
-                    ConfigManager.Global.IsTransmitEnabled = false;
+                    SettingManager.Configuration.IsTransmitEnabled = false;
                 }
             }
         }
 
-        public static void ChangeTransmitServer(Shadowsocks serverProfile)
+        public static void ChangeTransmitServer(BaseServer server)
         {
-            if (ConfigManager.RemoteServer == null || !ConfigManager.RemoteServer.IsServerEqual(serverProfile))
+            if (SettingManager.RemoteServer == null || !SettingManager.RemoteServer.IsServerEqual(server))
             {
-                ServerManager.Stop(ConfigManager.RemoteServer);
-                ServerManager.Start(serverProfile, ConfigManager.Global.GlobalSocks5Port);
+                ServerManager.Stop(SettingManager.RemoteServer);
+                ServerManager.Start(server, SettingManager.Configuration.GlobalSocks5Port);
 
-                ConfigManager.RemoteServer = serverProfile;
+                SettingManager.RemoteServer = server;
                 InterfaceCtrl.UpdateHomeTransmitStatue();
             }
         }

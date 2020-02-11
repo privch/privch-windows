@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using XTransmit.Model;
+using XTransmit.Model.Setting;
 using XTransmit.ViewModel;
 
 namespace XTransmit.View
@@ -11,7 +12,7 @@ namespace XTransmit.View
         {
             InitializeComponent();
 
-            Preference preference = PreferenceManager.Global;
+            Preference preference = SettingManager.Appearance;
             Left = preference.WindowIPAddress.X;
             Top = preference.WindowIPAddress.Y;
             Width = preference.WindowIPAddress.W;
@@ -28,7 +29,7 @@ namespace XTransmit.View
             ((IPAddressVModel)DataContext).OnWindowClosing();
 
             // Save window placement
-            Preference preference = PreferenceManager.Global;
+            Preference preference = SettingManager.Appearance;
             preference.WindowIPAddress.X = Left;
             preference.WindowIPAddress.Y = Top;
             preference.WindowIPAddress.W = Width;

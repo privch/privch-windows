@@ -17,7 +17,7 @@ namespace XTransmit.ViewModel
     {
         public bool IsServerPoolEnabled
         {
-            get => ConfigManager.IsServerPoolEnabled;
+            get => SettingManager.IsServerPoolEnabled;
             set
             {
                 if (value)
@@ -34,7 +34,7 @@ namespace XTransmit.ViewModel
         }
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public string ServerPoolStatus => ConfigManager.IsServerPoolEnabled ?
+        public string ServerPoolStatus => SettingManager.IsServerPoolEnabled ?
             $"{ServerManager.ServerProcessMap.Count}" : null;
 
         public ObservableCollection<SiteProfile> SiteListOC { get; private set; }

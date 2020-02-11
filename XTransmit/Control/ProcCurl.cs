@@ -30,16 +30,16 @@ namespace XTransmit.Control
                 foreach (Process process in list)
                 {
                     // kill app's curl-x process
-                    try
+                    if (process.MainModule.FileName == CurlExePath)
                     {
-                        if (process.MainModule.FileName == CurlExePath)
+                        try
                         {
-                            process.CloseMainWindow();
+                            //process.CloseMainWindow();
                             process.Kill();
                             process.WaitForExit();
                         }
+                        catch { }
                     }
-                    catch { }
 
                     process.Dispose();
                 }

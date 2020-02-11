@@ -30,7 +30,7 @@ namespace XTransmit.Model.IPAddress
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static IPInformation Fetch(string ip)
         {
-            int timeout = ConfigManager.Global.IPInfoConnTimeout;
+            int timeout = SettingManager.Configuration.IPInfoConnTimeout;
 
             // curl process
             Process process = null;

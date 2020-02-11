@@ -37,11 +37,9 @@
     }
   ],
 
-  // List of outbound proxy configurations.
-  "outbounds": [
-    OUTBOUNDS
-  ],
-
+  // XTransmit generated outbounds.
+  "outbound": XTransmit-Outbounds,
+    
   // Dns settings for domain resolution.
   "dns": {
     "servers": [

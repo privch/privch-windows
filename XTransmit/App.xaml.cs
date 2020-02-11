@@ -20,6 +20,7 @@ namespace XTransmit
      * TODO - BaseBinaryCtrl Class
      * 
      * NOTE
+     * System.Text.Json don't support System.Runtime.Serialization [DataContract], [DataMember]
      * Compared to DataGrid, ListView comes with "*" column width, double click, row sort and application command problems
      * EventHandler name accept "_"
      */
@@ -46,7 +47,7 @@ namespace XTransmit
 
         public static void CloseMainWindow()
         {
-            PreferenceManager.Global.IsWindowHomeVisible = Current.MainWindow.IsVisible;
+            SettingManager.Appearance.IsWindowHomeVisible = Current.MainWindow.IsVisible;
             Current.MainWindow.Hide();
             Current.MainWindow.Close();
         }
@@ -158,8 +159,7 @@ namespace XTransmit
 
             // load data
             ServerManager.Load(FileShadowsocksXml, FileV2RayXml);
-            PreferenceManager.LoadFileOrDefault(FilePreferenceXml);
-            ConfigManager.LoadFileOrDefault(FileConfigXml);
+            SettingManager.LoadFileOrDefault(FileConfigXml, FilePreferenceXml);
 
             // initialize transmit
             if (!TransmitCtrl.StartServer())
@@ -172,12 +172,12 @@ namespace XTransmit
                 return;
             }
 
-            TransmitCtrl.EnableTransmit(ConfigManager.Global.IsTransmitEnabled);
+            TransmitCtrl.EnableTransmit(SettingManager.Configuration.IsTransmitEnabled);
 
             // initialize interface and theme
             InterfaceCtrl.Initialize();
             InterfaceCtrl.ModifyTheme(theme => theme.SetBaseTheme(
-                PreferenceManager.Global.IsDarkTheme ? Theme.Dark : Theme.Light));
+                SettingManager.Appearance.IsDarkTheme ? Theme.Dark : Theme.Light));
 
             // done
             StartupUri = new System.Uri("View/WindowHome.xaml", System.UriKind.Relative);
@@ -196,11 +196,9 @@ namespace XTransmit
             ProcV2Ray.KillRunning();
             ProcCurl.KillRunning();
 
-            PreferenceManager.WriteFile(FilePreferenceXml);
-            ConfigManager.WriteFile(FileConfigXml);
-
-            // fix autorun status. reduce startup time
-            if (ConfigManager.Global.IsAutorun)
+            // save settings and fix autorun status. reduce startup time
+            SettingManager.WriteFile(FileConfigXml, FilePreferenceXml);
+            if (SettingManager.Configuration.IsAutorun)
             {
                 SystemUtil.CheckOrCreateUserStartupShortcut();
             }

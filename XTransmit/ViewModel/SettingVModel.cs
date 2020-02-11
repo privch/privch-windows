@@ -14,50 +14,50 @@ namespace XTransmit.ViewModel
         // options
         public int SSTimeouts
         {
-            get => ConfigManager.Global.SSTimeout;
+            get => SettingManager.Configuration.SSTimeout;
             set
             {
-                ConfigManager.Global.SSTimeout = value;
+                SettingManager.Configuration.SSTimeout = value;
                 OnPropertyChanged(nameof(SSTimeouts));
             }
         }
 
         public int IPInfoConnTimeout
         {
-            get => ConfigManager.Global.IPInfoConnTimeout;
+            get => SettingManager.Configuration.IPInfoConnTimeout;
             set
             {
-                ConfigManager.Global.IPInfoConnTimeout = value;
+                SettingManager.Configuration.IPInfoConnTimeout = value;
                 OnPropertyChanged(nameof(IPInfoConnTimeout));
             }
         }
 
         public int ResponseConnTimeout
         {
-            get { return ConfigManager.Global.ResponseConnTimeout; }
+            get { return SettingManager.Configuration.ResponseConnTimeout; }
             set
             {
-                ConfigManager.Global.ResponseConnTimeout = value;
+                SettingManager.Configuration.ResponseConnTimeout = value;
                 OnPropertyChanged(nameof(ResponseConnTimeout));
             }
         }
 
         public int PingTimeout
         {
-            get { return ConfigManager.Global.PingTimeout; }
+            get { return SettingManager.Configuration.PingTimeout; }
             set
             {
-                ConfigManager.Global.PingTimeout = value;
+                SettingManager.Configuration.PingTimeout = value;
                 OnPropertyChanged(nameof(PingTimeout));
             }
         }
 
         public bool IsReplaceOldServer
         {
-            get { return ConfigManager.Global.IsReplaceOldServer; }
+            get { return SettingManager.Configuration.IsReplaceOldServer; }
             set
             {
-                ConfigManager.Global.IsReplaceOldServer = value;
+                SettingManager.Configuration.IsReplaceOldServer = value;
                 OnPropertyChanged(nameof(IsReplaceOldServer));
             }
         }
@@ -66,7 +66,7 @@ namespace XTransmit.ViewModel
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public bool IsAutorun
         {
-            get => ConfigManager.Global.IsAutorun;
+            get => SettingManager.Configuration.IsAutorun;
             set
             {
                 if (value)
@@ -78,7 +78,7 @@ namespace XTransmit.ViewModel
                     SystemUtil.DeleteUserStartupShortcuts();
                 }
 
-                ConfigManager.Global.IsAutorun = value;
+                SettingManager.Configuration.IsAutorun = value;
                 OnPropertyChanged(nameof(IsAutorun));
             }
         }
@@ -87,10 +87,10 @@ namespace XTransmit.ViewModel
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public bool IsDarkTheme
         {
-            get => PreferenceManager.Global.IsDarkTheme;
+            get => SettingManager.Appearance.IsDarkTheme;
             set
             {
-                PreferenceManager.Global.IsDarkTheme = value;
+                SettingManager.Appearance.IsDarkTheme = value;
                 InterfaceCtrl.ModifyTheme(theme => theme.SetBaseTheme(value ? Theme.Dark : Theme.Light));
             }
         }
@@ -105,13 +105,13 @@ namespace XTransmit.ViewModel
                 new ItemView
                 {
                     Label = (string)Application.Current.FindResource("dialog_setting_status_proxy_port"),
-                    Text=ConfigManager.Global.SystemProxyPort.ToString(CultureInfo.InvariantCulture),
+                    Text=SettingManager.Configuration.SystemProxyPort.ToString(CultureInfo.InvariantCulture),
                 },
 
                 new ItemView
                 {
                     Label = (string)Application.Current.FindResource("dialog_setting_status_ss_port"),
-                    Text = ConfigManager.Global.GlobalSocks5Port.ToString(CultureInfo.InvariantCulture),
+                    Text = SettingManager.Configuration.GlobalSocks5Port.ToString(CultureInfo.InvariantCulture),
                 }
             };
         }

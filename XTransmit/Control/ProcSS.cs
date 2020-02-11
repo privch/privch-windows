@@ -44,16 +44,16 @@ namespace XTransmit.Control
                 foreach (Process process in list)
                 {
                     // kill app's ss-local-x process
-                    try
+                    if (process.MainModule.FileName == SSExePath)
                     {
-                        if (process.MainModule.FileName == SSExePath)
+                        try
                         {
-                            process.CloseMainWindow();
+                            //process.CloseMainWindow();
                             process.Kill();
                             process.WaitForExit();
                         }
+                        catch { }
                     }
-                    catch { }
 
                     process.Dispose();
                 }
@@ -101,7 +101,7 @@ namespace XTransmit.Control
 
         public static Process Execute(Shadowsocks server, int listen)
         {
-            int timeout = ConfigManager.Global.SSTimeout;
+            int timeout = SettingManager.Configuration.SSTimeout;
             string arguments = $"-s {server.HostAddress} -p {server.HostPort} -l {listen} -k {server.Password} -m {server.Encrypt} -t {timeout}";
 
             Process process = null;
@@ -133,7 +133,7 @@ namespace XTransmit.Control
         {
             try
             {
-                process.CloseMainWindow();
+                //process.CloseMainWindow();
                 process.Kill();
                 process.WaitForExit();
             }

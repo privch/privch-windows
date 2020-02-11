@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using XTransmit.Model;
-using XTransmit.Model.SS;
+using XTransmit.Model.V2Ray;
 using XTransmit.Utility;
 
 namespace XTransmit.Control
@@ -24,6 +23,7 @@ namespace XTransmit.Control
 
         private const string v2ray_config_json_name = "v2ray-config.json";
         private const string config_listen_port = "PORT-LISTEN";
+        private const string config_outbounds = "XTransmit-Outbounds";
 
         public static void KillRunning()
         {
@@ -32,16 +32,16 @@ namespace XTransmit.Control
             {
                 foreach (Process process in list)
                 {
-                    try
+                    if (process.MainModule.FileName == V2RayExePath)
                     {
-                        if (process.MainModule.FileName == V2RayExePath)
+                        try
                         {
-                            process.CloseMainWindow();
+                            //process.CloseMainWindow();
                             process.Kill();
                             process.WaitForExit();
                         }
+                        catch { }
                     }
-                    catch { }
 
                     process.Dispose();
                 }
@@ -82,23 +82,23 @@ namespace XTransmit.Control
             return true;
         }
 
-        public static bool Start(Shadowsocks server, int listen)
+        public static bool Start(V2RayVMess server, int listen)
         {
             string config_path = $@"{App.DirectoryV2Ray}\{v2ray_config_json_name}";
             string config_text = Properties.Resources.v2ray_config_json;
 
-            config_text = config_text.Replace(config_listen_port,
-                ConfigManager.Global.GlobalSocks5Port.ToString(CultureInfo.InvariantCulture));
+            string outbound = V2RayVMess.ToJson(server);
+            config_text = config_text.Replace(config_listen_port, listen.ToString(CultureInfo.InvariantCulture));
+            config_text = config_text.Replace(config_outbounds, outbound);
 
             if (!FileUtil.WriteUTF8(config_path, config_text))
             {
                 return false;
             }
 
-            Process process = null;
             try
             {
-                process_v2ray = process = Process.Start(
+                process_v2ray = Process.Start(
                     new ProcessStartInfo
                     {
                         FileName = V2RayExePath,

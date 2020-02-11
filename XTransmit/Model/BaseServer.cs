@@ -213,7 +213,7 @@ namespace XTransmit.Model
 
             // curl process
             Process process = null;
-            int timeout = ConfigManager.Global.SSTimeout;
+            int timeout = SettingManager.Configuration.SSTimeout;
             try
             {
                 // UA is "curl"
@@ -254,7 +254,7 @@ namespace XTransmit.Model
             {
                 try
                 {
-                    PingReply reply = pingSender.Send(HostAddress, ConfigManager.Global.PingTimeout);
+                    PingReply reply = pingSender.Send(HostAddress, SettingManager.Configuration.PingTimeout);
                     PingDelay = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                 }
                 catch

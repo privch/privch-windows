@@ -24,13 +24,13 @@ namespace XTransmit.View.TrayNotify
 
             menuitemEnableTransmit = new System.Windows.Forms.MenuItem(enable_transmit, MenuItem_EnableTransmit)
             {
-                Checked = ConfigManager.Global.IsTransmitEnabled
+                Checked = SettingManager.Configuration.IsTransmitEnabled
             };
 
             // init notify icon
             notifyIcon = new System.Windows.Forms.NotifyIcon
             {
-                Icon = ConfigManager.Global.IsTransmitEnabled ?
+                Icon = SettingManager.Configuration.IsTransmitEnabled ?
                     Properties.Resources.xtransmit_on : Properties.Resources.xtransmit_off,
                 Visible = true,
             };
@@ -67,7 +67,7 @@ namespace XTransmit.View.TrayNotify
 
         public void UpdateTransmitLock()
         {
-            menuitemEnableTransmit.Enabled = !ConfigManager.IsServerPoolEnabled;
+            menuitemEnableTransmit.Enabled = !SettingManager.IsServerPoolEnabled;
         }
 
         public void ShowMessage(string text, string title = null)
@@ -85,7 +85,7 @@ namespace XTransmit.View.TrayNotify
         public void UpdateIcon()
         {
             // ServerPool status are showing in the server list
-            notifyIcon.Icon = ConfigManager.Global.IsTransmitEnabled ?
+            notifyIcon.Icon = SettingManager.Configuration.IsTransmitEnabled ?
                 Properties.Resources.xtransmit_on :
                 Properties.Resources.xtransmit_off;
         }
@@ -94,9 +94,9 @@ namespace XTransmit.View.TrayNotify
          */
         private void NotifyIcon_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (ConfigManager.RemoteServer != null)
+            if (SettingManager.RemoteServer != null)
             {
-                notifyIcon.Text = ConfigManager.RemoteServer.FriendlyName;
+                notifyIcon.Text = SettingManager.RemoteServer.FriendlyName;
             }
             else
             {
@@ -114,13 +114,13 @@ namespace XTransmit.View.TrayNotify
 
         private void ContextMenu_Popup(object sender, EventArgs e)
         {
-            menuitemEnableTransmit.Checked = ConfigManager.Global.IsTransmitEnabled;
+            menuitemEnableTransmit.Checked = SettingManager.Configuration.IsTransmitEnabled;
         }
 
         private void MenuItem_EnableTransmit(object sender, EventArgs e)
         {
-            TransmitCtrl.EnableTransmit(!ConfigManager.Global.IsTransmitEnabled);
-            menuitemEnableTransmit.Checked = ConfigManager.Global.IsTransmitEnabled;
+            TransmitCtrl.EnableTransmit(!SettingManager.Configuration.IsTransmitEnabled);
+            menuitemEnableTransmit.Checked = SettingManager.Configuration.IsTransmitEnabled;
 
             // update interface
             InterfaceCtrl.UpdateHomeTransmitStatue();

@@ -89,7 +89,7 @@ namespace XTransmit.Model.SS
         private string pluginName;
         private string pluginOption;
 
-        // call after the ConfigManager.Global has been loaded
+        // call after the SettingManager.Configuration has been loaded
         public Shadowsocks()
         {
             encrypt = "chacha20-ietf-poly1305";

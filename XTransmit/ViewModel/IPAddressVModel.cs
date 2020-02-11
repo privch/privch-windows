@@ -133,7 +133,7 @@ namespace XTransmit.ViewModel
             OnPropertyChanged(nameof(IsProcessingPing));
             System.Windows.Input.CommandManager.InvalidateRequerySuggested();
 
-            int timeout = ConfigManager.Global.PingTimeout;
+            int timeout = SettingManager.Configuration.PingTimeout;
             using (Ping ping = new Ping())
             {
                 foreach (IPProfile ipProfile in IPListOC)

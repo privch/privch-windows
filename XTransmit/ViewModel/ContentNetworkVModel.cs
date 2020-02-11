@@ -40,10 +40,10 @@ namespace XTransmit.ViewModel
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public string NetworkInterfaceSelected
         {
-            get => PreferenceManager.Global.NetworkAdapter;
+            get => SettingManager.Appearance.NetworkAdapter;
             set
             {
-                PreferenceManager.Global.NetworkAdapter = value;
+                SettingManager.Appearance.NetworkAdapter = value;
             }
         }
 

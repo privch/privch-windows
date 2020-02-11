@@ -54,7 +54,7 @@ namespace XTransmit.ViewModel
                 }
                 else
                 {
-                    if (ConfigManager.Global.IsReplaceOldServer)
+                    if (SettingManager.Configuration.IsReplaceOldServer)
                     {
                         int i = V2RayOC.IndexOf(serverOld);
                         V2RayOC[i] = server;
@@ -77,7 +77,7 @@ namespace XTransmit.ViewModel
             }
             else
             {
-                if (ConfigManager.Global.IsReplaceOldServer)
+                if (SettingManager.Configuration.IsReplaceOldServer)
                 {
                     int i = V2RayOC.IndexOf(serverOld);
                     V2RayOC[i] = server;
@@ -90,7 +90,7 @@ namespace XTransmit.ViewModel
         {
             if (parameter is V2RayVMess server)
             {
-                if (!server.IsServerEqual(ConfigManager.RemoteServer))
+                if (!server.IsServerEqual(SettingManager.RemoteServer))
                 {
                     return true;
                 }
@@ -112,11 +112,11 @@ namespace XTransmit.ViewModel
         // change server
         public RelayCommand CommandChangeServer => new RelayCommand(ChangeServer, IsServerFree);
         private void ChangeServer(object parameter)
-        {/*
-            if (parameter is V2RayServer server)
+        {
+            if (parameter is V2RayVMess server)
             {
                 TransmitCtrl.ChangeTransmitServer(server);
-            }*/
+            }
         }
 
         // add server by scan qrcode
@@ -136,7 +136,7 @@ namespace XTransmit.ViewModel
                 AddServer(server, out int added, out int updated);
 
                 string notify;
-                if (ConfigManager.Global.IsReplaceOldServer)
+                if (SettingManager.Configuration.IsReplaceOldServer)
                 {
                     notify = added > 0 ? $"{added} {sr_server_x_added}" : $"{updated} {sr_server_x_updated}";
                 }
@@ -177,7 +177,7 @@ namespace XTransmit.ViewModel
                 AddServer(serverList, out int added, out int updated);
 
                 string notify;
-                if (ConfigManager.Global.IsReplaceOldServer)
+                if (SettingManager.Configuration.IsReplaceOldServer)
                 {
                     notify = $"{added} {sr_server_x_added}, {updated} {sr_server_x_updated}";
                 }
@@ -228,7 +228,7 @@ namespace XTransmit.ViewModel
                 AddServer(serverList, out int added, out int updated);
 
                 string notify;
-                if (ConfigManager.Global.IsReplaceOldServer)
+                if (SettingManager.Configuration.IsReplaceOldServer)
                 {
                     notify = $"{added} {sr_server_x_added}, {updated} {sr_server_x_updated}";
                 }
@@ -259,7 +259,7 @@ namespace XTransmit.ViewModel
                         AddServer(server, out int added, out int updated);
 
                         string notify;
-                        if (ConfigManager.Global.IsReplaceOldServer)
+                        if (SettingManager.Configuration.IsReplaceOldServer)
                         {
                             notify = added > 0 ? $"{added} {sr_server_x_added}" : $"{updated} {sr_server_x_updated}";
                         }

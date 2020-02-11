@@ -1,7 +1,9 @@
 ﻿namespace XTransmit.Model.V2Ray.Protocol
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1812", Justification = "<Pending>")]
-    internal class Transport
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
+    public static class Transport
     {
         public class StreamSettings
         {
@@ -19,44 +21,60 @@
                 "tls",
             };
 
-            public string network = "tcp";
-            public string security = "none";
-            public TLS tlsSettings = null;
-            public string tcpSettings = null; // not implement
-            public string kcpSettings = null; // not implement
-            public WebSocket wsSettings = null;
-            public HTTP httpSettings = null;
-            public DomainSocket dsSettings = null;
-            public string quicSettings = null; // Quick UDP Internet Connection. not implement
-            public Sockopt sockopt = null;
-        }
+            public string network { get; set; } = "tcp";
 
+            public string security { get; set; } = "none";
+
+            public TLS tlsSettings { get; set; } = null;
+
+            public string tcpSettings { get; set; } = null; // not implement
+
+            public string kcpSettings { get; set; } = null; // not implement
+
+            public WebSocket wsSettings { get; set; } = null;
+
+            public HTTP httpSettings { get; set; } = null;
+
+            public DomainSocket dsSettings { get; set; } = null;
+
+            public string quicSettings { get; set; } = null; // Quick UDP Internet Connection. not implement
+
+            public Sockopt sockopt { get; set; } = null;
+        }
 
         public class TLS
         {
-            public string serverName = ""; // auto set
-            public string[] alpn = { "http/1.1" };
-            public bool allowInsecure = false;
-            public bool allowInsecureCiphers = false;
-            public bool disableSystemRoot = false;
-            public Certificate[] certificates = null;
+            public string serverName { get; set; } = ""; // auto set
+
+            public string[] alpn { get; set; } = { "http/1.1" };
+
+            public bool allowInsecure { get; set; } = false;
+
+            public bool allowInsecureCiphers { get; set; } = false;
+
+            public bool disableSystemRoot { get; set; } = false;
+
+            public Certificate[] certificates { get; set; } = null;
         }
 
         public class WebSocket
         {
-            public string path = "/";
-            public System.Collections.Generic.Dictionary<string, string> headers = null;
+            public string path { get; set; } = "/";
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "<Pending>")]
+            public System.Collections.Generic.Dictionary<string, string> headers { get; set; } = null;
         }
 
         public class HTTP
         {
-            public string[] host = null;
-            public string path = "/";
+            public string[] host { get; set; } = null;
+
+            public string path { get; set; } = "/";
         }
 
         public class DomainSocket
         {
-            public string path = null; // path to ds file
+            public string path { get; set; } = null; // path to ds file
         }
 
         public class Sockopt
@@ -67,9 +85,11 @@
                 "off"
             };
 
-            public int mark = 0; // linux SO_MARK
-            public bool tcpFastOpen = false;
-            public string tproxy = "off";
+            public int mark { get; set; } = 0; // linux SO_MARK
+
+            public bool tcpFastOpen { get; set; } = false;
+
+            public string tproxy { get; set; } = "off";
         }
 
         public class Certificate
@@ -80,15 +100,15 @@
                 "issue",
             };
 
-            public string usage = "encipherment";
+            public string usage { get; set; } = "encipherment";
 
             // certificateFile or certificate, choose one
-            public string certificateFile = ""; // path to certificate.crt. 
-            public string[] certificate = null; // content of certificate. 
+            public string certificateFile { get; set; } = ""; // path to certificate.crt. 
+            public string[] certificate { get; set; } = null; // content of certificate. 
 
             // keyFile or key, choose one
-            public string keyFile = ""; // path to key.key
-            public string[] key = null; // content of key
+            public string keyFile { get; set; } = ""; // path to key.key
+            public string[] key { get; set; } = null; // content of key
         }
     }
 }

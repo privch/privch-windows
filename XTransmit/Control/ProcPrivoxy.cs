@@ -38,16 +38,16 @@ namespace XTransmit.Control
                 foreach (Process process in list)
                 {
                     // kill app's privoxy process
-                    try
+                    if (process.MainModule.FileName == PathPrivoxyExe)
                     {
-                        if (process.MainModule.FileName == PathPrivoxyExe)
+                        try
                         {
-                            process.CloseMainWindow();
+                            //process.CloseMainWindow();
                             process.Kill();
                             process.WaitForExit();
                         }
+                        catch { }
                     }
-                    catch { }
 
                     process.Dispose();
                 }

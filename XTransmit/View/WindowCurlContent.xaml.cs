@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using XTransmit.Control;
 using XTransmit.Model;
+using XTransmit.Model.Setting;
 using XTransmit.ViewModel;
 
 namespace XTransmit.View
@@ -17,7 +18,7 @@ namespace XTransmit.View
         {
             InitializeComponent();
 
-            Preference preference = PreferenceManager.Global;
+            Preference preference = SettingManager.Appearance;
             Left = preference.WindowCurl.X;
             Top = preference.WindowCurl.Y;
             Width = preference.WindowCurl.W;
@@ -70,7 +71,7 @@ namespace XTransmit.View
             ServerPoolCtrl.StopServerPool();
 
             // Save window placement
-            Preference preference = PreferenceManager.Global;
+            Preference preference = SettingManager.Appearance;
             preference.WindowCurl.X = Left;
             preference.WindowCurl.Y = Top;
             preference.WindowCurl.W = Width;

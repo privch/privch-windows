@@ -13,15 +13,15 @@ namespace XTransmit.ViewModel
     public class HomeVModel : BaseViewModel
     {
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public string TransmitStatus => ConfigManager.RemoteServer?.FriendlyName ?? sr_server_not_set;
+        public string TransmitStatus => SettingManager.RemoteServer?.FriendlyName ?? sr_server_not_set;
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public bool IsTransmitControllable => !ConfigManager.IsServerPoolEnabled;
+        public bool IsTransmitControllable => !SettingManager.IsServerPoolEnabled;
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public bool IsTransmitEnabled
         {
-            get => ConfigManager.Global.IsTransmitEnabled;
+            get => SettingManager.Configuration.IsTransmitEnabled;
             set
             {
                 TransmitCtrl.EnableTransmit(value);
@@ -61,7 +61,7 @@ namespace XTransmit.ViewModel
                 new ContentTable(sr_network_title, new View.ContentNetwork()),
             };
 
-            ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.Title == PreferenceManager.Global.HomeContentDisplay);
+            ContentTable contentTable = ContentList.FirstOrDefault(predicate: x => x.Title == SettingManager.Appearance.HomeContentDisplay);
             if (contentTable == null)
             {
                 contentTable = ContentList[0];

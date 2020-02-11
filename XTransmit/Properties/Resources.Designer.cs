@@ -149,9 +149,15 @@ namespace XTransmit.Properties {
                 return ((byte[])(obj));
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string of provixy-config.txt
+        ///   Looks up a localized string similar to listen-address 127.0.0.1:PORT-LISTEN
+        ///toggle 0
+        ///forward-socks5 / 127.0.0.1:PORT-FORWARD-SOCKS5 .
+        ///max-client-connections 2048
+        ///activity-animation 0
+        ///show-on-task-bar 0
+        ///hide-console.
         /// </summary>
         internal static string privoxy_config_txt {
             get {
@@ -188,9 +194,28 @@ namespace XTransmit.Properties {
                 return ((byte[])(obj));
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar of v2ray-config.json
+        ///   Looks up a localized string similar to // Config file of V2Ray.
+        ///{
+        ///  &quot;log&quot;: {
+        ///    // By default, V2Ray writes access log to stdout.
+        ///    // &quot;access&quot;: &quot;/path/to/access/log/file&quot;,
+        ///
+        ///    // By default, V2Ray write error log to stdout.
+        ///    // &quot;error&quot;: &quot;/path/to/error/log/file&quot;,
+        ///
+        ///    // Log level, one of &quot;debug&quot;, &quot;info&quot;, &quot;warning&quot;, &quot;error&quot;, &quot;none&quot;
+        ///    &quot;loglevel&quot;: &quot;error&quot;
+        ///  },
+        ///
+        ///  // List of inbound proxy configurations.
+        ///  &quot;inbounds&quot;: [
+        ///    {
+        ///      // Tag of the inbound proxy. May be used for routing.
+        ///      &quot;tag&quot;: &quot;socks-inbound&quot;,
+        ///
+        ///     [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string v2ray_config_json {
             get {

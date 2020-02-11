@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using XTransmit.Model;
+using XTransmit.Model.Setting;
 using XTransmit.ViewModel;
 
 namespace XTransmit.View
@@ -12,7 +13,7 @@ namespace XTransmit.View
         {
             InitializeComponent();
 
-            Preference preference = PreferenceManager.Global;
+            Preference preference = SettingManager.Appearance;
             Left = preference.WindowServerConfig.X;
             Top = preference.WindowServerConfig.Y;
 
@@ -37,7 +38,7 @@ namespace XTransmit.View
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             // save window placement
-            Preference preference = PreferenceManager.Global;
+            Preference preference = SettingManager.Appearance;
             preference.WindowServerConfig.X = Left;
             preference.WindowServerConfig.Y = Top;
         }

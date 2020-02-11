@@ -23,7 +23,7 @@
     <system:String x:Key="_upload">Upload</system:String>
     <system:String x:Key="_complete">Complete</system:String>
     <system:String x:Key="_failed">Failed</system:String>
-    
+
     <system:String x:Key="_name">Name</system:String>
     <system:String x:Key="_index">Index</system:String>
     <system:String x:Key="_time">Time</system:String>
@@ -46,6 +46,8 @@
     <system:String x:Key="_id">Identify</system:String>
     <system:String x:Key="_alterid">Alternative Identify</system:String>
     <system:String x:Key="_netowrk">Network</system:String>
+    <system:String x:Key="_type">Type</system:String>
+    <system:String x:Key="_host">Host</system:String>
     <system:String x:Key="_path">Path</system:String>
     <system:String x:Key="_tls">TLS</system:String>
 

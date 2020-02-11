@@ -3,21 +3,8 @@
 namespace XTransmit.Model.IPAddress
 {
     [DataContract(Name = "IPInfoIO")]
-    public class IPInfoIO : IExtensibleDataObject
+    public class IPInfoIO
     {
-        private ExtensionDataObject extensionDataObjectValue;
-        public ExtensionDataObject ExtensionData
-        {
-            get
-            {
-                return extensionDataObjectValue;
-            }
-            set
-            {
-                extensionDataObjectValue = value;
-            }
-        }
-
         [DataMember(Name = "ip")]
         internal string ip = null;
 

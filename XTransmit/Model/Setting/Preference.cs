@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Windows;
-using XTransmit.Utility;
 using XTransmit.ViewModel.Element;
 
-namespace XTransmit.Model
+namespace XTransmit.Model.Setting
 {
     /**<summary>
      * UI Preference, Such as window position, window size, tab status.
@@ -104,33 +103,6 @@ namespace XTransmit.Model
                 W = sw * 0.6,
                 H = sh * 0.6,
             };
-        }
-    }
-
-    internal static class PreferenceManager
-    {
-        public static Preference Global;
-
-        /**<summary>
-         * Object is constructed by serializer with default values,
-         * property (which also specified in the XML) value will be overwritten from the XML
-         * </summary>
-         */
-        public static void LoadFileOrDefault(string pathPrefXml)
-        {
-            if (FileUtil.XmlDeserialize(pathPrefXml, typeof(Preference)) is Preference preference)
-            {
-                Global = preference;
-            }
-            else
-            {
-                Global = new Preference();
-            }
-        }
-
-        public static void WriteFile(string pathPrefXml)
-        {
-            FileUtil.XmlSerialize(pathPrefXml, Global);
         }
     }
 }

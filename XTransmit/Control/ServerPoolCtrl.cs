@@ -22,16 +22,17 @@ namespace XTransmit.Control
                 }
             }
 
-            ConfigManager.IsServerPoolEnabled = true;
+            SettingManager.IsServerPoolEnabled = true;
             InterfaceCtrl.UpdateTransmitLock();
         }
 
+        // TODO - Shadowsocks only
         public static void StopServerPool()
         {
             // exclude the transmit server
-            if (ConfigManager.RemoteServer != null)
+            if (SettingManager.RemoteServer is Shadowsocks)
             {
-                ServerManager.ShadowsocksList.Remove(ConfigManager.RemoteServer);
+                ServerManager.ShadowsocksList.Remove((Shadowsocks)SettingManager.RemoteServer);
             }
 
             foreach (Shadowsocks server in ServerManager.ShadowsocksList)
@@ -40,12 +41,12 @@ namespace XTransmit.Control
             }
 
             // restore
-            if (ConfigManager.RemoteServer != null)
+            if (SettingManager.RemoteServer is Shadowsocks)
             {
-                ServerManager.ShadowsocksList.Add(ConfigManager.RemoteServer);
+                ServerManager.ShadowsocksList.Add((Shadowsocks)SettingManager.RemoteServer);
             }
 
-            ConfigManager.IsServerPoolEnabled = false;
+            SettingManager.IsServerPoolEnabled = false;
             InterfaceCtrl.UpdateTransmitLock();
         }
     }

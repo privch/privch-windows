@@ -138,7 +138,7 @@ namespace XTransmit.Utility
             return objectTo;
         }
 
-        public static string JsonSerizlize(object objectFrom)
+        public static string JsonSerizlize(object objectFrom, Type type)
         {
             if (objectFrom == null)
             {
@@ -149,9 +149,14 @@ namespace XTransmit.Utility
             MemoryStream msJson = new MemoryStream();
             StreamReader sreader = new StreamReader(msJson);
 
+            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true,
+            };
+
             try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(objectFrom.GetType());
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(type, settings);
                 serializer.WriteObject(msJson, objectFrom);
 
                 msJson.Position = 0;

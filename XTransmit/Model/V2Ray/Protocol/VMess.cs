@@ -1,13 +1,17 @@
 ﻿namespace XTransmit.Model.V2Ray.Protocol
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1812", Justification = "<Pending>")]
-    internal class VMess
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
+    public class VMess
     {
         public class VServer
         {
-            public string address = string.Empty;
-            public int port = 0;
-            public VUser[] users = null;
+            public string address { get; set; } = string.Empty;
+
+            public int port { get; set; } = 0;
+
+            public VUser[] users { get; set; } = null;
         }
 
         public class VUser
@@ -19,12 +23,16 @@
                 "none",
             };
 
-            public string id = string.Empty;
-            public int alterId = 4; // recommand value is 4, default value is 0
-            public string security = "auto";
-            public int level = 0;
+            public string id { get; set; } = string.Empty;
+
+            public int alterId { get; set; } = 4; // recommand value is 4, default value is 0
+
+            public string security { get; set; } = "auto";
+
+            public int level { get; set; } = 0;
         }
 
-        public VServer[] vnext = null;
+        // best solution is suppress this analysis rule
+        public VServer[] vnext { get; set; } = null;
     }
 }

@@ -83,6 +83,15 @@ namespace XTransmit.Model
                     return true;
                 }
             }
+            else if (server is V2RayVMess v2rayVMess)
+            {
+                if (ProcV2Ray.Start(v2rayVMess, listen))
+                {
+                    v2rayVMess.ListenPort = listen;
+                    ServerProcessMap.Add(v2rayVMess.GetId(), null);
+                    return true;
+                }
+            }
 
             return false;
         }
@@ -90,18 +99,24 @@ namespace XTransmit.Model
         public static void Stop(BaseServer server)
         {
             // server is null at the first time running
-            if (server == null)
+            if (server == null || !ServerProcessMap.ContainsKey(server.GetId()))
             {
                 return;
             }
 
-            if (ServerProcessMap.ContainsKey(server.GetId()))
+            if (server is Shadowsocks shadowsocks)
             {
-                Process process = ServerProcessMap[server.GetId()];
+                Process process = ServerProcessMap[shadowsocks.GetId()];
                 ProcSS.Exit(process);
 
-                server.ListenPort = -1;
-                ServerProcessMap.Remove(server.GetId());
+                shadowsocks.ListenPort = -1;
+                ServerProcessMap.Remove(shadowsocks.GetId());
+            }
+            else if (server is V2RayVMess v2rayVMess)
+            {
+                ProcV2Ray.Stop();
+                v2rayVMess.ListenPort = -1;
+                ServerProcessMap.Remove(v2rayVMess.GetId());
             }
         }
 

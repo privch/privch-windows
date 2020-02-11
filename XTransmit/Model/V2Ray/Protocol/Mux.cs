@@ -1,9 +1,10 @@
 ﻿namespace XTransmit.Model.V2Ray.Protocol
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1812", Justification = "<Pending>")]
-    internal class Mux
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class Mux
     {
-        public bool enabled = false;
-        public int concurrency = 8; // 1-1024
+        public bool enabled { get; set; } = false;
+
+        public int concurrency { get; set; } = 8; // 1-1024
     }
 }

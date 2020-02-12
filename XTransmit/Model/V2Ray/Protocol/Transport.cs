@@ -1,4 +1,6 @@
-﻿namespace XTransmit.Model.V2Ray.Protocol
+﻿using System.Collections.Generic;
+
+namespace XTransmit.Model.V2Ray.Protocol
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
@@ -7,7 +9,7 @@
     {
         public class StreamSettings
         {
-            public static readonly string[] Network = {
+            public static readonly List<string> Network = new List<string> {
                 "tcp",
                 "kcp",
                 "ws",
@@ -16,7 +18,7 @@
                 "quic",
             };
 
-            public static readonly string[] Security = {
+            public static readonly List<string> Security = new List<string> {
                 "none",
                 "tls",
             };
@@ -79,7 +81,7 @@
 
         public class Sockopt
         {
-            public static readonly string[] Tproxy = {
+            public static readonly List<string> Tproxy = new List<string> {
                 "redirect",
                 "tproxy",
                 "off"
@@ -94,7 +96,7 @@
 
         public class Certificate
         {
-            public static readonly string[] Useage = {
+            public static readonly List<string> Useage = new List<string> {
                 "encipherment",
                 "verify",
                 "issue",

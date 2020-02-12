@@ -57,6 +57,7 @@
     <system:String x:Key="invalid_port">Invalid Port Number</system:String>
     <system:String x:Key="response_time">Response Time</system:String>
     <system:String x:Key="not_availabe">Not Availabe</system:String>
+    <system:String x:Key="not_checked">Not Checked</system:String>
     <system:String x:Key="timed_out">Timed Out</system:String>
     <system:String x:Key="clear_all">Clear all</system:String>
     <system:String x:Key="confirm_by_enter">Enter to confirm</system:String>
@@ -84,10 +85,10 @@
     <system:String x:Key="add_server_file">Import from file ...</system:String>
     <system:String x:Key="add_server_create">Manual setting ...</system:String>
 
-    <system:String x:Key="add_server_not_found">No server found.</system:String>
-    <system:String x:Key="add_server_already_exist">This server already exists.</system:String>
-    <system:String x:Key="add_server_x_added">server(s) added.</system:String>
-    <system:String x:Key="add_server_x_updated">server(s) updated.</system:String>
+    <system:String x:Key="add_server_not_found">No server found</system:String>
+    <system:String x:Key="add_server_already_exist">This server already exists</system:String>
+    <system:String x:Key="add_server_x_added">server(s) added</system:String>
+    <system:String x:Key="add_server_x_updated">server(s) updated</system:String>
 
     <system:String x:Key="server_fetch_info">Fetch server info</system:String>
     <system:String x:Key="server_fetch_ask_force">Keep existing data?</system:String>

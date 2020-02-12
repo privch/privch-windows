@@ -117,6 +117,7 @@ namespace XTransmit.Model
         private long pingDelay;
 
         // language strings
+        private static readonly string sr_not_checked = (string)Application.Current.FindResource("not_checked");
         private static readonly string sr_timedout = (string)Application.Current.FindResource("timed_out");
         private static readonly string sr_failed = (string)Application.Current.FindResource("_failed");
 
@@ -132,7 +133,7 @@ namespace XTransmit.Model
             IPInfo = null;
 
             listenPort = -1;
-            responseTime = string.Empty;
+            responseTime = sr_not_checked;
             pingDelay = 0;
         }
 

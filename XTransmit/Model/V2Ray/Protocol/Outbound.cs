@@ -1,9 +1,11 @@
-﻿namespace XTransmit.Model.V2Ray.Protocol
+﻿using System.Collections.Generic;
+
+namespace XTransmit.Model.V2Ray.Protocol
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     public class Outbound
     {
-        public static readonly string[] Protocols = {
+        public static readonly List<string> Protocols = new List<string> {
             "Blackhole",
             "Dokodemo-door",
             "Freedom",

@@ -1,4 +1,6 @@
-﻿namespace XTransmit.Model.V2Ray.Protocol
+﻿using System.Collections.Generic;
+
+namespace XTransmit.Model.V2Ray.Protocol
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
@@ -16,7 +18,7 @@
 
         public class VUser
         {
-            public static readonly string[] Security = {
+            public static readonly List<string> Security = new List<string> {
                 "aes-128-gcm",
                 "chacha20-poly1305",
                 "auto",

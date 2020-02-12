@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using XTransmit.Control;
@@ -15,10 +16,10 @@ namespace XTransmit.ViewModel
     public class HomeVModel : BaseViewModel
     {
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public string TransmitStatus => SettingManager.RemoteServer?.FriendlyName ?? sr_server_not_set;
+        public bool IsTransmitControllable => !SettingManager.IsServerPoolEnabled;
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
-        public bool IsTransmitControllable => !SettingManager.IsServerPoolEnabled;
+        public string RemoteServerName => SettingManager.RemoteServer?.FriendlyName ?? sr_server_not_set;
 
         [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public bool IsTransmitEnabled
@@ -42,6 +43,9 @@ namespace XTransmit.ViewModel
         public UserControl ContentDisplay { get; private set; }
         public List<ContentTable> ContentList { get; }
 
+        // status
+        private volatile bool processing_check_response = false;
+
         // language
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
         private static readonly string sr_server_not_found = (string)Application.Current.FindResource("add_server_not_found");
@@ -50,6 +54,9 @@ namespace XTransmit.ViewModel
         private static readonly string sr_network_title = (string)Application.Current.FindResource("netrowk_title");
         private static readonly string sr_task_running = (string)Application.Current.FindResource("home_x_task_running");
         private static readonly string sr_cant_add_server = (string)Application.Current.FindResource("home_cant_add_server");
+
+        private static readonly string sr_response_time = (string)Application.Current.FindResource("response_time"); 
+        private static readonly string sr_task_check_response_time = (string)Application.Current.FindResource("task_check_response_time");
 
         public HomeVModel()
         {
@@ -86,7 +93,7 @@ namespace XTransmit.ViewModel
         public void UpdateTransmitStatus()
         {
             OnPropertyChanged(nameof(IsTransmitEnabled));
-            OnPropertyChanged(nameof(TransmitStatus));
+            OnPropertyChanged(nameof(RemoteServerName));
         }
 
         public void UpdateTransmitLock()
@@ -180,6 +187,45 @@ namespace XTransmit.ViewModel
 
         /** Commands ======================================================================================================
          */
+        #region Command-CheckResponse
+        // check response for selected servers
+        public RelayCommand CommandCheckResponseRemote => new RelayCommand(CheckResponseRemote, CanCheckResponseRemote);
+
+        private bool CanCheckResponseRemote(object parameter)
+        {
+            return !processing_check_response;
+        }
+
+        private async void CheckResponseRemote(object parameter)
+        {
+            BaseServer server = SettingManager.RemoteServer;
+
+            // add task
+            processing_check_response = true;
+            TaskView task = new TaskView
+            {
+                Name = sr_task_check_response_time,
+                StopAction = null
+            };
+            InterfaceCtrl.AddHomeTask(task);
+
+            // run
+            await Task.Run(() =>
+            {
+                server.UpdateResponseTime();
+                task.Progress100 = 100;
+            }).ConfigureAwait(true);
+
+            // show result
+            InterfaceCtrl.ShowHomeNotify($"{sr_response_time}: {server.ResponseTime}");
+
+            // done
+            processing_check_response = false;
+            InterfaceCtrl.RemoveHomeTask(task);
+            System.Windows.Input.CommandManager.InvalidateRequerySuggested();
+        }
+        #endregion
+
         public RelayCommand CommandSelectContent => new RelayCommand(SelectContent);
         private void SelectContent(object newTitle)
         {

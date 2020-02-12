@@ -32,7 +32,6 @@ namespace XTransmit.ViewModel
         {
             // cancel tasks
             processing_fetch_info = false;
-            processing_check_response = false;
             processing_check_ping = false;
 
             // data changed ?
@@ -99,7 +98,6 @@ namespace XTransmit.ViewModel
 
             return false;
         }
-
 
         #region Commands
         // save data

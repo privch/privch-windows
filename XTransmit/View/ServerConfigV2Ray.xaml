@@ -101,9 +101,10 @@
         <DockPanel>
             <md:PackIcon DockPanel.Dock="Left"
                          Kind="NetworkRouter" />
-            <TextBox DockPanel.Dock="Right"
-                     md:HintAssist.Hint="{StaticResource _netowrk}"
-                     Text="{Binding Path=ServerEdit.Network}" />
+            <ComboBox DockPanel.Dock="Right"
+                      md:HintAssist.Hint="{StaticResource _netowrk}"
+                      ItemsSource="{Binding Path=ServerEdit.StreamNetwork}"
+                      SelectedItem="{Binding Path=ServerEdit.Network}" />
         </DockPanel>
 
         <!-- type -->

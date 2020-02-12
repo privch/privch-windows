@@ -10,6 +10,12 @@ namespace XTransmit.Model.V2Ray
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public class V2RayVMess : BaseServer
     {
+        #region Public-Static
+        public static List<string> VMessSecurity => V2Ray.Protocol.VMess.VUser.Security;
+        public static List<string> StreamNetwork => V2Ray.Protocol.Transport.StreamSettings.Network;
+        public static List<string> StreamSecurity => V2Ray.Protocol.Transport.StreamSettings.Security;
+        #endregion
+
         #region Properties(Serializable)
         public string Protocol { get; } = "VMess";
 

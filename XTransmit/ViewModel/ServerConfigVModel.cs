@@ -20,13 +20,15 @@ namespace XTransmit.ViewModel
 
         public bool IsProcessing
         {
-            get => processing_fetch_info
-                || processing_check_response
-                || processing_check_ping;
+            get => processing_fetch_info || processing_check_ping;
         }
 
         private readonly BaseServer serverBase;
         private readonly Action<bool> actionComplete;
+
+        // status. also use to cancel task
+        private volatile bool processing_fetch_info = false;
+        private volatile bool processing_check_ping = false;
 
         // language
         private readonly string promptTitle;
@@ -85,13 +87,10 @@ namespace XTransmit.ViewModel
 
         /** Commands ======================================================================================================
          */
-        private volatile bool processing_fetch_info = false; // also use to cancel task
-        private volatile bool processing_check_response = false; // also use to cancel task
-        private volatile bool processing_check_ping = false;  // also use to cancel task
-
         // fetch ipinfo
         public RelayCommand CommandFetchInfo => new RelayCommand(FetchServerInfo, CanFetchInfo);
-        private bool CanFetchInfo(object parameter) => !processing_fetch_info;
+        // TODO - Next
+        private bool CanFetchInfo(object parameter) => !processing_fetch_info && serverBase is Model.SS.Shadowsocks;
         private async void FetchServerInfo(object parameter)
         {
             processing_fetch_info = true;
@@ -107,34 +106,6 @@ namespace XTransmit.ViewModel
             OnPropertyChanged(nameof(ServerInfo));
 
             processing_fetch_info = false;
-            OnPropertyChanged(nameof(IsProcessing));
-            CommandManager.InvalidateRequerySuggested();
-        }
-
-        // check response time
-        public RelayCommand CommandCheckResponseTime => new RelayCommand(CheckResponseTime, CanCheckResponseTime);
-        private bool CanCheckResponseTime(object parameter) => !processing_check_response;
-        private async void CheckResponseTime(object parameter)
-        {
-            processing_check_response = true;
-            OnPropertyChanged(nameof(IsProcessing));
-
-            await Task.Run(() =>
-            {
-                int listen = NetworkUtil.GetAvailablePort(10000);
-                if (listen > 0)
-                {
-                    ServerManager.Start(serverBase, listen);
-                    serverBase.UpdateResponseTime();
-                    ServerManager.Stop(serverBase);
-                }
-            }).ConfigureAwait(true);
-
-            // update the data to the view
-            ServerInfo = UpdateServerInfo();
-            OnPropertyChanged(nameof(ServerInfo));
-
-            processing_check_response = false;
             OnPropertyChanged(nameof(IsProcessing));
             CommandManager.InvalidateRequerySuggested();
         }

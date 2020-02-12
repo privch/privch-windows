@@ -1,3 +1,9 @@
+v0.7.0
+* Added support for V2Ray
+* Set target .NET Framework version to 4.7.2
+* Optimized the server response time check operation
+* Fixed a color problem in light theme
+
 v0.6.0
 * Update native components to the static link version, no need to install runtime library now
 * Added auto-run feature, you can turn it on or off in settings

@@ -12,26 +12,32 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Top -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.Resources>
                 <Style x:Key="RadioButtonToolbar"
-                       TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
-                    <Setter Property="MinHeight" Value="45"/>
-                    <Setter Property="Margin" Value="0"/>
-                    <Setter Property="VerticalAlignment" Value="Stretch"/>
-                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                    <Setter Property="GroupName" Value="xGroupContentSwitch"/>
+                       TargetType="RadioButton"
+                       BasedOn="{StaticResource MaterialDesignTabRadioButton}">
+                    <Setter Property="MinHeight"
+                            Value="45" />
+                    <Setter Property="Margin"
+                            Value="0" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="GroupName"
+                            Value="xGroupContentSwitch" />
                 </Style>
             </Grid.Resources>
 
@@ -42,34 +48,36 @@
                     <DataTemplate>
                         <RadioButton Style="{StaticResource RadioButtonToolbar}"
                                      Content="{Binding Title}"
-                                     IsChecked="{Binding IsChecked}" 
+                                     IsChecked="{Binding IsChecked}"
                                      Command="{Binding ElementName=xWindow, Path=DataContext.CommandSelectContent}"
-                                     CommandParameter="{Binding Title}"/>
+                                     CommandParameter="{Binding Title}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
+                        <StackPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
 
             <!-- transmit control and status -->
-            <StackPanel Grid.Column="1" 
-                        Margin="20, 0, 0, 0" 
+            <StackPanel Grid.Column="1"
+                        Margin="20, 0, 0, 0"
                         Orientation="Horizontal">
-                <ToggleButton Margin="10, 0" 
+                <ToggleButton Margin="10, 0"
                               VerticalAlignment="Center"
                               IsEnabled="{Binding IsTransmitControllable}"
-                              IsChecked="{Binding IsTransmitEnabled, Mode=TwoWay}"/>
+                              IsChecked="{Binding IsTransmitEnabled, Mode=TwoWay}" />
 
-                <TextBlock Margin="10, 0" 
-                           VerticalAlignment="Center"
-                           Text="{Binding TransmitStatus, Mode=OneWay}"/>
+                <Button Margin="10, 0"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Content="{Binding Path=RemoteServerName}"
+                        Command="{Binding Path=CommandCheckResponseRemote}"/>
             </StackPanel>
 
             <!-- background tasks -->
-            <md:PopupBox Grid.Column="2" 
+            <md:PopupBox Grid.Column="2"
                          Margin="5, 0"
                          VerticalAlignment="Center"
                          StaysOpen="False"
@@ -79,7 +87,7 @@
                     <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                                  ToolTip="{Binding Path=Progress.Description}"
                                  IsIndeterminate="{Binding Path=Progress.IsIndeterminate}"
-                                 Value="{Binding Path=Progress.Value, Mode=OneWay}"/>
+                                 Value="{Binding Path=Progress.Value, Mode=OneWay}" />
                 </md:PopupBox.ToggleContent>
                 <!-- deatils -->
                 <ListView ItemsSource="{Binding TaskListOC}">
@@ -87,24 +95,26 @@
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="x_details_c0"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"
+                                                      SharedSizeGroup="x_details_c0" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0"
-                                           Margin="10, 0" VerticalAlignment="Center"
-                                           Text="{Binding Path=Progress100}"/>
+                                           Margin="10, 0"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Path=Progress100}" />
                                 <ProgressBar Grid.Column="1"
                                              IsIndeterminate="False"
                                              Width="200"
                                              ToolTip="{Binding Path=Name}"
-                                             Value="{Binding Path=Progress100, Mode=OneWay}"/>
+                                             Value="{Binding Path=Progress100, Mode=OneWay}" />
                                 <Button Grid.Column="2"
                                         Style="{StaticResource MaterialDesignIconButton}"
                                         ToolTip="{StaticResource _cancel}"
                                         Command="{Binding ElementName=xWindow, Path=DataContext.CommandStopTask}"
                                         CommandParameter="{Binding Path=Name}">
-                                    <md:PackIcon Kind="Stop"/>
+                                    <md:PackIcon Kind="Stop" />
                                 </Button>
                             </Grid>
                         </DataTemplate>
@@ -113,34 +123,41 @@
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical"
                                         HorizontalAlignment="Stretch"
-                                        Grid.IsSharedSizeScope="True"/>
+                                        Grid.IsSharedSizeScope="True" />
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
                 </ListView>
             </md:PopupBox>
 
             <!-- the "more" menu -->
-            <md:PopupBox Grid.Column="3" Margin="5, 0" 
-                         PlacementMode="BottomAndAlignRightEdges" 
+            <md:PopupBox Grid.Column="3"
+                         Margin="5, 0"
+                         PlacementMode="BottomAndAlignRightEdges"
                          StaysOpen="False">
                 <StackPanel>
-                    <Button Content="{StaticResource curl_title}" Command="{Binding Path=CommandShowCurl}"/>
-                    <Separator/>
-                    <Button Content="{StaticResource _settings}" Command="{Binding Path=CommandShowSetting}"/>
-                    <Button Content="{StaticResource _about}" Command="{Binding Path=CommandShowAbout}"/>
-                    <Separator/>
-                    <Button Content="{StaticResource _exit}" Command="{Binding Path=CommandExit}"/>
+                    <Button Content="{StaticResource curl_title}"
+                            Command="{Binding Path=CommandShowCurl}" />
+                    <Separator />
+                    <Button Content="{StaticResource _settings}"
+                            Command="{Binding Path=CommandShowSetting}" />
+                    <Button Content="{StaticResource _about}"
+                            Command="{Binding Path=CommandShowAbout}" />
+                    <Separator />
+                    <Button Content="{StaticResource _exit}"
+                            Command="{Binding Path=CommandExit}" />
                 </StackPanel>
             </md:PopupBox>
         </Grid>
 
         <!-- Content -->
-        <ContentControl Grid.Row="1" Margin="0"
-                        Content="{Binding ContentDisplay}"/>
+        <ContentControl Grid.Row="1"
+                        Margin="0"
+                        Content="{Binding ContentDisplay}" />
 
         <!-- Notify -->
-        <md:Snackbar Grid.Row="1" Panel.ZIndex="2"
+        <md:Snackbar Grid.Row="1"
+                     Panel.ZIndex="2"
                      x:Name="xSnackbarNotify"
-                     MessageQueue="{md:MessageQueue}"/>
+                     MessageQueue="{md:MessageQueue}" />
     </Grid>
 </Window>

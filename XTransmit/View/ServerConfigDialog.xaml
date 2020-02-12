@@ -116,10 +116,6 @@
                     Content="{md:PackIcon Kind=AddLocation}"
                     Command="{Binding Path=CommandFetchInfo}" />
 
-            <Button ToolTip="{StaticResource server_check_response_time}"
-                    Content="{md:PackIcon Kind=ServerNetwork}"
-                    Command="{Binding Path=CommandCheckResponseTime}" />
-
             <Button ToolTip="{StaticResource server_check_ping}"
                     Content="{md:PackIcon Kind=ChartAreaspline}"
                     Command="{Binding Path=CommandCheckPing}" />

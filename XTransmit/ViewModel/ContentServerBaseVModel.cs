@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Input;
 using XTransmit.Control;
 using XTransmit.Model;
-using XTransmit.Utility;
 using XTransmit.View;
 
 namespace XTransmit.ViewModel.Element
@@ -19,7 +18,6 @@ namespace XTransmit.ViewModel.Element
 
         // status, also use to cancel task
         protected volatile bool processing_fetch_info = false;
-        protected volatile bool processing_check_response = false;
         protected volatile bool processing_check_ping = false;
 
         // language
@@ -29,7 +27,6 @@ namespace XTransmit.ViewModel.Element
 
         private static readonly string sr_task_fetch_info = (string)Application.Current.FindResource("task_fetch_info");
         private static readonly string sr_task_ping_server = (string)Application.Current.FindResource("task_ping_server");
-        private static readonly string sr_task_check_response_time = (string)Application.Current.FindResource("task_check_response_time");
 
         private static readonly string sr_fetch_ask_focus_title = (string)Application.Current.FindResource("server_fetch_info");
         private static readonly string sr_fetch_ask_focus_message = (string)Application.Current.FindResource("server_fetch_ask_force");
@@ -37,7 +34,7 @@ namespace XTransmit.ViewModel.Element
 
         public bool CanEditList(object parameter)
         {
-            return !processing_fetch_info && !processing_check_response && !processing_check_ping;
+            return !processing_fetch_info && !processing_check_ping;
         }
 
         #region Command-FetchInfo
@@ -137,115 +134,6 @@ namespace XTransmit.ViewModel.Element
 
             // done
             processing_fetch_info = false;
-            InterfaceCtrl.RemoveHomeTask(task);
-            CommandManager.InvalidateRequerySuggested();
-        }
-        #endregion
-
-
-        #region Command-CheckResponse
-        // check response time for all servers
-        public RelayCommand CommandCheckResponseAll => new RelayCommand(CheckResponseAll, CanCheckResponseAll);
-
-        private bool CanCheckResponseAll(object parameter) => !processing_check_response;
-
-        private async void CheckResponseAll(object parameter)
-        {
-            // add task
-            processing_check_response = true;
-            TaskView task = new TaskView
-            {
-                Name = sr_task_check_response_time,
-                StopAction = () => { processing_check_response = false; }
-            };
-            InterfaceCtrl.AddHomeTask(task);
-
-            // run
-            await Task.Run(() =>
-            {
-                IEnumerator<BaseServer> enumerator = Servers.GetEnumerator();
-                int count = Servers.Count();
-                int complete = 0;
-
-                enumerator.Reset();
-                while (enumerator.MoveNext())
-                {
-                    // cancel task
-                    if (processing_check_response == false)
-                    {
-                        break;
-                    }
-
-                    BaseServer server = enumerator.Current;
-                    if (ServerManager.ServerProcessMap.ContainsKey(server.GetId()))
-                    {
-                        server.UpdateResponseTime();
-                    }
-                    else
-                    {
-                        int listen = NetworkUtil.GetAvailablePort(10000);
-                        if (listen > 0)
-                        {
-                            ServerManager.Start(server, listen);
-                            server.UpdateResponseTime();
-                            ServerManager.Stop(server);
-                        }
-                    }
-
-                    task.Progress100 = ++complete * 100 / count;
-                }
-            }).ConfigureAwait(true);
-
-            // done
-            processing_check_response = false;
-            InterfaceCtrl.RemoveHomeTask(task);
-            CommandManager.InvalidateRequerySuggested();
-        }
-
-        // check response for selected servers
-        public RelayCommand CommandCheckResponseSelected => new RelayCommand(CheckResponseSelected, CanCheckResponseSelected);
-
-        private bool CanCheckResponseSelected(object parameter)
-        {
-            return !processing_check_response && parameter is BaseServer;
-        }
-
-        private async void CheckResponseSelected(object parameter)
-        {
-            BaseServer server = (BaseServer)parameter;
-
-            // add task
-            processing_check_response = true;
-            TaskView task = new TaskView
-            {
-                Name = sr_task_check_response_time,
-                StopAction = null
-            };
-            InterfaceCtrl.AddHomeTask(task);
-
-            // run
-            await Task.Run(() =>
-            {
-                if (ServerManager.ServerProcessMap.ContainsKey(server.GetId()))
-                {
-                    server.UpdateResponseTime();
-                }
-                else
-                {
-                    int listen = NetworkUtil.GetAvailablePort(10000);
-                    if (listen > 0)
-                    {
-                        ServerManager.Start(server, listen);
-                        server.UpdateResponseTime();
-                        ServerManager.Stop(server);
-                    }
-                }
-
-                task.Progress100 = 100;
-            }).ConfigureAwait(true);
-
-            // done
-            processing_check_response = false;
             InterfaceCtrl.RemoveHomeTask(task);
             CommandManager.InvalidateRequerySuggested();
         }

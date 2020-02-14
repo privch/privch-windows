@@ -6,88 +6,45 @@
     <StackPanel Orientation="Vertical"
                 HorizontalAlignment="Stretch">
         <StackPanel.Resources>
-            <Style TargetType="DockPanel">
-                <Setter Property="LastChildFill"
-                        Value="True" />
-            </Style>
-
-            <Style TargetType="md:PackIcon">
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
-                <Setter Property="Margin"
-                        Value="0" />
-            </Style>
-
             <Style TargetType="TextBox"
                    BasedOn="{StaticResource MaterialDesignTextBoxBase}">
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
                 <Setter Property="Margin"
-                        Value="10, 10, 0, 10" />
+                        Value="0, 15" />
             </Style>
 
             <Style TargetType="ComboBox"
                    BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
                 <Setter Property="Margin"
-                        Value="10, 10, 0, 10" />
+                        Value="0, 15" />
             </Style>
 
             <Style TargetType="CheckBox"
                    BasedOn="{StaticResource MaterialDesignCheckBox}">
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
                 <Setter Property="Margin"
-                        Value="0, 10" />
+                        Value="0, 30, 0, 0" />
             </Style>
         </StackPanel.Resources>
 
         <!-- friendly name -->
-        <DockPanel>
-            <md:PackIcon DockPanel.Dock="Left"
-                         Kind="Web" />
-            <TextBox DockPanel.Dock="Right"
-                     md:HintAssist.HelperText="{StaticResource dialog_server_friendly_name}"
-                     Text="{Binding Path=ServerEdit.FriendlyName}" />
-        </DockPanel>
+        <TextBox md:HintAssist.HelperText="{StaticResource dialog_server_friendly_name}"
+                 Text="{Binding Path=ServerEdit.FriendlyName}" />
 
         <!-- address -->
-        <DockPanel>
-            <md:PackIcon DockPanel.Dock="Left"
-                         Kind="IpNetwork" />
-            <TextBox DockPanel.Dock="Right"
-                     md:HintAssist.HelperText="{StaticResource host_address}"
-                     Text="{Binding Path=ServerEdit.HostAddress}" />
-        </DockPanel>
+        <TextBox md:HintAssist.HelperText="{StaticResource host_address}"
+                 Text="{Binding Path=ServerEdit.HostAddress}" />
 
         <!-- port -->
-        <DockPanel>
-            <md:PackIcon DockPanel.Dock="Left"
-                         Kind="Passport" />
-            <TextBox DockPanel.Dock="Right"
-                     md:HintAssist.HelperText="{StaticResource host_port}"
-                     Text="{Binding Path=ServerEdit.HostPort}" />
-        </DockPanel>
+        <TextBox md:HintAssist.HelperText="{StaticResource host_port}"
+                 Text="{Binding Path=ServerEdit.HostPort}" />
 
         <!-- password -->
-        <DockPanel>
-            <md:PackIcon DockPanel.Dock="Left"
-                         Kind="TextboxPassword" />
-            <TextBox DockPanel.Dock="Right"
-                     md:HintAssist.HelperText="{StaticResource _password}"
-                     Text="{Binding Path=ServerEdit.Password}" />
-        </DockPanel>
+        <TextBox md:HintAssist.HelperText="{StaticResource _password}"
+                 Text="{Binding Path=ServerEdit.Password}" />
 
         <!-- encrypt -->
-        <DockPanel>
-            <md:PackIcon DockPanel.Dock="Left"
-                         Kind="Security" />
-            <ComboBox DockPanel.Dock="Right"
-                      md:HintAssist.HelperText="{StaticResource dialog_shadowsocks_encrypt}"
-                      ItemsSource="{Binding Path=ServerEdit.Ciphers}"
-                      SelectedItem="{Binding Path=ServerEdit.Encrypt}" />
-        </DockPanel>
+        <ComboBox md:HintAssist.HelperText="{StaticResource dialog_shadowsocks_encrypt}"
+                  ItemsSource="{Binding Path=ServerEdit.Ciphers}"
+                  SelectedItem="{Binding Path=ServerEdit.Encrypt}" />
 
         <!-- sip003 plugin -->
         <CheckBox Content="{StaticResource dialog_shadowsocks_enable_sip003}"

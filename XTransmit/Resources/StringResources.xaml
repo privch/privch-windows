@@ -52,7 +52,7 @@
     <system:String x:Key="_tls">TLS</system:String>
 
     <system:String x:Key="host_address">Host Address</system:String>
-    <system:String x:Key="host_port">Port</system:String>
+    <system:String x:Key="host_port">Host Port</system:String>
     <system:String x:Key="invalid_ip">Invalid IP Address</system:String>
     <system:String x:Key="invalid_port">Invalid Port Number</system:String>
     <system:String x:Key="response_time">Response Time</system:String>

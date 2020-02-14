@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,37 +12,30 @@ namespace XTransmit.ViewModel
 {
     public class ServerConfigVModel : BaseViewModel
     {
-        public List<ItemView> ServerInfo { get; private set; }
-
-        public UserControl ContentDisplay { get; private set; }
+        #region Properties
+        public BaseServer ServerBase { get; }
+        public UserControl ContentDisplay { get; }
 
         public bool IsProcessing
         {
-            get => processing_fetch_info || processing_check_ping;
+            get => processing_check_ping;
         }
+        #endregion
 
-        private readonly BaseServer serverBase;
+
         private readonly Action<bool> actionComplete;
 
         // status. also use to cancel task
-        private volatile bool processing_fetch_info = false;
         private volatile bool processing_check_ping = false;
 
         // language
         private readonly string promptTitle;
-
-        private static readonly string sr_modified = (string)Application.Current.FindResource("_modified");
-        private static readonly string sr_respond_time = (string)Application.Current.FindResource("response_time");
-        private static readonly string sr_ping = (string)Application.Current.FindResource("_ping");
-
-        private static readonly string sr_not_availabe = (string)Application.Current.FindResource("not_availabe");
         private static readonly string sr_invalid_ip = (string)Application.Current.FindResource("invalid_ip");
         private static readonly string sr_invalid_port = (string)Application.Current.FindResource("invalid_port");
 
         public ServerConfigVModel(BaseServer server, Action<bool> actionComplete)
         {
-            serverBase = server;
-            ServerInfo = UpdateServerInfo();
+            ServerBase = server;
 
             if (server is Model.SS.Shadowsocks)
             {
@@ -64,52 +55,9 @@ namespace XTransmit.ViewModel
             this.actionComplete = actionComplete;
         }
 
-        private List<ItemView> UpdateServerInfo()
-        {
-            // a bit overhead
-            return new List<ItemView>()
-            {
-                new ItemView{Label = sr_modified, Text = serverBase.Modified},
-                new ItemView{Label = sr_respond_time, Text = serverBase.ResponseTime},
-                new ItemView{Label = sr_ping, Text = serverBase.PingDelay.ToString(CultureInfo.InvariantCulture)},
-
-                new ItemView{Label = "Country", Text = serverBase.IPInfo?.Country ?? sr_not_availabe},
-                new ItemView{Label = "Region", Text = serverBase.IPInfo?.Region ?? sr_not_availabe},
-                new ItemView{Label = "City", Text = serverBase.IPInfo?.City ?? sr_not_availabe},
-                new ItemView{Label = "Location", Text = serverBase.IPInfo?.Location ?? sr_not_availabe},
-                new ItemView{Label = "Organization", Text = serverBase.IPInfo?.Organization ?? sr_not_availabe},
-                new ItemView{Label = "Postal", Text = serverBase.IPInfo?.Postal ?? sr_not_availabe},
-                new ItemView{Label = "Hostname", Text = serverBase.IPInfo?.Hostname ?? sr_not_availabe},
-                new ItemView{Label = "Timezone", Text = serverBase.IPInfo?.Timezone ?? sr_not_availabe},
-            };
-        }
-
 
         /** Commands ======================================================================================================
          */
-        // fetch ipinfo
-        public RelayCommand CommandFetchInfo => new RelayCommand(FetchServerInfo, CanFetchInfo);
-        // TODO - Next
-        private bool CanFetchInfo(object parameter) => !processing_fetch_info && serverBase is Model.SS.Shadowsocks;
-        private async void FetchServerInfo(object parameter)
-        {
-            processing_fetch_info = true;
-            OnPropertyChanged(nameof(IsProcessing));
-
-            await Task.Run(() =>
-            {
-                serverBase.UpdateIPInfo(true);
-            }).ConfigureAwait(true);
-
-            // update the data to the view
-            ServerInfo = UpdateServerInfo();
-            OnPropertyChanged(nameof(ServerInfo));
-
-            processing_fetch_info = false;
-            OnPropertyChanged(nameof(IsProcessing));
-            CommandManager.InvalidateRequerySuggested();
-        }
-
         // check ping 
         public RelayCommand CommandCheckPing => new RelayCommand(CheckPing, CanCheckPing);
         private bool CanCheckPing(object parameter) => !processing_check_ping;
@@ -120,12 +68,8 @@ namespace XTransmit.ViewModel
 
             await Task.Run(() =>
             {
-                serverBase.UpdatePingDelay();
+                ServerBase.UpdatePingDelay();
             }).ConfigureAwait(true);
-
-            // update the data to the view
-            ServerInfo = UpdateServerInfo();
-            OnPropertyChanged(nameof(ServerInfo));
 
             processing_check_ping = false;
             OnPropertyChanged(nameof(IsProcessing));
@@ -141,9 +85,9 @@ namespace XTransmit.ViewModel
 
             /** check values
              */
-            if (serverBase is Model.SS.Shadowsocks)
+            if (ServerBase is Model.SS.Shadowsocks)
             {
-                Match matchIP = Regex.Match(serverBase.HostAddress, RegexHelper.IPv4AddressRegex);
+                Match matchIP = Regex.Match(ServerBase.HostAddress, RegexHelper.IPv4AddressRegex);
                 if (!matchIP.Success)
                 {
                     new View.DialogPrompt(promptTitle, sr_invalid_ip).ShowDialog();
@@ -151,15 +95,15 @@ namespace XTransmit.ViewModel
                 }
             }
 
-            if (serverBase.HostPort < 1 || serverBase.HostPort > 65535)
+            if (ServerBase.HostPort < 1 || ServerBase.HostPort > 65535)
             {
                 new View.DialogPrompt(promptTitle, sr_invalid_port).ShowDialog();
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(serverBase.FriendlyName))
+            if (string.IsNullOrWhiteSpace(ServerBase.FriendlyName))
             {
-                serverBase.SetFriendlyNameDefault();
+                ServerBase.SetFriendlyNameDefault();
             }
 
             actionComplete?.Invoke(true);
@@ -170,11 +114,10 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandCloseCancel => new RelayCommand(CloseCancel);
         private void CloseCancel(object parameter)
         {
-            if (parameter is Window window)
-            {
-                actionComplete?.Invoke(false);
-                window.Close();
-            }
+            Window window = (Window)parameter;
+
+            actionComplete?.Invoke(false);
+            window.Close();
         }
     }
 }

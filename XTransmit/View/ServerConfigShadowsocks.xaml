@@ -19,7 +19,7 @@
             </Style>
 
             <Style TargetType="TextBox"
-                   BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+                   BasedOn="{StaticResource MaterialDesignTextBoxBase}">
                 <Setter Property="VerticalAlignment"
                         Value="Center" />
                 <Setter Property="Margin"
@@ -48,7 +48,7 @@
             <md:PackIcon DockPanel.Dock="Left"
                          Kind="Web" />
             <TextBox DockPanel.Dock="Right"
-                     md:HintAssist.Hint="{StaticResource dialog_server_friendly_name}"
+                     md:HintAssist.HelperText="{StaticResource dialog_server_friendly_name}"
                      Text="{Binding Path=ServerEdit.FriendlyName}" />
         </DockPanel>
 
@@ -57,7 +57,7 @@
             <md:PackIcon DockPanel.Dock="Left"
                          Kind="IpNetwork" />
             <TextBox DockPanel.Dock="Right"
-                     md:HintAssist.Hint="{StaticResource host_address}"
+                     md:HintAssist.HelperText="{StaticResource host_address}"
                      Text="{Binding Path=ServerEdit.HostAddress}" />
         </DockPanel>
 
@@ -66,7 +66,7 @@
             <md:PackIcon DockPanel.Dock="Left"
                          Kind="Passport" />
             <TextBox DockPanel.Dock="Right"
-                     md:HintAssist.Hint="{StaticResource host_port}"
+                     md:HintAssist.HelperText="{StaticResource host_port}"
                      Text="{Binding Path=ServerEdit.HostPort}" />
         </DockPanel>
 
@@ -75,7 +75,7 @@
             <md:PackIcon DockPanel.Dock="Left"
                          Kind="TextboxPassword" />
             <TextBox DockPanel.Dock="Right"
-                     md:HintAssist.Hint="{StaticResource _password}"
+                     md:HintAssist.HelperText="{StaticResource _password}"
                      Text="{Binding Path=ServerEdit.Password}" />
         </DockPanel>
 
@@ -84,18 +84,9 @@
             <md:PackIcon DockPanel.Dock="Left"
                          Kind="Security" />
             <ComboBox DockPanel.Dock="Right"
-                      md:HintAssist.Hint="{StaticResource dialog_shadowsocks_encrypt}"
+                      md:HintAssist.HelperText="{StaticResource dialog_shadowsocks_encrypt}"
                       ItemsSource="{Binding Path=ServerEdit.Ciphers}"
                       SelectedItem="{Binding Path=ServerEdit.Encrypt}" />
-        </DockPanel>
-
-        <!-- remarks -->
-        <DockPanel>
-            <md:PackIcon DockPanel.Dock="Left"
-                         Kind="NoteText" />
-            <TextBox DockPanel.Dock="Right"
-                     md:HintAssist.Hint="{StaticResource _remarks}"
-                     Text="{Binding Path=ServerEdit.Remarks}" />
         </DockPanel>
 
         <!-- sip003 plugin -->
@@ -114,10 +105,10 @@
                 </Style>
             </StackPanel.Style>
             <!-- plugin name -->
-            <TextBox md:HintAssist.Hint="{StaticResource dialog_shadowsocks_plugin_name}"
+            <TextBox md:HintAssist.HelperText="{StaticResource dialog_shadowsocks_plugin_name}"
                      Text="{Binding Path=ServerEdit.PluginName}" />
             <!-- plugin option -->
-            <TextBox md:HintAssist.Hint="{StaticResource dialog_shadowsocks_plugin_option}"
+            <TextBox md:HintAssist.HelperText="{StaticResource dialog_shadowsocks_plugin_option}"
                      Text="{Binding Path=ServerEdit.PluginOption}" />
         </StackPanel>
     </StackPanel>

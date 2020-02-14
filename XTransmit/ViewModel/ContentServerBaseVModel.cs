@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -8,7 +7,6 @@ using System.Windows;
 using System.Windows.Input;
 using XTransmit.Control;
 using XTransmit.Model;
-using XTransmit.View;
 
 namespace XTransmit.ViewModel.Element
 {
@@ -17,127 +15,10 @@ namespace XTransmit.ViewModel.Element
         protected IEnumerable<BaseServer> Servers;
 
         // status, also use to cancel task
-        protected volatile bool processing_fetch_info = false;
         protected volatile bool processing_check_ping = false;
 
         // language
-        private static readonly string sr_yes = (string)Application.Current.FindResource("_yes");
-        private static readonly string sr_no = (string)Application.Current.FindResource("_no");
-        private static readonly string sr_cancel = (string)Application.Current.FindResource("_cancel");
-
-        private static readonly string sr_task_fetch_info = (string)Application.Current.FindResource("task_fetch_info");
         private static readonly string sr_task_ping_server = (string)Application.Current.FindResource("task_ping_server");
-
-        private static readonly string sr_fetch_ask_focus_title = (string)Application.Current.FindResource("server_fetch_info");
-        private static readonly string sr_fetch_ask_focus_message = (string)Application.Current.FindResource("server_fetch_ask_force");
-
-
-        public bool CanEditList(object parameter)
-        {
-            return !processing_fetch_info && !processing_check_ping;
-        }
-
-        #region Command-FetchInfo
-        // fetch ip information for all servers
-        public RelayCommand CommandFetchInfoAll => new RelayCommand(FetchInfoAll, CanFetchInfoAll);
-
-        private bool CanFetchInfoAll(object parameter) => !processing_fetch_info;
-
-        private async void FetchInfoAll(object parameter)
-        {
-            // ask if force mode
-            bool? force = null;
-            Dictionary<string, Action> actions = new Dictionary<string, Action>
-            {
-                { sr_yes, () => { force = false; } },
-                { sr_no, () => { force = true; } },
-                { sr_cancel, null },
-            };
-            DialogAction dialog = new DialogAction(sr_fetch_ask_focus_title, sr_fetch_ask_focus_message, actions);
-            dialog.ShowDialog();
-            if (force == null)
-            {
-                return;
-            }
-
-            // add task
-            processing_fetch_info = true;
-            TaskView task = new TaskView
-            {
-                Name = sr_task_fetch_info,
-                StopAction = () => { processing_fetch_info = false; }
-            };
-            InterfaceCtrl.AddHomeTask(task);
-
-            // run
-            await Task.Run(() =>
-            {
-                IEnumerator<BaseServer> enumerator = Servers.GetEnumerator();
-                int count = Servers.Count();
-                int complete = 0;
-
-                enumerator.Reset();
-                while (enumerator.MoveNext())
-                {
-                    // cancel task
-                    if (processing_fetch_info == false)
-                    {
-                        break;
-                    }
-
-                    enumerator.Current.UpdateIPInfo((bool)force);
-                    task.Progress100 = ++complete * 100 / count;
-                }
-
-                enumerator.Dispose();
-            }).ConfigureAwait(true);
-
-            // also update interface
-            InterfaceCtrl.UpdateHomeTransmitStatue();
-
-            // done
-            processing_fetch_info = false;
-            InterfaceCtrl.RemoveHomeTask(task);
-            CommandManager.InvalidateRequerySuggested();
-        }
-
-        // fetch ip information for selected servers
-        public RelayCommand CommandFetchInfoSelected => new RelayCommand(FetchInfoSelected, CanFetchInfoSelected);
-
-        private bool CanFetchInfoSelected(object parameter)
-        {
-            return processing_fetch_info == false && parameter is BaseServer;
-        }
-
-        private async void FetchInfoSelected(object parameter)
-        {
-            BaseServer server = (BaseServer)parameter;
-
-            // add task
-            processing_fetch_info = true;
-            TaskView task = new TaskView
-            {
-                Name = sr_task_fetch_info,
-                StopAction = null
-            };
-            InterfaceCtrl.AddHomeTask(task);
-
-            // run
-            await Task.Run(() =>
-            {
-                server.UpdateIPInfo(true); // force
-                task.Progress100 = 100;
-            }).ConfigureAwait(true);
-
-            // also update interface
-            InterfaceCtrl.UpdateHomeTransmitStatue();
-
-            // done
-            processing_fetch_info = false;
-            InterfaceCtrl.RemoveHomeTask(task);
-            CommandManager.InvalidateRequerySuggested();
-        }
-        #endregion
 
 
         #region Command-CheckPing

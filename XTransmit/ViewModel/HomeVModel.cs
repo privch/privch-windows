@@ -55,7 +55,7 @@ namespace XTransmit.ViewModel
         private static readonly string sr_task_running = (string)Application.Current.FindResource("home_x_task_running");
         private static readonly string sr_cant_add_server = (string)Application.Current.FindResource("home_cant_add_server");
 
-        private static readonly string sr_response_time = (string)Application.Current.FindResource("response_time"); 
+        private static readonly string sr_response_time = (string)Application.Current.FindResource("response_time");
         private static readonly string sr_task_check_response_time = (string)Application.Current.FindResource("task_check_response_time");
 
         public HomeVModel()
@@ -193,7 +193,7 @@ namespace XTransmit.ViewModel
 
         private bool CanCheckResponseRemote(object parameter)
         {
-            return !processing_check_response;
+            return !processing_check_response && SettingManager.RemoteServer != null;
         }
 
         private async void CheckResponseRemote(object parameter)

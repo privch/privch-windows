@@ -11,6 +11,9 @@ using XTransmit.ViewModel.Element;
 
 namespace XTransmit.ViewModel
 {
+    /** NOTE
+     * V2Ray have not ip information
+     */
     class ContentV2RayVModel : BaseServerVModel
     {
         public ObservableCollection<V2RayVMess> V2RayOC { get; private set; }
@@ -31,9 +34,9 @@ namespace XTransmit.ViewModel
         ~ContentV2RayVModel()
         {
             // cancel tasks
-            processing_fetch_info = false;
             processing_check_ping = false;
 
+            // data changed ?
             SaveServer(null);
         }
 
@@ -96,6 +99,11 @@ namespace XTransmit.ViewModel
             }
 
             return false;
+        }
+
+        public bool CanEditList(object parameter)
+        {
+            return !processing_check_ping;
         }
 
         #region Commands

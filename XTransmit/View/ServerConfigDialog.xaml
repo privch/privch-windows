@@ -16,84 +16,58 @@
     </Window.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Server, Left side  -->
-        <ContentControl Grid.Column="0"
-                        Grid.Row="0"
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="260" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Server, Left side  -->
+            <ContentControl Grid.Column="0"
+                            Margin="15, 10"
+                            Content="{Binding ContentDisplay}" />
+
+            <!-- info, Right side -->
+            <StackPanel Grid.Column="1"
                         Margin="15, 10"
-                        Content="{Binding ContentDisplay}" />
+                        Orientation="Vertical"
+                        HorizontalAlignment="Stretch">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBox"
+                           BasedOn="{StaticResource MaterialDesignTextBoxBase}">
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                        <Setter Property="Margin"
+                                Value="0, 10" />
+                        <Setter Property="IsReadOnly"
+                                Value="True" />
+                    </Style>
+                </StackPanel.Resources>
 
-        <!-- Server info, Right side =========================================================================== -->
-        <ItemsControl Grid.Column="1"
-                      Grid.Row="0"
-                      Margin="15, 10"
-                      ItemsSource="{Binding ServerInfo}">
-            <ItemsControl.Resources>
-                <Style x:Key="TextBlockRight"
-                       TargetType="TextBlock"
-                       BasedOn="{StaticResource MaterialDesignCaptionTextBlock}">
-                    <Setter Property="VerticalAlignment"
-                            Value="Center" />
-                    <Setter Property="Margin"
-                            Value="0, 10" />
-                </Style>
+                <!-- remarks -->
+                <TextBox IsReadOnly="False"
+                         md:HintAssist.HelperText="{StaticResource _remarks}"
+                         Text="{Binding Path=ServerBase.Remarks}" />
 
-                <Style x:Key="TextBoxRight"
-                       TargetType="TextBox"
-                       BasedOn="{StaticResource MaterialDesignTextBoxBase}">
-                    <Setter Property="VerticalAlignment"
-                            Value="Center" />
-                    <Setter Property="Margin"
-                            Value="10, 10, 0, 10" />
-                    <Setter Property="IsReadOnly"
-                            Value="True" />
-                </Style>
-            </ItemsControl.Resources>
+                <!-- info -->
+                <TextBox md:HintAssist.HelperText="{StaticResource _modified}"
+                         Text="{Binding Path=ServerBase.Modified}" />
 
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"
-                                              SharedSizeGroup="x_info_c1" />
-                            <ColumnDefinition Width="Auto"
-                                              SharedSizeGroup="x_info_c2" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
-                                   Opacity=".7"
-                                   Style="{StaticResource TextBlockRight}"
-                                   Text="{Binding Path=Label}" />
+                <TextBox md:HintAssist.HelperText="{StaticResource response_time}"
+                         Text="{Binding Path=ServerBase.ResponseTime}" />
 
-                        <TextBox Grid.Column="1"
-                                 Opacity=".7"
-                                 MaxWidth="220"
-                                 TextWrapping="Wrap"
-                                 Style="{StaticResource TextBoxRight}"
-                                 Text="{Binding Path=Text}" />
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical"
-                                Grid.IsSharedSizeScope="True"
-                                HorizontalAlignment="Stretch" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
+                <TextBox md:HintAssist.HelperText="{StaticResource _ping}"
+                         Text="{Binding Path=ServerBase.PingDelay}" />
+            </StackPanel>
+        </Grid>
 
         <!-- Buttons, Bottom ============================================================================== -->
         <StackPanel Grid.Row="1"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
                     Margin="10, 15, 10, 5"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
@@ -110,15 +84,6 @@
                             Value="10, 0" />
                 </Style>
             </StackPanel.Resources>
-
-            <!-- actions -->
-            <Button ToolTip="{StaticResource server_fetch_info}"
-                    Content="{md:PackIcon Kind=AddLocation}"
-                    Command="{Binding Path=CommandFetchInfo}" />
-
-            <Button ToolTip="{StaticResource server_check_ping}"
-                    Content="{md:PackIcon Kind=ChartAreaspline}"
-                    Command="{Binding Path=CommandCheckPing}" />
 
             <ProgressBar Margin="10, 0"
                          Value="75"
@@ -137,12 +102,18 @@
                 </ProgressBar.Style>
             </ProgressBar>
 
-            <!-- confirm -->
+            <!-- ping -->
+            <Button ToolTip="{StaticResource server_check_ping}"
+                    Content="{md:PackIcon Kind=ChartAreaspline}"
+                    Command="{Binding Path=CommandCheckPing}" />
+
+            <!-- ok -->
             <Button Style="{StaticResource ButtonConfirm}"
                     Content="{StaticResource _ok}"
                     Command="{Binding Path=CommandCloseOK}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
 
+            <!-- cancel -->
             <Button Style="{StaticResource ButtonConfirm}"
                     Content="{StaticResource _cancel}"
                     Command="{Binding Path=CommandCloseCancel}"

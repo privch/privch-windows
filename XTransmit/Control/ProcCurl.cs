@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using XTransmit.Utility;
 
 namespace XTransmit.Control
@@ -7,7 +6,8 @@ namespace XTransmit.Control
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class ProcCurl
     {
-        public static readonly string CurlExePath = $@"{App.DirectoryCurl}\{curl_exe_name}";
+        // can't use field here, App.DirectoryCurl may null when initialize
+        public static string CurlExePath => $@"{App.DirectoryCurl}\{curl_exe_name}";
 
         /** curl-win64-mingw 7.68.0
          */
@@ -23,27 +23,7 @@ namespace XTransmit.Control
 
         public static void KillRunning()
         {
-            // this list contains only this app's "curl" process
-            Process[] list = Process.GetProcessesByName(curl_exe_process);
-            if (list != null && list.Length > 0)
-            {
-                foreach (Process process in list)
-                {
-                    // kill app's curl-x process
-                    if (process.MainModule.FileName == CurlExePath)
-                    {
-                        try
-                        {
-                            //process.CloseMainWindow();
-                            process.Kill();
-                            process.WaitForExit();
-                        }
-                        catch { }
-                    }
-
-                    process.Dispose();
-                }
-            }
+            SystemUtil.KillProcess(curl_exe_process, CurlExePath);
         }
 
         public static bool Prepare()

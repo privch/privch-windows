@@ -16,8 +16,6 @@ namespace XTransmit
      * TODO - Auto search and add servers
      * TODO - Auto detect and remove invalid servers
      * TODO - Use Task instead BackgroundWorker
-     * TODO - git update-index --assume-unchanged/--no-assume-unchanged BINARY-FILES
-     * TODO - BaseProcCtrl Class
      * 
      * NOTE
      * System.Text.Json don't support System.Runtime.Serialization [DataContract], [DataMember]
@@ -108,7 +106,8 @@ namespace XTransmit
             // init directory
             Name = (string)Current.FindResource("app_name");
 
-            FileApplication = System.Reflection.Assembly.GetEntryAssembly().Location;
+            //FileApplication = System.Reflection.Assembly.GetEntryAssembly().Location;
+            FileApplication = System.Reflection.Assembly.GetExecutingAssembly().Location;
             DirectoryApplication = Path.GetDirectoryName(FileApplication);
 
             try

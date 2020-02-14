@@ -37,8 +37,8 @@
     }
   ],
 
-  // XTransmit generated outbounds.
-  "outbound": XTransmit-Outbounds,
+  // XTransmit generated outbound.
+  "outbound": XTransmit-Outbound,
     
   // Dns settings for domain resolution.
   "dns": {

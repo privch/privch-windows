@@ -16,7 +16,8 @@ namespace XTransmit.Control
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class ProcPrivoxy
     {
-        public static readonly string PathPrivoxyExe = $@"{App.DirectoryPrivoxy}\{privoxy_exe_name}";
+        // can't use field here
+        public static string PathPrivoxyExe => $@"{App.DirectoryPrivoxy}\{privoxy_exe_name}";
         private static Process process_privoxy = null;
 
         /** privoxy-windows 3.0.28
@@ -31,27 +32,7 @@ namespace XTransmit.Control
 
         public static void KillRunning()
         {
-            // list contains all "privoxy" process
-            Process[] list = Process.GetProcessesByName(privoxy_exe_process);
-            if (list != null && list.Length > 0)
-            {
-                foreach (Process process in list)
-                {
-                    // kill app's privoxy process
-                    if (process.MainModule.FileName == PathPrivoxyExe)
-                    {
-                        try
-                        {
-                            //process.CloseMainWindow();
-                            process.Kill();
-                            process.WaitForExit();
-                        }
-                        catch { }
-                    }
-
-                    process.Dispose();
-                }
-            }
+            SystemUtil.KillProcess(privoxy_exe_process, PathPrivoxyExe);
         }
 
         public static bool Prepare()

@@ -9,7 +9,8 @@ namespace XTransmit.Control
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class ProcSS
     {
-        private static readonly string SSExePath = $@"{App.DirectoryShadowsocks}\{ss_local_exe_name}";
+        // can't use field here
+        private static string SSExePath => $@"{App.DirectoryShadowsocks}\{ss_local_exe_name}";
 
         /** shadowsocks-libev 3.3.4
          */
@@ -37,27 +38,7 @@ namespace XTransmit.Control
 
         public static void KillRunning()
         {
-            // this list contains only this app's "ss" process
-            Process[] list = Process.GetProcessesByName(ss_local_exe_process);
-            if (list != null && list.Length > 0)
-            {
-                foreach (Process process in list)
-                {
-                    // kill app's ss-local-x process
-                    if (process.MainModule.FileName == SSExePath)
-                    {
-                        try
-                        {
-                            //process.CloseMainWindow();
-                            process.Kill();
-                            process.WaitForExit();
-                        }
-                        catch { }
-                    }
-
-                    process.Dispose();
-                }
-            }
+            SystemUtil.KillProcess(ss_local_exe_process, SSExePath);
         }
 
         public static bool Prepare()

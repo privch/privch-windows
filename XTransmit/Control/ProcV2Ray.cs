@@ -9,11 +9,12 @@ namespace XTransmit.Control
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     class ProcV2Ray
     {
-        /** v2ray-core 4.22.1
-         */
-        private static readonly string V2RayExePath = $@"{App.DirectoryV2Ray}\{v2ray_exe_name}";
+        // can't use field here
+        private static string V2RayExePath => $@"{App.DirectoryV2Ray}\{v2ray_exe_name}";
         private static Process process_v2ray = null;
 
+        /** v2ray-core 4.22.1
+         */
         private const string v2ctl_exe_name = "v2ctl.exe";
         private const string v2ctl_exe_md5 = "1446549EF5AC7BABEF3EDEF73E85E573";
 
@@ -23,29 +24,11 @@ namespace XTransmit.Control
 
         private const string v2ray_config_json_name = "v2ray-config.json";
         private const string config_listen_port = "PORT-LISTEN";
-        private const string config_outbounds = "XTransmit-Outbounds";
+        private const string config_outbound = "XTransmit-Outbound";
 
         public static void KillRunning()
         {
-            Process[] list = Process.GetProcessesByName(v2ray_exe_process);
-            if (list != null && list.Length > 0)
-            {
-                foreach (Process process in list)
-                {
-                    if (process.MainModule.FileName == V2RayExePath)
-                    {
-                        try
-                        {
-                            //process.CloseMainWindow();
-                            process.Kill();
-                            process.WaitForExit();
-                        }
-                        catch { }
-                    }
-
-                    process.Dispose();
-                }
-            }
+            SystemUtil.KillProcess(v2ray_exe_process, V2RayExePath);
         }
 
         public static bool Prepare()
@@ -89,7 +72,7 @@ namespace XTransmit.Control
 
             string outbound = V2RayVMess.ToJson(server);
             config_text = config_text.Replace(config_listen_port, listen.ToString(CultureInfo.InvariantCulture));
-            config_text = config_text.Replace(config_outbounds, outbound);
+            config_text = config_text.Replace(config_outbound, outbound);
 
             if (!FileUtil.WriteUTF8(config_path, config_text))
             {

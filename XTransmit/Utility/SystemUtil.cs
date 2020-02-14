@@ -1,12 +1,39 @@
 ﻿using IWshRuntimeLibrary;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace XTransmit.Utility
 {
     internal static class SystemUtil
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+        public static void KillProcess(string procName, string filePath)
+        {
+            // list contains all "privoxy" process
+            Process[] list = Process.GetProcessesByName(procName);
+            if (list != null && list.Length > 0)
+            {
+                foreach (Process process in list)
+                {
+                    // kill app's privoxy process
+                    if (process.MainModule.FileName == filePath)
+                    {
+                        try
+                        {
+                            process.Kill();
+                            process.WaitForExit();
+                        }
+                        catch { }
+                    }
+
+                    process.Dispose();
+                }
+            }
+        }
+
+        #region Shortcut
         // 33 ms
         public static void CheckOrCreateUserStartupShortcut()
         {
@@ -76,5 +103,6 @@ namespace XTransmit.Utility
 
             return string.Empty; // Not found
         }
+        #endregion
     }
 }

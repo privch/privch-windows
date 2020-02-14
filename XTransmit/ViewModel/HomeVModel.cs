@@ -226,6 +226,16 @@ namespace XTransmit.ViewModel
         }
         #endregion
 
+        public RelayCommand CommandStopTask => new RelayCommand(StopTask);
+        private void StopTask(object parameter)
+        {
+            if (parameter is string name)
+            {
+                TaskView taskView = TaskListOC.FirstOrDefault(task => task.Name == name);
+                taskView?.StopAction?.Invoke();
+            }
+        }
+
         public RelayCommand CommandSelectContent => new RelayCommand(SelectContent);
         private void SelectContent(object newTitle)
         {
@@ -240,16 +250,7 @@ namespace XTransmit.ViewModel
             }
         }
 
-        public RelayCommand CommandStopTask => new RelayCommand(StopTask);
-        private void StopTask(object parameter)
-        {
-            if (parameter is string name)
-            {
-                TaskView taskView = TaskListOC.FirstOrDefault(task => task.Name == name);
-                taskView?.StopAction?.Invoke();
-            }
-        }
-
+        #region Command-Menu
         // open the xcurl
         public RelayCommand CommandShowCurl => new RelayCommand(ShowCurl);
         private void ShowCurl(object parameter)
@@ -292,5 +293,6 @@ namespace XTransmit.ViewModel
         {
             App.CloseMainWindow();
         }
+        #endregion
     }
 }

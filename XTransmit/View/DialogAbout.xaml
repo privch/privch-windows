@@ -30,7 +30,7 @@
                    Width="100"
                    Height="100"
                    Stretch="Fill"
-                   Source="/Resources/Icon/XTransmit-On.ico"/>
+                   Source="/Properties/Icon/XTransmit-On.ico"/>
 
             <StackPanel Grid.Column="1"
                         VerticalAlignment="Center"

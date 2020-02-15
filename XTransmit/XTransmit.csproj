@@ -39,7 +39,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\Icon\XTransmit-On.ico</ApplicationIcon>
+    <ApplicationIcon>Properties\Icon\XTransmit-On.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -114,6 +114,10 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Page Include="Properties\String\StringResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Control\ProcPrivoxy.cs" />
@@ -238,10 +242,6 @@
     <Compile Include="View\TrayNotify\SystemTray.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Resources\StringResources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="View\ContentShadowsocks.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -310,25 +310,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Binary\curl\curl-ca-bundle.crt.gz" />
-    <None Include="Resources\Binary\curl\curl.exe.gz" />
-    <None Include="Resources\Binary\curl\libcurl-x64.dll.gz" />
-    <None Include="Resources\Binary\privoxy\privoxy.exe.gz" />
-    <None Include="Resources\Binary\shadowsocks\cygev-4.dll.gz" />
-    <None Include="Resources\Binary\shadowsocks\cyggcc_s-seh-1.dll.gz" />
-    <None Include="Resources\Binary\shadowsocks\cygmbedcrypto-3.dll.gz" />
-    <None Include="Resources\Binary\shadowsocks\cygpcre-1.dll.gz" />
-    <None Include="Resources\Binary\shadowsocks\cygsodium-23.dll.gz" />
-    <None Include="Resources\Binary\shadowsocks\cygwin1.dll.gz" />
-    <None Include="Resources\Binary\shadowsocks\ss-local.exe.gz" />
-    <None Include="Resources\Binary\privoxy\privoxy-config.txt" />
-    <None Include="Resources\Binary\v2ray\v2ctl.exe.gz" />
-    <None Include="Resources\Binary\v2ray\v2ray-config.txt" />
-    <None Include="Resources\Binary\v2ray\v2ray.exe.gz" />
-    <None Include="Resources\Icon\XTransmit-Off.ico" />
-    <Resource Include="Resources\Icon\XTransmit-On.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LiveCharts.Wpf">

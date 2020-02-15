@@ -3,10 +3,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net.NetworkInformation;
-using System.Text;
 using System.Windows;
 using XTransmit.Control;
-using XTransmit.Model.IPAddress;
 
 namespace XTransmit.Model
 {
@@ -99,8 +97,6 @@ namespace XTransmit.Model
                 OnPropertyChanged(nameof(PingDelay));
             }
         }
-
-        public IPInformation IPInfo { get; set; }
         #endregion
 
 
@@ -130,7 +126,6 @@ namespace XTransmit.Model
 
             friendlyName = string.Empty;
             modified = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-            IPInfo = null;
 
             listenPort = -1;
             responseTime = sr_not_checked;
@@ -157,51 +152,6 @@ namespace XTransmit.Model
         public void SetFriendlyNameDefault()
         {
             FriendlyName = string.IsNullOrWhiteSpace(Remarks) ? $"{HostAddress} - {HostPort}" : Remarks;
-        }
-
-        public void SetFriendNameByIPInfo()
-        {
-            if (IPInfo == null)
-            {
-                return;
-            }
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            if (!string.IsNullOrWhiteSpace(IPInfo.Country))
-            {
-                stringBuilder.Append(IPInfo.Country);
-            }
-
-            if (!string.IsNullOrWhiteSpace(IPInfo.Region))
-            {
-                stringBuilder.Append(" - " + IPInfo.Region);
-            }
-
-            if (!string.IsNullOrWhiteSpace(IPInfo.City))
-            {
-                stringBuilder.Append(" - " + IPInfo.City);
-            }
-
-            string friendlyName = stringBuilder.ToString();
-            if (!string.IsNullOrWhiteSpace(friendlyName))
-            {
-                if (friendlyName.StartsWith(" - ", StringComparison.Ordinal))
-                {
-                    friendlyName = friendlyName.Substring(3);
-                }
-
-                FriendlyName = friendlyName;
-            }
-        }
-
-        public void UpdateIPInfo(bool force)
-        {
-            if (IPInfo == null || force)
-            {
-                IPInfo = IPInformation.Fetch(HostAddress);
-                SetFriendNameByIPInfo();
-            }
         }
 
         // return seconds

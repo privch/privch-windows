@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using XTransmit.Utility;
@@ -112,7 +113,9 @@ namespace XTransmit.Model.V2Ray
 
         public V2RayVMess Copy()
         {
-            return (V2RayVMess)TextUtil.CopyBySerializer(this);
+            V2RayVMess server = (V2RayVMess)TextUtil.CopyBySerializer(this);
+            server.Modified = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            return server;
         }
 
         #region Import

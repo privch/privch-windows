@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using XTransmit.Model.IPAddress;
 using XTransmit.Utility;
 
 namespace XTransmit.Model.SS
@@ -79,7 +80,7 @@ namespace XTransmit.Model.SS
                 OnPropertyChanged(nameof(PluginOption));
             }
         }
-        #endregion 
+        #endregion
 
         // values 
         private string encrypt;
@@ -88,6 +89,8 @@ namespace XTransmit.Model.SS
         private bool pluginEnabled;
         private string pluginName;
         private string pluginOption;
+
+        private IPInformation IPInfo { get; set; }
 
         // call after the SettingManager.Configuration has been loaded
         public Shadowsocks()
@@ -98,11 +101,60 @@ namespace XTransmit.Model.SS
             pluginEnabled = false;
             pluginName = string.Empty;
             pluginOption = string.Empty;
+
+            IPInfo = null;
         }
 
         public Shadowsocks Copy()
         {
-            return (Shadowsocks)TextUtil.CopyBySerializer(this);
+            Shadowsocks shadowsocks = (Shadowsocks)TextUtil.CopyBySerializer(this);
+            shadowsocks.Modified = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            return shadowsocks;
+        }
+
+        public void SetFriendNameByIPInfo()
+        {
+            if (IPInfo == null)
+            {
+                return;
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            if (!string.IsNullOrWhiteSpace(IPInfo.Country))
+            {
+                stringBuilder.Append(IPInfo.Country);
+            }
+
+            if (!string.IsNullOrWhiteSpace(IPInfo.Region))
+            {
+                stringBuilder.Append(" - " + IPInfo.Region);
+            }
+
+            if (!string.IsNullOrWhiteSpace(IPInfo.City))
+            {
+                stringBuilder.Append(" - " + IPInfo.City);
+            }
+
+            string friendlyName = stringBuilder.ToString();
+            if (!string.IsNullOrWhiteSpace(friendlyName))
+            {
+                if (friendlyName.StartsWith(" - ", StringComparison.Ordinal))
+                {
+                    friendlyName = friendlyName.Substring(3);
+                }
+
+                FriendlyName = friendlyName;
+            }
+        }
+
+        public void UpdateIPInfo(bool force)
+        {
+            if (IPInfo == null || force)
+            {
+                IPInfo = IPInformation.Fetch(HostAddress);
+                SetFriendNameByIPInfo();
+            }
         }
 
         #region Import

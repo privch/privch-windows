@@ -375,12 +375,7 @@ namespace XTransmit.ViewModel
             // run
             await Task.Run(() =>
             {
-                IEnumerator<BaseServer> enumerator = Servers.GetEnumerator();
-                int count = Servers.Count();
-                int complete = 0;
-
-                enumerator.Reset();
-                while (enumerator.MoveNext())
+                for (int i = 0; i < ShadowsocksOC.Count; ++i)
                 {
                     // cancel task
                     if (processing_fetch_info == false)
@@ -388,11 +383,9 @@ namespace XTransmit.ViewModel
                         break;
                     }
 
-                    enumerator.Current.UpdateIPInfo((bool)force);
-                    task.Progress100 = ++complete * 100 / count;
+                    ShadowsocksOC[i].UpdateIPInfo((bool)force);
+                    task.Progress100 = ++i * 100 / ShadowsocksOC.Count;
                 }
-
-                enumerator.Dispose();
             }).ConfigureAwait(true);
 
             // also update interface
@@ -409,12 +402,12 @@ namespace XTransmit.ViewModel
 
         private bool CanFetchInfoSelected(object parameter)
         {
-            return processing_fetch_info == false && parameter is BaseServer;
+            return processing_fetch_info == false && parameter is Shadowsocks;
         }
 
         private async void FetchInfoSelected(object parameter)
         {
-            BaseServer server = (BaseServer)parameter;
+            Shadowsocks server = (Shadowsocks)parameter;
 
             // add task
             processing_fetch_info = true;

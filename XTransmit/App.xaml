@@ -14,7 +14,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Purple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <!-- Language -->
-                <ResourceDictionary Source="Resources/StringResources.xaml" />
+                <ResourceDictionary Source="Properties/Language/English.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Window -->

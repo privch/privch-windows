@@ -261,16 +261,6 @@ namespace XTransmit.ViewModel
             contentShadowsocks.CommandSaveServer.Execute(null);
 
             // show curl
-            View.WindowCurl windowCurl = Application.Current.Windows.OfType<View.WindowCurl>().FirstOrDefault();
-            if (windowCurl == null)
-            {
-                windowCurl = new View.WindowCurl();
-                windowCurl.Show();
-            }
-            else
-            {
-                windowCurl.Activate();
-            }
         }
 
         // show setting

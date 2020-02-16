@@ -137,39 +137,6 @@
     <system:String x:Key="dialog_shadowsocks_plugin_name">Plugin Name</system:String>
     <system:String x:Key="dialog_shadowsocks_plugin_option">Plugin Option / Parameter</system:String>
 
-    <!-- window curl content, curl play -->
-    <system:String x:Key="curl_title">X-CURL</system:String>
-    <system:String x:Key="curl_no_data">No data available now</system:String>
-    <system:String x:Key="curl_close_play_running">It seems that some tasks are still running, close window anyway?</system:String>
-    <system:String x:Key="curl_profile_title">Profile Title</system:String>
-    <system:String x:Key="curl_play_times">Play Times</system:String>
-    <system:String x:Key="curl_read_response">Read Response</system:String>
-    <system:String x:Key="curl_delay_format">Delay. Fixed, Random (Min, Max)</system:String>
-    <system:String x:Key="curl_site_information">Site Information</system:String>
-    <system:String x:Key="curl_website_url">Website URL</system:String>
-    <system:String x:Key="curl_fake_client_error">Unable to fack Client</system:String>
-    <system:String x:Key="curl_fake_ip_error">Unable to fake IP</system:String>
-    <system:String x:Key="curl_fake_ua_error">Unable to fake UA</system:String>
-    <system:String x:Key="curl_copy_argument_to_clipboard">Copy Argument to clipboard</system:String>
-    <system:String x:Key="curl_copy_response_to_clipboard">Copy Response to clipboard</system:String>
-
-    <!-- window user-agent -->
-    <system:String x:Key="ua_title">UserAgent</system:String>
-    <system:String x:Key="ua_no_data">No data available now</system:String>
-    <system:String x:Key="ua_user_agent">User-Agent</system:String>
-    <system:String x:Key="ua_copy_to_clipboard">Copy UserAgent to clipboard</system:String>
-    <system:String x:Key="ua_ask_save_changes">User-Agent data has been changed, Save?</system:String>
-
-    <!-- window ip address -->
-    <system:String x:Key="ip_title">IP Address</system:String>
-    <system:String x:Key="ip_no_data">No data available now</system:String>
-    <system:String x:Key="ip_new_table_form_file">New table from file ...</system:String>
-    <system:String x:Key="ip_import_data_form_file">Import data from file ...</system:String>
-    <system:String x:Key="ip_copy_table_name">Copy TableName to clipboard</system:String>
-    <system:String x:Key="ip_delete_selected_table">Delete selected table</system:String>
-    <system:String x:Key="ip_stop_ping">Click to stop</system:String>
-    <system:String x:Key="ip_ask_save_data">IP data has been changed, Save?</system:String>
-
     <!-- system tray -->
     <system:String x:Key="tray_enable_transmit">Enable XTransmit</system:String>
 </ResourceDictionary>

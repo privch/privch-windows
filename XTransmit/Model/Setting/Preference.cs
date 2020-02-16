@@ -22,11 +22,6 @@ namespace XTransmit.Model.Setting
         public Placement WindowAbout { get; set; }
         public Placement WindowServerConfig { get; set; }
 
-        public Placement WindowCurl { get; set; }
-        public Placement WindowCurlRunner { get; set; }
-        public Placement WindowIPAddress { get; set; }
-        public Placement WindowUserAgent { get; set; }
-
         /** construct to default values.
          */
         public Preference()
@@ -70,38 +65,6 @@ namespace XTransmit.Model.Setting
                 Y = sh * 0.2,
                 W = 0, // SizeToContent
                 H = 0,
-            };
-
-            WindowCurl = new Placement
-            {
-                X = sw * 0.2,
-                Y = sh * 0.2,
-                W = sw * 0.6,
-                H = sh * 0.6,
-            };
-
-            WindowCurlRunner = new Placement
-            {
-                X = sw * 0.2,
-                Y = sh * 0.2,
-                W = sw * 0.6,
-                H = sh * 0.6,
-            };
-
-            WindowIPAddress = new Placement
-            {
-                X = sw * 0.2,
-                Y = sh * 0.2,
-                W = sw * 0.6,
-                H = sh * 0.6,
-            };
-
-            WindowUserAgent = new Placement
-            {
-                X = sw * 0.2,
-                Y = sh * 0.2,
-                W = sw * 0.6,
-                H = sh * 0.6,
             };
         }
     }

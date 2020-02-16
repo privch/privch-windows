@@ -1,5 +1,4 @@
 ﻿using MaterialDesignThemes.Wpf;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
@@ -69,24 +68,6 @@ namespace XTransmit
 
         /** Application ===============================================================================
          */
-        private bool IsProcessExist()
-        {
-            Process[] list = Process.GetProcessesByName("XTransmit");
-            if (list != null && list.Length > 1)
-            {
-                foreach (Process process in list)
-                {
-                    process.Dispose();
-                }
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -97,7 +78,7 @@ namespace XTransmit
             StartupUri = new System.Uri("View/WindowShutdown.xaml", System.UriKind.Relative);
 
             // single instance
-            if (IsProcessExist())
+            if (SystemUtil.IsProcessExist("XTransmit"))
             {
                 Shutdown();
                 return;
@@ -112,6 +93,7 @@ namespace XTransmit
 
             try
             {
+                Directory.CreateDirectory($@"{DirectoryApplication}\{dirBin}");
                 Directory.CreateDirectory($@"{DirectoryApplication}\{dirData}");
             }
             catch

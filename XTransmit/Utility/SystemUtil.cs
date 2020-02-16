@@ -8,6 +8,24 @@ namespace XTransmit.Utility
 {
     internal static class SystemUtil
     {
+        public static bool IsProcessExist(string procName)
+        {
+            Process[] list = Process.GetProcessesByName(procName);
+            if (list != null && list.Length > 1)
+            {
+                foreach (Process process in list)
+                {
+                    process.Dispose();
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static void KillProcess(string procName, string filePath)
         {

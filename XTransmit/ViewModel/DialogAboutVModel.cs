@@ -75,12 +75,6 @@ namespace XTransmit.ViewModel
                     Label = "V2Ray", Text = "MIT",
                     Uri = "https://raw.githubusercontent.com/v2ray/v2ray-core/master/LICENSE"
                 },
-
-                new ItemView
-                {
-                    Label = "curl", Text = "LICENSE",
-                    Uri = "https://curl.haxx.se/docs/copyright.html"
-                },
             };
         }
 

@@ -16,17 +16,6 @@ function CompressAndDelete {
 }
 
 
-#curl 7.68.0
-$path = "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\curl"
-$files = 
-    "curl.exe",
-    "curl-ca-bundle.crt",
-    "libcurl-x64.dll",
-    "cygpcre-1.dll"
-    
-CompressAndDelete -path $path -files $files
-
-
 #v2ray 4.22.1
 $path = "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\v2ray"
 $files = 

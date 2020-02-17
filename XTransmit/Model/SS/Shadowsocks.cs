@@ -148,11 +148,11 @@ namespace XTransmit.Model.SS
             }
         }
 
-        public void UpdateIPInfo(bool force)
+        public async System.Threading.Tasks.Task UpdateIPInfo(bool force)
         {
             if (IPInfo == null || force)
             {
-                IPInfo = IPInformation.Fetch(HostAddress);
+                IPInfo = await IPInformation.Fetch(HostAddress).ConfigureAwait(true);
                 SetFriendNameByIPInfo();
             }
         }

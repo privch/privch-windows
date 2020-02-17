@@ -82,7 +82,7 @@ namespace XTransmit.Control
 
         public static Process Execute(Shadowsocks server, int listen)
         {
-            int timeout = SettingManager.Configuration.SSTimeout;
+            int timeout = SettingManager.Configuration.TimeoutShadowsocks;
             string arguments = $"-s {server.HostAddress} -p {server.HostPort} -l {listen} -k {server.Password} -m {server.Encrypt} -t {timeout}";
 
             Process process = null;

@@ -118,12 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="curl_ca_bundle_crt_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Binary\curl\curl-ca-bundle.crt.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="curl_exe_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Binary\curl\curl.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="cygev_4_dll_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Binary\shadowsocks\cygev-4.dll.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -141,9 +135,6 @@
   </data>
   <data name="cygwin1_dll_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Binary\shadowsocks\cygwin1.dll.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="libcurl_x64_dll_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Binary\curl\libcurl-x64.dll.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="privoxy_config_txt" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Binary\privoxy\privoxy-config.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>

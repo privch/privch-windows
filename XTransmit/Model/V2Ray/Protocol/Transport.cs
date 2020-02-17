@@ -35,7 +35,7 @@ namespace XTransmit.Model.V2Ray.Protocol
 
             public WebSocket wsSettings { get; set; } = null;
 
-            public HTTP httpSettings { get; set; } = null;
+            public VHTTP httpSettings { get; set; } = null;
 
             public DomainSocket dsSettings { get; set; } = null;
 
@@ -67,7 +67,7 @@ namespace XTransmit.Model.V2Ray.Protocol
             public System.Collections.Generic.Dictionary<string, string> headers { get; set; } = null;
         }
 
-        public class HTTP
+        public class VHTTP
         {
             public string[] host { get; set; } = null;
 

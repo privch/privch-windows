@@ -135,9 +135,6 @@
                          PlacementMode="BottomAndAlignRightEdges"
                          StaysOpen="False">
                 <StackPanel>
-                    <Button Content="{StaticResource curl_title}"
-                            Command="{Binding Path=CommandShowCurl}" />
-                    <Separator />
                     <Button Content="{StaticResource _settings}"
                             Command="{Binding Path=CommandShowSetting}" />
                     <Button Content="{StaticResource _about}"

@@ -14,40 +14,40 @@ namespace XTransmit.ViewModel
         // options
         public int SSTimeouts
         {
-            get => SettingManager.Configuration.SSTimeout;
+            get => SettingManager.Configuration.TimeoutShadowsocks;
             set
             {
-                SettingManager.Configuration.SSTimeout = value;
+                SettingManager.Configuration.TimeoutShadowsocks = value;
                 OnPropertyChanged(nameof(SSTimeouts));
             }
         }
 
         public int IPInfoConnTimeout
         {
-            get => SettingManager.Configuration.IPInfoConnTimeout;
+            get => SettingManager.Configuration.TimeoutFetchInfo;
             set
             {
-                SettingManager.Configuration.IPInfoConnTimeout = value;
+                SettingManager.Configuration.TimeoutFetchInfo = value;
                 OnPropertyChanged(nameof(IPInfoConnTimeout));
             }
         }
 
         public int ResponseConnTimeout
         {
-            get { return SettingManager.Configuration.ResponseConnTimeout; }
+            get { return SettingManager.Configuration.TimeoutCheckResponse; }
             set
             {
-                SettingManager.Configuration.ResponseConnTimeout = value;
+                SettingManager.Configuration.TimeoutCheckResponse = value;
                 OnPropertyChanged(nameof(ResponseConnTimeout));
             }
         }
 
         public int PingTimeout
         {
-            get { return SettingManager.Configuration.PingTimeout; }
+            get { return SettingManager.Configuration.TimeoutPing; }
             set
             {
-                SettingManager.Configuration.PingTimeout = value;
+                SettingManager.Configuration.TimeoutPing = value;
                 OnPropertyChanged(nameof(PingTimeout));
             }
         }

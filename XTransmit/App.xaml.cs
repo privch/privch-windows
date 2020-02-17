@@ -29,7 +29,6 @@ namespace XTransmit
         public static string DirectoryPrivoxy { get; private set; }
         public static string DirectoryShadowsocks { get; private set; }
         public static string DirectoryV2Ray { get; private set; }
-        public static string DirectoryCurl { get; private set; }
 
         public static string FileApplication { get; private set; }
         public static string FilePreferenceXml { get; private set; }
@@ -39,7 +38,6 @@ namespace XTransmit
 
         public static string FileShadowsocksXml { get; private set; }
         public static string FileV2RayXml { get; private set; }
-        public static string FileCurlXml { get; private set; }
 
 
         public static void CloseMainWindow()
@@ -109,7 +107,6 @@ namespace XTransmit
             DirectoryPrivoxy = $@"{DirectoryApplication}\{dirBin}\privoxy";
             DirectoryShadowsocks = $@"{DirectoryApplication}\{dirBin}\shadowsocks";
             DirectoryV2Ray = $@"{DirectoryApplication}\{dirBin}\v2ray";
-            DirectoryCurl = $@"{DirectoryApplication}\{dirBin}\curl";
 
             FilePreferenceXml = $@"{DirectoryApplication}\{dirData}\Preference.xml";
             FileConfigXml = $@"{DirectoryApplication}\{dirData}\Config.xml";
@@ -118,17 +115,14 @@ namespace XTransmit
 
             FileShadowsocksXml = $@"{DirectoryApplication}\{dirData}\ServerShadowsocks.xml";
             FileV2RayXml = $@"{DirectoryApplication}\{dirData}\ServerV2Ray.xml";
-            FileCurlXml = $@"{DirectoryApplication}\{dirData}\Curl.xml";
 
             // initialize binaries
             ProcPrivoxy.KillRunning();
             ProcSS.KillRunning();
             ProcV2Ray.KillRunning();
-            ProcCurl.KillRunning();
             if (!ProcPrivoxy.Prepare()
                 || !ProcSS.Prepare()
-                || !ProcV2Ray.Prepare()
-                || !ProcCurl.Prepare())
+                || !ProcV2Ray.Prepare())
             {
                 string title = Name;
                 string message = (string)FindResource("app_init_fail");
@@ -172,10 +166,10 @@ namespace XTransmit
 
             // if there were other proxy servers running they should set system proxy again
             _ = NativeMethods.DisableProxy();
+
             ProcPrivoxy.KillRunning(); // not important
             ProcSS.KillRunning();
             ProcV2Ray.KillRunning();
-            ProcCurl.KillRunning();
 
             // save settings and fix autorun status. reduce startup time
             SettingManager.WriteFile(FileConfigXml, FilePreferenceXml);

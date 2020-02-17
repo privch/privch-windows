@@ -373,20 +373,17 @@ namespace XTransmit.ViewModel
             InterfaceCtrl.AddHomeTask(task);
 
             // run
-            await Task.Run(() =>
+            for (int i = 0; i < ShadowsocksOC.Count; ++i)
             {
-                for (int i = 0; i < ShadowsocksOC.Count; ++i)
+                // cancel task
+                if (processing_fetch_info == false)
                 {
-                    // cancel task
-                    if (processing_fetch_info == false)
-                    {
-                        break;
-                    }
-
-                    ShadowsocksOC[i].UpdateIPInfo((bool)force);
-                    task.Progress100 = ++i * 100 / ShadowsocksOC.Count;
+                    break;
                 }
-            }).ConfigureAwait(true);
+
+                await ShadowsocksOC[i].UpdateIPInfo((bool)force).ConfigureAwait(true);
+                task.Progress100 = ++i * 100 / ShadowsocksOC.Count;
+            }
 
             // also update interface
             InterfaceCtrl.UpdateHomeTransmitStatue();
@@ -419,11 +416,8 @@ namespace XTransmit.ViewModel
             InterfaceCtrl.AddHomeTask(task);
 
             // run
-            await Task.Run(() =>
-            {
-                server.UpdateIPInfo(true); // force
-                task.Progress100 = 100;
-            }).ConfigureAwait(true);
+            await server.UpdateIPInfo(true).ConfigureAwait(true); // force
+            task.Progress100 = 100;
 
             // also update interface
             InterfaceCtrl.UpdateHomeTransmitStatue();

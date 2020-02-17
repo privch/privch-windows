@@ -1,10 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
+using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Windows;
-using XTransmit.Control;
 
 namespace XTransmit.Model
 {
@@ -155,47 +154,45 @@ namespace XTransmit.Model
         }
 
         // return seconds
-        public void UpdateResponseTime()
+        public async System.Threading.Tasks.Task UpdateResponseTimeAsync()
         {
             if (ListenPort <= 0)
             {
                 return;
             }
 
-            // curl process
-            Process process = null;
-            int timeout = SettingManager.Configuration.SSTimeout;
+            DateTime timeBegin = DateTime.Now;
+            Uri uri = new Uri("https://google.com");
+
+            HttpClientHandler httpHandler = new HttpClientHandler
+            {
+                Proxy = new System.Net.WebProxy("127.0.0.1", SettingManager.Configuration.SystemProxyPort),
+                UseProxy = true,
+            };
+
+            HttpClient httpClient = new HttpClient(httpHandler, true)
+            {
+                Timeout = TimeSpan.FromMilliseconds(SettingManager.Configuration.TimeoutCheckResponse),
+            };
+
             try
             {
-                // UA is "curl"
-                process = Process.Start(
-                    new ProcessStartInfo
-                    {
-                        FileName = ProcCurl.CurlExePath,
-                        Arguments = $"--silent --connect-timeout {timeout} --proxy \"socks5://127.0.0.1:{ListenPort}\""
-                                    + " -w \"%{time_total}\" -o NUL -s \"https://google.com\"",
-                        WorkingDirectory = App.DirectoryCurl,
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                    });
+                var response = await httpClient.GetAsync(uri).ConfigureAwait(true);
+                response.EnsureSuccessStatusCode();
 
-                ResponseTime = process.StandardOutput.ReadToEnd();
-                double time = double.Parse(ResponseTime, CultureInfo.InvariantCulture);
-                if (time > timeout)
-                {
-                    ResponseTime = sr_timedout;
-                }
-
-                process.WaitForExit();
+                TimeSpan time = DateTime.Now - timeBegin;
+                ResponseTime = time.TotalMilliseconds.ToString(CultureInfo.InvariantCulture);
             }
             catch
             {
-                ResponseTime = sr_failed;
+                TimeSpan time = DateTime.Now - timeBegin;
+                ResponseTime = time.TotalMilliseconds < SettingManager.Configuration.TimeoutCheckResponse ?
+                    sr_failed : sr_timedout;
             }
             finally
             {
-                process?.Dispose();
+                httpClient.Dispose();
+                httpHandler.Dispose();
             }
         }
 
@@ -205,7 +202,7 @@ namespace XTransmit.Model
             {
                 try
                 {
-                    PingReply reply = pingSender.Send(HostAddress, SettingManager.Configuration.PingTimeout);
+                    PingReply reply = pingSender.Send(HostAddress, SettingManager.Configuration.TimeoutPing);
                     PingDelay = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : -1;
                 }
                 catch

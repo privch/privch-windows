@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using XTransmit.Control;
@@ -189,14 +188,14 @@ namespace XTransmit.ViewModel
          */
         #region Command-CheckResponse
         // check response for selected servers
-        public RelayCommand CommandCheckResponseRemote => new RelayCommand(CheckResponseRemote, CanCheckResponseRemote);
+        public RelayCommand CommandCheckResponseRemote => new RelayCommand(CheckResponseRemoteAsync, CanCheckResponseRemote);
 
         private bool CanCheckResponseRemote(object parameter)
         {
             return !processing_check_response && SettingManager.RemoteServer != null;
         }
 
-        private async void CheckResponseRemote(object parameter)
+        private async void CheckResponseRemoteAsync(object parameter)
         {
             BaseServer server = SettingManager.RemoteServer;
 
@@ -210,11 +209,8 @@ namespace XTransmit.ViewModel
             InterfaceCtrl.AddHomeTask(task);
 
             // run
-            await Task.Run(() =>
-            {
-                server.UpdateResponseTime();
-                task.Progress100 = 100;
-            }).ConfigureAwait(true);
+            await server.UpdateResponseTimeAsync().ConfigureAwait(true);
+            task.Progress100 = 100;
 
             // show result
             InterfaceCtrl.ShowHomeNotify($"{sr_response_time}: {server.ResponseTime}");
@@ -251,18 +247,6 @@ namespace XTransmit.ViewModel
         }
 
         #region Command-Menu
-        // open the xcurl
-        public RelayCommand CommandShowCurl => new RelayCommand(ShowCurl);
-        private void ShowCurl(object parameter)
-        {
-            // save data first
-            ContentTable contantTable = ContentList.FirstOrDefault(item => item.Title == sr_shadowsocks_title);
-            ContentShadowsocksVModel contentShadowsocks = (ContentShadowsocksVModel)contantTable.Content.DataContext;
-            contentShadowsocks.CommandSaveServer.Execute(null);
-
-            // show curl
-        }
-
         // show setting
         public RelayCommand CommandShowSetting => new RelayCommand(ShowSetting);
         private void ShowSetting(object parameter)

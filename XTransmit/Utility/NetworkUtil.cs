@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Management;
 using System.Net;
+using System.Net.Http;
 using System.Net.NetworkInformation;
 
 namespace XTransmit.Utility

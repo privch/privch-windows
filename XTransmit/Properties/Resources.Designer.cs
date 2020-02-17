@@ -63,26 +63,6 @@ namespace XTransmit.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] curl_ca_bundle_crt_gz {
-            get {
-                object obj = ResourceManager.GetObject("curl_ca_bundle_crt_gz", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] curl_exe_gz {
-            get {
-                object obj = ResourceManager.GetObject("curl_exe_gz", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] cygev_4_dll_gz {
             get {
                 object obj = ResourceManager.GetObject("cygev_4_dll_gz", resourceCulture);
@@ -136,16 +116,6 @@ namespace XTransmit.Properties {
         internal static byte[] cygwin1_dll_gz {
             get {
                 object obj = ResourceManager.GetObject("cygwin1_dll_gz", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] libcurl_x64_dll_gz {
-            get {
-                object obj = ResourceManager.GetObject("libcurl_x64_dll_gz", resourceCulture);
                 return ((byte[])(obj));
             }
         }

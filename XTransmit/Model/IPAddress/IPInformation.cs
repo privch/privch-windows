@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using XTransmit.Control;
+using System.Net.Http;
 using XTransmit.Utility;
 
 namespace XTransmit.Model.IPAddress
@@ -28,36 +27,41 @@ namespace XTransmit.Model.IPAddress
          * TODO - UA, Proxy Parameter.
          */
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        public static IPInformation Fetch(string ip)
+        public static async System.Threading.Tasks.Task<IPInformation> Fetch(string ip)
         {
-            int timeout = SettingManager.Configuration.IPInfoConnTimeout;
+            Uri uri = new Uri("https://ipinfo.io/" + ip);
 
-            // curl process
-            Process process = null;
-            string response = null;
+            HttpClientHandler httpHandler = new HttpClientHandler
+            {
+                //Proxy = new System.Net.WebProxy("127.0.0.1", SettingManager.Configuration.SystemProxyPort),
+                UseProxy = false,
+            };
+
+            HttpClient httpClient = new HttpClient(httpHandler, true)
+            {
+                Timeout = TimeSpan.FromMilliseconds(SettingManager.Configuration.TimeoutFetchInfo),
+            };
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+            string ipinfo = null;
             try
             {
-                process = Process.Start(
-                    new ProcessStartInfo
-                    {
-                        FileName = ProcCurl.CurlExePath,
-                        Arguments = $"--silent --connect-timeout {timeout} --header \"Accept: application/json\" ipinfo.io/{ip}",
-                        WorkingDirectory = App.DirectoryCurl,
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                    });
-
-                response = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
+                var response = await httpClient.GetAsync(uri).ConfigureAwait(true);
+                response.EnsureSuccessStatusCode();
+                ipinfo = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
             }
-            catch { }
+            catch
+            {
+                return null;
+            }
             finally
             {
-                process?.Dispose();
+                httpClient.Dispose();
+                httpHandler.Dispose();
             }
 
-            if (TextUtil.JsonDeserialize(response, typeof(IPInfoIO)) is IPInfoIO ipinfoio)
+            if (TextUtil.JsonDeserialize(ipinfo, typeof(IPInfoIO)) is IPInfoIO ipinfoio)
             {
                 return new IPInformation()
                 {

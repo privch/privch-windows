@@ -19,10 +19,10 @@ namespace XTransmit.Model.Setting
         public string RemoteServerID { get; set; }
 
         // timeouts 
-        public int SSTimeout { get; set; }
-        public int IPInfoConnTimeout { get; set; }
-        public int ResponseConnTimeout { get; set; } //not used
-        public int PingTimeout { get; set; } //ms
+        public int TimeoutShadowsocks { get; set; }
+        public int TimeoutFetchInfo { get; set; }
+        public int TimeoutCheckResponse { get; set; }
+        public int TimeoutPing { get; set; }
 
         // server
         public bool IsReplaceOldServer { get; set; }
@@ -37,10 +37,10 @@ namespace XTransmit.Model.Setting
             RemoteServerType = null;
             RemoteServerID = null;
 
-            SSTimeout = 5;
-            IPInfoConnTimeout = 6;
-            ResponseConnTimeout = 6;
-            PingTimeout = 3000;
+            TimeoutShadowsocks = 5;
+            TimeoutFetchInfo = 20000; //ms
+            TimeoutCheckResponse = 20000; //ms
+            TimeoutPing = 2000; //ms
 
             IsReplaceOldServer = false;
         }

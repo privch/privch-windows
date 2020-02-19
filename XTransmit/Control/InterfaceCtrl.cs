@@ -10,13 +10,9 @@ namespace XTransmit.Control
 {
     internal static class InterfaceCtrl
     {
-        public static View.TrayNotify.SystemTray NotifyIcon { get; private set; }
+        public static readonly View.Forms.TrayNotify NotifyIcon = new View.Forms.TrayNotify();
 
-        public static void Initialize()
-        {
-            NotifyIcon = new View.TrayNotify.SystemTray();
-        }
-        public static void Uninit()
+        public static void Dispose()
         {
             NotifyIcon.Dispose();
         }

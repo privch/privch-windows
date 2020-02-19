@@ -212,7 +212,7 @@
     <Compile Include="View\WindowShutdown.xaml.cs">
       <DependentUpon>WindowShutdown.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TrayNotify\SystemTray.cs" />
+    <Compile Include="View\Forms\TrayNotify.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="View\ContentShadowsocks.xaml">

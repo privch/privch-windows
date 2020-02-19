@@ -8,18 +8,37 @@ namespace XTransmit.Model.IPAddress
     [Serializable]
     public class IPInformation
     {
+        #region Property
         public string IP { get; set; }
-        public string Hostname { get; set; }
         public string City { get; set; }
         public string Region { get; set; }
         public string Country { get; set; }
+        public string Hostname { get; set; }
         public string Location { get; set; }
         public string Organization { get; set; }
-        public string Postal { get; set; }
         public string Timezone { get; set; }
+        #endregion
+
+        private static readonly HttpClientHandler httpHandler = new HttpClientHandler
+        {
+            //Proxy = new System.Net.WebProxy("127.0.0.1", SettingManager.Configuration.SystemProxyPort),
+            UseProxy = false,
+        };
+
+        private static readonly HttpClient httpClient = new HttpClient(httpHandler, true)
+        {
+            Timeout = TimeSpan.FromMilliseconds(SettingManager.Configuration.TimeoutUpdateInfo),
+        };
+
+        // is it necessary ?
+        public static void Dispose()
+        {
+            httpClient.Dispose();
+            httpHandler.Dispose();
+        }
 
         // Copy by serializer
-        public IPInformation Copy() => (IPInformation)Utility.TextUtil.CopyBySerializer(this);
+        public IPInformation Copy() => (IPInformation)TextUtil.CopyBySerializer(this);
 
         /**<summary>
          * Fetch data from https://ipinfo.io and read to a IPInfo object.
@@ -27,38 +46,23 @@ namespace XTransmit.Model.IPAddress
          * TODO - UA, Proxy Parameter.
          */
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        public static async System.Threading.Tasks.Task<IPInformation> Fetch(string ip)
+        public static IPInformation FromIPInfoIO(string ip)
         {
             Uri uri = new Uri("https://ipinfo.io/" + ip);
 
-            HttpClientHandler httpHandler = new HttpClientHandler
-            {
-                //Proxy = new System.Net.WebProxy("127.0.0.1", SettingManager.Configuration.SystemProxyPort),
-                UseProxy = false,
-            };
+            //httpClient.DefaultRequestHeaders.Accept.Add(
+            //    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpClient httpClient = new HttpClient(httpHandler, true)
-            {
-                Timeout = TimeSpan.FromMilliseconds(SettingManager.Configuration.TimeoutFetchInfo),
-            };
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
-            string ipinfo = null;
+            string ipinfo;
             try
             {
-                var response = await httpClient.GetAsync(uri).ConfigureAwait(true);
+                var response = httpClient.GetAsync(uri).Result;
                 response.EnsureSuccessStatusCode();
-                ipinfo = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
+                ipinfo = response.Content.ReadAsStringAsync().Result;
             }
             catch
             {
                 return null;
-            }
-            finally
-            {
-                httpClient.Dispose();
-                httpHandler.Dispose();
             }
 
             if (TextUtil.JsonDeserialize(ipinfo, typeof(IPInfoIO)) is IPInfoIO ipinfoio)
@@ -66,13 +70,12 @@ namespace XTransmit.Model.IPAddress
                 return new IPInformation()
                 {
                     IP = ipinfoio.ip,
-                    Hostname = ipinfoio.hostname,
                     City = ipinfoio.city,
                     Region = ipinfoio.region,
                     Country = ipinfoio.country,
+                    Hostname = ipinfoio.hostname,
                     Location = ipinfoio.location,
                     Organization = ipinfoio.organization,
-                    Postal = ipinfoio.postal,
                     Timezone = ipinfoio.timezone,
                 };
             }
@@ -80,8 +83,7 @@ namespace XTransmit.Model.IPAddress
             return null;
         }
 
-        /** Serializable ==================================================
-         */
+        #region Equals
         public override int GetHashCode() => IP?.GetHashCode() ?? -1;
 
         public override bool Equals(object objectNew)
@@ -95,5 +97,6 @@ namespace XTransmit.Model.IPAddress
                 return false;
             }
         }
+        #endregion
     }
 }

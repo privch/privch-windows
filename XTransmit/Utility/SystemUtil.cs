@@ -8,6 +8,7 @@ namespace XTransmit.Utility
 {
     internal static class SystemUtil
     {
+        #region Process
         public static bool IsProcessExist(string procName)
         {
             Process[] list = Process.GetProcessesByName(procName);
@@ -50,6 +51,7 @@ namespace XTransmit.Utility
                 }
             }
         }
+        #endregion
 
         #region Shortcut
         // 33 ms

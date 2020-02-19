@@ -4,9 +4,9 @@ using System.Windows;
 using XTransmit.Control;
 using XTransmit.Model;
 
-namespace XTransmit.View.TrayNotify
+namespace XTransmit.View.Forms
 {
-    public class SystemTray : IDisposable
+    public class TrayNotify : IDisposable
     {
         private readonly System.Windows.Forms.NotifyIcon notifyIcon;
         private readonly System.Windows.Forms.MenuItem menuitemEnableTransmit;
@@ -14,7 +14,7 @@ namespace XTransmit.View.TrayNotify
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
 
         [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
-        public SystemTray()
+        public TrayNotify()
         {
             string enable_transmit = (string)Application.Current.FindResource("tray_enable_transmit");
             string scan_qrcode = (string)Application.Current.FindResource("add_server_qrcode");

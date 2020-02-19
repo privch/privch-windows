@@ -101,7 +101,7 @@
                     <MenuItem Icon="{md:PackIcon Kind=AddLocation}"
                               Header="{StaticResource server_fetch_info}"
                               Command="{Binding Path=CommandFetchInfoSelected}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
 
                     <MenuItem Icon="{md:PackIcon Kind=ChartAreaspline}"
                               Header="{StaticResource server_check_ping}"

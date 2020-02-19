@@ -90,8 +90,6 @@ namespace XTransmit.Model.SS
         private string pluginName;
         private string pluginOption;
 
-        private IPInformation IPInfo { get; set; }
-
         // call after the SettingManager.Configuration has been loaded
         public Shadowsocks()
         {
@@ -101,8 +99,6 @@ namespace XTransmit.Model.SS
             pluginEnabled = false;
             pluginName = string.Empty;
             pluginOption = string.Empty;
-
-            IPInfo = null;
         }
 
         public Shadowsocks Copy()
@@ -114,46 +110,35 @@ namespace XTransmit.Model.SS
 
         public void SetFriendNameByIPInfo()
         {
-            if (IPInfo == null)
+            if (IPInformation.FromIPInfoIO(HostAddress) is IPInformation ipinfo)
             {
-                return;
-            }
+                StringBuilder stringBuilder = new StringBuilder();
 
-            StringBuilder stringBuilder = new StringBuilder();
-
-            if (!string.IsNullOrWhiteSpace(IPInfo.Country))
-            {
-                stringBuilder.Append(IPInfo.Country);
-            }
-
-            if (!string.IsNullOrWhiteSpace(IPInfo.Region))
-            {
-                stringBuilder.Append(" - " + IPInfo.Region);
-            }
-
-            if (!string.IsNullOrWhiteSpace(IPInfo.City))
-            {
-                stringBuilder.Append(" - " + IPInfo.City);
-            }
-
-            string friendlyName = stringBuilder.ToString();
-            if (!string.IsNullOrWhiteSpace(friendlyName))
-            {
-                if (friendlyName.StartsWith(" - ", StringComparison.Ordinal))
+                if (!string.IsNullOrWhiteSpace(ipinfo.Country))
                 {
-                    friendlyName = friendlyName.Substring(3);
+                    stringBuilder.Append(ipinfo.Country);
                 }
 
-                FriendlyName = friendlyName;
-            }
-        }
+                if (!string.IsNullOrWhiteSpace(ipinfo.Region))
+                {
+                    stringBuilder.Append(" - " + ipinfo.Region);
+                }
 
-        public async System.Threading.Tasks.Task UpdateIPInfo(bool force)
-        {
-            if (IPInfo == null || force)
-            {
-                IPInfo = await IPInformation.Fetch(HostAddress).ConfigureAwait(true);
-                SetFriendNameByIPInfo();
+                if (!string.IsNullOrWhiteSpace(ipinfo.City))
+                {
+                    stringBuilder.Append(" - " + ipinfo.City);
+                }
+
+                string friendlyName = stringBuilder.ToString();
+                if (!string.IsNullOrWhiteSpace(friendlyName))
+                {
+                    if (friendlyName.StartsWith(" - ", StringComparison.Ordinal))
+                    {
+                        friendlyName = friendlyName.Substring(3);
+                    }
+
+                    FriendlyName = friendlyName;
+                }
             }
         }
 

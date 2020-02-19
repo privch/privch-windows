@@ -96,9 +96,8 @@ namespace XTransmit
             }
             catch
             {
-                string title = Name;
                 string message = (string)FindResource("app_init_fail");
-                new View.DialogPrompt(title, message).ShowDialog();
+                new View.DialogPrompt(Name, message).ShowDialog();
 
                 Shutdown();
                 return;
@@ -120,13 +119,10 @@ namespace XTransmit
             ProcPrivoxy.KillRunning();
             ProcSS.KillRunning();
             ProcV2Ray.KillRunning();
-            if (!ProcPrivoxy.Prepare()
-                || !ProcSS.Prepare()
-                || !ProcV2Ray.Prepare())
+            if (!ProcPrivoxy.Prepare() || !ProcSS.Prepare() || !ProcV2Ray.Prepare())
             {
-                string title = Name;
                 string message = (string)FindResource("app_init_fail");
-                new View.DialogPrompt(title, message).ShowDialog();
+                new View.DialogPrompt(Name, message).ShowDialog();
 
                 Shutdown();
                 return;
@@ -139,9 +135,8 @@ namespace XTransmit
             // initialize transmit
             if (!TransmitCtrl.StartServer())
             {
-                string title = Name;
                 string message = (string)FindResource("app_service_fail");
-                new View.DialogPrompt(title, message).ShowDialog();
+                new View.DialogPrompt(Name, message).ShowDialog();
 
                 Shutdown();
                 return;
@@ -150,7 +145,6 @@ namespace XTransmit
             TransmitCtrl.EnableTransmit(SettingManager.Configuration.IsTransmitEnabled);
 
             // initialize interface and theme
-            InterfaceCtrl.Initialize();
             InterfaceCtrl.ModifyTheme(theme => theme.SetBaseTheme(
                 SettingManager.Appearance.IsDarkTheme ? Theme.Dark : Theme.Light));
 
@@ -161,16 +155,6 @@ namespace XTransmit
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            TransmitCtrl.StopServer();
-            InterfaceCtrl.Uninit();
-
-            // if there were other proxy servers running they should set system proxy again
-            _ = NativeMethods.DisableProxy();
-
-            ProcPrivoxy.KillRunning(); // not important
-            ProcSS.KillRunning();
-            ProcV2Ray.KillRunning();
-
             // save settings and fix autorun status. reduce startup time
             SettingManager.WriteFile(FileConfigXml, FilePreferenceXml);
             if (SettingManager.Configuration.IsAutorun)
@@ -181,6 +165,18 @@ namespace XTransmit
             {
                 SystemUtil.DeleteUserStartupShortcuts();
             }
+
+            // shutdown service
+            TransmitCtrl.StopServer();
+            TransmitCtrl.EnableTransmit(false);
+
+            InterfaceCtrl.Dispose();
+            Model.IPAddress.IPInformation.Dispose();
+
+            // not important
+            ProcPrivoxy.KillRunning(); 
+            ProcSS.KillRunning();
+            ProcV2Ray.KillRunning();
         }
 
         // Something wrong happen, Unexpercted, Abnormally. Not set yet

@@ -381,7 +381,7 @@ namespace XTransmit.ViewModel
                     break;
                 }
 
-                await ShadowsocksOC[i].UpdateIPInfo((bool)force).ConfigureAwait(true);
+                await Task.Run(() => ShadowsocksOC[i].SetFriendNameByIPInfo()).ConfigureAwait(true);
                 task.Progress100 = ++i * 100 / ShadowsocksOC.Count;
             }
 
@@ -399,25 +399,33 @@ namespace XTransmit.ViewModel
 
         private bool CanFetchInfoSelected(object parameter)
         {
-            return processing_fetch_info == false && parameter is Shadowsocks;
+            return processing_fetch_info == false && parameter is System.Collections.IList;
         }
 
         private async void FetchInfoSelected(object parameter)
         {
-            Shadowsocks server = (Shadowsocks)parameter;
-
             // add task
             processing_fetch_info = true;
             TaskView task = new TaskView
             {
                 Name = sr_task_fetch_info,
-                StopAction = null
+                StopAction = () => { processing_fetch_info = false; }
             };
             InterfaceCtrl.AddHomeTask(task);
 
-            // run
-            await server.UpdateIPInfo(true).ConfigureAwait(true); // force
-            task.Progress100 = 100;
+            // check selection items
+            System.Collections.IList selection = parameter as System.Collections.IList;
+            IEnumerator<Shadowsocks> enumerator = selection.Cast<Shadowsocks>().GetEnumerator();
+
+            int count = selection.Count;
+            int complete = 0;
+
+            //enumerator.Reset();
+            while (enumerator.MoveNext() && processing_fetch_info)
+            {
+                await Task.Run(() => enumerator.Current.SetFriendNameByIPInfo()).ConfigureAwait(true);
+                task.Progress100 = ++complete * 100 / count;
+            }
 
             // also update interface
             InterfaceCtrl.UpdateHomeTransmitStatue();

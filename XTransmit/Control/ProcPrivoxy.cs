@@ -84,7 +84,6 @@ namespace XTransmit.Control
                         UseShellExecute = false,
                         CreateNoWindow = true,
                         //LoadUserProfile = false,
-                        //WindowStyle = ProcessWindowStyle.Hidden,
                     });
             }
             catch
@@ -104,7 +103,6 @@ namespace XTransmit.Control
 
             try
             {
-                //process_privoxy.CloseMainWindow();
                 process_privoxy.Kill();
                 process_privoxy.WaitForExit();
             }

@@ -24,10 +24,10 @@ namespace XTransmit.ViewModel
 
         public int IPInfoConnTimeout
         {
-            get => SettingManager.Configuration.TimeoutFetchInfo;
+            get => SettingManager.Configuration.TimeoutUpdateInfo;
             set
             {
-                SettingManager.Configuration.TimeoutFetchInfo = value;
+                SettingManager.Configuration.TimeoutUpdateInfo = value;
                 OnPropertyChanged(nameof(IPInfoConnTimeout));
             }
         }
@@ -111,7 +111,7 @@ namespace XTransmit.ViewModel
                 new ItemView
                 {
                     Label = (string)Application.Current.FindResource("dialog_setting_status_ss_port"),
-                    Text = SettingManager.Configuration.GlobalSocks5Port.ToString(CultureInfo.InvariantCulture),
+                    Text = SettingManager.Configuration.LocalSocks5Port.ToString(CultureInfo.InvariantCulture),
                 }
             };
         }

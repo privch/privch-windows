@@ -24,24 +24,24 @@ namespace XTransmit.Control
             }
 
             // shadowsocks port
-            if (config.GlobalSocks5Port == 0 || portInUse.Contains(config.GlobalSocks5Port))
+            if (config.LocalSocks5Port == 0 || portInUse.Contains(config.LocalSocks5Port))
             {
-                config.GlobalSocks5Port = NetworkUtil.GetAvailablePort(2000, portInUse);
-                portInUse.Add(config.GlobalSocks5Port);
+                config.LocalSocks5Port = NetworkUtil.GetAvailablePort(2000, portInUse);
+                portInUse.Add(config.LocalSocks5Port);
             }
             else
             {
-                portInUse.Add(config.GlobalSocks5Port);
+                portInUse.Add(config.LocalSocks5Port);
             }
 
-            if (!ProcPrivoxy.Start(config.SystemProxyPort, config.GlobalSocks5Port))
+            if (!ProcPrivoxy.Start(config.SystemProxyPort, config.LocalSocks5Port))
             {
                 return false;
             }
 
             if (SettingManager.RemoteServer != null)
             {
-                return ServerManager.Start(SettingManager.RemoteServer, config.GlobalSocks5Port);
+                return ServerManager.Start(SettingManager.RemoteServer, config.LocalSocks5Port);
             }
 
             return true;
@@ -76,7 +76,7 @@ namespace XTransmit.Control
             if (SettingManager.RemoteServer == null || !SettingManager.RemoteServer.IsServerEqual(server))
             {
                 ServerManager.Stop(SettingManager.RemoteServer);
-                ServerManager.Start(server, SettingManager.Configuration.GlobalSocks5Port);
+                ServerManager.Start(server, SettingManager.Configuration.LocalSocks5Port);
 
                 SettingManager.RemoteServer = server;
                 InterfaceCtrl.UpdateHomeTransmitStatue();

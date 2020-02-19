@@ -41,7 +41,7 @@ namespace XTransmit.Model.IPAddress
         public IPInformation Copy() => (IPInformation)TextUtil.CopyBySerializer(this);
 
         /**<summary>
-         * Fetch data from https://ipinfo.io and read to a IPInfo object.
+         * Retrieve data from https://ipinfo.io and read to a IPInfo object.
          * </summary>
          * TODO - UA, Proxy Parameter.
          */

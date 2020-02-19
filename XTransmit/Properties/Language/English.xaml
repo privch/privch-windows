@@ -18,12 +18,13 @@
     <system:String x:Key="_fetch">Fetch</system:String>
     <system:String x:Key="_check">Check</system:String>
     <system:String x:Key="_search">Search</system:String>
+    <system:String x:Key="_update">Update</system:String>
 
     <system:String x:Key="_download">Download</system:String>
     <system:String x:Key="_upload">Upload</system:String>
     <system:String x:Key="_complete">Complete</system:String>
     <system:String x:Key="_failed">Failed</system:String>
-
+    
     <system:String x:Key="_name">Name</system:String>
     <system:String x:Key="_index">Index</system:String>
     <system:String x:Key="_time">Time</system:String>
@@ -76,9 +77,9 @@
     <system:String x:Key="home_x_task_running">task(s) running</system:String>
     <system:String x:Key="home_cant_add_server">Can not add server yet.</system:String>
 
-    <system:String x:Key="task_ping_server">Ping server</system:String>
-    <system:String x:Key="task_fetch_info">Fetch server info</system:String>
+    <system:String x:Key="task_update_info">Update server name</system:String>
     <system:String x:Key="task_check_response_time">Check response time</system:String>
+    <system:String x:Key="task_check_ping">Ping server</system:String>
 
     <system:String x:Key="add_server_qrcode">Scan QRCode</system:String>
     <system:String x:Key="add_server_clipboard">Import from clipboard</system:String>
@@ -90,17 +91,14 @@
     <system:String x:Key="add_server_x_added">server(s) added</system:String>
     <system:String x:Key="add_server_x_updated">server(s) updated</system:String>
 
-    <system:String x:Key="server_fetch_info">Fetch server info</system:String>
-    <system:String x:Key="server_fetch_ask_force">Keep existing data?</system:String>
-    <system:String x:Key="server_check_response_time">Check response time</system:String>
-    <system:String x:Key="server_check_ping">Ping server</system:String>
+    <system:String x:Key="server_update_info_confirm">Update server name for all server?</system:String>
     <system:String x:Key="server_menu_select">Select (Double click)</system:String>
     <system:String x:Key="server_menu_edit">Edit (E)</system:String>
     <system:String x:Key="server_menu_delete">Delete selection (Del)</system:String>
 
     <!-- table shadowsocks -->
     <system:String x:Key="shadowsocks_title">Shadowsocks</system:String>
-    <system:String x:Key="shadowsocks_no_data">No data available now</system:String>
+    <system:String x:Key="shadowsocks_no_data">No Shadowsocks server now</system:String>
 
     <!-- table v2ray -->
     <system:String x:Key="v2ray_title">V2Ray</system:String>

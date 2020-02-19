@@ -18,7 +18,7 @@ namespace XTransmit.ViewModel.Element
         protected volatile bool processing_check_ping = false;
 
         // language
-        private static readonly string sr_task_ping_server = (string)Application.Current.FindResource("task_ping_server");
+        private static readonly string sr_task_ping_server = (string)Application.Current.FindResource("task_check_ping");
 
 
         #region Command-CheckPing
@@ -41,13 +41,12 @@ namespace XTransmit.ViewModel.Element
 
             // run
             IEnumerator<BaseServer> enumerator = Servers.GetEnumerator();
+            int count = Servers.Count();
             int timeout = SettingManager.Configuration.TimeoutPing;
 
             using (Ping pingSender = new Ping())
             {
-                int count = Servers.Count();
                 int complete = 0;
-
                 enumerator.Reset();
                 while (enumerator.MoveNext())
                 {
@@ -70,6 +69,8 @@ namespace XTransmit.ViewModel.Element
 
                     task.Progress100 = ++complete * 100 / count;
                 }
+
+                enumerator.Dispose();
             }
 
             // done
@@ -83,14 +84,12 @@ namespace XTransmit.ViewModel.Element
 
         private bool CanCheckPingSelected(object parameter)
         {
-            return !processing_check_ping && parameter is BaseServer;
+            return !processing_check_ping && parameter is System.Collections.IList;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private async void CheckPingSelected(object parameter)
         {
-            BaseServer server = (BaseServer)parameter;
-
             // add task
             processing_check_ping = true;
             TaskView task = new TaskView
@@ -100,12 +99,24 @@ namespace XTransmit.ViewModel.Element
             };
             InterfaceCtrl.AddHomeTask(task);
 
-            // run
-            await Task.Run(() =>
+            // check selection items;
+            IEnumerator<BaseServer> enumerator = (parameter as System.Collections.IList).Cast<BaseServer>().GetEnumerator();
+            List<BaseServer> selection = new List<BaseServer>();
+            while (enumerator.MoveNext())
             {
-                server.UpdatePingDelay();
-                task.Progress100 = 100;
-            }).ConfigureAwait(true);
+                selection.Add(enumerator.Current);
+            }
+
+            for (int i = 0; i < selection.Count; ++i)
+            {
+                if (!processing_check_ping)
+                {
+                    break;
+                }
+
+                await Task.Run(() => selection[i].UpdatePingDelay()).ConfigureAwait(true);
+                task.Progress100 = i * 100 / selection.Count;
+            }
 
             // done
             processing_check_ping = false;

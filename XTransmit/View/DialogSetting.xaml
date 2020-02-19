@@ -74,7 +74,7 @@
                              Text="{Binding SSTimeouts}" />
                 </DockPanel>
 
-                <!-- ipinfo timeout -->
+                <!-- retrieve info timeout -->
                 <DockPanel>
                     <md:PackIcon DockPanel.Dock="Left"
                                  Kind="Clock" />
@@ -83,7 +83,7 @@
                              Text="{Binding IPInfoConnTimeout}" />
                 </DockPanel>
 
-                <!-- fetch connection response timeout -->
+                <!-- retrieve response timeout -->
                 <DockPanel>
                     <md:PackIcon DockPanel.Dock="Left"
                                  Kind="Clock" />

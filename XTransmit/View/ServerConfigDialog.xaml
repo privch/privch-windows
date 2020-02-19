@@ -101,7 +101,7 @@
             </ProgressBar>
 
             <!-- ping -->
-            <Button ToolTip="{StaticResource server_check_ping}"
+            <Button ToolTip="{StaticResource task_check_ping}"
                     Content="{md:PackIcon Kind=ChartAreaspline}"
                     Command="{Binding Path=CommandCheckPing}" />
 

@@ -174,7 +174,7 @@ namespace XTransmit
             Model.IPAddress.IPInformation.Dispose();
 
             // not important
-            ProcPrivoxy.KillRunning(); 
+            ProcPrivoxy.KillRunning();
             ProcSS.KillRunning();
             ProcV2Ray.KillRunning();
         }

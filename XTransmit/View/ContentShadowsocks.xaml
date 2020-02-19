@@ -44,11 +44,11 @@
 
                 <Separator/>
 
-                <Button ToolTip="{StaticResource server_fetch_info}"
+                <Button ToolTip="{StaticResource task_update_info}"
                         Content="{md:PackIcon Kind=AddLocation}"
-                        Command="{Binding Path=CommandFetchInfoAll}"/>
+                        Command="{Binding Path=CommandUpdateInfoAll}"/>
 
-                <Button ToolTip="{StaticResource server_check_ping}"
+                <Button ToolTip="{StaticResource task_check_ping}"
                         Content="{md:PackIcon Kind=ChartAreaspline}"
                         Command="{Binding Path=CommandCheckPingAll}"/>
             </ToolBar>
@@ -99,14 +99,14 @@
                     <Separator Margin="10, 0"/>
 
                     <MenuItem Icon="{md:PackIcon Kind=AddLocation}"
-                              Header="{StaticResource server_fetch_info}"
-                              Command="{Binding Path=CommandFetchInfoSelected}"
+                              Header="{StaticResource task_update_info}"
+                              Command="{Binding Path=CommandUpdateInfoSelected}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
 
                     <MenuItem Icon="{md:PackIcon Kind=ChartAreaspline}"
-                              Header="{StaticResource server_check_ping}"
+                              Header="{StaticResource task_check_ping}"
                               Command="{Binding Path=CommandCheckPingSelected}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
 

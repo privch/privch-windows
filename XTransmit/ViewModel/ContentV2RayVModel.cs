@@ -309,18 +309,20 @@ namespace XTransmit.ViewModel
 
         // delete selected server(s)
         public RelayCommand CommandDeleteServers => new RelayCommand(DeleteServers, CanDeleteServer);
-        private bool CanDeleteServer(object serverSelected)
+        private bool CanDeleteServer(object parameter)
         {
-            return (V2RayOC.Count > 0) && CanEditList(null);
+            return (V2RayOC.Count > 0)
+                && parameter is System.Collections.IList
+                && CanEditList(null);
         }
-        private void DeleteServers(object serversSelected)
+        private void DeleteServers(object parameter)
         {
             /** https://stackoverflow.com/a/14852516
              */
-            System.Collections.IList selected = serversSelected as System.Collections.IList;
-            List<V2RayVMess> listServerProfile = selected.Cast<V2RayVMess>().ToList();
+            System.Collections.IList selection = parameter as System.Collections.IList;
+            List<V2RayVMess> servers = selection.Cast<V2RayVMess>().ToList();
 
-            foreach (V2RayVMess server in listServerProfile)
+            foreach (V2RayVMess server in servers)
             {
                 V2RayOC.Remove(server);
             }

@@ -19,11 +19,10 @@ namespace XTransmit.ViewModel
         public ObservableCollection<Shadowsocks> ShadowsocksOC { get; private set; }
 
         // status
-        private volatile bool processing_fetch_info = false;
+        private volatile bool processing_update_info = false;
 
         // language
         private static readonly string sr_yes = (string)Application.Current.FindResource("_yes");
-        private static readonly string sr_no = (string)Application.Current.FindResource("_no");
         private static readonly string sr_cancel = (string)Application.Current.FindResource("_cancel");
 
         private static readonly string sr_server_not_found = (string)Application.Current.FindResource("add_server_not_found");
@@ -31,9 +30,8 @@ namespace XTransmit.ViewModel
         private static readonly string sr_server_x_added = (string)Application.Current.FindResource("add_server_x_added");
         private static readonly string sr_server_x_updated = (string)Application.Current.FindResource("add_server_x_updated");
 
-        private static readonly string sr_task_fetch_info = (string)Application.Current.FindResource("task_fetch_info");
-        private static readonly string sr_fetch_ask_focus_title = (string)Application.Current.FindResource("server_fetch_info");
-        private static readonly string sr_fetch_ask_focus_message = (string)Application.Current.FindResource("server_fetch_ask_force");
+        private static readonly string sr_update_info = (string)Application.Current.FindResource("task_update_info");
+        private static readonly string sr_update_info_confirm = (string)Application.Current.FindResource("server_update_info_confirm");
 
         public ContentShadowsocksVModel()
         {
@@ -45,7 +43,7 @@ namespace XTransmit.ViewModel
         ~ContentShadowsocksVModel()
         {
             // cancel tasks
-            processing_fetch_info = false;
+            processing_update_info = false;
             processing_check_ping = false;
 
             // data changed ?
@@ -115,7 +113,7 @@ namespace XTransmit.ViewModel
 
         public bool CanEditList(object parameter)
         {
-            return !processing_fetch_info && !processing_check_ping;
+            return !processing_update_info && !processing_check_ping;
         }
 
         #region Commands
@@ -322,53 +320,54 @@ namespace XTransmit.ViewModel
 
         // delete selected server(s)
         public RelayCommand CommandDeleteServers => new RelayCommand(DeleteServers, CanDeleteServer);
-        private bool CanDeleteServer(object serverSelected)
+        private bool CanDeleteServer(object parameter)
         {
-            return (ShadowsocksOC.Count > 0) && CanEditList(null);
+            return (ShadowsocksOC.Count > 0)
+                && parameter is System.Collections.IList
+                && CanEditList(null);
         }
-        private void DeleteServers(object serversSelected)
+        private void DeleteServers(object parameter)
         {
             /** https://stackoverflow.com/a/14852516
              */
-            System.Collections.IList selected = serversSelected as System.Collections.IList;
-            List<Shadowsocks> listServerProfile = selected.Cast<Shadowsocks>().ToList();
+            System.Collections.IList selection = parameter as System.Collections.IList;
+            List<Shadowsocks> servers = selection.Cast<Shadowsocks>().ToList();
 
-            foreach (Shadowsocks server in listServerProfile)
+            foreach (Shadowsocks server in servers)
             {
                 ShadowsocksOC.Remove(server);
             }
         }
         #endregion
 
-        #region Command-FetchInfo
-        // fetch ip information for all servers
-        public RelayCommand CommandFetchInfoAll => new RelayCommand(FetchInfoAll, CanFetchInfoAll);
+        #region Command-UpdateName
+        // update name ip information for all servers
+        public RelayCommand CommandUpdateInfoAll => new RelayCommand(UpdateInfoAll, CanUpdateInfoAll);
 
-        private bool CanFetchInfoAll(object parameter) => !processing_fetch_info;
+        private bool CanUpdateInfoAll(object parameter) => !processing_update_info;
 
-        private async void FetchInfoAll(object parameter)
+        private async void UpdateInfoAll(object parameter)
         {
             // ask if force mode
-            bool? force = null;
+            bool confirm = false;
             Dictionary<string, Action> actions = new Dictionary<string, Action>
             {
-                { sr_yes, () => { force = false; } },
-                { sr_no, () => { force = true; } },
+                { sr_yes, () => { confirm = true; } },
                 { sr_cancel, null },
             };
-            DialogAction dialog = new DialogAction(sr_fetch_ask_focus_title, sr_fetch_ask_focus_message, actions);
+            DialogAction dialog = new DialogAction(sr_update_info, sr_update_info_confirm, actions);
             dialog.ShowDialog();
-            if (force == null)
+            if (!confirm)
             {
                 return;
             }
 
             // add task
-            processing_fetch_info = true;
+            processing_update_info = true;
             TaskView task = new TaskView
             {
-                Name = sr_task_fetch_info,
-                StopAction = () => { processing_fetch_info = false; }
+                Name = sr_update_info,
+                StopAction = () => { processing_update_info = false; }
             };
             InterfaceCtrl.AddHomeTask(task);
 
@@ -376,7 +375,7 @@ namespace XTransmit.ViewModel
             for (int i = 0; i < ShadowsocksOC.Count; ++i)
             {
                 // cancel task
-                if (processing_fetch_info == false)
+                if (processing_update_info == false)
                 {
                     break;
                 }
@@ -389,49 +388,54 @@ namespace XTransmit.ViewModel
             InterfaceCtrl.UpdateHomeTransmitStatue();
 
             // done
-            processing_fetch_info = false;
+            processing_update_info = false;
             InterfaceCtrl.RemoveHomeTask(task);
             CommandManager.InvalidateRequerySuggested();
         }
 
-        // fetch ip information for selected servers
-        public RelayCommand CommandFetchInfoSelected => new RelayCommand(FetchInfoSelected, CanFetchInfoSelected);
+        // update name by ip information for selected servers
+        public RelayCommand CommandUpdateInfoSelected => new RelayCommand(UpdateInfoSelected, CanUpdateInfoSelected);
 
-        private bool CanFetchInfoSelected(object parameter)
+        private bool CanUpdateInfoSelected(object parameter)
         {
-            return processing_fetch_info == false && parameter is System.Collections.IList;
+            return processing_update_info == false && parameter is System.Collections.IList;
         }
 
-        private async void FetchInfoSelected(object parameter)
+        private async void UpdateInfoSelected(object parameter)
         {
             // add task
-            processing_fetch_info = true;
+            processing_update_info = true;
             TaskView task = new TaskView
             {
-                Name = sr_task_fetch_info,
-                StopAction = () => { processing_fetch_info = false; }
+                Name = sr_update_info,
+                StopAction = () => { processing_update_info = false; }
             };
             InterfaceCtrl.AddHomeTask(task);
 
             // check selection items
-            System.Collections.IList selection = parameter as System.Collections.IList;
-            IEnumerator<Shadowsocks> enumerator = selection.Cast<Shadowsocks>().GetEnumerator();
-
-            int count = selection.Count;
-            int complete = 0;
-
-            //enumerator.Reset();
-            while (enumerator.MoveNext() && processing_fetch_info)
+            IEnumerator<Shadowsocks> enumerator = (parameter as System.Collections.IList).Cast<Shadowsocks>().GetEnumerator();
+            List<Shadowsocks> selection = new List<Shadowsocks>();
+            while (enumerator.MoveNext())
             {
-                await Task.Run(() => enumerator.Current.SetFriendNameByIPInfo()).ConfigureAwait(true);
-                task.Progress100 = ++complete * 100 / count;
+                selection.Add(enumerator.Current);
+            }
+
+            for (int i = 0; i < selection.Count; ++i)
+            {
+                if (!processing_update_info)
+                {
+                    break;
+                }
+
+                await Task.Run(() => selection[i].SetFriendNameByIPInfo()).ConfigureAwait(true);
+                task.Progress100 = i * 100 / selection.Count;
             }
 
             // also update interface
             InterfaceCtrl.UpdateHomeTransmitStatue();
 
             // done
-            processing_fetch_info = false;
+            processing_update_info = false;
             InterfaceCtrl.RemoveHomeTask(task);
             CommandManager.InvalidateRequerySuggested();
         }

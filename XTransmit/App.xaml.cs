@@ -129,8 +129,11 @@ namespace XTransmit
             }
 
             // load data
-            ServerManager.Load(FileShadowsocksXml, FileV2RayXml);
+            ServerManager.Initialize(FileShadowsocksXml, FileV2RayXml);
             SettingManager.LoadFileOrDefault(FileConfigXml, FilePreferenceXml);
+
+            // initialize interface and theme
+            InterfaceCtrl.Initialize();
 
             // initialize transmit
             if (!TransmitCtrl.StartServer())
@@ -141,12 +144,7 @@ namespace XTransmit
                 Shutdown();
                 return;
             }
-
             TransmitCtrl.EnableTransmit(SettingManager.Configuration.IsTransmitEnabled);
-
-            // initialize interface and theme
-            InterfaceCtrl.ModifyTheme(theme => theme.SetBaseTheme(
-                SettingManager.Appearance.IsDarkTheme ? Theme.Dark : Theme.Light));
 
             // done
             StartupUri = new System.Uri("View/WindowHome.xaml", System.UriKind.Relative);
@@ -171,6 +169,7 @@ namespace XTransmit
             TransmitCtrl.EnableTransmit(false);
 
             InterfaceCtrl.Dispose();
+            ServerManager.Dispose();
             Model.IPAddress.IPInformation.Dispose();
 
             // not important

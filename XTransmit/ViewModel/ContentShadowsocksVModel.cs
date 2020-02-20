@@ -18,6 +18,23 @@ namespace XTransmit.ViewModel
     {
         public ObservableCollection<Shadowsocks> ShadowsocksOC { get; private set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1822", Justification = "<Pending>")]
+        public bool IsServerPoolEnabled
+        {
+            get => SettingManager.IsServerPoolEnabled;
+            set
+            {
+                if (value)
+                {
+                    ServerPoolCtrl.StartServerPool();
+                }
+                else
+                {
+                    ServerPoolCtrl.StopServerPool();
+                }
+            }
+        }
+
         // status
         private volatile bool processing_update_info = false;
 

@@ -5,57 +5,63 @@
              xmlns:element="clr-namespace:XTransmit.ViewModel.Element">
     <UserControl.Resources>
         <ResourceDictionary>
-            <Style TargetType="Button" BasedOn="{StaticResource ButtonToolbar}"/>
+            <Style TargetType="Button"
+                   BasedOn="{StaticResource ButtonToolbar}" />
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Toolbar -->
-        <ToolBarTray Grid.Row="0" 
+        <ToolBarTray Grid.Row="0"
                      IsLocked="True">
-            <ToolBar IsOverflowOpen="False" 
+            <ToolBar IsOverflowOpen="False"
                      VerticalAlignment="Center">
                 <Button ToolTip="{StaticResource _save}"
                         Content="{md:PackIcon Kind=ContentSave}"
-                        Command="{Binding Path=CommandSaveServer}"/>
+                        Command="{Binding Path=CommandSaveServer}" />
 
-                <Separator/>
+                <Separator />
 
                 <Button ToolTip="{StaticResource add_server_qrcode}"
                         Content="{md:PackIcon Kind=QrcodeScan}"
-                        Command="{Binding Path=CommandAddServerQRCode}"/>
+                        Command="{Binding Path=CommandAddServerQRCode}" />
 
-                <Button ToolTip="{StaticResource add_server_clipboard}" 
-                        Content="{md:PackIcon Kind=ClipboardTextOutline}" 
-                        Command="{Binding Path=CommandAddServerClipboard}"/>
+                <Button ToolTip="{StaticResource add_server_clipboard}"
+                        Content="{md:PackIcon Kind=ClipboardTextOutline}"
+                        Command="{Binding Path=CommandAddServerClipboard}" />
 
-                <Button ToolTip="{StaticResource add_server_file}" 
+                <Button ToolTip="{StaticResource add_server_file}"
                         Content="{md:PackIcon Kind=FileDocumentBox}"
-                        Command="{Binding Path=CommandAddServerFile}"/>
+                        Command="{Binding Path=CommandAddServerFile}" />
 
-                <Button ToolTip="{StaticResource add_server_create}" 
-                        Content="{md:PackIcon Kind=AddCircle}" 
-                        Command="{Binding Path=CommandAddServerCreate}"/>
+                <Button ToolTip="{StaticResource add_server_create}"
+                        Content="{md:PackIcon Kind=AddCircle}"
+                        Command="{Binding Path=CommandAddServerCreate}" />
 
-                <Separator/>
+                <Separator />
 
                 <Button ToolTip="{StaticResource task_update_info}"
                         Content="{md:PackIcon Kind=AddLocation}"
-                        Command="{Binding Path=CommandUpdateInfoAll}"/>
+                        Command="{Binding Path=CommandUpdateInfoAll}" />
 
                 <Button ToolTip="{StaticResource task_check_ping}"
                         Content="{md:PackIcon Kind=ChartAreaspline}"
-                        Command="{Binding Path=CommandCheckPingAll}"/>
+                        Command="{Binding Path=CommandCheckPingAll}" />
+
+                <ToggleButton Margin="20, 10"
+                              ToolBar.OverflowMode="Always"
+                              IsChecked="{Binding Path=IsServerPoolEnabled}">
+                </ToggleButton>
             </ToolBar>
         </ToolBarTray>
 
         <!-- Server -->
-        <DataGrid x:Name="xDataGrid" 
+        <DataGrid x:Name="xDataGrid"
                   Grid.Row="1"
                   GridLinesVisibility="Horizontal"
                   SelectionMode="Extended"
@@ -64,84 +70,101 @@
                   CanUserSortColumns="True"
                   ItemsSource="{Binding Path=ShadowsocksOC}">
             <DataGrid.Resources>
-                <element:CutoffConverter x:Key="Listening" Cutoff="0"/>
+                <element:CutoffConverter x:Key="Listening"
+                                         Cutoff="0" />
             </DataGrid.Resources>
 
             <DataGrid.InputBindings>
-                <MouseBinding Gesture="LeftDoubleClick" 
+                <MouseBinding Gesture="LeftDoubleClick"
                               Command="{Binding Path=CommandChangeServer}"
-                              CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}"/>
+                              CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}" />
                 <KeyBinding Key="E"
                             Command="{Binding Path=CommandEditServer}"
-                            CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}"/>
+                            CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItem}" />
                 <KeyBinding Key="Delete"
                             Command="{Binding Path=CommandDeleteServers}"
-                            CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItems}"/>
+                            CommandParameter="{Binding ElementName=xDataGrid, Path=SelectedItems}" />
             </DataGrid.InputBindings>
 
             <DataGrid.ContextMenu>
                 <ContextMenu Background="{DynamicResource MaterialDesignBackground}">
-                    <MenuItem Icon="{md:PackIcon Kind=Check}" 
+                    <MenuItem Icon="{md:PackIcon Kind=Check}"
                               Header="{StaticResource server_menu_select}"
                               Command="{Binding Path=CommandChangeServer}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}" />
 
                     <MenuItem Icon="{md:PackIcon Kind=Edit}"
                               Header="{StaticResource server_menu_edit}"
                               Command="{Binding Path=CommandEditServer}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}" />
 
                     <MenuItem Icon="{md:PackIcon Kind=Delete}"
                               Header="{StaticResource server_menu_delete}"
                               Command="{Binding Path=CommandDeleteServers}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
 
-                    <Separator Margin="10, 0"/>
+                    <Separator Margin="10, 0" />
 
                     <MenuItem Icon="{md:PackIcon Kind=AddLocation}"
                               Header="{StaticResource task_update_info}"
                               Command="{Binding Path=CommandUpdateInfoSelected}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
 
                     <MenuItem Icon="{md:PackIcon Kind=ChartAreaspline}"
                               Header="{StaticResource task_check_ping}"
                               Command="{Binding Path=CommandCheckPingSelected}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource _name}" Binding="{Binding Path=FriendlyName}">
+                <DataGridTextColumn Width="Auto"
+                                    Header="{StaticResource _name}"
+                                    Binding="{Binding Path=FriendlyName}">
                     <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+                        <Style TargetType="DataGridCell"
+                               BasedOn="{StaticResource MaterialDesignDataGridCell}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=ListenPort, Converter={StaticResource Listening}}"
                                              Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}"/>
+                                    <Setter Property="Background"
+                                            Value="{DynamicResource SecondaryAccentBrush}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource _ping}" Binding="{Binding Path=PingDelay}"/>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource host_address}" Binding="{Binding Path=HostAddress}"/>
-                <DataGridTextColumn Width="Auto" Header="{StaticResource host_port}" Binding="{Binding Path=HostPort}"/>
-                <DataGridTextColumn Width="*" Header="{StaticResource _modified}" Binding="{Binding Path=Modified}"/>
+                <DataGridTextColumn Width="Auto"
+                                    Header="{StaticResource _ping}"
+                                    Binding="{Binding Path=PingDelay}" />
+                <DataGridTextColumn Width="Auto"
+                                    Header="{StaticResource host_address}"
+                                    Binding="{Binding Path=HostAddress}" />
+                <DataGridTextColumn Width="Auto"
+                                    Header="{StaticResource host_port}"
+                                    Binding="{Binding Path=HostPort}" />
+                <DataGridTextColumn Width="*"
+                                    Header="{StaticResource _modified}"
+                                    Binding="{Binding Path=Modified}" />
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- Empty -->
-        <Grid Grid.Row="1" Panel.ZIndex="1"
+        <Grid Grid.Row="1"
+              Panel.ZIndex="1"
               VerticalAlignment="Center"
               HorizontalAlignment="Center">
             <TextBlock Margin="20"
                        Text="{StaticResource shadowsocks_no_data}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Visibility"
+                                Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=ShadowsocksOC.Count}" Value="0">
-                                <Setter Property="Visibility" Value="Visible"/>
+                            <DataTrigger Binding="{Binding Path=ShadowsocksOC.Count}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

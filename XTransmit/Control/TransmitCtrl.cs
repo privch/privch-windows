@@ -41,7 +41,7 @@ namespace XTransmit.Control
 
             if (SettingManager.RemoteServer != null)
             {
-                return ServerManager.Start(SettingManager.RemoteServer, config.LocalSocks5Port);
+                return ServerManager.AddProcess(SettingManager.RemoteServer, config.LocalSocks5Port);
             }
 
             return true;
@@ -50,7 +50,7 @@ namespace XTransmit.Control
         public static void StopServer()
         {
             ProcPrivoxy.Stop();
-            ServerManager.Stop(SettingManager.RemoteServer);
+            ServerManager.RemoveProcess(SettingManager.RemoteServer);
         }
 
         public static void EnableTransmit(bool enable)
@@ -75,8 +75,8 @@ namespace XTransmit.Control
         {
             if (SettingManager.RemoteServer == null || !SettingManager.RemoteServer.IsServerEqual(server))
             {
-                ServerManager.Stop(SettingManager.RemoteServer);
-                ServerManager.Start(server, SettingManager.Configuration.LocalSocks5Port);
+                ServerManager.RemoveProcess(SettingManager.RemoteServer);
+                ServerManager.AddProcess(server, SettingManager.Configuration.LocalSocks5Port);
 
                 SettingManager.RemoteServer = server;
                 InterfaceCtrl.UpdateHomeTransmitStatue();

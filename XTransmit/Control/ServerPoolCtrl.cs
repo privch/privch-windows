@@ -4,6 +4,7 @@ using XTransmit.Utility;
 
 namespace XTransmit.Control
 {
+    // NOTE - Shadowsocks only
     internal static class ServerPoolCtrl
     {
         public static void StartServerPool()
@@ -18,7 +19,7 @@ namespace XTransmit.Control
                 int listen = NetworkUtil.GetAvailablePort(2000);
                 if (listen > 0)
                 {
-                    ServerManager.Start(server, listen);
+                    ServerManager.AddProcess(server, listen);
                 }
             }
 
@@ -26,7 +27,6 @@ namespace XTransmit.Control
             InterfaceCtrl.UpdateTransmitLock();
         }
 
-        // TODO - Shadowsocks only
         public static void StopServerPool()
         {
             // exclude the transmit server
@@ -37,7 +37,7 @@ namespace XTransmit.Control
 
             foreach (Shadowsocks server in ServerManager.ShadowsocksList)
             {
-                ServerManager.Stop(server);
+                ServerManager.RemoveProcess(server);
             }
 
             // restore

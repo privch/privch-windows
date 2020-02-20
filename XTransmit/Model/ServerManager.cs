@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using XTransmit.Control;
 using XTransmit.Model.SS;
 using XTransmit.Model.V2Ray;
@@ -20,14 +21,12 @@ namespace XTransmit.Model
         public static List<Shadowsocks> ShadowsocksList;
         public static List<V2RayVMess> V2RayList;
 
-        private static readonly Random RandGen = new Random();
-        private static readonly object locker = new object();
-
+        private static HttpListener httpListener = null;
         private static string pathShadowsocksXml;
         private static string pathV2RayXml;
 
         // Init server list by deserialize xml file
-        public static void Load(string pathShadowsocksXml, string pathV2RayXml)
+        public static void Initialize(string pathShadowsocksXml, string pathV2RayXml)
         {
             // load shadowsocks
             if (FileUtil.XmlDeserialize(pathShadowsocksXml, typeof(List<Shadowsocks>)) is List<Shadowsocks> listShadowsocks)
@@ -51,6 +50,13 @@ namespace XTransmit.Model
 
             ServerManager.pathShadowsocksXml = pathShadowsocksXml;
             ServerManager.pathV2RayXml = pathV2RayXml;
+
+            // server pool service
+            StartHttpShow();
+        }
+        public static void Dispose()
+        {
+            StopHttpShow();
         }
 
         public static void Save(List<Shadowsocks> listShadowsocks)
@@ -66,7 +72,7 @@ namespace XTransmit.Model
             V2RayList = listV2Ray;
         }
 
-        public static bool Start(BaseServer server, int listen)
+        public static bool AddProcess(BaseServer server, int listen)
         {
             if (ServerProcessMap.ContainsKey(server.GetId()))
             {
@@ -95,7 +101,7 @@ namespace XTransmit.Model
             return false;
         }
 
-        public static void Stop(BaseServer server)
+        public static void RemoveProcess(BaseServer server)
         {
             // server is null at the first time running
             if (server == null || !ServerProcessMap.ContainsKey(server.GetId()))
@@ -119,27 +125,61 @@ namespace XTransmit.Model
             }
         }
 
-        // Server Pool 
-        public static Shadowsocks GerRendom()
+        #region ServerPool-Show
+        // http service
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+        private static void StartHttpShow()
         {
-            lock (locker)
+            try
             {
-                if (ServerProcessMap.Count > 1)
-                {
-                    int index = RandGen.Next(0, ServerProcessMap.Count - 1);
-                    string id = ServerProcessMap.Keys.ElementAt(index);
-                    return ShadowsocksList.FirstOrDefault(server => server.GetId() == id);
-                }
-                else if (ServerProcessMap.Count > 0)
-                {
-                    string id = ServerProcessMap.Keys.ElementAt(0);
-                    return ShadowsocksList.FirstOrDefault(server => server.GetId() == id);
-                }
-                else
-                {
-                    return null;
-                }
+                httpListener = new HttpListener();
+                httpListener.Prefixes.Add("http://127.0.0.1:9654/");
+                httpListener.Start();
+                httpListener.BeginGetContext(HttpShowServe, null);
+            }
+            catch
+            {
+                httpListener?.Close();
             }
         }
+
+        private static void StopHttpShow()
+        {
+            try
+            {
+                httpListener?.Stop();
+            }
+            catch { }
+            httpListener?.Close();
+        }
+
+        // service
+        private static void HttpShowServe(IAsyncResult result)
+        {
+            try
+            {
+                HttpListenerContext context = httpListener.EndGetContext(result);
+                HttpListenerResponse response = context.Response;
+
+                // response content
+                string content = null;
+                foreach (Shadowsocks shadowsocks in ShadowsocksList)
+                {
+                    if (shadowsocks.ListenPort > 0)
+                    {
+                        content += $"socks5://127.0.0.1:{shadowsocks.ListenPort}\r\n";
+                    }
+                }
+
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(content);
+                response.ContentLength64 = buffer.Length;
+                response.OutputStream.Write(buffer, 0, buffer.Length);
+
+                // continue serve
+                httpListener.BeginGetContext(HttpShowServe, null);
+            }
+            catch { }
+        }
+        #endregion
     }
 }

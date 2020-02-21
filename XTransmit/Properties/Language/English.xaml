@@ -99,6 +99,7 @@
     <!-- table shadowsocks -->
     <system:String x:Key="shadowsocks_title">Shadowsocks</system:String>
     <system:String x:Key="shadowsocks_no_data">No Shadowsocks server now</system:String>
+    <system:String x:Key="shadowsocks_enable_pool">Enable server pool</system:String>
 
     <!-- table v2ray -->
     <system:String x:Key="v2ray_title">V2Ray</system:String>

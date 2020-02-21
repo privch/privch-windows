@@ -53,10 +53,11 @@
                         Content="{md:PackIcon Kind=ChartAreaspline}"
                         Command="{Binding Path=CommandCheckPingAll}" />
 
-                <ToggleButton Margin="20, 10"
-                              ToolBar.OverflowMode="Always"
-                              IsChecked="{Binding Path=IsServerPoolEnabled}">
-                </ToggleButton>
+                <CheckBox ToolBar.OverflowMode="Always"
+                          Margin="20, 10"
+                          Content="{StaticResource shadowsocks_enable_pool}"
+                          IsChecked="{Binding Path=IsServerPoolEnabled}">
+                </CheckBox>
             </ToolBar>
         </ToolBarTray>
 

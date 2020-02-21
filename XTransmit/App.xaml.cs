@@ -1,5 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 using XTransmit.Control;

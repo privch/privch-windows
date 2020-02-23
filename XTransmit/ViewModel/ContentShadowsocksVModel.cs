@@ -32,6 +32,8 @@ namespace XTransmit.ViewModel
                 {
                     ServerPoolCtrl.StopServerPool();
                 }
+
+                InterfaceCtrl.UpdateTransmitLock();
             }
         }
 
@@ -59,9 +61,12 @@ namespace XTransmit.ViewModel
 
         ~ContentShadowsocksVModel()
         {
+
             // cancel tasks
             processing_update_info = false;
             processing_check_ping = false;
+
+            ServerPoolCtrl.StopServerPool();
 
             // data changed ?
             SaveServer(null);
@@ -147,9 +152,10 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandChangeServer => new RelayCommand(ChangeServer, IsServerFree);
         private void ChangeServer(object parameter)
         {
-            if (parameter is Shadowsocks server)
+            Shadowsocks server = (Shadowsocks)parameter;
+            if (TransmitCtrl.ChangeTransmitServer(server))
             {
-                TransmitCtrl.ChangeTransmitServer(server);
+                InterfaceCtrl.UpdateHomeTransmitStatue();
             }
         }
 

@@ -120,9 +120,10 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandChangeServer => new RelayCommand(ChangeServer, IsServerFree);
         private void ChangeServer(object parameter)
         {
-            if (parameter is V2RayVMess server)
+            V2RayVMess server = (V2RayVMess)parameter;
+            if (TransmitCtrl.ChangeTransmitServer(server))
             {
-                TransmitCtrl.ChangeTransmitServer(server);
+                InterfaceCtrl.UpdateHomeTransmitStatue();
             }
         }
 

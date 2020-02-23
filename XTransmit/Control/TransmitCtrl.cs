@@ -71,16 +71,19 @@ namespace XTransmit.Control
             }
         }
 
-        public static void ChangeTransmitServer(BaseServer server)
+        public static bool ChangeTransmitServer(BaseServer server)
         {
             if (SettingManager.RemoteServer == null || !SettingManager.RemoteServer.IsServerEqual(server))
             {
                 ServerManager.RemoveProcess(SettingManager.RemoteServer);
-                ServerManager.AddProcess(server, SettingManager.Configuration.LocalSocks5Port);
-
-                SettingManager.RemoteServer = server;
-                InterfaceCtrl.UpdateHomeTransmitStatue();
+                if (ServerManager.AddProcess(server, SettingManager.Configuration.LocalSocks5Port))
+                {
+                    SettingManager.RemoteServer = server;
+                    return true;
+                }
             }
+
+            return false;
         }
     }
 }

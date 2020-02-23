@@ -97,7 +97,7 @@
                     <MenuItem Icon="{md:PackIcon Kind=ChartAreaspline}"
                               Header="{StaticResource task_check_ping}"
                               Command="{Binding Path=CommandCheckPingSelected}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
+                              CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
 

@@ -1,4 +1,5 @@
-﻿using XTransmit.Model;
+﻿using System.Collections.Generic;
+using XTransmit.Model;
 using XTransmit.Model.SS;
 using XTransmit.Utility;
 
@@ -14,17 +15,18 @@ namespace XTransmit.Control
                 return;
             }
 
+            List<int> portInUse = NetworkUtil.GetPortInUse(2000);
             foreach (Shadowsocks server in ServerManager.ShadowsocksList)
             {
-                int listen = NetworkUtil.GetAvailablePort(2000);
+                int listen = NetworkUtil.GetAvailablePort(2000, portInUse);
                 if (listen > 0)
                 {
                     ServerManager.AddProcess(server, listen);
+                    portInUse.Add(listen);
                 }
             }
 
             SettingManager.IsServerPoolEnabled = true;
-            InterfaceCtrl.UpdateTransmitLock();
         }
 
         public static void StopServerPool()
@@ -47,7 +49,6 @@ namespace XTransmit.Control
             }
 
             SettingManager.IsServerPoolEnabled = false;
-            InterfaceCtrl.UpdateTransmitLock();
         }
     }
 }

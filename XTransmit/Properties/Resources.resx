@@ -136,9 +136,6 @@
   <data name="cygwin1_dll_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Binary\shadowsocks\cygwin1.dll.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="privoxy_config_txt" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Binary\privoxy\privoxy-config.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="privoxy_exe_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Binary\privoxy\privoxy.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -159,5 +156,8 @@
   </data>
   <data name="xtransmit_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icon\XTransmit-On.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="privoxy_config_txt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Binary\privoxy\privoxy-config.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

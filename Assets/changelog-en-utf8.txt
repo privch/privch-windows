@@ -1,3 +1,10 @@
+v0.8.0
+* Removed data transmission module
+* Added external call support for the server pool
+* Improved server response time detection
+* Added multiple selection support for the update server name
+* Adjusted some UI text
+
 v0.7.0
 * Added support for V2Ray
 * Set target .NET Framework version to 4.7.2

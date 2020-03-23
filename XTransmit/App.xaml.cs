@@ -24,6 +24,10 @@ namespace XTransmit
     {
         public static string Name { get; private set; }
 
+        [SuppressMessage("Design", "CA1056:Uri properties should not be strings", Justification = "<Pending>")]
+        public static string UriOpenSourceSoftwareHtml { get; private set; }
+
+
         public static string DirectoryApplication { get; private set; }
         public static string DirectoryPrivoxy { get; private set; }
         public static string DirectoryShadowsocks { get; private set; }
@@ -37,7 +41,6 @@ namespace XTransmit
 
         public static string FileShadowsocksXml { get; private set; }
         public static string FileV2RayXml { get; private set; }
-
 
         public static void CloseMainWindow()
         {
@@ -70,6 +73,10 @@ namespace XTransmit
         {
             string dirData = "data";
             string dirBin = "binary";
+            string dirDocument = "document";
+
+            Name = (string)Current.FindResource("app_name");
+            UriOpenSourceSoftwareHtml = $@"https://github.com/xinlake/xtransmit-windows#open-source-software";
 
             // to avoid loading WindowHome on startup fails
             StartupUri = new System.Uri("View/WindowShutdown.xaml", System.UriKind.Relative);
@@ -82,9 +89,6 @@ namespace XTransmit
             }
 
             // init directory
-            Name = (string)Current.FindResource("app_name");
-
-            //FileApplication = System.Reflection.Assembly.GetEntryAssembly().Location;
             FileApplication = System.Reflection.Assembly.GetExecutingAssembly().Location;
             DirectoryApplication = Path.GetDirectoryName(FileApplication);
 
@@ -92,6 +96,7 @@ namespace XTransmit
             {
                 Directory.CreateDirectory($@"{DirectoryApplication}\{dirBin}");
                 Directory.CreateDirectory($@"{DirectoryApplication}\{dirData}");
+                Directory.CreateDirectory($@"{DirectoryApplication}\{dirDocument}");
             }
             catch
             {

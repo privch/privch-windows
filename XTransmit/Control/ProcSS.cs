@@ -114,7 +114,6 @@ namespace XTransmit.Control
         {
             try
             {
-                //process.CloseMainWindow();
                 process.Kill();
                 process.WaitForExit();
             }

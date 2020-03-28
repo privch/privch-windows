@@ -23,10 +23,8 @@ namespace XTransmit
     public partial class App : Application
     {
         public static string Name { get; private set; }
-
         [SuppressMessage("Design", "CA1056:Uri properties should not be strings", Justification = "<Pending>")]
-        public static string UriOpenSourceSoftwareHtml { get; private set; }
-
+        public const string UriOpenSourceSoftware = @"https://github.com/xinlake/xtransmit-windows#open-source-software";
 
         public static string DirectoryApplication { get; private set; }
         public static string DirectoryPrivoxy { get; private set; }
@@ -69,6 +67,7 @@ namespace XTransmit
         /** Application ===============================================================================
          */
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+        [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             string dirData = "data";
@@ -76,14 +75,13 @@ namespace XTransmit
             string dirDocument = "document";
 
             Name = (string)Current.FindResource("app_name");
-            UriOpenSourceSoftwareHtml = $@"https://github.com/xinlake/xtransmit-windows#open-source-software";
-
             // to avoid loading WindowHome on startup fails
             StartupUri = new System.Uri("View/WindowShutdown.xaml", System.UriKind.Relative);
 
             // single instance
             if (SystemUtil.IsProcessExist("XTransmit"))
             {
+                ApplicationCtrl.Send(ApplicationCtrl.MessageShowHome);
                 Shutdown();
                 return;
             }
@@ -136,8 +134,9 @@ namespace XTransmit
             ServerManager.Initialize(FileShadowsocksXml, FileV2RayXml);
             SettingManager.LoadFileOrDefault(FileConfigXml, FilePreferenceXml);
 
-            // initialize interface and theme
+            // initialize interface and pipe
             InterfaceCtrl.Initialize();
+            ApplicationCtrl.Initialize();
 
             // initialize transmit
             if (!TransmitCtrl.StartServer())
@@ -172,6 +171,7 @@ namespace XTransmit
             TransmitCtrl.StopServer();
             TransmitCtrl.EnableTransmit(false);
 
+            ApplicationCtrl.Dispose();
             InterfaceCtrl.Dispose();
             ServerManager.Dispose();
             Model.IPAddress.IPInformation.Dispose();

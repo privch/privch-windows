@@ -44,7 +44,7 @@ namespace XTransmit.ViewModel
         public RelayCommand CommandViewLicense => new RelayCommand(ViewLicense);
         private void ViewLicense(object parameter)
         {
-            string uri = App.UriOpenSourceSoftwareHtml; //(string)parameter;
+            string uri = App.UriOpenSourceSoftware;
             Process.Start(uri);
         }
     }

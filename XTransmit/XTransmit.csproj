@@ -122,6 +122,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control\ApplicationCtrl.cs" />
     <Compile Include="Control\ProcPrivoxy.cs" />
     <Compile Include="Control\ProcSS.cs" />
     <Compile Include="Control\ProcV2Ray.cs" />

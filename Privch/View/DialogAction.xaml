@@ -1,0 +1,40 @@
+﻿<Window x:Class="Privch.View.DialogAction"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="xWindow"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowApp}"
+        Title="{Binding Path=Title}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Margin="40, 20"
+                   HorizontalAlignment="Center"
+                   Text="{Binding Path=Message}"/>
+
+        <!-- Action buttons ===================================================================================== -->
+        <ItemsControl Grid.Row="1"
+                      ItemsSource="{Binding ActionList}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Margin="8"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Content="{Binding Path=Key}"
+                            Command="{Binding ElementName=xWindow, Path=DataContext.CommandAction}"
+                            CommandParameter="{Binding Path=Key}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </Grid>
+</Window>

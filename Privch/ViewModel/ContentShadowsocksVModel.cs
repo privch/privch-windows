@@ -93,6 +93,15 @@ namespace Privch.ViewModel
                         int i = ShadowsocksOC.IndexOf(serverOld);
                         ShadowsocksOC[i] = server;
                         ++updated;
+
+                        // keep status
+                        if (serverOld.ListenPort > 0)
+                        {
+                            if (TransmitCtrl.ChangeTransmitServer(server, true))
+                            {
+                                InterfaceCtrl.UpdateHomeTransmitStatue();
+                            }
+                        }
                     }
                 }
             }
@@ -116,6 +125,15 @@ namespace Privch.ViewModel
                     int i = ShadowsocksOC.IndexOf(serverOld);
                     ShadowsocksOC[i] = server;
                     ++updated;
+
+                    // keep status
+                    if (serverOld.ListenPort > 0)
+                    {
+                        if (TransmitCtrl.ChangeTransmitServer(server, true))
+                        {
+                            InterfaceCtrl.UpdateHomeTransmitStatue();
+                        }
+                    }
                 }
             }
         }

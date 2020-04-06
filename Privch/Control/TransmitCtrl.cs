@@ -71,9 +71,9 @@ namespace Privch.Control
             }
         }
 
-        public static bool ChangeTransmitServer(BaseServer server)
+        public static bool ChangeTransmitServer(BaseServer server, bool enforce=false)
         {
-            if (SettingManager.RemoteServer == null || !SettingManager.RemoteServer.IsServerEqual(server))
+            if (SettingManager.RemoteServer == null || !SettingManager.RemoteServer.IsServerEqual(server) || enforce)
             {
                 ServerManager.RemoveProcess(SettingManager.RemoteServer);
                 if (ServerManager.AddProcess(server, SettingManager.Configuration.LocalSocks5Port))

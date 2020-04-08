@@ -24,7 +24,7 @@ namespace Privch
     {
         public static string Name { get; private set; }
         [SuppressMessage("Design", "CA1056:Uri properties should not be strings", Justification = "<Pending>")]
-        public const string UriOpenSourceSoftware = @"https://github.com/xinlake/privch-windows#open-source-software";
+        public const string UriOpenSourceSoftware = @"https://github.com/privch/privch-windows#open-source-software";
 
         public static string DirectoryApplication { get; private set; }
         public static string DirectoryPrivoxy { get; private set; }

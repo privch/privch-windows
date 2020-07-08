@@ -37,8 +37,8 @@
     }
   ],
 
-  // XTransmit generated outbound.
-  "outbound": XTransmit-Outbound,
+  // Privch generated outbound.
+  "outbound": Privch-Outbound,
     
   // Dns settings for domain resolution.
   "dns": {

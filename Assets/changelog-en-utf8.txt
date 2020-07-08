@@ -1,5 +1,5 @@
 v0.9.0
-* Rename project to Privch
+* Rename the project to Privch
 * Improve the single instance
 * Adjust the about view
 * Fix a status update issue when replacing a server

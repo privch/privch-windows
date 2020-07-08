@@ -56,6 +56,8 @@ namespace Privch.Model.IPAddress
             string ipinfo;
             try
             {
+                httpClient.CancelPendingRequests();
+
                 var response = httpClient.GetAsync(uri).Result;
                 response.EnsureSuccessStatusCode();
                 ipinfo = response.Content.ReadAsStringAsync().Result;

@@ -15,7 +15,7 @@ namespace Privch.ViewModel.Element
         protected IEnumerable<BaseServer> Servers;
 
         // status, also use to cancel task
-        protected volatile bool processing_check_ping = false;
+        protected volatile bool processing_check_ping;
 
         // language
         private static readonly string sr_task_ping_server = (string)Application.Current.FindResource("task_check_ping");

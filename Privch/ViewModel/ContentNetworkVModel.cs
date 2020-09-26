@@ -16,7 +16,7 @@ namespace Privch.ViewModel
 {
     class ContentNetworkVModel : BaseViewModel, IDisposable
     {
-        private bool isActivated = false;
+        private bool isActivated;
         public bool IsActivated
         {
             get => isActivated;

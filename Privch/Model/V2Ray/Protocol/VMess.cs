@@ -11,9 +11,9 @@ namespace Privch.Model.V2Ray.Protocol
         {
             public string address { get; set; } = string.Empty;
 
-            public int port { get; set; } = 0;
+            public int port { get; set; }
 
-            public VUser[] users { get; set; } = null;
+            public VUser[] users { get; set; }
         }
 
         public class VUser
@@ -31,10 +31,10 @@ namespace Privch.Model.V2Ray.Protocol
 
             public string security { get; set; } = "auto";
 
-            public int level { get; set; } = 0;
+            public int level { get; set; }
         }
 
         // best solution is suppress this analysis rule
-        public VServer[] vnext { get; set; } = null;
+        public VServer[] vnext { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace Privch.Control
     {
         // can't use field here
         private static string V2RayExePath => $@"{App.DirectoryV2Ray}\{v2ray_exe_name}";
-        private static Process process_v2ray = null;
+        private static Process process_v2ray;
 
         /** v2ray-core 4.22.1
          */

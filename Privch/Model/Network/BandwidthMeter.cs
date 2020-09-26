@@ -9,11 +9,11 @@ namespace Privch.Model.Network
     internal class BandwidthMeter : IDisposable
     {
         private readonly Action<long[]> actionSpeedUpdated;
-        private NetworkInterface adapter = null;
-        private BackgroundWorker bgWork = null;
+        private NetworkInterface adapter;
+        private BackgroundWorker bgWork;
 
-        private long adapterBytesSent = 0;
-        private long adapterBytesReceived = 0;
+        private long adapterBytesSent;
+        private long adapterBytesReceived;
 
         public BandwidthMeter(Action<long[]> actionSpeedUpdated)
         {
@@ -41,11 +41,6 @@ namespace Privch.Model.Network
             IPInterfaceStatistics statistic = adapter.GetIPStatistics();
             adapterBytesReceived = statistic.BytesReceived;
             adapterBytesSent = statistic.BytesSent;
-        }
-
-        public void Start2()
-        {
-
         }
 
         public void Start()

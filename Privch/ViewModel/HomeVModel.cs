@@ -43,7 +43,7 @@ namespace Privch.ViewModel
         public List<ContentTable> ContentList { get; }
 
         // status
-        private volatile bool processing_check_response = false;
+        private volatile bool processing_check_response;
 
         // language
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");

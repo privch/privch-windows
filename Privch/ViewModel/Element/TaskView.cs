@@ -24,10 +24,10 @@ namespace Privch.ViewModel.Element
             }
         }
 
-        public Action StopAction { get; set; } = null;
+        public Action StopAction { get; set; }
 
-        private string name = null;
-        private int progress100 = 0;
+        private string name;
+        private int progress100;
 
         public override int GetHashCode()
         {

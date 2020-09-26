@@ -21,7 +21,7 @@ namespace Privch.Model
         public static List<Shadowsocks> ShadowsocksList;
         public static List<V2RayVMess> V2RayList;
 
-        private static HttpListener httpListener = null;
+        private static HttpListener httpListener;
         private static string pathShadowsocksXml;
         private static string pathV2RayXml;
 

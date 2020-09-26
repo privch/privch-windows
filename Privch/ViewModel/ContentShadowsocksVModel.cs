@@ -38,7 +38,7 @@ namespace Privch.ViewModel
         }
 
         // status
-        private volatile bool processing_update_info = false;
+        private volatile bool processing_update_info;
 
         // language
         private static readonly string sr_yes = (string)Application.Current.FindResource("_yes");

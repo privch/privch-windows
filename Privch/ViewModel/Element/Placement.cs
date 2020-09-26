@@ -63,9 +63,9 @@ namespace Privch.ViewModel.Element
             }
         }
 
-        private double vx = 0;
-        private double vy = 0;
-        private double vw = 0;
-        private double vh = 0;
+        private double vx;
+        private double vy;
+        private double vw;
+        private double vh;
     }
 }

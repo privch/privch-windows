@@ -26,7 +26,7 @@ namespace Privch.ViewModel
         private readonly Action<bool> actionComplete;
 
         // status. also use to cancel task
-        private volatile bool processing_check_ping = false;
+        private volatile bool processing_check_ping;
 
         // language
         private readonly string promptTitle;

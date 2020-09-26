@@ -10,8 +10,8 @@ namespace Privch.Model
         public static Preference Appearance;
 
         //status
-        public static BaseServer RemoteServer = null;
-        public static bool IsServerPoolEnabled = false;
+        public static BaseServer RemoteServer;
+        public static bool IsServerPoolEnabled;
 
         private const string ServerTypeSS = "Shadowsocks";
         private const string ServerTypeV2Ray = "V2Ray";

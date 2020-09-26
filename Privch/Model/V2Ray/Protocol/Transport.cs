@@ -27,21 +27,21 @@ namespace Privch.Model.V2Ray.Protocol
 
             public string security { get; set; } = "none";
 
-            public TLS tlsSettings { get; set; } = null;
+            public TLS tlsSettings { get; set; }
 
-            public string tcpSettings { get; set; } = null; // not implement
+            public string tcpSettings { get; set; }  // not implement
 
-            public string kcpSettings { get; set; } = null; // not implement
+            public string kcpSettings { get; set; } // not implement
 
-            public WebSocket wsSettings { get; set; } = null;
+            public WebSocket wsSettings { get; set; }
 
-            public VHTTP httpSettings { get; set; } = null;
+            public VHTTP httpSettings { get; set; }
 
-            public DomainSocket dsSettings { get; set; } = null;
+            public DomainSocket dsSettings { get; set; }
 
-            public string quicSettings { get; set; } = null; // Quick UDP Internet Connection. not implement
+            public string quicSettings { get; set; }  // Quick UDP Internet Connection. not implement
 
-            public Sockopt sockopt { get; set; } = null;
+            public Sockopt sockopt { get; set; }
         }
 
         public class TLS
@@ -50,13 +50,13 @@ namespace Privch.Model.V2Ray.Protocol
 
             public string[] alpn { get; set; } = { "http/1.1" };
 
-            public bool allowInsecure { get; set; } = false;
+            public bool allowInsecure { get; set; }
 
-            public bool allowInsecureCiphers { get; set; } = false;
+            public bool allowInsecureCiphers { get; set; }
 
-            public bool disableSystemRoot { get; set; } = false;
+            public bool disableSystemRoot { get; set; }
 
-            public Certificate[] certificates { get; set; } = null;
+            public Certificate[] certificates { get; set; }
         }
 
         public class WebSocket
@@ -69,14 +69,14 @@ namespace Privch.Model.V2Ray.Protocol
 
         public class VHTTP
         {
-            public string[] host { get; set; } = null;
+            public string[] host { get; set; }
 
             public string path { get; set; } = "/";
         }
 
         public class DomainSocket
         {
-            public string path { get; set; } = null; // path to ds file
+            public string path { get; set; }  // path to ds file
         }
 
         public class Sockopt
@@ -87,9 +87,9 @@ namespace Privch.Model.V2Ray.Protocol
                 "off"
             };
 
-            public int mark { get; set; } = 0; // linux SO_MARK
+            public int mark { get; set; }  // linux SO_MARK
 
-            public bool tcpFastOpen { get; set; } = false;
+            public bool tcpFastOpen { get; set; }
 
             public string tproxy { get; set; } = "off";
         }
@@ -106,11 +106,11 @@ namespace Privch.Model.V2Ray.Protocol
 
             // certificateFile or certificate, choose one
             public string certificateFile { get; set; } = ""; // path to certificate.crt. 
-            public string[] certificate { get; set; } = null; // content of certificate. 
+            public string[] certificate { get; set; } // content of certificate. 
 
             // keyFile or key, choose one
             public string keyFile { get; set; } = ""; // path to key.key
-            public string[] key { get; set; } = null; // content of key
+            public string[] key { get; set; } // content of key
         }
     }
 }

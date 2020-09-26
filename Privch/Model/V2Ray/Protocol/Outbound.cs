@@ -16,18 +16,18 @@ namespace Privch.Model.V2Ray.Protocol
             "VMess",
         };
 
-        public string tag { get; set; } = null;
+        public string tag { get; set; }
 
         public string sendThrough { get; set; } = "0.0.0.0"; // not implement
 
-        public string protocol { get; set; } = null;
+        public string protocol { get; set; }
 
-        public VMess settings { get; set; } = null; // protocol implement
+        public VMess settings { get; set; } // protocol implement
 
-        public Transport.StreamSettings streamSettings { get; set; } = null;
+        public Transport.StreamSettings streamSettings { get; set; }
 
-        public string proxySettings { get; set; } = null; // not implement
+        public string proxySettings { get; set; } // not implement
 
-        public Mux mux { get; set; } = null;
+        public Mux mux { get; set; }
     }
 }

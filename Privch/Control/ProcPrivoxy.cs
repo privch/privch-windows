@@ -18,7 +18,7 @@ namespace Privch.Control
     {
         // can't use field here
         public static string PathPrivoxyExe => $@"{App.DirectoryPrivoxy}\{privoxy_exe_name}";
-        private static Process process_privoxy = null;
+        private static Process process_privoxy;
 
         /** privoxy-windows 3.0.28
          */

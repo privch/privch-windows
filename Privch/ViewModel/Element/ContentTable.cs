@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Privch.ViewModel.Element
+namespace PrivCh.ViewModel.Element
 {
     public class ContentTable
     {

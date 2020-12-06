@@ -1,4 +1,4 @@
-﻿namespace Privch.ViewModel.Element
+﻿namespace PrivCh.ViewModel.Element
 {
     public class ProgressView
     {

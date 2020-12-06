@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
-using Privch.Utility;
+using PrivCh.Utility;
 
-namespace Privch.Model.IPAddress
+namespace PrivCh.Model.IPAddress
 {
     [Serializable]
     public class IPInformation

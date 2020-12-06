@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Privch.ViewModel.Element
+namespace PrivCh.ViewModel.Element
 {
     [ValueConversion(typeof(int), typeof(bool))]
     public class CutoffConverter : IValueConverter

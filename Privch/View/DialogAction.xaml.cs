@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 
-namespace Privch.View
+namespace PrivCh.View
 {
     public partial class DialogAction : Window
     {

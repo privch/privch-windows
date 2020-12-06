@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Privch.View
+namespace PrivCh.View
 {
     // TODO - Not used yet
     public partial class DialogEdit : Window

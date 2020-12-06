@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Windows;
 
-namespace Privch.Model
+namespace PrivCh.Model
 {
     [Serializable]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]

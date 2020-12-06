@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Privch.ViewModel.Element;
+using PrivCh.ViewModel.Element;
 
 /**
  * NOTE - Check for update.
  */
-namespace Privch.ViewModel
+namespace PrivCh.ViewModel
 {
     class DialogAboutVModel : BaseViewModel
     {

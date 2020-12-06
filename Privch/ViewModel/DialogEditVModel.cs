@@ -1,7 +1,7 @@
 ﻿using System;
-using Privch.ViewModel.Element;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.ViewModel
+namespace PrivCh.ViewModel
 {
     class DialogEditVModel : BaseViewModel
     {

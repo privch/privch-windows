@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Privch.Model;
-using Privch.Model.SS;
-using Privch.Utility;
+using PrivCh.Model;
+using PrivCh.Model.SS;
+using PrivCh.Utility;
 
-namespace Privch.Control
+namespace PrivCh.Control
 {
     // NOTE - Shadowsocks only
     internal static class ServerPoolCtrl

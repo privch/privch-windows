@@ -7,12 +7,12 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Media;
-using Privch.Model;
-using Privch.Model.Network;
-using Privch.Utility;
-using Privch.ViewModel.Element;
+using PrivCh.Model;
+using PrivCh.Model.Network;
+using PrivCh.Utility;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.ViewModel
+namespace PrivCh.ViewModel
 {
     class ContentNetworkVModel : BaseViewModel, IDisposable
     {

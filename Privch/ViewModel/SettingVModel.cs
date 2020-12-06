@@ -2,12 +2,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Windows;
-using Privch.Control;
-using Privch.Model;
-using Privch.Utility;
-using Privch.ViewModel.Element;
+using PrivCh.Control;
+using PrivCh.Model;
+using PrivCh.Utility;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.ViewModel
+namespace PrivCh.ViewModel
 {
     class SettingVModel : BaseViewModel
     {

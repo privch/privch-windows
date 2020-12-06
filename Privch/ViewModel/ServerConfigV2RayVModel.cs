@@ -1,7 +1,7 @@
-﻿using Privch.Model.V2Ray;
-using Privch.ViewModel.Element;
+﻿using PrivCh.Model.V2Ray;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.ViewModel
+namespace PrivCh.ViewModel
 {
     class ServerConfigV2RayVModel : BaseViewModel
     {

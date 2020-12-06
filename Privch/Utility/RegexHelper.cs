@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Privch.Utility
+namespace PrivCh.Utility
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public static class RegexHelper

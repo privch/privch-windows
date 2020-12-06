@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using Privch.Model;
-using Privch.Model.SS;
-using Privch.Utility;
+using PrivCh.Model;
+using PrivCh.Model.SS;
+using PrivCh.Utility;
 
-namespace Privch.Control
+namespace PrivCh.Control
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class ProcSS

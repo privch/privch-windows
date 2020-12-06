@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using Privch.Model.V2Ray;
-using Privch.Utility;
+using PrivCh.Model.V2Ray;
+using PrivCh.Utility;
 
-namespace Privch.Control
+namespace PrivCh.Control
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     class ProcV2Ray
@@ -24,7 +24,7 @@ namespace Privch.Control
 
         private const string v2ray_config_json_name = "v2ray-config.json";
         private const string config_listen_port = "PORT-LISTEN";
-        private const string config_outbound = "Privch-Outbound";
+        private const string config_outbound = "PrivCh-Outbound";
 
         public static void KillRunning()
         {

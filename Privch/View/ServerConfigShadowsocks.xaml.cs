@@ -1,8 +1,8 @@
 ﻿using System.Windows.Controls;
-using Privch.Model.SS;
-using Privch.ViewModel;
+using PrivCh.Model.SS;
+using PrivCh.ViewModel;
 
-namespace Privch.View
+namespace PrivCh.View
 {
     public partial class ServerConfigShadowsocks : UserControl
     {

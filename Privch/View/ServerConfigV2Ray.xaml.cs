@@ -1,8 +1,8 @@
 ﻿using System.Windows.Controls;
-using Privch.Model.V2Ray;
-using Privch.ViewModel;
+using PrivCh.Model.V2Ray;
+using PrivCh.ViewModel;
 
-namespace Privch.View
+namespace PrivCh.View
 {
     public partial class ServerConfigV2Ray : UserControl
     {

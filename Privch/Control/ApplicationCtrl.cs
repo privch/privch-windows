@@ -3,12 +3,12 @@ using System.IO.Pipes;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Privch.Control
+namespace PrivCh.Control
 {
     internal static class ApplicationCtrl
     {
         public const string MessageShowHome = "Show-Home";
-        private const string pipe_name = "Privch-Pipe";
+        private const string pipe_name = "PrivCh-Pipe";
 
         private static NamedPipeServerStream pipeServer;
         private static StreamReader streamReader;

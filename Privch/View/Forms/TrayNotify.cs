@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Privch.Control;
-using Privch.Model;
+using PrivCh.Control;
+using PrivCh.Model;
 
-namespace Privch.View.Forms
+namespace PrivCh.View.Forms
 {
     public class TrayNotify : IDisposable
     {

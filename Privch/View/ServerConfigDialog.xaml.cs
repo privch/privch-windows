@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
-using Privch.Model;
-using Privch.Model.Setting;
-using Privch.ViewModel;
+using PrivCh.Model;
+using PrivCh.Model.Setting;
+using PrivCh.ViewModel;
 
-namespace Privch.View
+namespace PrivCh.View
 {
     public partial class ServerConfigDialog : Window
     {

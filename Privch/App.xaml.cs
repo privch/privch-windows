@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
-using Privch.Control;
-using Privch.Model;
-using Privch.Utility;
+using PrivCh.Control;
+using PrivCh.Model;
+using PrivCh.Utility;
 
-namespace Privch
+namespace PrivCh
 {
     /**
      * TODO - English, Chinese language
@@ -79,7 +79,7 @@ namespace Privch
             StartupUri = new System.Uri("View/WindowShutdown.xaml", System.UriKind.Relative);
 
             // single instance
-            if (SystemUtil.IsProcessExist("Privch"))
+            if (SystemUtil.IsProcessExist("PrivCh"))
             {
                 ApplicationCtrl.Send(ApplicationCtrl.MessageShowHome);
                 Shutdown();

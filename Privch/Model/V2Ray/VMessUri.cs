@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Privch.Model.V2Ray
+namespace PrivCh.Model.V2Ray
 {
     [DataContract(Name = "VMessUri")]
     public class VMessUri

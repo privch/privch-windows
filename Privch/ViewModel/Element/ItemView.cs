@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Privch.ViewModel.Element
+namespace PrivCh.ViewModel.Element
 {
     [SuppressMessage("Design", "CA1056:Uri properties should not be strings", Justification = "<Pending>")]
     public class ItemView

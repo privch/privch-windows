@@ -152,10 +152,10 @@
     <value>Binary\v2ray\v2ray.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="privch_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icon\Privch-Off.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Icon\PrivCh-Off.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="privch_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icon\Privch-On.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Icon\PrivCh-On.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="privoxy_config_txt" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Binary\privoxy\privoxy-config.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>

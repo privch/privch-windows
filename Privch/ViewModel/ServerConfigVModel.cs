@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Privch.Model;
-using Privch.Utility;
-using Privch.ViewModel.Element;
+using PrivCh.Model;
+using PrivCh.Utility;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.ViewModel
+namespace PrivCh.ViewModel
 {
     public class ServerConfigVModel : BaseViewModel
     {

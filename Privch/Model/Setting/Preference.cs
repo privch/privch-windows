@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows;
-using Privch.ViewModel.Element;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.Model.Setting
+namespace PrivCh.Model.Setting
 {
     /**<summary>
      * UI Preference, Such as window position, window size, tab status.

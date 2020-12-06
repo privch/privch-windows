@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Privch.ViewModel.Element
+namespace PrivCh.ViewModel.Element
 {
     public class TaskView : BaseViewModel
     {

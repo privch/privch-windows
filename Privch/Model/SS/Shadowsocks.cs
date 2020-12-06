@@ -5,10 +5,10 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using Privch.Model.IPAddress;
-using Privch.Utility;
+using PrivCh.Model.IPAddress;
+using PrivCh.Utility;
 
-namespace Privch.Model.SS
+namespace PrivCh.Model.SS
 {
     [Serializable]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]

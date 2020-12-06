@@ -6,11 +6,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Privch")]
+[assembly: AssemblyTitle("PrivCh")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("XinLake")]
-[assembly: AssemblyProduct("Privch")]
+[assembly: AssemblyProduct("PrivCh")]
 [assembly: AssemblyCopyright("Copyright © 2020 XinLake")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

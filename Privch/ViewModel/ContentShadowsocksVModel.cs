@@ -5,14 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Privch.Control;
-using Privch.Model;
-using Privch.Model.SS;
-using Privch.Utility;
-using Privch.View;
-using Privch.ViewModel.Element;
+using PrivCh.Control;
+using PrivCh.Model;
+using PrivCh.Model.SS;
+using PrivCh.Utility;
+using PrivCh.View;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.ViewModel
+namespace PrivCh.ViewModel
 {
     class ContentShadowsocksVModel : BaseServerVModel
     {

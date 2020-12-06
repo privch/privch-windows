@@ -2,14 +2,14 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Privch.Control;
-using Privch.Model;
-using Privch.Model.V2Ray;
-using Privch.Utility;
-using Privch.View;
-using Privch.ViewModel.Element;
+using PrivCh.Control;
+using PrivCh.Model;
+using PrivCh.Model.V2Ray;
+using PrivCh.Utility;
+using PrivCh.View;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.ViewModel
+namespace PrivCh.ViewModel
 {
     /** NOTE
      * V2Ray have not ip information

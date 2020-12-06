@@ -2,11 +2,11 @@
 using System;
 using System.Linq;
 using System.Windows;
-using Privch.View;
-using Privch.ViewModel;
-using Privch.ViewModel.Element;
+using PrivCh.View;
+using PrivCh.ViewModel;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.Control
+namespace PrivCh.Control
 {
     internal static class InterfaceCtrl
     {

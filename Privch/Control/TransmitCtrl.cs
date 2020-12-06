@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Privch.Model;
-using Privch.Model.Setting;
-using Privch.Utility;
+using PrivCh.Model;
+using PrivCh.Model.Setting;
+using PrivCh.Utility;
 
-namespace Privch.Control
+namespace PrivCh.Control
 {
     internal static class TransmitCtrl
     {

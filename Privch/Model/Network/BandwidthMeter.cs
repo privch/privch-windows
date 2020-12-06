@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.NetworkInformation;
 using System.Threading;
 
-namespace Privch.Model.Network
+namespace PrivCh.Model.Network
 {
     internal class BandwidthMeter : IDisposable
     {

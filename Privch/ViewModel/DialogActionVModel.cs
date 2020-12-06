@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Privch.ViewModel.Element;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.ViewModel
+namespace PrivCh.ViewModel
 {
     class DialogActionVModel : BaseViewModel
     {

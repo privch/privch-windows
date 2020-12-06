@@ -5,12 +5,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Privch.Control;
-using Privch.Model;
-using Privch.Utility;
-using Privch.ViewModel.Element;
+using PrivCh.Control;
+using PrivCh.Model;
+using PrivCh.Utility;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.ViewModel
+namespace PrivCh.ViewModel
 {
     public class HomeVModel : BaseViewModel
     {

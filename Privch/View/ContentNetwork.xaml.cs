@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
-using Privch.ViewModel;
+using PrivCh.ViewModel;
 
-namespace Privch.View
+namespace PrivCh.View
 {
     public partial class ContentNetwork : UserControl
     {

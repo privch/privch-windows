@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Privch.View
+namespace PrivCh.View
 {
     public partial class DialogPrompt : Window
     {

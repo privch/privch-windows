@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Privch.Model.Network
+namespace PrivCh.Model.Network
 {
     public class BandwidthInfo
     {

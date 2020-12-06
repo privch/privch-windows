@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Privch.ViewModel.Element
+namespace PrivCh.ViewModel.Element
 {
     /** 
      * A parameterless costructor is needed by serializer.

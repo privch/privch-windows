@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Privch.Model.IPAddress
+namespace PrivCh.Model.IPAddress
 {
     [DataContract(Name = "IPInfoIO")]
     public class IPInfoIO

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Privch.ViewModel.Element
+namespace PrivCh.ViewModel.Element
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {

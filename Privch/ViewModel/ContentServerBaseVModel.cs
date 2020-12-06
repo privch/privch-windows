@@ -5,10 +5,10 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Privch.Control;
-using Privch.Model;
+using PrivCh.Control;
+using PrivCh.Model;
 
-namespace Privch.ViewModel.Element
+namespace PrivCh.ViewModel.Element
 {
     internal abstract class BaseServerVModel : INotifyPropertyChanged
     {

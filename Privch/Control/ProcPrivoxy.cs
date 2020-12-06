@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using Privch.Utility;
+using PrivCh.Utility;
 
-namespace Privch.Control
+namespace PrivCh.Control
 {
     /** Notes:
         privoxy[--help][--version][--no - daemon][--pidfile PIDFILE][--user USER
@@ -20,11 +20,11 @@ namespace Privch.Control
         public static string PathPrivoxyExe => $@"{App.DirectoryPrivoxy}\{privoxy_exe_name}";
         private static Process process_privoxy;
 
-        /** privoxy-windows 3.0.28
+        /** privoxy-windows 3.0.29, x64
          */
         private const string privoxy_exe_name = "xt-privoxy.exe";
         private const string privoxy_exe_process = "xt-privoxy";
-        private const string privoxy_exe_md5 = "3CF46F77B0917F08374E23EE59F7187F";
+        private const string privoxy_exe_md5 = "3BE55CBAE0311876FC9090F2CAFA8D11";
 
         private const string privoxy_config_txt_name = "privoxy-config.txt";
         private const string config_port_listen = "PORT-LISTEN";

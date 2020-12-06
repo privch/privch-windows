@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using Privch.Control;
-using Privch.Model.SS;
-using Privch.Model.V2Ray;
-using Privch.Utility;
+using PrivCh.Control;
+using PrivCh.Model.SS;
+using PrivCh.Model.V2Ray;
+using PrivCh.Utility;
 
-namespace Privch.Model
+namespace PrivCh.Model
 {
     /**
      * TODO - Optimize server pool

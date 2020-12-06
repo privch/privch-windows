@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Runtime.InteropServices;
 
-namespace Privch.Control
+namespace PrivCh.Control
 {
     public static class NativeMethods
     {

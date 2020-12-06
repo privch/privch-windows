@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Privch.Model.V2Ray.Protocol
+namespace PrivCh.Model.V2Ray.Protocol
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     public class Outbound

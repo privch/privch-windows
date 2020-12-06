@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Privch.Model.Setting
+namespace PrivCh.Model.Setting
 {
     /**<summary>
      * Feature options. Such as SystemProxy, Privoxy, Shadowsocks.

@@ -6,7 +6,7 @@ using System.Management;
 using System.Net;
 using System.Net.NetworkInformation;
 
-namespace Privch.Utility
+namespace PrivCh.Utility
 {
     public static class NetworkUtil
     {

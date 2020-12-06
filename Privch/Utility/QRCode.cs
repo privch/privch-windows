@@ -5,7 +5,7 @@ using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
 
-namespace Privch.Utility
+namespace PrivCh.Utility
 {
     internal static class QRCode
     {

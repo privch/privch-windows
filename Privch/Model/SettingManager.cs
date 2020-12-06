@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using Privch.Model.Setting;
-using Privch.Utility;
+using PrivCh.Model.Setting;
+using PrivCh.Utility;
 
-namespace Privch.Model
+namespace PrivCh.Model
 {
     internal static class SettingManager
     {

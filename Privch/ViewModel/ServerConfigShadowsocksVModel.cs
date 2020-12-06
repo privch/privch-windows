@@ -1,7 +1,7 @@
-﻿using Privch.Model.SS;
-using Privch.ViewModel.Element;
+﻿using PrivCh.Model.SS;
+using PrivCh.ViewModel.Element;
 
-namespace Privch.ViewModel
+namespace PrivCh.ViewModel
 {
     class ServerConfigShadowsocksVModel : BaseViewModel
     {

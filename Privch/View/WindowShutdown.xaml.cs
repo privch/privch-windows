@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Privch.View
+namespace PrivCh.View
 {
     /// <summary>
     /// Interaction logic for WindowShutdown.xaml

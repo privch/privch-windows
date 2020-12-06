@@ -17,7 +17,7 @@ function CompressAndDelete {
 
 
 #v2ray 4.22.1
-$path = "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\v2ray"
+$path = "F:\PrivCh-Windows\Source-PrivCh\PrivCh\Properties\Binary\v2ray"
 $files = 
     "v2ctl.exe",
     "v2ray.exe"
@@ -26,7 +26,7 @@ CompressAndDelete -path $path -files $files
 
 
 #shadowsocks 3.3.4
-$path = "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\shadowsocks"
+$path = "F:\PrivCh-Windows\Source-PrivCh\PrivCh\Properties\Binary\shadowsocks"
 $files = 
     "cygev-4.dll",
     "cyggcc_s-seh-1.dll",
@@ -40,7 +40,7 @@ CompressAndDelete -path $path -files $files
 
 
 #privoxy 3.0.28
-$path = "F:\XTransmit\Windows\Source-XTransmit\XTransmit\Resources\Binary\privoxy"
+$path = "F:\PrivCh-Windows\Source-PrivCh\PrivCh\Properties\Binary\privoxy"
 $files = 
     "privoxy.exe"
     

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
-using Privch.Utility;
+using PrivCh.Utility;
 
-namespace Privch.Model.V2Ray
+namespace PrivCh.Model.V2Ray
 {
     [Serializable]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]

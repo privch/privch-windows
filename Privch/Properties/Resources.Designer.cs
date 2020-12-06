@@ -63,9 +63,9 @@ namespace PrivCh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] cygev_4_dll_gz {
+        internal static byte[] libbloom_dll {
             get {
-                object obj = ResourceManager.GetObject("cygev_4_dll_gz", resourceCulture);
+                object obj = ResourceManager.GetObject("libbloom_dll", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace PrivCh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] cyggcc_s_seh_1_dll_gz {
+        internal static byte[] libcork_dll {
             get {
-                object obj = ResourceManager.GetObject("cyggcc_s_seh_1_dll_gz", resourceCulture);
+                object obj = ResourceManager.GetObject("libcork_dll", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace PrivCh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] cygmbedcrypto_3_dll_gz {
+        internal static byte[] libev_4_dll {
             get {
-                object obj = ResourceManager.GetObject("cygmbedcrypto_3_dll_gz", resourceCulture);
+                object obj = ResourceManager.GetObject("libev_4_dll", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace PrivCh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] cygpcre_1_dll_gz {
+        internal static byte[] libgcc_s_seh_1_dll {
             get {
-                object obj = ResourceManager.GetObject("cygpcre_1_dll_gz", resourceCulture);
+                object obj = ResourceManager.GetObject("libgcc_s_seh_1_dll", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace PrivCh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] cygsodium_23_dll_gz {
+        internal static byte[] libipset_dll {
             get {
-                object obj = ResourceManager.GetObject("cygsodium_23_dll_gz", resourceCulture);
+                object obj = ResourceManager.GetObject("libipset_dll", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -113,9 +113,39 @@ namespace PrivCh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] cygwin1_dll_gz {
+        internal static byte[] libmbedcrypto_dll {
             get {
-                object obj = ResourceManager.GetObject("cygwin1_dll_gz", resourceCulture);
+                object obj = ResourceManager.GetObject("libmbedcrypto_dll", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] libpcre_1_dll {
+            get {
+                object obj = ResourceManager.GetObject("libpcre_1_dll", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] libsodium_23_dll {
+            get {
+                object obj = ResourceManager.GetObject("libsodium_23_dll", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] libwinpthread_1_dll {
+            get {
+                object obj = ResourceManager.GetObject("libwinpthread_1_dll", resourceCulture);
                 return ((byte[])(obj));
             }
         }

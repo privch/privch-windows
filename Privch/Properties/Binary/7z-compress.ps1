@@ -1,5 +1,5 @@
 $ErrorActionPreference = "Stop"
-$7z = "D:\[Knight]\7-Zip\Console\x64\7za.exe"
+$7za = "D:\[Knight]\7-Zip\Console\x64\7za.exe"
 
 function CompressAndDelete {
     Param ([string]$path, [string[]]$files)
@@ -7,10 +7,16 @@ function CompressAndDelete {
     Set-Location -Path $path
 
     foreach($file in $files) {
-        if (Test-Path -Path ".\$file") {
-            Get-FileHash .\$file -Algorithm MD5 | Format-List
-            & $7z a -tgzip "$file.gz" $file
-            Remove-Item $file
+        if (Test-Path -Path "$file") {
+            # delete the old gz file
+            if(Test-Path -Path "$file.gz") {
+                Remove-Item "$file.gz"
+            }
+
+            # compress to new gz file
+            Get-FileHash $file -Algorithm MD5 | Format-List
+            & $7za a -tgzip "$file.gz" $file
+            Remove-Item "$file"
         }
     }
 }
@@ -25,21 +31,24 @@ $files =
 CompressAndDelete -path $path -files $files
 
 
-#shadowsocks 3.3.4
+#shadowsocks 3.3.5
 $path = "F:\PrivCh-Windows\Source-PrivCh\PrivCh\Properties\Binary\shadowsocks"
 $files = 
-    "cygev-4.dll",
-    "cyggcc_s-seh-1.dll",
-    "cygmbedcrypto-3.dll",
-    "cygpcre-1.dll",
-    "cygsodium-23.dll",
-    "cygwin1.dll",
+    "libbloom.dll",
+    "libcork.dll",
+    "libev-4.dll",
+    "libgcc_s_seh-1.dll",
+    "libipset.dll",
+    "libmbedcrypto.dll",
+    "libpcre-1.dll",
+    "libsodium-23.dll",
+    "libwinpthread-1.dll",
     "ss-local.exe"
 
 CompressAndDelete -path $path -files $files
 
 
-#privoxy 3.0.28
+#privoxy 3.0.29
 $path = "F:\PrivCh-Windows\Source-PrivCh\PrivCh\Properties\Binary\privoxy"
 $files = 
     "privoxy.exe"
@@ -48,4 +57,4 @@ CompressAndDelete -path $path -files $files
 
 
 #done
-Read-Host "Complete. Press any key to close...";
+Read-Host "Complete. Press any key to close ...";

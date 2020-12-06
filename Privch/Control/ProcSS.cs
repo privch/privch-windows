@@ -12,29 +12,38 @@ namespace PrivCh.Control
         // can't use field here
         private static string SSExePath => $@"{App.DirectoryShadowsocks}\{ss_local_exe_name}";
 
-        /** shadowsocks-libev 3.3.4
+        /** shadowsocks-libev 3.3.5-mingw-x64
          */
-        private const string cygev_4_dll_name = "cygev-4.dll";
-        private const string cygev_4_dll_md5 = "0F6CE5CF3FE78F6B730155E4CE254185";
+        private const string libbloom_dll_name = "libbloom.dll";
+        private const string libbloom_dll_md5 = "E0263B08EF7A64E8621F1584E094E3D6";
 
-        private const string cyggcc_s_seh_1_dll_name = "cyggcc_s-seh-1.dll";
-        private const string cyggcc_s_seh_1_dll_md5 = "0CB45DABA5809E2A67C9062637792E04";
+        private const string libcork_dll_name = "libcork.dll";
+        private const string libcork_dll_md5 = "FB6CA972B6A5F24DF04D18B8C5DFE1CB";
 
-        private const string cygmbedcrypto_3_dll_name = "cygmbedcrypto-3.dll";
-        private const string cygmbedcrypto_3_dll_md5 = "48B2B0FD2CBA64784C487D329D010A81";
+        private const string libev_4_dll_name = "libev-4.dll";
+        private const string libev_4_dll_md5 = "4B893C7C4AFFA24B6F2346DD68995F8F";
 
-        private const string cygpcre_1_dll_name = "cygpcre-1.dll";
-        private const string cygpcre_1_dll_md5 = "1020C690FDB824BF5D17C4FFC68ED71A";
+        private const string libgcc_s_seh_1_dll_name = "libgcc_s_seh-1.dll";
+        private const string libgcc_s_seh_1_dll_md5 = "E760F496AC8726441DE778C7B2B50836";
 
-        private const string cygsodium_23_dll_name = "cygsodium-23.dll";
-        private const string cygsodium_23_dll_md5 = "DAD70135850DA1B8013A499AF9E16B2C";
+        private const string libipset_dll_name = "libipset.dll";
+        private const string libipset_dll_md5 = "34AA3399324C43D6AF8FA83DE8C4B58B";
 
-        private const string cygwin1_dll_name = "cygwin1.dll";
-        private const string cygwin1_dll_md5 = "476090DABDE7721FFA2BFD1C011DC6DE";
+        private const string libmbedcrypto_dll_name = "libmbedcrypto.dll";
+        private const string libmbedcrypto_dll_md5 = "D0C101D8A58A991BF6DC2A75111DB026";
+
+        private const string libpcre_1_dll_name = "libpcre-1.dll";
+        private const string libpcre_1_dll_md5 = "16028C973F16F99F2503D93662B76E84";
+
+        private const string libsodium_23_dll_name = "libsodium-23.dll";
+        private const string libsodium_23_dll_md5 = "512D3839FC1E45F2B65A7C85E0E20E54";
+
+        private const string libwinpthread_1_dll_name = "libwinpthread-1.dll";
+        private const string libwinpthread_1_dll_md5 = "33AEDD85802056A8A89FEDE5882EB4EC";
 
         private const string ss_local_exe_name = "xt-ss-local.exe"; // name ss-local-x.exe is for process control
         private const string ss_local_exe_process = "xt-ss-local";
-        private const string ss_local_exe_md5 = "CB9B8D4C913304A531C07C65734CE53F";
+        private const string ss_local_exe_md5 = "ECDD8DFA1E0883A9E518B384630B97E6";
 
         public static void KillRunning()
         {
@@ -56,12 +65,15 @@ namespace PrivCh.Control
             // check files
             object[][] checks =
             {
-                new object[] { $@"{App.DirectoryShadowsocks}\{cygev_4_dll_name}", cygev_4_dll_md5, Properties.Resources.cygev_4_dll_gz },
-                new object[] { $@"{App.DirectoryShadowsocks}\{cyggcc_s_seh_1_dll_name}", cyggcc_s_seh_1_dll_md5, Properties.Resources.cyggcc_s_seh_1_dll_gz },
-                new object[] { $@"{App.DirectoryShadowsocks}\{cygmbedcrypto_3_dll_name}", cygmbedcrypto_3_dll_md5, Properties.Resources.cygmbedcrypto_3_dll_gz },
-                new object[] { $@"{App.DirectoryShadowsocks}\{cygpcre_1_dll_name}", cygpcre_1_dll_md5, Properties.Resources.cygpcre_1_dll_gz },
-                new object[] { $@"{App.DirectoryShadowsocks}\{cygsodium_23_dll_name}", cygsodium_23_dll_md5, Properties.Resources.cygsodium_23_dll_gz },
-                new object[] { $@"{App.DirectoryShadowsocks}\{cygwin1_dll_name}", cygwin1_dll_md5, Properties.Resources.cygwin1_dll_gz },
+                new object[] { $@"{App.DirectoryShadowsocks}\{libbloom_dll_name}", libbloom_dll_md5, Properties.Resources.libbloom_dll },
+                new object[] { $@"{App.DirectoryShadowsocks}\{libcork_dll_name}", libcork_dll_md5, Properties.Resources.libcork_dll },
+                new object[] { $@"{App.DirectoryShadowsocks}\{libev_4_dll_name}", libev_4_dll_md5, Properties.Resources.libev_4_dll },
+                new object[] { $@"{App.DirectoryShadowsocks}\{libgcc_s_seh_1_dll_name}", libgcc_s_seh_1_dll_md5, Properties.Resources.libgcc_s_seh_1_dll },
+                new object[] { $@"{App.DirectoryShadowsocks}\{libipset_dll_name}", libipset_dll_md5, Properties.Resources.libipset_dll },
+                new object[] { $@"{App.DirectoryShadowsocks}\{libmbedcrypto_dll_name}", libmbedcrypto_dll_md5, Properties.Resources.libmbedcrypto_dll },
+                new object[] { $@"{App.DirectoryShadowsocks}\{libpcre_1_dll_name}", libpcre_1_dll_md5, Properties.Resources.libpcre_1_dll },
+                new object[] { $@"{App.DirectoryShadowsocks}\{libsodium_23_dll_name}", libsodium_23_dll_md5, Properties.Resources.libsodium_23_dll },
+                new object[] { $@"{App.DirectoryShadowsocks}\{libwinpthread_1_dll_name}", libwinpthread_1_dll_md5, Properties.Resources.libwinpthread_1_dll },
                 new object[] { SSExePath, ss_local_exe_md5, Properties.Resources.ss_local_exe_gz },
             };
 

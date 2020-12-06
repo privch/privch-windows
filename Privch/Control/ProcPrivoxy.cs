@@ -20,7 +20,7 @@ namespace PrivCh.Control
         public static string PathPrivoxyExe => $@"{App.DirectoryPrivoxy}\{privoxy_exe_name}";
         private static Process process_privoxy;
 
-        /** privoxy-windows 3.0.29, x64
+        /** privoxy-windows 3.0.29-x64
          */
         private const string privoxy_exe_name = "xt-privoxy.exe";
         private const string privoxy_exe_process = "xt-privoxy";

@@ -6,7 +6,6 @@ using PrivCh.Utility;
 
 namespace PrivCh.Control
 {
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     class ProcV2Ray
     {
         // can't use field here

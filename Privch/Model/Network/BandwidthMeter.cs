@@ -73,7 +73,6 @@ namespace PrivCh.Model.Network
             bgWork.Dispose();
         }
 
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void BWDoWork(object sender, DoWorkEventArgs e)
         {
             while (!bgWork.CancellationPending)

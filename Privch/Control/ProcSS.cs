@@ -6,7 +6,6 @@ using PrivCh.Utility;
 
 namespace PrivCh.Control
 {
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class ProcSS
     {
         // can't use field here

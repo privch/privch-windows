@@ -10,7 +10,6 @@ using System.Xml.Serialization;
 
 namespace PrivCh.Utility
 {
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public static class TextUtil
     {
         /**
@@ -66,13 +65,12 @@ namespace PrivCh.Utility
             }
 
             // Divide by 1024 to get fractional value
-            readable = (readable / 1024);
+            readable /= 1024;
 
             // Return formatted number with suffix
             return readable.ToString("0.## ", CultureInfo.InvariantCulture) + suffix;
         }
 
-        [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "<Pending>")]
         public static byte[] GetMD5(object objectXmlUtf8)
         {
             if (objectXmlUtf8 == null)

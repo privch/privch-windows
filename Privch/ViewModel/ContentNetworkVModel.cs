@@ -37,7 +37,6 @@ namespace PrivCh.ViewModel
         // interface descriptions
         public List<string> NetworkInterfaceAll { get; }
 
-        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public string NetworkInterfaceSelected
         {
             get => SettingManager.Appearance.NetworkAdapter;

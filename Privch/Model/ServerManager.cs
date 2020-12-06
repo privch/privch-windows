@@ -13,7 +13,6 @@ namespace PrivCh.Model
     /**
      * TODO - Optimize server pool
      */
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class ServerManager
     {
         public static readonly Dictionary<string, Process> ServerProcessMap = new Dictionary<string, Process>();
@@ -127,7 +126,6 @@ namespace PrivCh.Model
 
         #region ServerPool-Show
         // http service
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private static void StartHttpShow()
         {
             try

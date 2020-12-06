@@ -23,7 +23,6 @@ namespace PrivCh
     public partial class App : Application
     {
         public static string Name { get; private set; }
-        [SuppressMessage("Design", "CA1056:Uri properties should not be strings", Justification = "<Pending>")]
         public const string UriOpenSourceSoftware = @"https://github.com/privch/privch-windows#open-source-software";
 
         public static string DirectoryApplication { get; private set; }
@@ -66,8 +65,6 @@ namespace PrivCh
 
         /** Application ===============================================================================
          */
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             string dirData = "data";

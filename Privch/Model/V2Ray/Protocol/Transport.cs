@@ -3,8 +3,6 @@
 namespace PrivCh.Model.V2Ray.Protocol
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
     public static class Transport
     {
         public class StreamSettings
@@ -63,8 +61,7 @@ namespace PrivCh.Model.V2Ray.Protocol
         {
             public string path { get; set; } = "/";
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "<Pending>")]
-            public System.Collections.Generic.Dictionary<string, string> headers { get; set; } = null;
+            public Dictionary<string, string> headers { get; set; } = null;
         }
 
         public class VHTTP

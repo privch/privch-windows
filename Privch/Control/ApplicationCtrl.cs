@@ -13,7 +13,6 @@ namespace PrivCh.Control
         private static NamedPipeServerStream pipeServer;
         private static StreamReader streamReader;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static void Initialize()
         {
             pipeServer = new NamedPipeServerStream(pipe_name, PipeDirection.In);
@@ -67,7 +66,6 @@ namespace PrivCh.Control
             streamReader.Dispose();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static void Send(string message)
         {
             NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", pipe_name, PipeDirection.Out);

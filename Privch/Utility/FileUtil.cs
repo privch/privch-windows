@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -10,7 +9,6 @@ using System.Xml.Serialization;
 
 namespace PrivCh.Utility
 {
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class FileUtil
     {
         public static bool CheckMD5(string filePath, string md5Hex)
@@ -35,7 +33,6 @@ namespace PrivCh.Utility
          * TODO - Use cryptographically stronger options
          * https://docs.microsoft.com/en-us/visualstudio/code-quality/ca5351?view=vs-2019
          */
-        [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "<Pending>")]
         public static byte[] GetMD5(string filePath)
         {
             // original data

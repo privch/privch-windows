@@ -1,7 +1,9 @@
-﻿using MaterialDesignThemes.Wpf;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
+
+using MaterialDesignThemes.Wpf;
+
 using PrivCh.View;
 using PrivCh.ViewModel;
 using PrivCh.ViewModel.Element;

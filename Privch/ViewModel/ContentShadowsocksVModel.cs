@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+
 using PrivCh.Control;
 using PrivCh.Model;
 using PrivCh.Model.SS;
@@ -18,7 +19,6 @@ namespace PrivCh.ViewModel
     {
         public ObservableCollection<Shadowsocks> ShadowsocksOC { get; private set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1822", Justification = "<Pending>")]
         public bool IsServerPoolEnabled
         {
             get => SettingManager.IsServerPoolEnabled;
@@ -262,7 +262,6 @@ namespace PrivCh.ViewModel
         // add server by import file
         public RelayCommand CommandAddServerFile => new RelayCommand(AddServerFile, CanEditList);
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void AddServerFile(object parameter)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog

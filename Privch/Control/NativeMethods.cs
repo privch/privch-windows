@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Runtime.InteropServices;
 
@@ -33,7 +32,6 @@ namespace PrivCh.Control
 
         public static readonly string Bypass = string.Join(";", arrayBypass);
 
-        [SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
         public static Uri GetCurrentConfig(string url)
         {
             IWebProxy proxy = WebRequest.GetSystemWebProxy();

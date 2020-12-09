@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
+
 using PrivCh.Utility;
 
 namespace PrivCh.Model.IPAddress
@@ -45,7 +45,6 @@ namespace PrivCh.Model.IPAddress
          * </summary>
          * TODO - UA, Proxy Parameter.
          */
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static IPInformation FromIPInfoIO(string ip)
         {
             Uri uri = new Uri("https://ipinfo.io/" + ip);

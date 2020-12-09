@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+
 using PrivCh.Model;
 using PrivCh.Model.Setting;
 using PrivCh.ViewModel;

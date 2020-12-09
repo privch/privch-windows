@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows;
+
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;

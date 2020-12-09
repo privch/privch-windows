@@ -1,8 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace PrivCh.Utility
+﻿namespace PrivCh.Utility
 {
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public static class RegexHelper
     {
         // Match IPv4-Address like 192.168.178.1

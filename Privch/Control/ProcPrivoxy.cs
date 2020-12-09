@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+
 using PrivCh.Utility;
 
 namespace PrivCh.Control
@@ -13,7 +13,6 @@ namespace PrivCh.Control
         file named 'config' in the current directory (except Win32 which will look for
         'config.txt'). If no config_file is found, Privoxy will fail to start.
      */
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     internal static class ProcPrivoxy
     {
         // can't use field here

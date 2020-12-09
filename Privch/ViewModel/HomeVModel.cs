@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+
 using PrivCh.Control;
 using PrivCh.Model;
 using PrivCh.Utility;
@@ -14,13 +14,10 @@ namespace PrivCh.ViewModel
 {
     public class HomeVModel : BaseViewModel
     {
-        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public bool IsTransmitControllable => !SettingManager.IsServerPoolEnabled;
 
-        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public string RemoteServerName => SettingManager.RemoteServer?.FriendlyName ?? sr_server_not_set;
 
-        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public bool IsTransmitEnabled
         {
             get => SettingManager.Configuration.IsTransmitEnabled;

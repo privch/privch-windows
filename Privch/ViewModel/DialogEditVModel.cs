@@ -1,4 +1,5 @@
 ﻿using System;
+
 using PrivCh.ViewModel.Element;
 
 namespace PrivCh.ViewModel
@@ -35,7 +36,6 @@ namespace PrivCh.ViewModel
         {
             if (parameter is View.DialogEdit dialog)
             {
-                actionComplete?.Invoke();
                 dialog.Close();
             }
         }

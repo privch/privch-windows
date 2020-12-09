@@ -56,16 +56,16 @@
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>
-            
+
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis MinValue="0" LabelFormatter="{Binding ChartYFormatter}">
-                     <lvc:Axis.Separator>
+                    <lvc:Axis.Separator>
                         <lvc:Separator StrokeThickness="1" 
-                                       Stroke="{DynamicResource MaterialDesignDivider}"/> 
+                                       Stroke="{DynamicResource MaterialDesignDivider}"/>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisY>
-            
+
             <lvc:CartesianChart.DataTooltip>
                 <lvc:DefaultTooltip Background="{DynamicResource MaterialDesignBackground}"/>
             </lvc:CartesianChart.DataTooltip>

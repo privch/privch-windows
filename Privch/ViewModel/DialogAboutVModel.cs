@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+
 using PrivCh.ViewModel.Element;
 
 /**
@@ -10,15 +10,11 @@ namespace PrivCh.ViewModel
 {
     class DialogAboutVModel : BaseViewModel
     {
-        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public string Name => App.Name;
         public string Version { get; }
 
-        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public ItemView[] OpensourceSoftware { get; }
 
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         public DialogAboutVModel()
         {
             try

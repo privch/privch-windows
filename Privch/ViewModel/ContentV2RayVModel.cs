@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+
 using PrivCh.Control;
 using PrivCh.Model;
 using PrivCh.Model.V2Ray;
@@ -229,7 +230,6 @@ namespace PrivCh.ViewModel
         // add server by import file
         public RelayCommand CommandAddServerFile => new RelayCommand(AddServerFile, CanEditList);
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void AddServerFile(object parameter)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog

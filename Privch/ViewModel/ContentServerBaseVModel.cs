@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+
 using PrivCh.Control;
 using PrivCh.Model;
 
@@ -27,7 +28,6 @@ namespace PrivCh.ViewModel.Element
 
         private bool CanCheckPingAll(object parameter) => !processing_check_ping;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private async void CheckPingAll(object parameter)
         {
             // add task
@@ -87,7 +87,6 @@ namespace PrivCh.ViewModel.Element
             return !processing_check_ping && parameter is System.Collections.IList;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private async void CheckPingSelected(object parameter)
         {
             // add task

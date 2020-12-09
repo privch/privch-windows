@@ -1,8 +1,9 @@
-﻿using IWshRuntimeLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+
+using IWshRuntimeLibrary;
 
 namespace PrivCh.Utility
 {
@@ -27,7 +28,6 @@ namespace PrivCh.Utility
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static void KillProcess(string procName, string filePath)
         {
             // list contains all "privoxy" process

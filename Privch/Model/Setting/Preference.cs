@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+
 using PrivCh.ViewModel.Element;
 
 namespace PrivCh.Model.Setting

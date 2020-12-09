@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Management;
 using System.Net;
@@ -15,7 +14,6 @@ namespace PrivCh.Utility
             return (int)(x?.Speed ?? 0 - y?.Speed ?? 0);
         }
 
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public static List<NetworkInterface> GetValidNetworkInterface()
         {
             List<NetworkInterface> adapterList = new List<NetworkInterface>();

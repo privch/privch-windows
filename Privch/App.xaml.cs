@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
+
 using PrivCh.Control;
 using PrivCh.Model;
 using PrivCh.Utility;
@@ -33,8 +33,6 @@ namespace PrivCh
         public static string FileApplication { get; private set; }
         public static string FilePreferenceXml { get; private set; }
         public static string FileConfigXml { get; private set; }
-        public static string FileIPAddressXml { get; private set; }
-        public static string FileUserAgentXml { get; private set; }
 
         public static string FileShadowsocksXml { get; private set; }
         public static string FileV2RayXml { get; private set; }
@@ -108,8 +106,6 @@ namespace PrivCh
 
             FilePreferenceXml = $@"{DirectoryApplication}\{dirData}\Preference.xml";
             FileConfigXml = $@"{DirectoryApplication}\{dirData}\Config.xml";
-            FileIPAddressXml = $@"{DirectoryApplication}\{dirData}\IPAddress.xml"; //china ip optimized
-            FileUserAgentXml = $@"{DirectoryApplication}\{dirData}\UserAgent.xml";
 
             FileShadowsocksXml = $@"{DirectoryApplication}\{dirData}\ServerShadowsocks.xml";
             FileV2RayXml = $@"{DirectoryApplication}\{dirData}\ServerV2Ray.xml";
@@ -182,8 +178,8 @@ namespace PrivCh
         // Something wrong happen, Unexpercted, Abnormally. Not set yet
         private void Application_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            // Start another process to send feedback for user 
-            Shutdown();
+            // TODO - Start another process to send feedback for user 
+            // Shutdown();
         }
     }
 }

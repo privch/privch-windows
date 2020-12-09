@@ -1,12 +1,13 @@
-﻿using LiveCharts;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Media;
+
+using LiveCharts;
+
 using PrivCh.Model;
 using PrivCh.Model.Network;
 using PrivCh.Utility;

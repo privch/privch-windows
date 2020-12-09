@@ -3,13 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              ShutdownMode="OnMainWindowClose"
-             StartupUri="View/WindowHome.xaml"
              Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!-- This is the current way to setup your app's initial theme -->
-                <md:BundledTheme BaseTheme="Dark" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                <md:BundledTheme BaseTheme="Dark" PrimaryColor="Purple" SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <!-- Language -->
                 <ResourceDictionary Source="Properties/Language/English.xaml" />
@@ -26,8 +25,6 @@
             
             <!-- Button for Toolbar -->
             <Style x:Key="ButtonToolbar" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
-                <Setter Property="Width" Value="50"/>
-                <Setter Property="Height" Value="40"/>
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="Margin" Value="0"/>
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>

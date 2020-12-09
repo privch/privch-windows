@@ -1,7 +1,8 @@
-﻿using MaterialDesignThemes.Wpf;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
+
+using MaterialDesignThemes.Wpf;
+
 using PrivCh.Control;
 using PrivCh.Model;
 using PrivCh.Utility;
@@ -63,7 +64,6 @@ namespace PrivCh.ViewModel
         }
 
         // autorun
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public bool IsAutorun
         {
             get => SettingManager.Configuration.IsAutorun;
@@ -84,7 +84,6 @@ namespace PrivCh.ViewModel
         }
 
         // theme
-        [SuppressMessage("Globalization", "CA1822", Justification = "<Pending>")]
         public bool IsDarkTheme
         {
             get => SettingManager.Appearance.IsDarkTheme;

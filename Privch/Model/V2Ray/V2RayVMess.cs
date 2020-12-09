@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
+
 using PrivCh.Utility;
 
 namespace PrivCh.Model.V2Ray
 {
     [Serializable]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public class V2RayVMess : BaseServer
     {
         #region Public-Static

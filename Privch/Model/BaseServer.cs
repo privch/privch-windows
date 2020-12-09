@@ -8,7 +8,6 @@ using System.Windows;
 namespace PrivCh.Model
 {
     [Serializable]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public abstract class BaseServer : INotifyPropertyChanged
     {
         // deserializer need to set property

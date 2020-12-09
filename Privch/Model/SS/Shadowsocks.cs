@@ -5,13 +5,13 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+
 using PrivCh.Model.IPAddress;
 using PrivCh.Utility;
 
 namespace PrivCh.Model.SS
 {
     [Serializable]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public class Shadowsocks : BaseServer
     {
         #region Public-Static

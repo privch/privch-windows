@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using PrivCh.Model;
 using PrivCh.Model.Setting;
 using PrivCh.Utility;
@@ -71,7 +72,7 @@ namespace PrivCh.Control
             }
         }
 
-        public static bool ChangeTransmitServer(BaseServer server, bool enforce=false)
+        public static bool ChangeTransmitServer(BaseServer server, bool enforce = false)
         {
             if (SettingManager.RemoteServer == null || !SettingManager.RemoteServer.IsServerEqual(server) || enforce)
             {

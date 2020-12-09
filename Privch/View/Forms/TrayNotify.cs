@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+
 using PrivCh.Control;
 using PrivCh.Model;
 
@@ -13,7 +13,6 @@ namespace PrivCh.View.Forms
 
         private static readonly string sr_server_not_set = (string)Application.Current.FindResource("home_server_not_set");
 
-        [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         public TrayNotify()
         {
             string enable_transmit = (string)Application.Current.FindResource("tray_enable_transmit");

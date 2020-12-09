@@ -129,7 +129,7 @@
                                 <DataTrigger Binding="{Binding Path=ListenPort, Converter={StaticResource Listening}}"
                                              Value="True">
                                     <Setter Property="Background"
-                                            Value="{DynamicResource SecondaryAccentBrush}" />
+                                            Value="{DynamicResource PrimaryHueMidBrush}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

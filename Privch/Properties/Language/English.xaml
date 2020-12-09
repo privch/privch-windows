@@ -31,6 +31,7 @@
     <system:String x:Key="_items">item(s)</system:String>
 
     <system:String x:Key="_settings">Settings</system:String>
+    <system:String x:Key="_cli">Command Line</system:String>
     <system:String x:Key="_about">About</system:String>
     <system:String x:Key="_os">System</system:String>
     <system:String x:Key="_client">Client</system:String>

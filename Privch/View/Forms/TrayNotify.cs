@@ -19,6 +19,7 @@ namespace PrivCh.View.Forms
             string scan_qrcode = (string)Application.Current.FindResource("add_server_qrcode");
             string import_clipboard = (string)Application.Current.FindResource("add_server_clipboard");
             string setting = (string)Application.Current.FindResource("_settings");
+            string cli = (string)Application.Current.FindResource("_cli");
             string exit = (string)Application.Current.FindResource("_exit");
 
             menuitemEnableTransmit = new System.Windows.Forms.MenuItem(enable_transmit, MenuItem_EnableTransmit)
@@ -44,6 +45,7 @@ namespace PrivCh.View.Forms
             //contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(import_clipboard, MenuItem_AddServer_Clipboard));
             contextMenu.MenuItems.Add("-");
             contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(setting, MenuItem_Setting));
+            contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(cli, MenuItem_OpenCLI));
             contextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(exit, MenuItem_Exit));
 
             notifyIcon.ContextMenu = contextMenu;
@@ -139,6 +141,11 @@ namespace PrivCh.View.Forms
         private void MenuItem_Setting(object sender, EventArgs e)
         {
             InterfaceCtrl.ShowSetting();
+        }
+
+        private void MenuItem_OpenCLI(object sender, EventArgs e)
+        {
+            InterfaceCtrl.OpenCLI();
         }
 
         private void MenuItem_Exit(object sender, EventArgs e)

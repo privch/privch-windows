@@ -137,6 +137,8 @@
                 <StackPanel>
                     <Button Content="{StaticResource _settings}"
                             Command="{Binding Path=CommandShowSetting}" />
+                    <Button Content="{StaticResource _cli}"
+                            Command="{Binding Path=CommandOpenCLI}" />
                     <Button Content="{StaticResource _about}"
                             Command="{Binding Path=CommandShowAbout}" />
                     <Separator />

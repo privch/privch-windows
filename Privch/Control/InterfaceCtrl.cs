@@ -4,6 +4,8 @@ using System.Windows;
 
 using MaterialDesignThemes.Wpf;
 
+using PrivCh.Model;
+using PrivCh.Utility;
 using PrivCh.View;
 using PrivCh.ViewModel;
 using PrivCh.ViewModel.Element;
@@ -48,6 +50,15 @@ namespace PrivCh.Control
             {
                 dialogSetting.Activate();
             }
+        }
+
+        public static void OpenCLI()
+        {
+            string arguments = "/k"
+                + $" set http_proxy=127.0.0.1:{SettingManager.Configuration.SystemProxyPort}"
+                + $" set https_proxy=127.0.0.1:{SettingManager.Configuration.SystemProxyPort}"
+                + $" set NO_PROXY=localhost,127.0.0.*,10.*,192.168.*";
+            SystemUtil.OpenCLI(arguments);
         }
 
         public static void ShowHomeNotify(string message)

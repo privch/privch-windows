@@ -51,6 +51,31 @@ namespace PrivCh.Utility
                 }
             }
         }
+
+        public static Process OpenCLI(string arguments)
+        {
+            Process process = null;
+            try
+            {
+                process = Process.Start(
+                    new ProcessStartInfo
+                    {
+                        FileName = "cmd.exe",
+                        Arguments = arguments,
+                        UseShellExecute = true,
+                        LoadUserProfile = false,
+                    });
+
+                return process;
+            }
+            catch
+            {
+                // it is correct
+                process?.Dispose();
+            }
+
+            return null;
+        }
         #endregion
 
         #region Shortcut

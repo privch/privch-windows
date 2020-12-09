@@ -251,6 +251,13 @@ namespace PrivCh.ViewModel
             InterfaceCtrl.ShowSetting();
         }
 
+        // open command line
+        public RelayCommand CommandOpenCLI => new RelayCommand(OpenCLI);
+        private void OpenCLI(object parameter)
+        {
+            InterfaceCtrl.OpenCLI();
+        }
+
         // show about
         public RelayCommand CommandShowAbout => new RelayCommand(ShowAbout);
         private void ShowAbout(object parameter)

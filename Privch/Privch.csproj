@@ -108,6 +108,7 @@
       <SubType>Code</SubType>
     </Compile>
     <None Include="App.config" />
+    <Compile Include="Model\IPAddress\IpWhoIs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -153,7 +154,7 @@
     <Compile Include="Model\Network\BandwidthMeter.cs" />
     <Compile Include="Model\Network\BandwidthInfo.cs" />
     <Compile Include="Model\IPAddress\IPInformation.cs" />
-    <Compile Include="Model\IPAddress\IPInfoIO.cs" />
+    <Compile Include="Model\IPAddress\IpInfo.cs" />
     <Compile Include="Model\SS\Shadowsocks.cs" />
     <Compile Include="Model\V2Ray\V2RayVMess.cs" />
     <Compile Include="Model\V2Ray\VMessUri.cs" />

@@ -67,7 +67,6 @@ namespace PrivCh
         {
             string dirData = "data";
             string dirBin = "binary";
-            string dirDocument = "document";
 
             Name = (string)Current.FindResource("app_name");
             // to avoid loading WindowHome on startup fails
@@ -89,7 +88,6 @@ namespace PrivCh
             {
                 Directory.CreateDirectory($@"{DirectoryApplication}\{dirBin}");
                 Directory.CreateDirectory($@"{DirectoryApplication}\{dirData}");
-                Directory.CreateDirectory($@"{DirectoryApplication}\{dirDocument}");
             }
             catch
             {
@@ -142,7 +140,11 @@ namespace PrivCh
             }
             TransmitCtrl.EnableTransmit(SettingManager.Configuration.IsTransmitEnabled);
 
-            // done
+            // done. specify to use TLS 1.2 as default connection
+            System.Net.ServicePointManager.SecurityProtocol =
+                System.Net.SecurityProtocolType.Tls12 |
+                System.Net.SecurityProtocolType.Tls11 |
+                System.Net.SecurityProtocolType.Tls;
             StartupUri = new System.Uri("View/WindowHome.xaml", System.UriKind.Relative);
             Exit += Application_Exit;
         }

@@ -65,11 +65,11 @@
     <system:String x:Key="confirm_by_enter">Enter to confirm</system:String>
 
     <!-- app -->
-    <system:String x:Key="app_name">Privch</system:String>
+    <system:String x:Key="app_name">PrivCh</system:String>
     <system:String x:Key="app_author">XinLake</system:String>
     <system:String x:Key="app_email">support@privch.com</system:String>
-    <system:String x:Key="app_useragent">Privch</system:String>
-    <system:String x:Key="app_about_oss">Privch is made possible with the </system:String>
+    <system:String x:Key="app_useragent">PrivCh</system:String>
+    <system:String x:Key="app_about_oss">PrivCh is made possible with the </system:String>
     <system:String x:Key="app_opensource_software">open source software</system:String>
     <system:String x:Key="app_init_fail">Unable to initialize the program directories or files.</system:String>
     <system:String x:Key="app_service_fail">Unable to start service</system:String>
@@ -118,7 +118,7 @@
     <system:String x:Key="dialog_setting_response_timeout">Retrieve response timeout (millisecond)</system:String>
     <system:String x:Key="dialog_setting_ping_timeout">Ping timeout (millisecond)</system:String>
     <system:String x:Key="dialog_setting_replace_old_server">Enable replacement of old server</system:String>
-    <system:String x:Key="dialog_setting_autorun">Start Privch when I login to Windows</system:String>
+    <system:String x:Key="dialog_setting_autorun">Start PrivCh when I login to Windows</system:String>
 
     <system:String x:Key="dialog_setting_theme_dark">Dark theme</system:String>
     
@@ -127,7 +127,7 @@
     <system:String x:Key="dialog_setting_status_ss_port">Socks5 proxy port</system:String>
 
     <!-- dialog about -->
-    <system:String x:Key="dialog_about_title">About Privch</system:String>
+    <system:String x:Key="dialog_about_title">About PrivCh</system:String>
 
     <!-- dialog server config -->
     <system:String x:Key="dialog_server_shadowsocks">Shadowsocks Config</system:String>
@@ -139,5 +139,5 @@
     <system:String x:Key="dialog_shadowsocks_plugin_option">Plugin Option / Parameter</system:String>
 
     <!-- system tray -->
-    <system:String x:Key="tray_enable_transmit">Enable Privch</system:String>
+    <system:String x:Key="tray_enable_transmit">Enable PrivCh</system:String>
 </ResourceDictionary>

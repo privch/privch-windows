@@ -110,7 +110,7 @@ namespace PrivCh.Model.SS
 
         public void SetFriendNameByIPInfo()
         {
-            if (IPInformation.FromIPInfoIO(HostAddress) is IPInformation ipinfo)
+            if (IPInformation.FromIpWhoIs(HostAddress) is IPInformation ipinfo)
             {
                 StringBuilder stringBuilder = new StringBuilder();
 

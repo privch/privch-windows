@@ -29,7 +29,7 @@ namespace PrivCh.Model.Setting
 
         public Config()
         {
-            IsAutorun = true;
+            IsAutorun = false;
 
             IsTransmitEnabled = false;
             SystemProxyPort = 0;
@@ -42,7 +42,7 @@ namespace PrivCh.Model.Setting
             TimeoutCheckResponse = 20000; //ms
             TimeoutPing = 1000; //ms
 
-            IsReplaceOldServer = false;
+            IsReplaceOldServer = true;
         }
     }
 }

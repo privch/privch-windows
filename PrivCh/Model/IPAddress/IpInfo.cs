@@ -2,8 +2,8 @@
 
 namespace PrivCh.Model.IPAddress
 {
-    [DataContract(Name = "IPInfoIO")]
-    public class IPInfoIO
+    [DataContract(Name = "IpInfo")]
+    public class IpInfo
     {
         [DataMember(Name = "ip")]
         internal string ip = null;
@@ -22,12 +22,6 @@ namespace PrivCh.Model.IPAddress
 
         [DataMember(Name = "loc")]
         internal string location = null;
-
-        [DataMember(Name = "org")]
-        internal string organization = null;
-
-        [DataMember(Name = "postal")]
-        internal string postal = null;
 
         [DataMember(Name = "timezone")]
         internal string timezone = null;

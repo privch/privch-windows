@@ -15,13 +15,13 @@ namespace PrivCh.Model.IPAddress
         public string Country { get; set; }
         public string Hostname { get; set; }
         public string Location { get; set; }
-        public string Organization { get; set; }
         public string Timezone { get; set; }
         #endregion
 
         private static readonly HttpClientHandler httpHandler = new HttpClientHandler
         {
             //Proxy = new System.Net.WebProxy("127.0.0.1", SettingManager.Configuration.SystemProxyPort),
+
             UseProxy = false,
         };
 
@@ -40,44 +40,76 @@ namespace PrivCh.Model.IPAddress
         // Copy by serializer
         public IPInformation Copy() => (IPInformation)TextUtil.CopyBySerializer(this);
 
-        /**<summary>
-         * Retrieve data from https://ipinfo.io and read to a IPInfo object.
-         * </summary>
-         * TODO - UA, Proxy Parameter.
-         */
-        public static IPInformation FromIPInfoIO(string ip)
+        public static IPInformation FromIpWhoIs(string ip)
         {
-            Uri uri = new Uri("https://ipinfo.io/" + ip);
+            Uri uri = new Uri("http://ipwhois.app/json/" + ip + "?objects=country,region,city");
 
-            //httpClient.DefaultRequestHeaders.Accept.Add(
-            //    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-            string ipinfo;
+            string result;
             try
             {
-                httpClient.CancelPendingRequests();
-
                 var response = httpClient.GetAsync(uri).Result;
                 response.EnsureSuccessStatusCode();
-                ipinfo = response.Content.ReadAsStringAsync().Result;
+                result = response.Content.ReadAsStringAsync().Result;
             }
             catch
             {
                 return null;
             }
 
-            if (TextUtil.JsonDeserialize(ipinfo, typeof(IPInfoIO)) is IPInfoIO ipinfoio)
+            if (TextUtil.JsonDeserialize(result, typeof(IpWhoIs)) is IpWhoIs ipwhois)
             {
                 return new IPInformation()
                 {
-                    IP = ipinfoio.ip,
-                    City = ipinfoio.city,
-                    Region = ipinfoio.region,
-                    Country = ipinfoio.country,
-                    Hostname = ipinfoio.hostname,
-                    Location = ipinfoio.location,
-                    Organization = ipinfoio.organization,
-                    Timezone = ipinfoio.timezone,
+                    IP = ip,
+                    City = ipwhois.city,
+                    Region = ipwhois.region,
+                    Country = ipwhois.country,
+                };
+            }
+
+            return null;
+        }
+
+        /**<summary>
+         * Retrieve data from https://ipinfo.io and read to a IPInfo object.
+         * </summary>
+         * TODO - UA, Proxy Parameter.
+         */
+        public static IPInformation FromIpInfo(string ip)
+        {
+            Uri uri = new Uri("https://ipinfo.io/" + ip);
+
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+            string result;
+            try
+            {
+                var response = httpClient.GetAsync(uri).Result;
+                response.EnsureSuccessStatusCode();
+                result = response.Content.ReadAsStringAsync().Result;
+            }
+            catch
+            {
+                return null;
+            }
+
+            if (TextUtil.JsonDeserialize(result, typeof(IpInfo)) is IpInfo ipinfo)
+            {
+                return new IPInformation()
+                {
+                    IP = ipinfo.ip,
+                    City = ipinfo.city,
+                    Region = ipinfo.region,
+                    Country = ipinfo.country,
+                    Hostname = ipinfo.hostname,
+                    Location = ipinfo.location,
+                    Timezone = ipinfo.timezone,
                 };
             }
 

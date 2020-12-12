@@ -1,7 +1,0 @@
-listen-address 127.0.0.1:PORT-LISTEN
-toggle 0
-forward-socks5 / 127.0.0.1:PORT-FORWARD-SOCKS5 .
-max-client-connections 2048
-activity-animation 0
-show-on-task-bar 0
-hide-console

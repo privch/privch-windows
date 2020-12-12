@@ -1,0 +1,55 @@
+﻿<Application x:Class="PrivCh.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             ShutdownMode="OnMainWindowClose"
+             Startup="Application_Startup">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- This is the current way to setup your app's initial theme -->
+                <md:BundledTheme BaseTheme="Dark" PrimaryColor="Teal" SecondaryColor="DeepOrange" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <!-- Language -->
+                <ResourceDictionary Source="Properties/Language/English.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Window -->
+            <Style x:Key="WindowApp" TargetType="Window">
+                <Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}"/>
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+                <Setter Property="TextElement.FontWeight" Value="Regular"/>
+                <Setter Property="TextElement.FontSize" Value="12"/>
+            </Style>
+            
+            <!-- Button for Toolbar -->
+            <Style x:Key="ButtonToolbar" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+            </Style>
+
+            <!-- DataGrid -->
+            <Style x:Key="DataGridApp" TargetType="DataGrid" BasedOn="{StaticResource MaterialDesignDataGrid}">
+                <Setter Property="ColumnWidth" Value="Auto"/>
+                <Setter Property="IsReadOnly" Value="False"/>
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="CanUserAddRows" Value="False"/>
+                <Setter Property="CanUserDeleteRows" Value="False"/>
+                <Setter Property="CanUserResizeRows" Value="False"/>
+                <Setter Property="CanUserSortColumns" Value="False"/>
+
+                <Style.Triggers>
+                    <!-- To avoid the selected item is filled to gray when the datagrid is disabled in edit mode -->
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="SelectedIndex" Value="-1"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="DataGrid" BasedOn="{StaticResource DataGridApp}"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

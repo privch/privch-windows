@@ -2,6 +2,15 @@
 	A simple system proxy control program. Reference document:
 	https://docs.microsoft.com/en-us/windows/desktop/wininet/wininet-vs-winhttp
 
+	Use in C#
+	[DllImport("proxyctrl.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+	internal static extern int EnableProxy(string server, string bypass);
+
+	[DllImport("proxyctrl.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+	internal static extern int DisableProxy();
+
+	e.g. EnableProxy("127.0.0.1:12345", "127.0.0.*;10.*;192.168.*");
+
 	xinlake@outlook.com
 */
 
@@ -16,8 +25,12 @@ static int refreshSetting();
 
 
 /*
-	Reference code:
+	Turn on system proxy. Reference code:
 	https://docs.microsoft.com/en-us/windows/desktop/WinInet/setting-and-retrieving-internet-options
+
+	pServer: Proxy IP address and port. e.g. "127.0.0.1:12345"
+	pBypass: Excepts, use semicolons(;) to separate entries. e.g. "127.0.0.*;10.*;192.168.*"
+	Returns: TRUE if the operation succeeds, FALSE otherwise
 */
 PROXYCTRL_EXPORT BOOL EnableProxy(WCHAR* pServer, WCHAR* pBypass)
 {
@@ -58,6 +71,10 @@ PROXYCTRL_EXPORT BOOL EnableProxy(WCHAR* pServer, WCHAR* pBypass)
 	return bReturn;
 }
 
+/*
+	Turn off system proxy
+	Returns: TRUE if the operation succeeds, FALSE otherwise
+*/
 PROXYCTRL_EXPORT BOOL DisableProxy()
 {
 	INTERNET_PER_CONN_OPTION_LIST list;
@@ -105,3 +122,4 @@ static BOOL refreshSetting()
 
 	return TRUE;
 }
+

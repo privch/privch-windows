@@ -1,15 +1,14 @@
-# XTransmit
+# PrivCh
+A Windows encryption proxy tool application based on Windows .NET WPF, support Shadowsocks and V2Ray protocol currently. The proxyctrl project is a simple Windows system proxy control dll, it has no dependencies and can be used in your project. _PrivCh does not provide Shadowsocks or V2Ray services_.
 
-XTransmit is a Windows .NET WPF desktop application, with shadowsocks client, v2ray client and a simple network speed display panel integrated. **XTransmit does not provide shadowsocks services**. Details here: [English](https://xinlake.github.io/blog/2019-10/xtransmit-0.5.3-en/#more), [Simplified Chinese](https://xinlake.github.io/blog/2019-10/xtransmit-0.5.3/#more).
-
-![](https://github.com/xinlake/xtransmit-windows/raw/master/Assets/servers.gif)
-![](https://github.com/xinlake/xtransmit-windows/raw/master/Assets/network.gif)
+![](https://github.com/xinlake/privch-windows/raw/master/Assets/server-list.png)
+![](https://github.com/xinlake/privch-windows/raw/master/Assets/network-traffic.png)
 
 # Requirements
 * .NET Framewrok 4.7.2
 
 # Open source software
-| Dependency  | License |
+| Dependency | License |
 | :------------- | :------------- |
 | [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/) | MIT |
 | [LiveCharts](https://lvcharts.net/) | MIT |

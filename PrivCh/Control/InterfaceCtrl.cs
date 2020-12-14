@@ -57,7 +57,7 @@ namespace PrivCh.Control
             string arguments = "/k "
                 + $"set http_proxy=http://127.0.0.1:{SettingManager.Configuration.SystemProxyPort} && "
                 + $"set https_proxy=http://127.0.0.1:{SettingManager.Configuration.SystemProxyPort} && "
-                + $"set NO_PROXY=localhost,127.0.0.*,10.*,192.168.*";
+                + $"set NO_PROXY=localhost,127.0.0.1,10.*,192.168.*";
             SystemUtil.OpenCLI(arguments);
         }
 

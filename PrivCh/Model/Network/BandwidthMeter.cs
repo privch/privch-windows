@@ -92,7 +92,7 @@ namespace PrivCh.Model.Network
                     adapterBytesSent = statistic.BytesSent;
                     bgWork.ReportProgress(0, userState: values);
                 }
-                catch
+                catch (Exception)
                 {
                     continue;
                 }

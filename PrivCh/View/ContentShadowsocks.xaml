@@ -46,7 +46,7 @@
                 <Separator />
 
                 <Button ToolTip="{StaticResource task_update_info}"
-                        Content="{md:PackIcon Kind=AddLocation}"
+                        Content="{md:PackIcon Kind=LocationAdd}"
                         Command="{Binding Path=CommandUpdateInfoAll}" />
 
                 <Button ToolTip="{StaticResource task_check_ping}"
@@ -106,7 +106,7 @@
 
                     <Separator Margin="10, 0" />
 
-                    <MenuItem Icon="{md:PackIcon Kind=AddLocation}"
+                    <MenuItem Icon="{md:PackIcon Kind=LocationAdd}"
                               Header="{StaticResource task_update_info}"
                               Command="{Binding Path=CommandUpdateInfoSelected}"
                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}" />

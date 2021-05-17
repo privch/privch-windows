@@ -1,8 +1,10 @@
+**停止维护，这个项目将会合并到跨平台技术方案的客户端里**
+
 # PrivCh
 A Windows encryption proxy tool application based on Windows .NET WPF, support Shadowsocks and V2Ray protocol currently. The proxyctrl project is a simple Windows system proxy control dll, it has no dependencies and can be used in your project. _PrivCh does not provide Shadowsocks or V2Ray services_.
 
-![](https://github.com/xinlake/privch-windows/raw/master/Assets/server-list.png)
-![](https://github.com/xinlake/privch-windows/raw/master/Assets/network-traffic.png)
+![](https://github.com/xinlake/privch-windows/raw/main/Assets/server-list.png)
+![](https://github.com/xinlake/privch-windows/raw/main/Assets/network-traffic.png)
 
 # Requirements
 * .NET Framewrok 4.7.2
